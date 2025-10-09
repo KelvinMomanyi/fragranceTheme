@@ -19,8 +19,7 @@
                       <div class="has-bg-image" style="background-image: url('{{ section.settings.image2 | image_url}}');">
                       </div>   
                      {% else %}
-                     <div class="has-bg-image" style="background-image: url('{{ 'P1.jpg' | asset_url}}');">
-                     </div>
+                     {{ 'product-5' | placeholder_svg_tag: 'img-cover' }}
                     {% endif %}
                 </div>
             </li>
