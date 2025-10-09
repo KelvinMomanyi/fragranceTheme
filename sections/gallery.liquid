@@ -7,15 +7,19 @@
 
         <div class="gallery-card">
           <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
-            <img src="{{'gallery-1.jpg' | asset_url}}" width="450" height="625" loading="lazy" alt="Velour Essence"
-              class="img-cover">
+            {% if section.settings.image1 != blank %}
+               <img src="{{'gallery-1.jpg' | asset_url}}" width="450" height="625" loading="lazy" alt="Velour Essence"
+                 class="img-cover">   
+            {% else %}
+                {{ 'product-3' | placeholder_svg_tag: 'img-cover' }}
+             {% endif %}
           </figure>
 
           <div class="card-content">
             <h3 class="h6">
-              <a href="#" class="card-title">Velour Essence</a>
+              <a href="#" class="card-title">{{ block.settings.link }}</a>
             </h3>
-            <span class="card-tag">Luxury, Signature</span>
+            <span class="card-tag">{{ block.settings.title1 }}</span>
           </div>
 
           <a href="#" class="btn-icon">
@@ -161,19 +165,23 @@
 
     </ul> {% endcomment %}
     <ul class="gallery-list">
-  {% for block in section.blocks %}
+  {% assign items = 8 %}
+  {% for i in (1..items) %}
     {% if forloop.index == 1 or forloop.index == 3 or forloop.index == 5 or forloop.index == 7 %}
       <li class="gallery-item" data-reveal>
     {% endif %}
 
         <div class="gallery-card">
           <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
-            {% if block.settings.image != blank %}
-              <img src="{{ block.settings.image | image_url: width: 450 }}" 
+            {% assign image_key = 'image_' | append: forloop.index %}
+            {% assign image = section.settings[image_key] %}
+            
+            {% if image != blank %}
+              <img src="{{ image | image_url: width: 450 }}" 
                    width="450" 
                    height="625" 
                    loading="lazy" 
-                   alt="{{ block.settings.image.alt | default: block.settings.title }}"
+                   alt="{{ image.alt | default: section.settings[title_key] }}"
                    class="img-cover">
             {% else %}
               {{ 'product-5' | placeholder_svg_tag: 'img-cover' }}
@@ -182,14 +190,17 @@
 
           <div class="card-content">
             <h3 class="h6">
-              <a href="{{ block.settings.link }}" class="card-title">
-                {{ block.settings.title }}
+              {% assign title_key = 'title_' | append: forloop.index %}
+              {% assign link_key = 'link_' | append: forloop.index %}
+              <a href="{{ section.settings[link_key] }}" class="card-title">
+                {{ section.settings[title_key] }}
               </a>
             </h3>
-            <span class="card-tag">{{ block.settings.tag }}</span>
+            {% assign tag_key = 'tag_' | append: forloop.index %}
+            <span class="card-tag">{{ section.settings[tag_key] }}</span>
           </div>
 
-          <a href="{{ block.settings.link }}" class="btn-icon">
+          <a href="{{ section.settings[link_key] }}" class="btn-icon">
             <img src="{{ 'arrow-forward.svg' | asset_url }}" 
                  width="43" 
                  height="20" 
@@ -202,7 +213,7 @@
       </li>
     {% endif %}
   {% endfor %}
-     </ul>
+</ul>
   </div>
 </section>
 
@@ -408,126 +419,232 @@
 }
   </style>  
 
-  {% schema %}
-    {
-      "name": "Gallery",
-      "tag": "section",
-      "class": "section gallery",
-      "settings": [
-        {
-          "type": "header",
-          "content": "Section Settings"
-        },
-        {
-          "type": "text",
-          "id": "section_heading",
-          "label": "Section Heading",
-          "default": "Our Collection"
-        },
-        {
-          "type": "range",
-          "id": "items_per_row",
-          "min": 2,
-          "max": 4,
-          "step": 1,
-          "label": "Items per row",
-          "default": 2
-        }
-      ],
-      "blocks": [
-        {
-          "type": "gallery_item",
-          "name": "Gallery Item",
-          "settings": [
-            {
-              "type": "image_picker",
-              "id": "image",
-              "label": "Image",
-              "info": "450 x 625px recommended"
-            },
-            {
-              "type": "text",
-              "id": "title",
-              "label": "Title",
-              "default": "Product Name"
-            },
-            {
-              "type": "text",
-              "id": "tag",
-              "label": "Tag",
-              "default": "Category, Style",
-              "info": "Comma-separated tags"
-            },
-            {
-              "type": "url",
-              "id": "link",
-              "label": "Link"
-            }
-          ]
-        }
-      ],
-      "presets": [
-        {
-          "name": "Gallery",
-          "blocks": [
-            {
-              "type": "gallery_item",
-              "settings": {
-                "title": "Velour Essence",
-                "tag": "Luxury, Signature"
-              }
-            },
-            {
-              "type": "gallery_item",
-              "settings": {
-                "title": "Blooming Petals",
-                "tag": "Floral, Fresh"
-              }
-            },
-            {
-              "type": "gallery_item",
-              "settings": {
-                "title": "Midnight Noir",
-                "tag": "Bold, Evening"
-              }
-            },
-            {
-              "type": "gallery_item",
-              "settings": {
-                "title": "Citrus Mist",
-                "tag": "Fresh, Daily Wear"
-              }
-            },
-            {
-              "type": "gallery_item",
-              "settings": {
-                "title": "Golden Aura",
-                "tag": "Warm, Oriental"
-              }
-            },
-            {
-              "type": "gallery_item",
-              "settings": {
-                "title": "Ocean Breeze",
-                "tag": "Aqua, Refreshing"
-              }
-            },
-            {
-              "type": "gallery_item",
-              "settings": {
-                "title": "Rose Éclat",
-                "tag": "Romantic, Floral"
-              }
-            },
-            {
-              "type": "gallery_item",
-              "settings": {
-                "title": "Vanilla Secrets",
-                "tag": "Sweet, Cozy"
-              }
-            }
-          ]
-        }
-      ]
-    }
-    {% endschema %}
+  {
+    "name": "Gallery",
+    "tag": "section",
+    "class": "section gallery",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Gallery Item 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_1",
+        "label": "Image 1",
+        "info": "450 x 625px recommended"
+      },
+      {
+        "type": "text",
+        "id": "title_1",
+        "label": "Title 1",
+        "default": "Velour Essence"
+      },
+      {
+        "type": "text",
+        "id": "tag_1",
+        "label": "Tag 1",
+        "default": "Luxury, Signature"
+      },
+      {
+        "type": "url",
+        "id": "link_1",
+        "label": "Link 1"
+      },
+      {
+        "type": "header",
+        "content": "Gallery Item 2"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_2",
+        "label": "Image 2",
+        "info": "450 x 625px recommended"
+      },
+      {
+        "type": "text",
+        "id": "title_2",
+        "label": "Title 2",
+        "default": "Blooming Petals"
+      },
+      {
+        "type": "text",
+        "id": "tag_2",
+        "label": "Tag 2",
+        "default": "Floral, Fresh"
+      },
+      {
+        "type": "url",
+        "id": "link_2",
+        "label": "Link 2"
+      },
+      {
+        "type": "header",
+        "content": "Gallery Item 3"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_3",
+        "label": "Image 3",
+        "info": "450 x 625px recommended"
+      },
+      {
+        "type": "text",
+        "id": "title_3",
+        "label": "Title 3",
+        "default": "Midnight Noir"
+      },
+      {
+        "type": "text",
+        "id": "tag_3",
+        "label": "Tag 3",
+        "default": "Bold, Evening"
+      },
+      {
+        "type": "url",
+        "id": "link_3",
+        "label": "Link 3"
+      },
+      {
+        "type": "header",
+        "content": "Gallery Item 4"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_4",
+        "label": "Image 4",
+        "info": "450 x 625px recommended"
+      },
+      {
+        "type": "text",
+        "id": "title_4",
+        "label": "Title 4",
+        "default": "Citrus Mist"
+      },
+      {
+        "type": "text",
+        "id": "tag_4",
+        "label": "Tag 4",
+        "default": "Fresh, Daily Wear"
+      },
+      {
+        "type": "url",
+        "id": "link_4",
+        "label": "Link 4"
+      },
+      {
+        "type": "header",
+        "content": "Gallery Item 5"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_5",
+        "label": "Image 5",
+        "info": "450 x 625px recommended"
+      },
+      {
+        "type": "text",
+        "id": "title_5",
+        "label": "Title 5",
+        "default": "Golden Aura"
+      },
+      {
+        "type": "text",
+        "id": "tag_5",
+        "label": "Tag 5",
+        "default": "Warm, Oriental"
+      },
+      {
+        "type": "url",
+        "id": "link_5",
+        "label": "Link 5"
+      },
+      {
+        "type": "header",
+        "content": "Gallery Item 6"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_6",
+        "label": "Image 6",
+        "info": "450 x 625px recommended"
+      },
+      {
+        "type": "text",
+        "id": "title_6",
+        "label": "Title 6",
+        "default": "Ocean Breeze"
+      },
+      {
+        "type": "text",
+        "id": "tag_6",
+        "label": "Tag 6",
+        "default": "Aqua, Refreshing"
+      },
+      {
+        "type": "url",
+        "id": "link_6",
+        "label": "Link 6"
+      },
+      {
+        "type": "header",
+        "content": "Gallery Item 7"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_7",
+        "label": "Image 7",
+        "info": "450 x 625px recommended"
+      },
+      {
+        "type": "text",
+        "id": "title_7",
+        "label": "Title 7",
+        "default": "Rose Éclat"
+      },
+      {
+        "type": "text",
+        "id": "tag_7",
+        "label": "Tag 7",
+        "default": "Romantic, Floral"
+      },
+      {
+        "type": "url",
+        "id": "link_7",
+        "label": "Link 7"
+      },
+      {
+        "type": "header",
+        "content": "Gallery Item 8"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_8",
+        "label": "Image 8",
+        "info": "450 x 625px recommended"
+      },
+      {
+        "type": "text",
+        "id": "title_8",
+        "label": "Title 8",
+        "default": "Vanilla Secrets"
+      },
+      {
+        "type": "text",
+        "id": "tag_8",
+        "label": "Tag 8",
+        "default": "Sweet, Cozy"
+      },
+      {
+        "type": "url",
+        "id": "link_8",
+        "label": "Link 8"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Gallery"
+      }
+    ]
+  }
+  {% endschema %}
