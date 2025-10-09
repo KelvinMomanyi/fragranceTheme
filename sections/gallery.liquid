@@ -164,56 +164,56 @@
       </li>
 
     </ul> {% endcomment %}
-    <ul class="gallery-list">
-  {% assign items = 8 %}
-  {% for i in (1..items) %}
-    {% if forloop.index == 1 or forloop.index == 3 or forloop.index == 5 or forloop.index == 7 %}
-      <li class="gallery-item" data-reveal>
-    {% endif %}
+      <ul class="gallery-list">
+        {% assign items = 8 %}
+        {% for i in (1..items) %}
+          {% if forloop.index == 1 or forloop.index == 3 or forloop.index == 5 or forloop.index == 7 %}
+            <li class="gallery-item" data-reveal>
+          {% endif %}
 
-        <div class="gallery-card">
-          <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
-            {% assign image_key = 'image_' | append: forloop.index %}
-            {% assign image = section.settings[image_key] %}
-            
-            {% if image != blank %}
-              <img src="{{ image | image_url: width: 450 }}" 
-                   width="450" 
-                   height="625" 
-                   loading="lazy" 
-                   alt="{{ image.alt | default: section.settings[title_key] }}"
-                   class="img-cover">
-            {% else %}
-              {{ 'product-5' | placeholder_svg_tag: 'img-cover' }}
-            {% endif %}
-          </figure>
+              <div class="gallery-card">
+                <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
+                  {% assign image_key = 'image_' | append: forloop.index %}
+                  {% assign image = section.settings[image_key] %}
+                  
+                  {% if image != blank %}
+                    <img src="{{ image | image_url: width: 450 }}" 
+                        width="450" 
+                        height="625" 
+                        loading="lazy" 
+                        alt="{{ image.alt | default: section.settings[title_key] }}"
+                        class="img-cover">
+                  {% else %}
+                    {{ 'product-5' | placeholder_svg_tag: 'img-cover' }}
+                  {% endif %}
+                </figure>
 
-          <div class="card-content">
-            <h3 class="h6">
-              {% assign title_key = 'title_' | append: forloop.index %}
-              {% assign link_key = 'link_' | append: forloop.index %}
-              <a href="{{ section.settings[link_key] }}" class="card-title">
-                {{ section.settings[title_key] }}
-              </a>
-            </h3>
-            {% assign tag_key = 'tag_' | append: forloop.index %}
-            <span class="card-tag">{{ section.settings[tag_key] }}</span>
-          </div>
+                <div class="card-content">
+                  <h3 class="h6">
+                    {% assign title_key = 'title_' | append: forloop.index %}
+                    {% assign link_key = 'link_' | append: forloop.index %}
+                    <a href="{{ section.settings[link_key] }}" class="card-title">
+                      {{ section.settings[title_key] }}
+                    </a>
+                  </h3>
+                  {% assign tag_key = 'tag_' | append: forloop.index %}
+                  <span class="card-tag">{{ section.settings[tag_key] }}</span>
+                </div>
 
-          <a href="{{ section.settings[link_key] }}" class="btn-icon">
-            <img src="{{ 'arrow-forward.svg' | asset_url }}" 
-                 width="43" 
-                 height="20" 
-                 loading="lazy" 
-                 alt="arrow-forward icon">
-          </a>
-        </div>
+                <a href="{{ section.settings[link_key] }}" class="btn-icon">
+                  <img src="{{ 'arrow-forward.svg' | asset_url }}" 
+                      width="43" 
+                      height="20" 
+                      loading="lazy" 
+                      alt="arrow-forward icon">
+                </a>
+              </div>
 
-    {% if forloop.index == 2 or forloop.index == 4 or forloop.index == 6 or forloop.index == 8 %}
-      </li>
-    {% endif %}
-  {% endfor %}
-</ul>
+          {% if forloop.index == 2 or forloop.index == 4 or forloop.index == 6 or forloop.index == 8 %}
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
   </div>
 </section>
 
