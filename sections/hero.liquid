@@ -20,101 +20,8 @@
 <link rel="preload" as="image" href="{{ 'MainLogo_png.svg' | asset_url }}">
 
 
-{% comment %} <section class="hero text-center" aria-label="home" id="home">
-    <ul class="hero-slider" data-hero-slider>
-      <li class="slider-item active" data-hero-slider-item>
-        {% if section.settings.image1 != blank %}
-          <div class="slider-bg hero-card has-bg-image" style="background-image: url('{{ section.settings.image1 | image_url}}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
-          </div> 
-         {% else %}
-         <div class="slider-bg hero-card has-bg-image" style="background-image: url('{{ 'shoe8.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
-         </div>   
-        {% endif %} 
-        <div class="card-content">
-           <h1 class="h1 hero-title slider-reveal">
-            {{ section.settings.title1 }}<br/>
-            {{ section.settings.subtitle1 }}
-           </h1>
-           <p class="hero-text slider-reveal">
-            {{ section.settings.description1}}
-           </p>
-            <p class="price slider-reveal"> Starting at {{section.settings.price1}}</p>
-            <a {% if section.settings.link %}
-              href="{{ section.settings.link }}"
-            {% else %}
-              role="link" aria-disabled="true"
-            {% endif %}
-           class="btn btn-primary slider-reveal">{{section.settings.btn_label}}</a>
-         </div>
-
-      </li>
-      <li class="slider-item " data-hero-slider-item>
-        {% if section.settings.image2 != blank %}
-          <div class="slider-bg hero-card has-bg-image" style="background-image: url('{{ section.settings.image2 | image_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
-          </div>    
-         {% else %}
-         <div class="slider-bg hero-card has-bg-image" style="background-image: url('{{ 'shoes.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
-         </div>   
-        {% endif %} 
-        <div class="card-content">
-          <h1 class="h1 hero-title slider-reveal">
-            {{ section.settings.title2 }}<br/>
-            {{ section.settings.subtitle2 }}
-          </h1>
-          <p class="hero-text slider-reveal">
-            {{ section.settings.description2}}
-          </p>
-          <p class="price slider-reveal"> Starting at {{section.settings.price2 }}</p>
-          <a {% if section.settings.link %}
-            href="{{ section.settings.link }}"
-          {% else %}
-            role="link" aria-disabled="true"
-          {% endif %}
-         class="btn btn-primary slider-reveal">{{section.settings.btn_label}}</a>
-        </div>
-      </li>
-      <li class="slider-item" data-hero-slider-item>
-        {% if section.settings.image3 != blank %}
-          <div class="slider-bg hero-card has-bg-image" style="background-image: url('{{ section.settings.image3 | image_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
-          </div>    
-         {% else %}
-         <div class="slider-bg hero-card has-bg-image" style="background-image: url('{{ 'shoe16.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
-         </div>   
-        {% endif %} 
-      <div class="card-content">
-        <h1 class="h1 hero-title slider-reveal">
-          {{ section.settings.title3 }}<br/>
-          {{ section.settings.subtitle3 }}
-         </h1>
-         <p class="hero-text slider-reveal">
-          {{ section.settings.description3}}
-         </p>
-         <p class="price slider-reveal"> Starting at {{section.settings.price3 }}</p>
-         <div style="display: flex; justify-content: flex-start;">
-          <a {% if section.settings.link %}
-            href="{{ section.settings.link }}"
-          {% else %}
-            role="link" aria-disabled="true"
-          {% endif %}
-         class="btn btn-primary slider-reveal">{{section.settings.btn_label}}</a>
-        </div>
-
-      </div>
-      </li>
-    </ul>
-
-    <button class="slider-btn prev" aria-label="slide to previous" data-prev-btn>
-    <ion-icon name="chevron-back"></ion-icon>
-   </button>
-
-   <button class="slider-btn next" aria-label="slide to next" data-next-btn>
-    <ion-icon name="chevron-forward"></ion-icon>
-   </button>
-
-
-</section> {% endcomment %}
-<section class="section hero" id="home" aria-label="home">
-  <div class="container" >
+<<section class="section hero" id="home" aria-label="home">
+  <div class="container">
 
     <ul class="hero-list">
 
@@ -123,17 +30,17 @@
          <div class="gradient-overlay">
           <figure class="card-banner img-holder" style="--width: 285; --height: 396;">
             {% if section.settings.image1 != blank %}
-               <img src='{{ section.settings.image1 | image_url }}' width="285" height="396" alt="Art Deco Home"  class="img-cover">   
+               <img src='{{ section.settings.image1 | image_url }}' width="285" height="396" alt="Art Deco Home" class="img-cover">   
              {% else %}
-               <img src='{{ 'r5.jpg' | asset_url }}' width="285" height="396" alt="Art Deco Home"  class="img-cover"> 
+               {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
               {% endif %} 
           </figure>
           </div>
           <div class="card-content">
             <h3>
-              <a href="#" class="card-title">Jo Malone</a>
+              <a href="#" class="card-title">{{ section.settings.title1 | default: "Jo Malone" }}</a>
             </h3>
-            <a class="btn btn-primary">Shop Now</a>
+            <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
           </div>
 
         </div>
@@ -144,18 +51,18 @@
           <div class="gradient-overlay">
            <figure class="card-banner img-holder" style="--width: 568; --height: 389;">
               {% if section.settings.image2 != blank %}
-               <img src='{{ section.settings.image2 | image_url }}' width="568" height="389" lt="Helen Chair"   class="img-cover">   
+               <img src='{{ section.settings.image2 | image_url }}' width="568" height="389" alt="Helen Chair" class="img-cover">   
              {% else %}
-             <img src='{{ 'r7.jpg' | asset_url }}' width="568" height="389" alt="Helen Chair" class="img-cover">
+               {{ 'product-2' | placeholder_svg_tag: 'img-cover' }}
               {% endif %}   
            </figure>
           </div>
           <div class="overlay"></div>
           <div class="card-content">
             <h3>
-              <a href="#" class="card-title">Juliette has a gun</a>
+              <a href="#" class="card-title">{{ section.settings.title2 | default: "Juliette has a gun" }}</a>
             </h3>
-            <a class="btn btn-primary">Shop Now</a>
+            <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
           </div>
 
         </div>
@@ -168,15 +75,15 @@
            {% if section.settings.image3 != blank %}
              <img src='{{ section.settings.image3 | image_url }}' width="285" height="396" alt="Vase Of Flowers" class="img-cover">   
            {% else %}
-              <img src='{{ 'r12.jpg' | asset_url }}' width="285" height="396" alt="Vase Of Flowers" class="img-cover">
+              {{ 'product-3' | placeholder_svg_tag: 'img-cover' }}
            {% endif %}
           </figure>
         </div>
           <div class="card-content">
             <h3>
-              <a href="#" class="card-title">Dior</a>
+              <a href="#" class="card-title">{{ section.settings.title3 | default: "Dior" }}</a>
             </h3>
-            <a class="btn btn-primary">Shop Now</a>
+            <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
           </div>
 
         </div>
@@ -187,9 +94,9 @@
          <div class="gradient-overlay">
             <figure class="card-banner img-holder" style="--width: 580; --height: 213;">
               {% if section.settings.image4 != blank %}
-                <img src='{{ section.settings.image3 | image_url }}' width="580" height="213" alt="Vase Of Flowers" class="img-cover">   
+                <img src='{{ section.settings.image4 | image_url }}' width="580" height="213" alt="Product Image" class="img-cover">   
               {% else %}
-                <img src='{{ 'r10.jpg' | asset_url }}' width="580" height="213" alt="Wood Eggs" class="img-cover">
+                {{ 'product-4' | placeholder_svg_tag: 'img-cover' }}
                {% endif %}
            </figure>
           </div>
@@ -197,7 +104,7 @@
             <h3>
               <a href="#" class="card-title">Sun di Gioia</a>
             </h3>
-            <a class="btn btn-primary">Shop Now</a>
+            <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
           </div>
 
         </div>
@@ -208,17 +115,17 @@
           <div class="gradient-overlay">
             <figure class="card-banner img-holder" style="--width: 580; --height: 213;">
               {% if section.settings.image5 != blank %}
-                <img src='{{ section.settings.image5 | image_url }}' width="580" height="213" alt="Vase Of Flowers" class="img-cover">   
+                <img src='{{ section.settings.image5 | image_url }}' width="580" height="213" alt="Product Image" class="img-cover">   
               {% else %}
-                  <img src="{{ 'r11.jpg' | asset_url }}" width="580" height="213" alt="Table Wood Pine" class="img-cover"> 
+                  {{ 'product-5' | placeholder_svg_tag: 'img-cover' }}
               {% endif %}        
            </figure>
           </div>
           <div class="card-content">
             <h3>
-              <a href="#" class="card-title">Bleu de Chanel </a>
+              <a href="#" class="card-title">Bleu de Chanel</a>
             </h3>
-            <a class="btn btn-primary">Shop Now</a>
+            <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
           </div>
 
         </div>
@@ -228,29 +135,6 @@
 
   </div>
 </section>
-
-<style>
- /* .gradient-overlay {
-    position: relative;
-    display: inline-block;
-  }
-  .gradient-overlay::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
-    pointer-events: none; /* Ensures the gradient doesn't interfere with clicks */
-
-  }*/
-  
-  
-
-  
-  
-</style>
 
 {% schema %}
 {
@@ -285,86 +169,32 @@
       "type": "text",
       "id": "title1",
       "label": "Title 1",
-      "default": "Find the best"
-    },
-    {
-      "type": "text",
-      "id": "subtitle1",
-      "label": "Subtitle 1",
-      "default": "Classy Shoe"
+      "default": "Jo Malone"
     },
     {
       "type": "text",
       "id": "title2",
       "label": "Title 2",
-      "default": "Find the best"
-    },
-    {
-      "type": "text",
-      "id": "subtitle2",
-      "label": "Subtitle 2",
-      "default": "Classy Shoe"
+      "default": "Juliette has a gun"
     },
     {
       "type": "text",
       "id": "title3",
       "label": "Title 3",
-      "default": "Find the best"
+      "default": "Dior"
     },
     {
       "type": "text",
-      "id": "subtitle3",
-      "label": "Subtitle 3",
-      "default": "Classy Shoe"
-    },
-    {
-      "type": "inline_richtext",
-      "id": "description1",
-      "label": "Description 1",
-      "default": "Designed with clean, non-toxic materials, our shoes ensure style and comfort for everyone."
-    },
-    {
-      "type": "inline_richtext",
-      "id": "description2",
-      "label": "Description 2",
-      "default": "Designed with clean, non-toxic materials, our shoes ensure style and comfort for everyone."
-    },
-    {
-      "type": "inline_richtext",
-      "id": "description3",
-      "label": "Description 3",
-      "default": "Designed with clean, non-toxic materials, our shoes ensure style and comfort for everyone."
-    },
-    {
-      "type":"text",
-      "id":"price1",
-      "label":"Price 1",
-      "default":"$17.99"
-    },
-    {
-      "type":"text",
-      "id":"price2",
-      "label":"Price 2",
-      "default":"$17.99"
-    },
-    {
-      "type":"text",
-      "id":"price3",
-      "label":"Price 3",
-      "default":"$17.99"
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "Shop Now"
     },
     {
       "type": "url",
       "id": "link",
       "label": "Button Url"
-    },
-    {
-      "type":"text",
-      "id":"btn_label",
-      "label":"Button Label",
-      "default":"Shop Now"
     }
-],
+  ],
   "blocks": [],
   "presets": [
     {
@@ -373,5 +203,3 @@
   ]
 }
 {% endschema %}
-
-
