@@ -2,7 +2,7 @@
 {% if section.settings.background_image != blank %}
   --bg-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');
 {% else %}
-  --bg-image: url('{{ 'frag.jpg' | asset_url }}');
+  --bg-image: url('{{ 'product-5' | placeholder_svg_tag: 'img-cover' }}');
 {% endif %}">
   <div class="grid grid-3">
     <div class="autoBLur" style="display:none;">.</div>
