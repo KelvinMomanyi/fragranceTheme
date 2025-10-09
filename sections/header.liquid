@@ -1,0 +1,1025 @@
+<!-- 
+    - #HEADER
+  -->
+
+  <header class="header" data-header style='background-color:{{section.settings.bg_color }}'>
+    <div class="container">
+
+      
+      <div class="">
+        <button class="header-action-btn" aria-label="open menu" data-nav-toggler>
+          <ion-icon name="menu-outline" aria-hidden="true" style="font-size:24px;"></ion-icon>
+          <i data-feather="circle"></i>
+        </button>
+ 
+      </div>
+      
+      <div>
+      <a href="/" class="logo"  >
+        {% assign default_width = 69 %}
+        {% assign default_height = 26 %}
+        {% assign scaled_width = default_width | times: section.settings.logo_scale %}
+        {% assign scaled_height = default_height | times: section.settings.logo_scale %}
+          {% if section.settings.logo_image != blank %}
+            <img 
+              src="{{ section.settings.logo_image | image_url  }}"  
+              alt="logo"
+              width="{{ scaled_width }}" 
+              height="{{ scaled_height }}" 
+              loading="lazy"
+            />
+           {% else %}
+            <a href="/" class="logo">Fragrance</a>
+          {% endif %} 
+        </a>
+      </div>
+      
+     
+    
+      {% comment %} <div class="input-wrapper">
+        <input type="search" name="search" placeholder="Search Anything..." class="input-field">
+
+        <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+      </div> {% endcomment %}
+      <div class="header-action"  id="headerActions">
+        <a href="#" class="header-action-btn" aria-label="favourite-item" id="search-icon">
+          <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+          {% comment %} <img src="{{ 'search.svg' | asset_url }}" alt="Your Icon" /> {% endcomment %}
+        </a> 
+       
+
+        <button class="header-action-btn" aria-label="cart" onclick="openCart()">
+          <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+          {% comment %} <img src="{{ 'shopping-bag.svg' | asset_url }}" alt="Your Icon" /> {% endcomment %}
+          <span class="btn-badge">0</span>
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- SEARCH BAR TOP -->
+  
+      <div id="search-bar" class="search-bar">
+        <div class="container">
+          <input type="text" id="search-input" placeholder="Search for products...">
+          <div id="search-results"></div>
+        </div>
+     </div>
+  </header>
+
+
+
+
+
+  <!-- 
+    - #SIDEBAR
+  -->
+
+  <div class="sidebar" data-navbar>
+    <div class="navClose">
+       <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
+        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+      </button>
+    </div>
+    <nav class="navbar">
+      <ul class="navbar-list">
+        {% assign nav_links = linklists.main-menu.links %} <!-- Replace 'main-menu' with your menu handle -->
+        {% for link in nav_links %}
+          <li class="navbar-item">
+            <a href="{{ link.url }}" class="navbar-link" data-nav-link>{{ link.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+      
+
+
+    
+
+    <ul class="contact-list">
+
+      <li>
+        <p class="contact-list-title">Contact Us</p>
+      </li>
+
+      <li class="contact-item">
+        <address class="address">
+          123 Example Ave, Suite 456, Metropolis, Country
+        </address>
+      </li>
+
+      <li class="contact-item">
+        <a href="mailto:info@example.com" class="contact-link">info@example.com</a>
+      </li>
+
+      <li class="contact-item">
+        <a href="tel:00001235567890" class="contact-link">(0000) 1235 567890</a>
+      </li>
+
+    </ul>
+
+    
+
+    <div class="social-wrapper">
+
+      <p class="social-list-title">Follow US On Socials</p>
+
+      <ul class="social-list">
+
+        <li>
+          <a href="#" class="social-link">
+            <ion-icon name="logo-facebook"></ion-icon>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="social-link">
+            <ion-icon name="logo-instagram"></ion-icon>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="social-link">
+            <ion-icon name="logo-tumblr"></ion-icon>
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+
+
+    <!-- Language and Currency Selectors Container -->
+    <div id="currency-language-container ">
+      <select name="locale_code" class="locale-selector" style="color:{{ section.settings.text_color }};">
+        {% for language in localization.available_languages %}
+          {% if language.iso_code == localization.language.iso_code %}
+            <option value="{{ language.iso_code }}" selected="selected">{{ language.name }}</option>
+          {% else %}
+            <option value="{{ language.iso_code }}">{{ language.name }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      
+    
+    
+      {% form 'currency' %}
+        <div style="display:flex; gap:5px;">
+          <div class="dropdown">
+            {% for currency in shop.enabled_currencies %}
+              {% assign country_code = '' %}
+              {% assign country_name = '' %}
+            {% case currency.iso_code %}
+                {% when 'USD' %} {% assign country_code = 'us' %} {% assign country_name = 'United States' %}
+                {% when 'CAD' %} {% assign country_code = 'ca' %} {% assign country_name = 'Canada' %}
+                {% when 'EUR' %} {% assign country_code = 'eu' %} {% assign country_name = 'Eurozone' %}
+                {% when 'GBP' %} {% assign country_code = 'gb' %} {% assign country_name = 'United Kingdom' %}
+                {% when 'AUD' %} {% assign country_code = 'au' %} {% assign country_name = 'Australia' %}
+                {% when 'JPY' %} {% assign country_code = 'jp' %} {% assign country_name = 'Japan' %}
+                {% when 'INR' %} {% assign country_code = 'in' %} {% assign country_name = 'India' %}
+                {% when 'KES' %} {% assign country_code = 'ke' %} {% assign country_name = 'Kenya' %}
+                {% when 'CHF' %} {% assign country_code = 'ch' %} {% assign country_name = 'Switzerland' %}
+                {% when 'CNY' %} {% assign country_code = 'cn' %} {% assign country_name = 'China' %}
+                {% when 'SEK' %} {% assign country_code = 'se' %} {% assign country_name = 'Sweden' %}
+                {% when 'NZD' %} {% assign country_code = 'nz' %} {% assign country_name = 'New Zealand' %}
+                {% when 'MXN' %} {% assign country_code = 'mx' %} {% assign country_name = 'Mexico' %}
+                {% when 'SGD' %} {% assign country_code = 'sg' %} {% assign country_name = 'Singapore' %}
+                {% when 'HKD' %} {% assign country_code = 'hk' %} {% assign country_name = 'Hong Kong' %}
+                {% when 'NOK' %} {% assign country_code = 'no' %} {% assign country_name = 'Norway' %}
+                {% when 'ZAR' %} {% assign country_code = 'za' %} {% assign country_name = 'South Africa' %}
+                {% when 'BRL' %} {% assign country_code = 'br' %} {% assign country_name = 'Brazil' %}
+                {% when 'RUB' %} {% assign country_code = 'ru' %} {% assign country_name = 'Russia' %}
+                {% when 'KRW' %} {% assign country_code = 'kr' %} {% assign country_name = 'South Korea' %}
+                {% when 'TRY' %} {% assign country_code = 'tr' %} {% assign country_name = 'Turkey' %}
+                {% when 'SAR' %} {% assign country_code = 'sa' %} {% assign country_name = 'Saudi Arabia' %}
+                {% when 'AED' %} {% assign country_code = 'ae' %} {% assign country_name = 'United Arab Emirates' %}
+                {% when 'THB' %} {% assign country_code = 'th' %} {% assign country_name = 'Thailand' %}
+                {% when 'IDR' %} {% assign country_code = 'id' %} {% assign country_name = 'Indonesia' %}
+                {% when 'PLN' %} {% assign country_code = 'pl' %} {% assign country_name = 'Poland' %}
+                {% when 'MYR' %} {% assign country_code = 'my' %} {% assign country_name = 'Malaysia' %}
+                {% when 'DKK' %} {% assign country_code = 'dk' %} {% assign country_name = 'Denmark' %}
+                {% when 'PHP' %} {% assign country_code = 'ph' %} {% assign country_name = 'Philippines' %}
+                {% when 'HUF' %} {% assign country_code = 'hu' %} {% assign country_name = 'Hungary' %}
+                {% when 'CZK' %} {% assign country_code = 'cz' %} {% assign country_name = 'Czech Republic' %}
+                {% when 'ILS' %} {% assign country_code = 'il' %} {% assign country_name = 'Israel' %}
+                {% when 'CLP' %} {% assign country_code = 'cl' %} {% assign country_name = 'Chile' %}
+                {% when 'PKR' %} {% assign country_code = 'pk' %} {% assign country_name = 'Pakistan' %}
+                {% when 'VND' %} {% assign country_code = 'vn' %} {% assign country_name = 'Vietnam' %}
+                {% when 'EGP' %} {% assign country_code = 'eg' %} {% assign country_name = 'Egypt' %}
+                {% when 'NGN' %} {% assign country_code = 'ng' %} {% assign country_name = 'Nigeria' %}
+                {% when 'BDT' %} {% assign country_code = 'bd' %} {% assign country_name = 'Bangladesh' %}
+                {% when 'COP' %} {% assign country_code = 'co' %} {% assign country_name = 'Colombia' %}
+                {% when 'PEN' %} {% assign country_code = 'pe' %} {% assign country_name = 'Peru' %}
+                {% when 'LKR' %} {% assign country_code = 'lk' %} {% assign country_name = 'Sri Lanka' %}  
+          {% endcase %}
+          
+            {% if currency == cart.currency %}
+            <div class="select" id="currency-selector" style="color: {{section.settings.text_color }};">
+              <span class="selected">
+                <div class="flag-icon" style="background-image: url('https://flagcdn.com/16x12/{{ country_code }}.png');" aria-label="{{ currency }} flag"></div>
+              </span>
+            </div>
+            {% else %}
+            <ul class="newmenu" style="color: {{section.settings.text_color }};">
+             
+            </ul>
+            {% endif %}
+          {% endfor %}
+          </div>
+
+        
+      
+         <select name="currency" class="currency-selector" style="color: {{section.settings.text_color }};" id="currencySelect">
+          {% for currency in shop.enabled_currencies %}
+            {% assign country_name = currency.iso_code %}
+            {% assign country_code = currency.iso_code | slice: 0, 2 | downcase %}
+            {% if currency == cart.currency %}
+              <option selected="true" value="{{ currency.iso_code }}">
+                {{ currency.symbol }}&nbsp;{{ currency.name }}
+              </option>
+            {% else %}
+              <option value="{{ currency.iso_code }}">
+                {{ currency.symbol }}&nbsp;{{ currency.name }}
+              </option>
+            {% endif %}
+          {% endfor %}
+         </select> 
+         
+        </div> 
+      {% endform %}
+       {% comment %} <ion-icon name="close-outline"></ion-icon> {% endcomment %}
+    </div>
+
+
+    <div class="header-action" style="display:flex; justify-content:flex-start; padding-top:10px;">
+     <button class="header-action-btn" aria-label="user">
+        <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+      </button>
+
+      <button class="header-action-btn" aria-label="favorite list">
+        <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+        <span class="btn-badge">0</span>
+      </button>
+    </div>
+
+  </div>
+
+<div class="overlay" data-overlay data-nav-toggler></div>
+
+
+<!--
+  ADD CART SIDEBAR
+-->
+  {% render 'cart-detail' %}
+
+
+  <script>
+        document.getElementById('search-input').addEventListener('input', function() {
+              const query = this.value.trim();
+              const searchResultsContainer = document.getElementById('search-results');
+          
+              if (query.length > 2) {  // Start searching after at least 3 characters
+                  fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product`)
+                      .then(response => response.json())
+                      .then(data => {
+                          const results = data.resources.results.products;
+                          let resultsHTML = '';
+          
+                          if (results.length) {
+                              results.forEach(product => {
+                                  resultsHTML += `
+                                      <div class="search-result-item">
+                                          <a href="${product.url}">
+                                              <img src="${product.image}" alt="${product.title}">
+                                              <div>
+                                                  <p>${product.title}</p>
+                                                  <p>${product.price}</p>
+                                              </div>
+                                          </a>
+                                      </div>
+                                  `;
+                              });
+                          } else {
+                              resultsHTML = '<p>No products found</p>';
+                          }
+          
+                          searchResultsContainer.innerHTML = resultsHTML;
+                      })
+                      .catch(error => {
+                          console.error('Error fetching search results:', error);
+                          searchResultsContainer.innerHTML = '<p>There was an error retrieving search results.</p>';
+                      });
+              } else {
+                  searchResultsContainer.innerHTML = '';  // Clear results if query is too short
+              }
+            });
+          
+
+          function debounce(func, delay) {
+            let timeout;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), delay);
+            };
+        }
+        
+        document.getElementById('search-input').addEventListener('input', debounce(function() {
+            // Fetch logic here
+        }, 300));
+        
+            //NEEW
+        document.getElementById('search-icon').addEventListener('click', function(event) {
+               event.preventDefault();
+               const searchBar = document.getElementById('search-bar');
+               searchBar.classList.toggle('active');
+        });
+
+    // Close search bar when scrolling
+      document.addEventListener('scroll', function() {
+        const searchBar = document.getElementById('search-bar');
+        searchBar.classList.remove('active');
+      });
+
+// Close search bar when clicking outside
+      document.addEventListener("click", function(event) {
+        const searchBar = document.getElementById("search-bar");
+        const searchIcon = document.getElementById("search-icon");
+
+       // Check if the clicked element is NOT inside the search bar or the search icon
+        if (!searchBar.contains(event.target) && !searchIcon.contains(event.target)) {
+          searchBar.classList.remove('active');
+        }
+     });
+
+        
+          
+        document.getElementById('search-input').addEventListener('input', function() {
+            const query = this.value.trim();
+        
+            if (query.length > 2) {
+                fetch(`/search?q=${encodeURIComponent(query)}&view=json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const resultsContainer = document.getElementById('search-results');
+                        resultsContainer.innerHTML = '';
+        
+                        if (data.results.length > 0) {
+                            data.results.forEach(product => {
+                                const productHTML = `
+                                    <div class="search-result-item">
+                                        <a href="${product.url}">
+                                            <img src="${product.image}" alt="${product.title}">
+                                            <p>${product.title}</p>
+                                        </a>
+                                    </div>
+                                `;
+                                resultsContainer.innerHTML += productHTML;
+                            });
+                        } else {
+                            resultsContainer.innerHTML = '<p>No products found.</p>';
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        });
+    
+        function updateCartCount() {
+          fetch('/cart.js')
+            .then(response => response.json())
+            .then(cart => {
+              // Update the span with class btn-badge with the cart's item count
+              document.querySelector('.btn-badge').textContent = cart.item_count;
+            })
+            .catch(error => console.error('Error fetching cart data:', error));
+        }
+        
+        // Call the function when the page loads
+        document.addEventListener('DOMContentLoaded', function () {
+          updateCartCount();
+        });
+        
+        // Listen for a custom event when the cart is updated
+        document.addEventListener('cart:updated', function() {
+          updateCartCount();
+        });
+        
+
+
+
+
+
+
+
+       function fetchCart() {
+          // Fetch the cart data from Shopify's cart API
+          fetch('/cart.js')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+            .then(cart => {
+              // Call updateCartUI with the fetched cart data
+              updateCartUI(cart);
+            })
+            .catch(error => {
+              console.error('Error fetching cart:', error);
+            });
+        }
+        
+        function updateCartUI(cart) {
+          var cartContent = document.getElementById('cart-content');
+          cartContent.innerHTML = ''; // Clear existing content
+          
+          if (cart.item_count > 0) {
+            var cartHTML = `
+            <div style="display: flex; flex-direction: column;">
+              <h1>Cart</h1>
+              <form action="/cart" method="post" novalidate>`;
+            
+            let subtotal = 0;
+            cart.items.forEach(function(item, index) {
+              const itemPrice = item.price / 100;  // Convert cents to dollars
+              const initialTotalPrice = itemPrice * item.quantity;
+              subtotal += initialTotalPrice;
+              const safeItemId = `item_${item.key.replace(/[^a-zA-Z0-9_-]/g, '')}`;
+        
+              cartHTML += `
+              <div style="display:flex; padding:20px; margin-bottom:1rem;" id="${safeItemId}">
+                <div style="flex:1; display:flex; align-items:center; justify-content:center;">
+                  <a href="${item.url}">
+                    <img src="${item.image}" alt="${item.title}" class="img-cover" width="480" height="640" loading="lazy">
+                  </a>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column;">
+                  <div style="flex:1; display:flex; justify-content:space-between">
+                    <a href="${item.url}" style="font-size:1.5rem;">${item.product_title}</a>
+                    <a href="#" class="remove-item" data-line="${index + 1}" data-key="${item.key}" style="color: black;">
+                      <ion-icon name="close-circle-outline"></ion-icon>
+                    </a>
+                  </div>
+                  <div>
+                    <p style="font-size:1.5rem;">${currency_code}${itemPrice.toFixed(2)}</p>
+                    <p id="line_price_${item.key}" style="font-size:1.5rem;">Total: ${currency_code}${initialTotalPrice.toFixed(2)}</p>
+                  </div>
+                  <input type="number" name="updates[]" id="updates_${item.key}" value="${item.quantity}" min="0" style="display:none;">
+                  <div class="quantity-selector" style="flex:1; display:flex; align-items:center; justify-content:center;">
+                    <button type="button" class="decrement" id="decrement_${item.key}">-</button>
+                    <span id="quantity_${item.key}">${item.quantity}</span>
+                    <button type="button" class="increment" id="increment_${item.key}">+</button>
+                  </div>
+                </div>
+              </div>`;
+            });
+        
+            cartHTML += `
+              <div>
+                <p id="subtotal">Subtotal: ${currency_code}${subtotal.toFixed(2)}</p>
+                <button type="submit" name="update">Update</button>
+                <button type="submit" name="checkout" class="btn btn-primary">Checkout</button>
+              </div>
+            </form>
+            </div>`;
+        
+            cartContent.innerHTML = cartHTML;
+        
+            // Add event listeners for increment and decrement buttons
+            cart.items.forEach(function(item, index) {
+              const decrementButton = document.getElementById(`decrement_${item.key}`);
+              const incrementButton = document.getElementById(`increment_${item.key}`);
+              const quantityDisplay = document.getElementById(`quantity_${item.key}`);
+              const quantityInput = document.getElementById(`updates_${item.key}`);
+              const linePriceDisplay = document.getElementById(`line_price_${item.key}`);
+              const subtotalDisplay = document.getElementById('subtotal');
+              const safeItemId = `item_${item.key.replace(/[^a-zA-Z0-9_-]/g, '')}`;
+        
+              function updatePriceAndQuantity(newQuantity) {
+                const newLinePrice = (item.price * newQuantity) / 100;
+                quantityDisplay.textContent = newQuantity;
+                quantityInput.value = newQuantity;
+                linePriceDisplay.textContent = `Total: ${currency_code}${newLinePrice.toFixed(2)}`;
+        
+                // Update the subtotal
+                subtotal += (newLinePrice - (item.price * item.quantity) / 100);
+                subtotalDisplay.textContent = `Subtotal: ${currency_code}${subtotal.toFixed(2)}`;
+                item.quantity = newQuantity; // Update item quantity 
+              }
+        
+
+
+              
+              decrementButton.addEventListener('click', function() {
+                let currentQuantity = parseInt(quantityInput.value, 10);
+                if (currentQuantity > 1) {
+                  currentQuantity--;
+                  updatePriceAndQuantity(currentQuantity);
+                }
+              });
+        
+              incrementButton.addEventListener('click', function() {
+
+                let currentQuantity = parseInt(quantityInput.value, 10); 
+                currentQuantity++;
+                updatePriceAndQuantity(currentQuantity);
+              });
+        
+              // Handle item removal
+              const removeButton = document.querySelector(`.remove-item[data-key="${item.key}"]`);
+        
+              removeButton.addEventListener('click', function(e) {
+                 e.preventDefault();
+                  removeCartItem(safeItemId, index +1);
+               });
+             });
+          } else {
+            cartContent.innerHTML = '<h2>Cart</h2><p>Cart is empty</p>';
+          }
+
+         function removeCartItem(safeItemId, line) {
+            console.log(`Attempting to remove item with ID: ${safeItemId}`);
+            const itemElement = document.getElementById(safeItemId);
+            if (itemElement) {
+              fetch(`/cart/change.js`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                  line: line,
+                  quantity: 0
+                })
+              })
+              .then(response => response.json())
+              .then(updatedCart => {
+                itemElement.remove();
+                updateSubtotal();
+              })
+              .catch(error => {
+                console.error('Error removing item from cart:', error);
+              });
+            } else {
+              console.error(`Element with ID ${safeItemId} not found.`);
+            }
+        
+        }
+       function updateSubtotal() {
+          let subtotal = 0; // Initialize the subtotal
+          
+          // Iterate over all items in the cart to calculate the new subtotal
+          cart.items.forEach(item => {
+            const quantityInput = document.getElementById(`updates_${item.key}`); 
+            
+            if (quantityInput) {
+              // Get the current quantity from the input field
+              let currentQuantity = parseInt(quantityInput.value, 10);
+              if (isNaN(currentQuantity) || currentQuantity < 0) {
+                currentQuantity = 0; // Handle cases where the input is not a valid number
+              }
+        
+              // Calculate the price for this item
+              const itemSubtotal = (item.price * currentQuantity) / 100;
+              subtotal += itemSubtotal; // Add this item's subtotal to the total
+               item.quantity = currentQuantity; 
+            }
+          });
+        
+          // Update the subtotal display
+          let subtotalDisplay = document.getElementById('subtotal');
+          subtotalDisplay.textContent = `Subtotal: ${currencySymbol}${subtotal.toFixed(2)}`;
+        } 
+      
+        
+
+      }
+        
+      
+         
+         
+
+        function openCart() {
+          document.getElementById('myModal2').style.display = 'flex';
+          fetchCart();
+        }
+
+       fetchCart()  
+
+
+
+          //Closing cart when clicking outside its area
+          //document.addEventListener("click", function(event) {
+          //  const cartTab = document.getElementById('myModal2');
+            
+    
+           // Check if the clicked element is NOT inside the search bar or the search icon
+        //    if (!cartTab.contains(event.target)) {
+       //       document.getElementById('myModal2').style.display = 'none';
+        //    }
+       //  });
+    
+        
+
+
+    //CURRENCY SELECTOR
+       
+    function currencyFormSubmit(event) {
+        event.target.form.submit();
+    }
+    
+    document.querySelectorAll('.shopify-currency-form select').forEach(function(element) {
+        element.addEventListener('change', currencyFormSubmit);
+    }); 
+
+  </script> 
+     
+  
+  <style>
+       /* Search bar styling */
+.search-bar {
+  display: none;
+  position: absolute;
+  top: 10%; 
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  padding: 10px 20px;
+  z-index: 1000;
+  transform: translateY(100%);
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.search-bar.active {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+.search-bar input {
+  outline: none; /* Removes the default focus outline */
+  border: none; /* Removes any border if it appears */
+}
+
+#search-input {
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+
+}
+
+
+#search-input::placeholder{
+  font-size:14px;
+}
+
+
+
+
+
+
+#search-container {
+    position: relative;
+}
+
+#search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ddd;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.search-result-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+}
+
+.search-result-item img {
+    max-width: 50px;
+    margin-right: 10px;
+}
+
+.search-result-item p {
+    margin: 0;
+}
+
+
+
+
+#currency-language-container {
+  display: none;
+  gap: 10px; /* Space between selectors */
+  align-items: center;
+  {% comment %} margin-bottom: 10px; /* Space below the container */ {% endcomment %}
+}
+
+#lang-selector, #curren-selector {
+    padding: 0; /* Add padding for a better look */
+    border: 1px solid #ddd; /* Optional: Add a border */
+    border-radius: 4px; /* Optional: Rounded corners */
+    font-size: 14px; /* Adjust the font size */
+  }
+   .currency-selector {
+    background-color: transparent; /* No background color */
+    color: {{section.settings.text_color}}; /* White text */
+    border: none; /* Remove the default border */
+    {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
+    padding-left: 15px; /* Adjust padding as needed */
+    font-size: 12px; /* Adjust font size as needed */
+    appearance: none; /* Remove the default browser appearance */
+    -webkit-appearance: none; /* Remove appearance for Safari */
+    -moz-appearance: none; /* Remove appearance for Firefox */
+    cursor: pointer;
+    position: relative; /* Required for positioning the arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="white" d="M5 7L2 3h6z"/></svg>'); /* Custom dropdown arrow */
+    background-repeat: no-repeat;
+    background-position: left 2px center; /* Position the arrow */
+    background-size: 12px 12px; /* Size of the arrow */
+  
+  }
+  
+  .currency-selector:focus {
+    outline: none; /* Remove the default focus outline */
+    {% comment %} border-bottom: 1px solid #ccc; /* Optional: Change underline color on focus */ {% endcomment %}
+  }
+  
+  /* Optional: Add custom styles for options */
+  .currency-selector option {
+    color: rgb(255, 255, 255); /* Change option text color if needed */
+    background-color: rgb(0, 0, 0); /* Change option background if needed */
+  }
+
+
+
+  .language-selector {
+    background-color: transparent; /* No background color */
+    color: {{section.settings.text_color}}; /* White text */
+    border: none; /* Remove the default border */
+    {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
+    padding: 0; /* Adjust padding as needed */
+    font-size: 12px; /* Adjust font size as needed */
+    appearance: none; /* Remove the default browser appearance */
+    -webkit-appearance: none; /* Remove appearance for Safari */
+    -moz-appearance: none; /* Remove appearance for Firefox */
+  }
+  
+  .language-selector:focus {
+    outline: none; /* Remove the default focus outline */
+    {% comment %} border-bottom: 1px solid #ccc; /* Optional: Change underline color on focus */ {% endcomment %}
+  }
+  
+  /* Optional: Add custom styles for options */
+  .language-selector option {
+    color: black; /* Change option text color if needed */
+    background-color: white; /* Change option background if needed */
+  }
+  
+  .locale-selector {
+    background-color: transparent; /* No background color */
+    color:{{section.settings.text_color}};
+    /*color: white;*/ /* White text */
+    border: none; /* Remove the default border */
+    {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
+    padding: 0; /* Adjust padding as needed */
+    font-size: 12px; /* Adjust font size as needed */
+    font-family:var(--ff-roboto);
+    appearance: none; /* Remove the default browser appearance */
+    -webkit-appearance: none; /* Remove appearance for Safari */
+    -moz-appearance: none; /* Remove appearance for Firefox */
+    position: relative; /* Required for positioning the arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="white" d="M5 7L2 3h6z"/></svg>'); /* Custom dropdown arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Position the arrow */
+    background-size: 12px 12px; /* Size of the arrow */
+    padding-right: 25px; /* Add space for the arrow */
+  }
+  
+  .locale-selector:focus {
+    outline: none; /* Remove the default focus outline */
+    {% comment %} border-bottom: 1px solid #ccc; /* Optional: Change underline color on focus */ {% endcomment %}
+  }
+  
+  .locale-selector option {
+    color: black; /* Change option text color if needed */
+    background-color: white; /* Change option background if needed */
+  }
+  
+
+   
+  .currency-selector {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .dropdown-toggle {
+    padding: 8px;
+    border: 1px solid #ccc;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .dropdown-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgb(255, 255, 255);
+    {% comment %} border: 1px solid #ccc; {% endcomment %}
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .currency-selector:hover .dropdown-menu {
+    display: block; /* Show menu on hover */
+  }
+  
+  .dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+  }
+
+
+  .flag-icon {
+    width: 16px;  /* Same width as the original image */
+    height: 12px; /* Same height as the original image */
+    display: inline-block; /* Allows it to be treated like text/image */
+    background-size: cover; /* Ensures the image covers the entire div */
+    background-position: center; /* Centers the image within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    vertical-align: middle; /* Aligns with text if placed next to text */
+  }
+
+  .dropdown{
+    position: relative;
+    z-index:999;
+  }
+
+
+.select{
+
+  padding: 0; /* Adjust padding as needed */
+  font-size: 12px; /* Adjust font size as needed */
+  appearance: none; /* Remove the default browser appearance */
+  -webkit-appearance: none; /* Remove appearance for Safari */
+  -moz-appearance: none; /* Remove appearance for Firefox */
+  position: relative; 
+    display: flex;
+    align-items: center;
+    gap:5px;
+    cursor: pointer;
+    /*transition: background 0.3s;*/
+}
+.selected{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  border: none;
+}
+
+
+.newmenu{
+    list-style-type: none;
+    padding: 0.1em 0.2em;
+    background:rgb(255, 255, 255);
+    color:#9fa5b5;
+    position:fixed; 
+    top: 3em;
+    right: 0;
+    width:8%;
+    transform: translateX(-50%);
+    opacity: 0;
+    display: none;
+    transition: 0.2s;
+    z-index: 9999999;
+}
+
+.newmenu li {
+    padding: 0.7em 0.5em;
+    /*margin: 0.3em 0;*/
+    border-radius: 0.5em;
+    cursor: pointer;
+    display:flex;
+    gap:3px;
+    align-items:center;
+}
+
+.newmenu li:hover{
+    background: #2a2d35;
+}
+
+.active{
+    background:hsl(231, 63.60%, 97.80%) 247, 253);
+}
+
+
+.menu-open{
+    display: block;
+    opacity: 1;
+    z-index:999
+}
+
+.separator {
+  height: 16px; /* Adjust the height as needed */
+  border-left: 1px solid rgb(0, 0, 0); /* Adjust the border thickness and color */
+}
+
+.custom-select {
+            position: relative;
+            display: inline-block;
+            width: auto;
+        }
+
+        .custom-select select {
+            appearance: none; /* Hide default arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 100%;
+            padding: 10px;
+            background-color: transparent;
+        }
+
+        .custom-select::after {
+            content: "▼"; /* Custom dropdown arrow */
+            position: absolute;
+            right: 10px; /* Default position */
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #555;
+        }
+
+
+  @media screen and (max-width: 875px){
+    #currency-language-container  {
+      display: block;
+    }
+  }
+
+
+
+
+
+
+  </style>
+
+{% schema %}
+{
+  "name": "header",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#FFFFFF"
+     },
+     {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+     },
+     {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo Image"
+    },
+    {
+      "type": "range",
+      "id": "logo_scale",
+      "label": "Logo Scale",
+      "min": 0.5,
+      "max": 2,
+      "step": 0.1,
+      "default": 1
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "header"
+    }
+  ]
+}
+{% endschema %}

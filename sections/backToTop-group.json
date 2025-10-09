@@ -1,0 +1,13 @@
+{
+  "name": "BackToTop",
+  "type": "aside",
+  "sections": {
+    "backToTop": {
+      "type": "backToTop",
+      "settings": {}
+    }
+  },
+  "order": [
+    "backToTop"
+  ]
+}

@@ -1,0 +1,155 @@
+<!--OFFER-->
+<section class="section offer" id="offer" aria-label="offer" data-aos="fade-up">
+    <div class="container">
+      <figure class="offer-banner">
+      
+        {% if section.settings.image2 != blank %}
+          <img src="{{ section.settings.image2 | image_url }}" alt="offer products" width="305" height="405" class="w-100" loading="lazy">    
+        {% else %}
+          <img src="{{ 'r9.jpg' | asset_url }}" alt="offer products" width="450" height="625" class="w-100" loading="lazy"> 
+        {% endif %}  
+        {% if section.settings.image1 != blank %}
+           <img src="{{ section.settings.image1 | image_url }}" alt="offer products" width="305" height="405" class="w-100" loading="lazy">    
+        {% else %}
+           <img src="{{ 'r4.jpg' | asset_url }}" alt="offer products" width="305" height="405" class="w-100" loading="lazy"> 
+        {% endif %} 
+      </figure>
+    
+      <div class="offer-content">
+        <p class="offer-subtitle">
+            <span class="span">Special Offer</span>
+            <span class="badge" aria-label="20% off">
+                {{ section.settings.percent_offer }}
+            </span>
+        </p>
+        {% if section.settings.select_product != blank %}
+          <h2 class="h2-large section-title">
+            {{ section.settings.select_product.title }}
+          </h2>
+        {% else %}
+          <h2 class="h2-large section-title">
+            Dior Sauvage
+          </h2>
+        {% endif %}
+        
+        {% if section.settings.product_desc %}
+          <p>
+           {{section.settings.product_desc }}
+          </p> 
+        {% else %} 
+         <p class="section-text">
+          Conceived as an ode to nature, Sauvage is an act of creation inspired by wide-open spaces. Compositions marked by raw freshness, combining power and nobility.
+         </p>
+        {% endif %}
+
+          <div class="countdown">
+            <span class="time" aria-label="days">00</span> 
+            <span class="time" aria-label="hours">00</span> 
+            <span class="time" aria-label="minutes">00</span> 
+           <span class="time" aria-label="seconds">00</span> 
+          </div>
+        <div ></div>
+        <a href="#" class="btn btn-primary"> Get Only {{ section.settings.offer_price }}</a>
+      </div>
+      
+    </div>          
+</section>
+
+<script>
+  function startCountdown(duration) {
+      let endTime = Date.now() + duration;
+
+      function updateTimer() {
+          let now = Date.now();
+          let timeRemaining = endTime - now;
+
+          if (timeRemaining <= 0) {
+              document.querySelector('.countdown').innerHTML = "Time's up!";
+              return;
+          }
+
+          // Convert milliseconds to days, hours, minutes, and seconds
+          let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+          let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          let minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+          let seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+          // Format the time
+          days = String(days).padStart(2, '0');
+          hours = String(hours).padStart(2, '0');
+          minutes = String(minutes).padStart(2, '0');
+          seconds = String(seconds).padStart(2, '0');
+
+          // Update the HTML elements
+          document.querySelector('.countdown [aria-label="days"]').textContent = days;
+          document.querySelector('.countdown [aria-label="hours"]').textContent = hours;
+          document.querySelector('.countdown [aria-label="minutes"]').textContent = minutes;
+          document.querySelector('.countdown [aria-label="seconds"]').textContent = seconds;
+
+          // Update every second
+          setTimeout(updateTimer, 1000);
+      }
+
+      updateTimer();
+  }
+
+  // Get the duration from the settings (in hours)
+  const countdownHours = {{ section.settings.countdown_duration | default: 72 }};
+  const countdownMilliseconds = countdownHours * 60 * 60 * 1000; // convert hours to milliseconds
+
+  startCountdown(countdownMilliseconds);
+</script>
+
+
+{% schema %}
+{
+  "name": "offer",
+  "settings": [
+    {
+     "type": "image_picker",
+     "id": "image1",
+     "label": "Image 1"
+    },
+    {
+     "type": "image_picker",
+     "id": "image2",
+     "label": "Image 2"
+    },
+    {
+      "type":"text",
+      "id":"percent_offer",
+      "label":"Percentage Offer",
+      "default":"-20%"
+    },
+    {
+      "type": "product",
+      "id": "select_product",
+      "label": "Select Product"
+    },
+    {
+     "type":"text",
+     "id":"product_desc",
+     "label":"Product Description",
+     "default":"Conceived as an ode to nature, Sauvage is an act of creation inspired by wide-open spaces. Compositions marked by raw freshness, combining power and nobility."    
+    },
+    {
+      "type":"text",
+      "id":"offer_price",
+      "label":"Offer price",
+      "default":"$39"
+    },
+    {
+      "type": "number",
+      "id": "countdown_duration",
+      "label": "Countdown Duration (in hours)",
+      "default": 72 
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "offer"
+    }
+  ]
+}
+{% endschema %}

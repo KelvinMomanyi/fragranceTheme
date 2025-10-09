@@ -1,0 +1,94 @@
+ <!--FEATURE-->
+<section class="section feature" aria-label="feature" >
+    <div class="container">
+        <h2 class="h2-large section-title">{{section.settings.maintitle}}</h2>
+        <ul class="flex-list">
+          <li class="flex-item">
+            <div class="feature-card">
+              <ion-icon name="bag-check-outline" alt="Quaranteed PURE" class="card-icon" style="font-size: 5rem;"  width="404" height="236" loading="lazy"></ion-icon>
+              <h3 class="h3 card-title">{{section.settings.title1}}</h3>
+               <p class="card-text">
+                 {{section.settings.description1 }}
+               </p>
+             </div>
+          </li>
+          <li class="flex-item">
+            <div class="feature-card">
+              <ion-icon name="card-outline"  alt="Completely Cruelty-Free" class="card-icon" style="font-size: 5rem;" width="204" height="236" loading="lazy"></ion-icon>
+                 <h3 class="h3 card-title">{{section.settings.title2}}</h3>
+                  <p class="card-text">
+                    {{section.settings.description2}}
+                  </p>
+             </div>
+          </li>
+          <li class="flex-item">
+            <div class="feature-card"> 
+              <ion-icon name="paper-plane-outline" alt="Ingredient Sourcing" class="card-icon" style="font-size: 5rem;" width="204" height="236" loading="lazy"></ion-icon>
+                <h3 class="h3 card-title">{{section.settings.title3}}</h3>
+                <p class="card-text">
+                  {{section.settings.description3}}
+                </p>
+            </div>
+          </li>
+        </ul>
+    </div>
+</section>
+
+
+{% schema %}
+{
+  "name": "feature",
+  "settings": [
+    {
+      "type": "text",
+      "id": "maintitle",
+      "label": "Main Title",
+      "default": "Why Shop with Shoehive"
+    },
+    {
+      "type": "text",
+      "id": "title1",
+      "label": "Title 1",
+      "default": "Seamless Shopping"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "description1",
+      "label": "Description 1",
+      "default": "Shopping for your favorite sneakers is easy—browse our extensive collection, choose your perfect pair, and enjoy a seamless shopping experience."
+    },
+    {
+      "type": "text",
+      "id": "title2",
+      "label": "Title 2",
+      "default": "Secure Payments"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "description2",
+      "label": "Description 2",
+      "default": "Checkout is quick and secure with various payment options, ensuring a smooth purchase so you can focus on getting the best sneakers."
+    },
+    {
+      "type": "text",
+      "id": "title3",
+      "label": "Title 3",
+      "default": "Fast and Reliable Delivery"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "description3",
+      "label": "Description 3",
+      "default": "Our efficient delivery process ensures your sneakers arrive quickly and securely, whether it's the latest Nike release or classic Adidas kicks."
+    },
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "feature"
+    }
+  ]
+}
+{% endschema %}
+
+

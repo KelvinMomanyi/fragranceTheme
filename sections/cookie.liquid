@@ -1,0 +1,222 @@
+<div id="cookieConsent" class="cookie-popup">
+  <p class="cookie-message">
+    We use cookies to ensure you get the best experience on our website. 
+    <a href="/privacy-policy" class="cookie-link">Learn more</a>
+  </p>
+  <button id="acceptCookie" class="cookie-btn">Got it!</button>
+</div>
+
+<style>
+  .cookie-popup {
+    position: fixed;
+    bottom: -100px; /* Initially hidden */
+    left: 0;
+    right: 0;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 16px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: bottom 0.5s ease-in-out;
+  }
+  
+  .cookie-popup.show {
+    bottom: 0; /* Show it from the bottom */
+  }
+  
+  .cookie-message {
+    flex: 1;
+  }
+  
+  .cookie-link {
+    color: #ffd700;
+    text-decoration: underline;
+  }
+  
+  .cookie-btn {
+    background-color: #ffd700;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+  }
+  
+  .cookie-btn:hover {
+    background-color: #ffca00;
+  }
+  
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Check if the cookie has been set
+    if (!getCookie('cookieConsent')) {
+      // Show the cookie consent popup
+      setTimeout(function() {
+        document.getElementById('cookieConsent').classList.add('show');
+      }, 1000); // Delay to show the popup
+    }
+  
+    // Handle the click event for the 'Got it!' button
+    document.getElementById('acceptCookie').addEventListener('click', function() {
+      // Hide the cookie popup with an animation
+      document.getElementById('cookieConsent').classList.remove('show');
+      
+      // Set a cookie for 365 days
+      setCookie('cookieConsent', 'true', 365);
+    });
+  
+    // Function to set a cookie
+    function setCookie(name, value, days) {
+      const d = new Date();
+      d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+      const expires = "expires=" + d.toUTCString();
+      document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+  
+    // Function to get a cookie by name
+    function getCookie(name) {
+      const cname = name + "=";
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const cookieArray = decodedCookie.split(';');
+      for (let i = 0; i < cookieArray.length; i++) {
+        let c = cookieArray[i].trim();
+        if (c.indexOf(cname) == 0) {
+          return c.substring(cname.length, c.length);
+        }
+      }
+      return "";
+    }
+  });
+  
+
+</script>
+{% comment %} <div class="bouncing-div">
+  <div class="hidden-content" style="display:flex;">
+        <img src="{{ 'shoBlog2.jpg' | asset_url }}" alt="From Our Blog" class="img-cover" width="50%" height="50%" loading="lazy">
+        <p class="p">
+            lorem ipsum
+        </p>
+  </div>
+</div> {% endcomment %}
+{% comment %} <style>
+    .bouncing-div {
+        position: fixed;
+        bottom: -100px; /* Start off-screen */
+        left: 2%; /* Start at the left edge of the page */
+        width: 80px; /* Initial width */
+        height: 80px; /* Initial height */
+        background-color:var(--hoockers-green); /* Color of the div */
+        border-radius: 50%;
+        z-index: 9999; /* Ensure it's on top of all content */
+        {% comment %} scale:0.4; {% endcomment %}
+        /* Combined animation */
+        {% comment %} animation: bounceInExpandClose 8s ease-in-out forwards; {% endcomment %}
+      }
+
+      .hidden-content {
+        opacity: 1; /* Initially hidden */
+        text-align: center;
+        {% comment %} padding: 10px; {% endcomment %}
+        color: white;
+        font-size: 16px;
+        transform: translateY(20px); /* Slide the content down slightly */
+        transition: opacity 0.5s ease, transform 0.5s ease; /* Fade and slide up during reveal */
+      }
+      .animate-circle {
+        display: block;
+        animation: bounceInExpandClose 8s ease-in-out forwards;
+      }
+
+      .reveal-content .hidden-content {
+        opacity: 1; /* Make content visible */
+        transform: translateY(0); /* Slide content up */
+      }
+      /* Keyframes for the entire process */
+      @keyframes bounceInExpandClose {
+        0% {
+          bottom: -100px; /* Start off the screen */
+          width: 80px; /* Initial small width */
+      
+        }
+        30% {
+          bottom:  15px; /* Bounce up */
+          width: 80px; /* Stay at original width while 
+              bouncing */
+              border-radius: 50%;
+             
+        }
+        50% {
+          bottom: 15px; /* Hold the position */
+          width: 300px; /* Expand horizontally */
+              border-radius: 5%;
+             
+        }
+        70% {
+          bottom:  15px; /* Hold expanded */
+          width: 300px; /* Stay expanded */
+              border-radius: 5%;
+             
+        }
+        85% {
+          bottom: 15px; /* Hold at the same vertical position */
+          width: 80px; /* Shrink back to the original size */
+              border-radius: 50%;
+              
+        }
+        100% {
+          bottom: -200px; /* Slide back down off the screen */
+          width: 80px; /* Stay at original width while falling */
+         
+        }
+      }
+      
+</style> {% endcomment %}
+{% comment %} <script>
+ // Function to start the animation loop with a delay
+  function startBouncingAnimation() {
+    const circleDiv = document.querySelector('.bouncing-div');
+  
+    // Function to add the animation class, and remove it after the animation ends
+    function animate() {
+      circleDiv.classList.add('animate-circle');
+  
+      // Remove the animation class after the animation duration (8s in this case)
+      setTimeout(() => {
+        circleDiv.classList.remove('animate-circle');
+      }, 8000); // Match the duration of the CSS animation
+    }
+  
+    // Delay the initial appearance by 3 seconds
+    setTimeout(() => {
+      animate(); // Start the first animation
+  
+      // Set up a loop to run the animation every 12 seconds (8s animation + 4s delay)
+      setInterval(() => {
+        animate();
+      }, 12000); // 12 seconds (8s animation + 4s delay before the next)
+    }, 3000); // 3-second initial delay before the first appearance
+  }
+  
+  // Trigger the animation on page load
+  window.onload = startBouncingAnimation;
+</script> {% endcomment %}
+{% schema %}
+{
+  "name": "cookie",
+  "settings": [],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "cookie"
+    }
+  ]
+}
+{% endschema %} 

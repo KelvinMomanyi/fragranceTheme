@@ -1,0 +1,703 @@
+{% if section.settings.enabled %}
+ <header> 
+    <div class="alert">
+        <div class="flexBox">
+          <div id="phone-container">
+            <!-- Phone Icon -->
+
+                {% if section.settings.show_facebook_icon %}<ion-icon name="logo-facebook" id="phone-icon"  style="color: {{section.settings.text_color }}; "></ion-icon>{% endif %}
+ 
+                {% if section.settings.show_instagram_icon %}<ion-icon name="logo-instagram" id="phone-icon"  style="color: {{section.settings.text_color }};"></ion-icon>{% endif %}
+
+                {% if section.settings.show_tiktok_icon %}<ion-icon name="logo-tiktok" id="phone-icon"  style="color: {{section.settings.text_color }};"></ion-icon>{% endif %}
+
+                {% if section.settings.show_tumblr_icon %}<ion-icon name="logo-tumblr" id="phone-icon"   style="color: {{section.settings.text_color }};"></ion-icon>{% endif %}
+
+            {% comment %} <ion-icon name="call-outline" id="phone-icon" style="color: {{section.settings.text_color }};"></ion-icon>
+            <!-- Phone Number -->
+            <span id="phone-number" style="color: {{section.settings.text_color }};">{{section.settings.phone_number}}</span> {% endcomment %}
+          </div>
+          <div class="slider-wrapper" style="color: {{ section.settings.text_color }};">
+            <p class="alert-text" id="text1">{{ section.settings.text1 }}</p>
+            <p class="alert-text" id="text2">{{ section.settings.text2 }}</p>
+            <p class="alert-text" id="text3">{{ section.settings.text3 }}</p>
+          </div>
+          
+          <!-- Language and Currency Selectors Container -->
+        <div id="language-currency-container">
+          <select name="locale_code" class="locale-selector" style="color:{{ section.settings.text_color }};">
+            {% for language in localization.available_languages %}
+              {% if language.iso_code == localization.language.iso_code %}
+                <option value="{{ language.iso_code }}" selected="selected">{{ language.name }}</option>
+              {% else %}
+                <option value="{{ language.iso_code }}">{{ language.name }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+          
+        
+          <div class='separator' style="color: {{section.settings.text_color }};"></div>
+
+          {% form 'currency' %}
+            <div style="display:flex; gap:5px;">
+              <div class="dropdown">
+                {% for currency in shop.enabled_currencies %}
+                  {% assign country_code = '' %}
+                  {% assign country_name = '' %}
+                {% case currency.iso_code %}
+                    {% when 'USD' %} {% assign country_code = 'us' %} {% assign country_name = 'United States' %}
+                    {% when 'CAD' %} {% assign country_code = 'ca' %} {% assign country_name = 'Canada' %}
+                    {% when 'EUR' %} {% assign country_code = 'eu' %} {% assign country_name = 'Eurozone' %}
+                    {% when 'GBP' %} {% assign country_code = 'gb' %} {% assign country_name = 'United Kingdom' %}
+                    {% when 'AUD' %} {% assign country_code = 'au' %} {% assign country_name = 'Australia' %}
+                    {% when 'JPY' %} {% assign country_code = 'jp' %} {% assign country_name = 'Japan' %}
+                    {% when 'INR' %} {% assign country_code = 'in' %} {% assign country_name = 'India' %}
+                    {% when 'KES' %} {% assign country_code = 'ke' %} {% assign country_name = 'Kenya' %}
+                    {% when 'CHF' %} {% assign country_code = 'ch' %} {% assign country_name = 'Switzerland' %}
+                    {% when 'CNY' %} {% assign country_code = 'cn' %} {% assign country_name = 'China' %}
+                    {% when 'SEK' %} {% assign country_code = 'se' %} {% assign country_name = 'Sweden' %}
+                    {% when 'NZD' %} {% assign country_code = 'nz' %} {% assign country_name = 'New Zealand' %}
+                    {% when 'MXN' %} {% assign country_code = 'mx' %} {% assign country_name = 'Mexico' %}
+                    {% when 'SGD' %} {% assign country_code = 'sg' %} {% assign country_name = 'Singapore' %}
+                    {% when 'HKD' %} {% assign country_code = 'hk' %} {% assign country_name = 'Hong Kong' %}
+                    {% when 'NOK' %} {% assign country_code = 'no' %} {% assign country_name = 'Norway' %}
+                    {% when 'ZAR' %} {% assign country_code = 'za' %} {% assign country_name = 'South Africa' %}
+                    {% when 'BRL' %} {% assign country_code = 'br' %} {% assign country_name = 'Brazil' %}
+                    {% when 'RUB' %} {% assign country_code = 'ru' %} {% assign country_name = 'Russia' %}
+                    {% when 'KRW' %} {% assign country_code = 'kr' %} {% assign country_name = 'South Korea' %}
+                    {% when 'TRY' %} {% assign country_code = 'tr' %} {% assign country_name = 'Turkey' %}
+                    {% when 'SAR' %} {% assign country_code = 'sa' %} {% assign country_name = 'Saudi Arabia' %}
+                    {% when 'AED' %} {% assign country_code = 'ae' %} {% assign country_name = 'United Arab Emirates' %}
+                    {% when 'THB' %} {% assign country_code = 'th' %} {% assign country_name = 'Thailand' %}
+                    {% when 'IDR' %} {% assign country_code = 'id' %} {% assign country_name = 'Indonesia' %}
+                    {% when 'PLN' %} {% assign country_code = 'pl' %} {% assign country_name = 'Poland' %}
+                    {% when 'MYR' %} {% assign country_code = 'my' %} {% assign country_name = 'Malaysia' %}
+                    {% when 'DKK' %} {% assign country_code = 'dk' %} {% assign country_name = 'Denmark' %}
+                    {% when 'PHP' %} {% assign country_code = 'ph' %} {% assign country_name = 'Philippines' %}
+                    {% when 'HUF' %} {% assign country_code = 'hu' %} {% assign country_name = 'Hungary' %}
+                    {% when 'CZK' %} {% assign country_code = 'cz' %} {% assign country_name = 'Czech Republic' %}
+                    {% when 'ILS' %} {% assign country_code = 'il' %} {% assign country_name = 'Israel' %}
+                    {% when 'CLP' %} {% assign country_code = 'cl' %} {% assign country_name = 'Chile' %}
+                    {% when 'PKR' %} {% assign country_code = 'pk' %} {% assign country_name = 'Pakistan' %}
+                    {% when 'VND' %} {% assign country_code = 'vn' %} {% assign country_name = 'Vietnam' %}
+                    {% when 'EGP' %} {% assign country_code = 'eg' %} {% assign country_name = 'Egypt' %}
+                    {% when 'NGN' %} {% assign country_code = 'ng' %} {% assign country_name = 'Nigeria' %}
+                    {% when 'BDT' %} {% assign country_code = 'bd' %} {% assign country_name = 'Bangladesh' %}
+                    {% when 'COP' %} {% assign country_code = 'co' %} {% assign country_name = 'Colombia' %}
+                    {% when 'PEN' %} {% assign country_code = 'pe' %} {% assign country_name = 'Peru' %}
+                    {% when 'LKR' %} {% assign country_code = 'lk' %} {% assign country_name = 'Sri Lanka' %}  
+              {% endcase %}
+              
+                {% if currency == cart.currency %}
+                <div class="select" id="currency-selector" style="color: {{section.settings.text_color }};">
+                  <span class="selected">
+                    <div class="flag-icon" style="background-image: url('https://flagcdn.com/16x12/{{ country_code }}.png');" aria-label="{{ currency }} flag"></div>
+                  </span>
+                </div>
+                {% else %}
+                <ul class="newmenu" style="color: {{section.settings.text_color }};">
+                 
+                </ul>
+                {% endif %}
+              {% endfor %}
+              </div>
+
+            
+          
+             <select name="currency" class="currency-selector" style="color: {{section.settings.text_color }};" id="currencySelect">
+              {% for currency in shop.enabled_currencies %}
+                {% assign country_name = currency.iso_code %}
+                {% assign country_code = currency.iso_code | slice: 0, 2 | downcase %}
+                {% if currency == cart.currency %}
+                  <option selected="true" value="{{ currency.iso_code }}">
+                    {{ currency.symbol }}&nbsp;{{ currency.name }}
+                  </option>
+                {% else %}
+                  <option value="{{ currency.iso_code }}">
+                    {{ currency.symbol }}&nbsp;{{ currency.name }}
+                  </option>
+                {% endif %}
+              {% endfor %}
+             </select> 
+             
+            </div> 
+          {% endform %}
+           {% comment %} <ion-icon name="close-outline"></ion-icon> {% endcomment %}
+        </div>
+      </div>
+    </div>
+ </header>
+{% endif %}
+
+<style>
+  .alert{
+   background-color:{{section.settings.background}}; 
+    {% comment %} background-color:black; {% endcomment %}
+    color:{{section.settings.text_color}};
+    overflow: hidden;
+  }
+  .alert-text.visible {
+    left: 44%; /* Move to the visible position */
+    opacity: 1; /* Fade in */
+  }
+   .alert-text {
+    position: absolute;
+    left: 50%; /* Start from the middle of the screen horizontally */
+    top: 50%; /* Optionally, center vertically as well */
+    transform: translateX(-50%) translateY(-40%); /* Adjust for horizontal and vertical centering */
+    opacity: 0; /* Start invisible */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    white-space: nowrap;
+    font-family:var(--ff-urbanist);
+    font-weight:medium;
+    font-size:12px;
+  }
+  
+  .alert-text.visible {
+    opacity: 1; /* Fade in when visible */
+  }
+  
+  .alert-text.exit {
+    transform: translateX(150%) translateY(-40%); /* Slide out to the right */
+    opacity: 0;
+    overflow:hidden;
+  }
+
+  .slider-wrapper{
+   position:relative;
+   height:18px;
+   width:100%;
+   overflow: hidden;
+  }
+  #text1, #text2, #text3 {
+    width:100%; /* Adjust the width according to your needs */
+    height:auto; /* Adjust the height according to your needs */
+    position: absolute;
+    top: 50%; 
+  }
+
+  .flexBox{
+    display:flex;
+    align-items:center;
+    padding: 0 40px;
+  }
+
+  /* Language and Currency Container */
+#language-currency-container {
+  display: flex;
+  gap: 10px; /* Space between selectors */
+  align-items: center;
+  
+}
+
+/* Phone Container */
+#phone-container {
+  display: flex;
+  align-items: center; /* Align icon and number vertically */
+  gap: 10px; /* Space between icon and number */
+  width:30%;
+  margin-left: 10px;
+}
+
+/* Phone Icon */
+#phone-icon {
+  font-size: 14px; /* Adjust the size of the phone icon */
+  color: white; /* Change the color if needed */
+}
+
+/* Phone Number */
+#phone-number {
+  font-size: 12px; /* Adjust the font size */
+  color: white; /* Change the color if needed */
+  text-decoration: underline;
+  text-underline-offset:5px;
+}
+
+
+  #language-currency-container {
+    display: flex;
+    gap: 10px; /* Adjust the gap between the selectors */
+    align-items: center; /* Aligns the selectors vertically */
+
+  }
+
+  .locale-selector{
+    font-family:var(--ff-roboto);
+  }
+  
+  #language-selector, #currency-selector {
+    padding: 0; /* Add padding for a better look */
+    border: 1px solid #ddd; /* Optional: Add a border */
+    border-radius: 4px; /* Optional: Rounded corners */
+    font-size: 14px; /* Adjust the font size */
+  }
+   .currency-selector {
+    background-color: transparent; /* No background color */
+    color: {{section.settings.text_color}}; /* White text */
+    border: none; /* Remove the default border */
+    {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
+    padding-left: 15px; /* Adjust padding as needed */
+    font-size: 12px; /* Adjust font size as needed */
+    font-family:var(--ff-roboto);
+    appearance: none; /* Remove the default browser appearance */
+    -webkit-appearance: none; /* Remove appearance for Safari */
+    -moz-appearance: none; /* Remove appearance for Firefox */
+    cursor: pointer;
+    position: relative; /* Required for positioning the arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="white" d="M5 7L2 3h6z"/></svg>'); /* Custom dropdown arrow */
+    background-repeat: no-repeat;
+    background-position: left 2px center; /* Position the arrow */
+    background-size: 12px 12px; /* Size of the arrow */
+  
+  }
+  
+  .currency-selector:focus {
+    outline: none; /* Remove the default focus outline */
+    {% comment %} border-bottom: 1px solid #ccc; /* Optional: Change underline color on focus */ {% endcomment %}
+  }
+  
+  /* Optional: Add custom styles for options */
+  .currency-selector option {
+    color: black; /* Change option text color if needed */
+    background-color: white; /* Change option background if needed */
+  }
+
+
+
+  .language-selector {
+    background-color: transparent; /* No background color */
+    color: {{section.settings.text_color}}; /* White text */
+    border: none; /* Remove the default border */
+    
+    {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
+    padding: 0; /* Adjust padding as needed */
+    font-size: 12px; /* Adjust font size as needed */
+    appearance: none; /* Remove the default browser appearance */
+    -webkit-appearance: none; /* Remove appearance for Safari */
+    -moz-appearance: none; /* Remove appearance for Firefox */
+  }
+  
+  .language-selector:focus {
+    outline: none; /* Remove the default focus outline */
+    {% comment %} border-bottom: 1px solid #ccc; /* Optional: Change underline color on focus */ {% endcomment %}
+  }
+  
+  /* Optional: Add custom styles for options */
+  .language-selector option {
+    color: black; /* Change option text color if needed */
+    background-color: white; /* Change option background if needed */
+  }
+  
+  .locale-selector {
+    background-color: transparent; /* No background color */
+    color:{{section.settings.text_color}};
+    /*color: white;*/ /* White text */
+    border: none; /* Remove the default border */
+    {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
+    padding: 0; /* Adjust padding as needed */
+    font-size: 12px; /* Adjust font size as needed */
+    appearance: none; /* Remove the default browser appearance */
+    -webkit-appearance: none; /* Remove appearance for Safari */
+    -moz-appearance: none; /* Remove appearance for Firefox */
+    position: relative; /* Required for positioning the arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="white" d="M5 7L2 3h6z"/></svg>'); /* Custom dropdown arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Position the arrow */
+    background-size: 12px 12px; /* Size of the arrow */
+    padding-right: 25px; /* Add space for the arrow */
+  }
+  
+  .locale-selector:focus {
+    outline: none; /* Remove the default focus outline */
+    {% comment %} border-bottom: 1px solid #ccc; /* Optional: Change underline color on focus */ {% endcomment %}
+  }
+  
+  .locale-selector option {
+    color: black; /* Change option text color if needed */
+    background-color: white; /* Change option background if needed */
+  }
+  
+
+   
+
+
+
+
+
+
+  .currency-selector {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .dropdown-toggle {
+    padding: 8px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .dropdown-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    {% comment %} border: 1px solid #ccc; {% endcomment %}
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .currency-selector:hover .dropdown-menu {
+    display: block; /* Show menu on hover */
+  }
+  
+  .dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+  }
+
+
+  .flag-icon {
+    width: 16px;  /* Same width as the original image */
+    height: 12px; /* Same height as the original image */
+    display: inline-block; /* Allows it to be treated like text/image */
+    background-size: cover; /* Ensures the image covers the entire div */
+    background-position: center; /* Centers the image within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    vertical-align: middle; /* Aligns with text if placed next to text */
+  }
+
+  .dropdown{
+    position: relative;
+    z-index:999;
+  }
+
+
+.select{
+
+  padding: 0; /* Adjust padding as needed */
+  font-size: 12px; /* Adjust font size as needed */
+  appearance: none; /* Remove the default browser appearance */
+  -webkit-appearance: none; /* Remove appearance for Safari */
+  -moz-appearance: none; /* Remove appearance for Firefox */
+  position: relative; 
+    display: flex;
+    align-items: center;
+    gap:5px;
+    cursor: pointer;
+    /*transition: background 0.3s;*/
+}
+.selected{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  border: none;
+}
+
+
+.newmenu{
+    list-style-type: none;
+    padding: 0.1em 0.2em;
+    color:#9fa5b5;
+    position:fixed; 
+    top: 3em;
+    right: 0;
+    width:8%;
+    transform: translateX(-50%);
+    opacity: 0;
+    display: none;
+    transition: 0.2s;
+    z-index: 9999999;
+}
+
+.newmenu li {
+    padding: 0.7em 0.5em;
+    /*margin: 0.3em 0;*/
+    border-radius: 0.5em;
+    cursor: pointer;
+    display:flex;
+    gap:3px;
+    align-items:center;
+}
+
+.newmenu li:hover{
+    background: #2a2d35;
+}
+
+/*.active{
+    background: #23242a;
+}*/
+
+
+.menu-open{
+    display: block;
+    opacity: 1;
+    z-index:999
+}
+
+.separator {
+  height: 16px; /* Adjust the height as needed */
+  border-left: 1px solid white; /* Adjust the border thickness and color */
+}
+
+.custom-select {
+            position: relative;
+            display: inline-block;
+            width: auto;
+        }
+
+        .custom-select select {
+            appearance: none; /* Hide default arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 100%;
+            padding: 10px;
+            background-color: transparent;
+        }
+
+        .custom-select::after {
+            content: "▼"; /* Custom dropdown arrow */
+            position: absolute;
+            right: 10px; /* Default position */
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #555;
+        }
+
+
+  @media screen and (max-width: 575px){
+    .alert-text{
+      font-size:12px;
+
+    }
+    .alert-text.visible {
+      left: 50%; /* Move to the visible position */
+
+    }
+     #text1, #text2, #text3 {
+      height:100%;
+    }
+  }
+
+  @media screen and (max-width: 875px){
+    #language-currency-container {
+      display: none;
+    }
+    #phone-container{
+      display:none;
+    }
+
+    .alert-text.visible{
+       left:50%;
+    }
+  }
+
+</style> 
+
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+  const text1 = document.getElementById('text1');
+  const text2 = document.getElementById('text2');
+  const text3 = document.getElementById('text3');
+
+  const texts = [text1, text2, text3];
+  let currentIndex = 0;
+
+  function slideToMiddle(element) {
+    element.classList.add('visible');
+  }
+
+  function resetPosition(element) {
+    element.classList.remove('visible');
+    element.classList.add('exit');
+  }
+
+  function slideText() {
+    resetPosition(texts[currentIndex]); // Hide the current text
+    currentIndex = (currentIndex + 1) % texts.length;
+    texts[currentIndex].classList.remove('exit'); // Reset exit state
+    slideToMiddle(texts[currentIndex]); // Show the next text
+  }
+
+  // Initially, display the first element in the middle
+  slideToMiddle(texts[currentIndex]);
+
+  // Change text every 3 seconds
+  setInterval(slideText, 3000);
+});
+
+
+
+//Currency  Selector
+function currencyFormSubmit(event) {
+    event.target.form.submit();
+  }
+
+  document.querySelectorAll('.shopify-currency-form select').forEach(function(element) {
+    element.addEventListener('change', currencyFormSubmit);
+  }); 
+  
+
+
+const dropdowns = document.querySelectorAll('.dropdown');
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Get all currency list items
+  var currencyItems = document.querySelectorAll('.newmenu li');
+
+  currencyItems.forEach(function(item) {
+    item.addEventListener('click', function() {
+      // Get the selected currency data
+      var selectedCurrency = this.getAttribute('data-currency');
+      var selectedSymbol = this.getAttribute('data-symbol');
+      var countryCode = this.getAttribute('data-country-code');
+
+      // Update the displayed selected currency
+      document.getElementById('selected-currency').innerText = selectedCurrency;
+      document.getElementById('selected-symbol').innerText = selectedSymbol;
+      document.querySelector('.select .flag-icon').style.backgroundImage = `url('https://flagcdn.com/16x12/${countryCode}.png')`;
+
+      // Update currency using Shopify's JS method
+      Currency.convertAll(shop.currency, selectedCurrency);
+
+      // Store the new currency in local storage or cookies if needed
+      localStorage.setItem('currency', selectedCurrency);
+
+      // Optionally, update the URL to include the selected currency
+      window.location.search = '?currency=' + selectedCurrency;
+    });
+  });
+});
+
+
+//loop through the elements
+dropdowns.forEach(dropdown => {
+    //get inner elements from each dropdown
+    const select = dropdown.querySelector('.select');
+    const caret = dropdown.querySelector('.caret');
+    const menu = dropdown.querySelector('.newmenu');
+    const options = dropdown.querySelectorAll('.newmenu li');
+    const selected = dropdown.querySelector('.selected');
+
+    select.addEventListener('click', () => {
+        select.classList.toggle('select-clicked');
+
+        caret.classList.toggle('caret-rotate');
+
+        menu.classList.toggle('menu-open')
+    });
+
+    options.forEach(option => {
+        option.addEventListener('click', ()=> {
+            selected.innerText = option.innerText;
+            //Add the clicked select style to the select element
+            selected.classList.remove('select-clicked');
+            //Add the rotate styles to the caret element
+            caret.classList.remove('caret-rotate');
+            //Add the open styles to the menu element
+            menu.classList.remove('menu-open');
+            //Remove active class from all option elements 
+            options.forEach(option => {
+                option.classList.remove('active')
+            })
+            //Add active class to clicked option element
+            option.classList.add("active")
+        })
+    })
+}) 
+
+
+
+</script>
+
+{% schema %}
+{
+  "name": "announcement-bar",
+  "settings": [
+    {
+     "type": "checkbox",
+     "id": "enabled",
+     "label": "Enable Announcement Bar",
+     "default": true
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone Number",
+      "default": "+1 (123) 456-7890"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text 1",
+      "default": "Free Shipping On All U.S. Orders $50+"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text 2",
+      "default": "Save Up to 40%"
+    },
+    {
+      "type": "text",
+      "id": "text3",
+      "label": "Text 3",
+      "default": "Get Your Gear Faster"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#000000"
+     },
+     {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#F4F4F4"
+     },
+     {
+      "type": "checkbox",
+      "id": "show_facebook_icon",
+      "label": "Show Facebook Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_instagram_icon",
+      "label": "Show Instagram Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tiktok_icon",
+      "label": "Show Tiktok Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tumblr_icon",
+      "label": "Show Tumblr Icon",
+      "default": true
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "announcement-bar"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,140 @@
+<!-- collection-and-size-filter.liquid -->
+
+<!-- Container for input and filter options -->
+<div class="filter-container">
+    <!-- Search Input for Collections -->
+    <input type="text" id="collection-filter-input" placeholder="Collections" autocomplete="off">
+  
+    <!-- Collection Options List -->
+    <ul id="collection-options-list" class='ul-list'>
+      {% for collection in collections %}
+        <li class="collection-option-item" class='li-item'><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  
+  <!-- JavaScript for Filtering -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Collection filter functionality
+      var collectionFilterInput = document.getElementById('collection-filter-input');
+      var collectionItems = document.querySelectorAll('#collection-options-list .collection-option-item');
+  
+      collectionFilterInput.addEventListener('input', function() {
+        var filterValue = this.value.toLowerCase();
+  
+        collectionItems.forEach(function(item) {
+          if (item.textContent.toLowerCase().includes(filterValue)) {
+            item.style.display = '';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+  
+      // Shoe size filter functionality
+      var sizeFilterInput = document.getElementById('size-filter-input');
+      var sizeItems = document.querySelectorAll('#size-options-list .size-option-item');
+  
+      sizeFilterInput.addEventListener('input', function() {
+        var filterValue = this.value.toLowerCase();
+  
+        sizeItems.forEach(function(item) {
+          if (item.textContent.toLowerCase().includes(filterValue)) {
+            item.style.display = '';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+  
+      // Toggle visibility of lists on focus
+      collectionFilterInput.addEventListener('focus', function() {
+        document.getElementById('collection-options-list').style.display = 'block';
+      });
+  
+      sizeFilterInput.addEventListener('focus', function() {
+        document.getElementById('size-options-list').style.display = 'block';
+      });
+  
+      // Hide lists when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!collectionFilterInput.contains(event.target) && !document.getElementById('collection-options-list').contains(event.target)) {
+          document.getElementById('collection-options-list').style.display = 'none';
+        }
+  
+        if (!sizeFilterInput.contains(event.target) && !document.getElementById('size-options-list').contains(event.target)) {
+          document.getElementById('size-options-list').style.display = 'none';
+        }
+      });
+    });
+  </script>
+  
+  <!-- CSS Styling for Filters -->
+   <style>
+    .filter-container {
+      position: relative;
+      width: 40%;
+      display: flex;
+      {% comment %} flex-direction: column; {% endcomment %}
+      gap: 15px;
+    }
+  
+    .filter-container input {
+      width: 100%;
+      padding: 5px auto;
+      font-size: 16px;
+      border-bottom: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      z-index: 5;
+    }
+  
+    .ul-list {
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      z-index: 100;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none; /* Initially hide the lists */
+    }
+  
+    .li-item {
+      margin: 0;
+    }
+  
+    .li-item a {
+      text-decoration: none;
+      color: #333;
+      font-size: 16px;
+      padding: 10px;
+      display: block;
+      border-bottom: 1px solid #ddd;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+  
+    .li-item a:hover {
+      background-color: #f8f8f8;
+      border-color: #ccc;
+    }
+  
+    /* Responsive Styling */
+    @media (max-width: 768px) {
+      .filter-container input {
+        font-size: 14px;
+        padding: 8px 12px;
+      }
+  
+      .li-item a {
+        font-size: 14px;
+        padding: 8px;
+      }
+    }
+  </style> 
+  

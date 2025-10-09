@@ -1,0 +1,192 @@
+<section class="clients" id="client">
+    <div class="carousel-wrapper">
+      <div class="carousel-title">
+        <h2 class="section-title">Our Brands</h2>
+      </div>
+
+      <ul class="carousel">
+        <li><img src='{{ "DIOR.png" | asset_url }}' alt="DIOR" /></li>
+        <li><img src='{{ "CHANNEL.png" | asset_url }}' alt="CHANNEL" /></li>
+        <li><img src='{{ "DOLCHE.png" | asset_url }}' alt="DOLCHE" /></li>
+        <li><img src='{{ "JoMalone.png" | asset_url }}' alt="joMalone" /></li>
+        <li><img src='{{ "Juliet.png" | asset_url }}' alt="Juliet" /></li>
+        <li><img src='{{ "Hugo.png" | asset_url }}' alt="Hugo" /></li>
+        <li><img src='{{ "Vers.png" | asset_url }}' alt="Vers" /></li>
+        <!-- Duplicate items -->
+        <li><img src='{{ "DIOR.png" | asset_url }}' alt="DIOR" /></li>
+        <li><img src='{{ "CHANNEL.png" | asset_url }}' alt="CHANNEL" /></li>
+        <li><img src='{{ "DOLCHE.png" | asset_url }}' alt="DOLCHE" /></li>
+        <li><img src='{{ "JoMalone.png" | asset_url }}' alt="joMalone" /></li>
+        <li><img src='{{ "Juliet.png" | asset_url }}' alt="Juliet" /></li>
+        <li><img src='{{ "Hugo.png" | asset_url }}' alt="Hugo" /></li>
+        <li><img src='{{ "Vers.png" | asset_url }}' alt="Vers" /></li>
+      </ul>
+    </div>
+  </section>
+  
+  <style>
+  /* Clients */
+  .clients {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 250px;
+    overflow: hidden; /* Hide overflow */
+    position: relative;
+  }
+  
+  .carousel-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .carousel {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    list-style: none;
+    transition: transform 0.5s linear;
+    will-change: transform;
+  }
+  .carousel-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+  }
+
+  .carousel-title .section-title{
+    font-family: var(  --ff-mr_de_haviland);
+    font-size:35px;
+    font-weight: 300;
+  }
+
+  .clients li img {
+    width: 100px;
+    margin: 2px;
+    filter: grayscale(100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .clients li img:hover {
+    filter: grayscale(0%);
+    transform: scale(1.1);
+  }
+  
+  @media screen and (max-width: 1000px) {
+    .clients li img {
+      width: 80px;
+    }
+  }
+  </style>
+  
+
+<script>  
+    document.addEventListener("DOMContentLoaded", () => {
+        const carousel = document.querySelector(".carousel");
+        const items = document.querySelectorAll(".carousel li");
+        const totalItems = items.length;
+        const itemWidth = items[0].offsetWidth + 80; // Include gap (80px)
+        const visibleItems = Math.ceil(document.querySelector(".carousel-wrapper").offsetWidth / itemWidth);
+        const resetPosition = -itemWidth * totalItems / 2; // Halfway through the list
+        let scrollPosition = 0;
+      
+        function moveCarousel() {
+          scrollPosition -= 1; // Move left 1px at a time
+          carousel.style.transform = `translateX(${scrollPosition}px)`;
+      
+          // Reset position when we reach the end of the duplicated list
+          if (scrollPosition <= resetPosition) {
+            scrollPosition = 0;
+            carousel.style.transition = "none"; // Disable transition for instant reset
+            carousel.style.transform = `translateX(${scrollPosition}px)`;
+      
+            // Re-enable smooth transition
+            setTimeout(() => {
+              carousel.style.transition = "transform 0.5s linear";
+            });
+          }
+      
+          requestAnimationFrame(moveCarousel); // Continue the animation
+        }
+      
+        // Start the animation
+        moveCarousel();
+      });
+      
+      
+</script>    
+
+ {% schema %}
+{
+  "name": "banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image 1"
+    },
+    {
+      "type": "text",
+      "id": "subtitle1",
+      "label": "Subtitle 1",
+      "default": "NEW COLLECTION"
+    },
+    {
+      "type": "text",
+      "id": "title1",
+      "label": "Title 1",
+      "default": "Discover New Sneaker Collection"
+    },
+    {
+      "type": "text",
+      "id": "btn_label1",
+      "label": "Button Label",
+      "default":"Explore More"
+    },
+    {
+      "type": "url",
+      "id": "button_url1",
+      "label": "Button URL 1",
+      "default": "/collections/all"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image 2"
+    },
+    {
+      "type": "text",
+      "id": "title2",
+      "label": "Title 2",
+      "default": "25% off Everything"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "Sneakers in a range of styles and colors for every taste"
+    },
+    {
+      "type": "text",
+      "id": "btn_label2",
+      "label": "Button Label 2",
+      "default":"Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_url2",
+      "label": "Button URL 2",
+      "default": "/collections/all"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "banner"
+    }
+  ]
+}
+{% endschema %}

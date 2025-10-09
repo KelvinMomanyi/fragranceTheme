@@ -1,0 +1,458 @@
+  <!-- 
+        - #PRODUCTS
+      -->
+
+      <section class="section product" id="product" aria-label="product" data-aos="fade-up">
+        <div class="container">
+
+          <div class="title-wrapper">
+            <h2 class="h2 section-title">Popular Products</h2>
+
+            <ul class="filter-btn-list">
+              <li class="filter-btn-item">
+                <button class="filter-btn" data-filter-btn="accessory">Men's</button>
+              </li>
+
+              <li class="filter-btn-item">
+                <button class="filter-btn" data-filter-btn="decoration">Women's</button>
+              </li>
+
+              <li class="filter-btn-item">
+                <button class="filter-btn" data-filter-btn="furniture">Unisex</button>
+              </li>
+
+            </ul>
+          </div>
+
+         <!--  <ul class="grid-list product-list" data-filter="all">
+            {% comment %} {% for product in collection.products %}
+              <li class="decoration">
+                <div class="product-card">
+  
+                  <a href="#" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
+                    {% comment %} <img src="./assets/images/product-1.jpg" width="300" height="300" loading="lazy"
+                      alt="Animi Dolor Pariatur" class="img-cover"> {% endcomment %}
+                      <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" class="img-cover" width="300" height="300"loading="lazy">
+                    <ul class="card-action-list">
+  
+                      <li>
+                        <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                          <ion-icon name="add-outline" aria-hidden="true"></ion-icon>
+                        </button>
+                      </li>
+  
+                      <li>
+                        <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                          <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                        </button>
+                      </li>
+  
+                      <li>
+                        <button class="card-action-btn" aria-label="add to whishlist" title="add to whishlist">
+                          <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+                        </button>
+                      </li>
+  
+                    </ul>
+  
+                    <ul class="badge-list">
+  
+                      <li>
+                        <div class="badge orange">Sale</div>
+                      </li>
+  
+                      <li>
+                        <div class="badge cyan">-10%</div>
+                      </li>
+  
+                    </ul>
+                  </a>
+  
+                  <div class="card-content">
+                    <h3 class="h3">
+                      <a href="#" class="card-title">Animi Dolor Pariatur</a>
+                    </h3>
+  
+                    <div class="card-price">
+                      <del class="del">$19.00</del>
+  
+                      <data class="price" value="10">$10.00</data>
+                    </div>
+                  </div>
+  
+                </div>
+              </li>
+          {% endfor %} {% endcomment %}
+        
+          
+   
+           {% assign collection_handle = 'all' %}
+          {% for product in collections[collection_handle].products %}
+             <li class="decoration">
+               <div class="product-card">
+                 <a href="{{ product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
+                   {% if product.featured_image %}
+                     <img src="{{ product.featured_image | img_url: 'large' }}" 
+                       alt="{{ product.featured_image.alt | escape }}" 
+                       class="img-cover" 
+                       width="200" 
+                       height="200" 
+                       loading="lazy">
+                       <ul class="card-action-list">
+  
+                        <li>
+                          <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                            <ion-icon name="add-outline" aria-hidden="true"></ion-icon>
+                          </button>
+                        </li>
+    
+                        <li>
+                          <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                            <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                          </button>
+                        </li>
+    
+                        <li>
+                          <button class="card-action-btn" aria-label="add to whishlist" title="add to whishlist">
+                            <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+                          </button>
+                        </li>
+    
+                      </ul>
+    
+                      <ul class="badge-list">
+    
+                        <li>
+                          <div class="badge orange">Sale</div>
+                        </li>
+    
+                        <li>
+                          <div class="badge cyan">-10%</div>
+                        </li>
+    
+                      </ul>
+                   {% else %}
+                    <img src="default-image.jpg" 
+                       alt="No image available" 
+                       class="img-cover" 
+                        width="200" 
+                        height="200" 
+                        loading="lazy">
+                        <ul class="card-action-list">
+  
+                          <li>
+                            <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                              <ion-icon name="add-outline" aria-hidden="true"></ion-icon>
+                            </button>
+                          </li>
+      
+                          <li>
+                            <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                              <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                            </button>
+                          </li>
+      
+                          <li>
+                            <button class="card-action-btn" aria-label="add to whishlist" title="add to whishlist">
+                              <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+                            </button>
+                          </li>
+      
+                        </ul>
+      
+                        <ul class="badge-list">
+      
+                          <li>
+                            <div class="badge orange">Sale</div>
+                          </li>
+      
+                          <li>
+                            <div class="badge cyan">-10%</div>
+                          </li>
+      
+                        </ul>
+                   {% endif %}
+                <ul class="card-action-list">
+                 <li>
+                  <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                    <ion-icon name="add-outline" aria-hidden="true"></ion-icon>
+                  </button>
+                </li>
+                <li>
+                  <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
+                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                    <button type="submit" class="card-action-btn" aria-label="add to cart">
+                      <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                    </button>
+                  </form>
+                {% comment %} <button class="card-action-btn" aria-label="view cart" title="view cart">
+                <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+            </button> {% endcomment %}
+          </li>
+          <li>
+            <button class="card-action-btn" aria-label="add to wishlist" title="add to wishlist">
+              <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+            </button>
+          </li>
+        </ul>
+        {% if product.compare_at_price > product.price %}
+        <ul class="badge-list">
+          <li>
+            <div class="badge orange">Sale</div>
+          </li>
+          <li>
+            <div class="badge cyan">
+              10%
+            </div>
+          </li>
+        </ul>
+        {% endif %}
+                  </a>
+           <div class="card-content">
+              <h3 class="h3">
+                <a href="{{ product.url }}" class="card-title">{{ product.title }}</a>
+              </h3>
+               <div class="card-price">
+                {% if product.compare_at_price > product.price %}
+                  <del class="del">{{ product.compare_at_price | money }}</del>
+               {% endif %}
+                  <data class="price" value="{{ product.price }}">{{ product.price | money }}</data>
+                </div>
+               </div>
+              </div>
+             </li>
+           {% endfor %}
+
+          
+          
+
+          </ul>-->
+          
+
+
+          <ul class="product-slider">
+                {% assign collection_handle = 'all' %}
+                {% for product in collections[collection_handle].products limit:8 %}
+                  <li class="decoration">
+                    <div class="product-card">
+                      <a href="{{ product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
+                        {% if product.featured_image %}
+                          <img src="{{ product.featured_image | img_url: 'large' }}" 
+                            alt="{{ product.featured_image.alt | escape }}" 
+                            class="img-cover" 
+                            width="200" 
+                            height="200" 
+                            loading="lazy">
+                            <ul class="card-action-list">
+  
+                              <li>
+                                <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                                  <ion-icon name="add-outline" aria-hidden="true"></ion-icon>
+                                </button>
+                              </li>
+          
+                              <li>
+                                <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                                  <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                                </button>
+                              </li>
+          
+                              <li>
+                                <button class="card-action-btn" aria-label="add to whishlist" title="add to whishlist">
+                                  <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+                                </button>
+                              </li>
+          
+                            </ul>
+          
+                            <ul class="badge-list">
+                              <li>
+                                <div class="badge cyan">-10%</div>
+                              </li>
+          
+                            </ul>
+                        {% else %}
+                          <img src="default-image.jpg" 
+                            alt="No image available" 
+                            class="img-cover" 
+                            width="200" 
+                            height="200" 
+                            loading="lazy">
+                            <ul class="card-action-list">
+  
+                              <li>
+                                <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                                  <ion-icon name="add-outline" aria-hidden="true"></ion-icon>
+                                </button>
+                              </li>
+          
+                              <li>
+                                <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                                  <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                                </button>
+                              </li>
+          
+                              <li>
+                                <button class="card-action-btn" aria-label="add to whishlist" title="add to whishlist">
+                                  <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+                                </button>
+                              </li>
+          
+                            </ul>
+          
+                            <ul class="badge-list">
+          
+                              <li>
+                                <div class="badge orange">Sale</div>
+                              </li>
+          
+                              <li>
+                                <div class="badge cyan">-10%</div>
+                              </li>
+          
+                            </ul>
+                        {% endif %}
+                      </a>
+                      <div class="card-content">
+                        <h3 class="h3">
+                          <a href="{{ product.url }}" class="card-title">{{ product.title }}</a>
+                        </h3>
+                        <div class="card-price">
+                          {% if product.compare_at_price > product.price %}
+                            <del class="del">{{ product.compare_at_price | money }}</del>
+                          {% endif %}
+                          <data class="price" value="{{ product.price }}">{{ product.price | money }}</data>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                {% endfor %}
+          </ul>
+
+        </div>
+      </section>
+
+
+<!-- jQuery (Required for Slick Slider) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Slick Slider JS -->
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+    $('.product-slider').slick({
+      slidesToShow: 4,  // Adjust for desktop
+      slidesToScroll: 1,
+      infinite: true,
+      autoplay: true,
+      autoplaySpeed: 3000,
+      arrows: true,
+      dots: true,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3
+          }
+        },
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 2
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1
+          }
+        }
+      ]
+    });
+  });
+</script>
+
+<style>
+.product-slider {
+  display: flex;
+  overflow: hidden;
+}
+
+.product-card {
+  text-align: center;
+  padding: 10px;
+}
+
+.slick-prev, .slick-next {
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Collection-Banner",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "collection_section",
+      "name": "Collection Section",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Section Title",
+          "default": "Discover What's New"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL",
+          "default": "/collections/all"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Shop All Products"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection-Banner",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "collection_section",
+          "settings": {
+            "title": "Discover What's New",
+            "collection": "new-arrivals-1",
+            "button_url": "/collections/new-arrivals",
+            "button_label": "Shop Now"
+          }
+        },
+        {
+          "type": "collection_section",
+          "settings": {
+            "title": "Top Trending",
+            "collection":"trending",
+            "button_url": "/collections/trending",
+            "button_label": "Shop Now"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+

@@ -1,0 +1,253 @@
+<section class="section service" id="service" aria-labelledby="service-lable">
+
+    <p class="section-subtitle container" id="service-lable"></p>
+    <div class="container">
+      <ul class="service-list">
+
+          <li data-reveal>
+            <div class="service-card container">
+    
+              <img src="{{'r3.jpg' | asset_url}}" width="340" height="380" loading="lazy" alt="Luxury Perfumes"
+                class="img">
+    
+              <div>
+                <h3 class="h3 card-title">Luxury Perfumes</h3>
+    
+                <p class="card-subtitle">
+                  Discover timeless scents crafted with elegance.
+                </p>
+              </div>
+    
+              <a href="#" class="btn-icon" aria-label="See more">
+                <svg xmlns="http://www.w3.org/2000/svg" width="43" height="20" viewBox="0 0 43 20" fill="none">
+                  <path d="M0 10H41" stroke="black" stroke-width="2" />
+                  <path d="M33 1L41.9 10.2727L33 19" stroke="black" stroke-width="2" />
+                </svg>
+              </a>
+    
+            </div>
+          </li>
+    
+          <li data-reveal>
+            <div class="service-card container">
+    
+              <img src="{{'r4.jpg' | asset_url}}" width="340" height="380" loading="lazy" alt="Fresh & Floral"
+                class="img">
+    
+              <div>
+                <h3 class="h3 card-title">Fresh & Floral</h3>
+    
+                <p class="card-subtitle">
+                  Light, breezy fragrances inspired by nature.
+                </p>
+              </div>
+    
+              <a href="#" class="btn-icon" aria-label="See more">
+                <svg xmlns="http://www.w3.org/2000/svg" width="43" height="20" viewBox="0 0 43 20" fill="none">
+                  <path d="M0 10H41" stroke="black" stroke-width="2" />
+                  <path d="M33 1L41.9 10.2727L33 19" stroke="black" stroke-width="2" />
+                </svg>
+              </a>
+    
+            </div>
+          </li>
+    
+          <li data-reveal>
+            <div class="service-card container">
+    
+              <img src="{{'r9.jpg' | asset_url}}" width="340" height="380" loading="lazy" alt="Product Marketing"
+                class="img">
+    
+              <div>
+                <h3 class="h3 card-title">Exclusive Collections</h3>
+    
+                <p class="card-subtitle">
+                  Limited-edition perfumes for a signature style
+                </p>
+              </div>
+    
+              <a href="#" class="btn-icon" aria-label="See more">
+                <svg xmlns="http://www.w3.org/2000/svg" width="43" height="20" viewBox="0 0 43 20" fill="none">
+                  <path d="M0 10H41" stroke="black" stroke-width="2" />
+                  <path d="M33 1L41.9 10.2727L33 19" stroke="black" stroke-width="2" />
+                </svg>
+              </a>
+    
+            </div>
+          </li>
+    
+          <li data-reveal>
+            <div class="service-card container">
+    
+              <img src="{{'r6.jpg' | asset_url}}" width="50" height="65" loading="lazy" alt="Evening Elegance"
+                class="img">
+    
+              <div>
+                <h3 class="h3 card-title">Evening Elegance</h3>
+    
+                <p class="card-subtitle">
+                  Bold and sophisticated scents made for special nights.
+                </p>
+              </div>
+    
+              <a href="#" class="btn-icon" aria-label="See more">
+                <svg xmlns="http://www.w3.org/2000/svg" width="43" height="20" viewBox="0 0 43 20" fill="none">
+                  <path d="M0 10H41" stroke="black" stroke-width="2" />
+                  <path d="M33 1L41.9 10.2727L33 19" stroke="black" stroke-width="2" />
+                </svg>
+              </a>
+    
+            </div>
+          </li>
+    
+        </ul>
+    
+  </div>
+    
+  </section>
+
+  <style>
+.service { padding-inline: 15px; }
+
+.service .section-subtitle {
+  padding-inline: 10px;
+  margin-block-end:75px;
+}
+
+.service-card .img { display: none; }
+
+.service-list > li:not(:last-child) { border-block-start: 1px solid black; }
+
+.service-list > li:last-child { border-block: 1px solid black; }
+
+.service-card { padding: 30px 10px; }
+
+.service-card .card-subtitle {
+  color:black;
+  font-size: var(--fs-7);
+  font-weight: var(--fw-300);
+  line-height: 1.5;
+  margin-block: 10px 25px;
+}
+
+.service-card .btn-icon {
+  width: 55px;
+  height: 55px;
+  border: 1px solid black;
+  --bg-color: transparent;
+  --hover-bg-color: gray;
+  --hover-text-color: var(--black);
+}
+
+.service-card .btn-icon svg { width: 25px; }
+
+.img{
+    width: 300px;
+    height: 300px;
+}
+
+
+.btn-icon {
+  background-color: var(--bg-color, var(--white));
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  transition: var(--transition-2);
+}
+
+.btn-icon path { transition: var(--transition-2); }
+
+.btn-icon:is(:hover, :focus-visible) {
+  background-color: var(--hover-bg-color, var(--white));
+}
+
+.btn-icon:is(:hover, :focus-visible) path {
+  stroke: var(--hover-text-color, var(--black));
+}
+
+@media (min-width: 768px){
+ /**
+   * SERVICE
+   */
+
+   .service-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .service-card .card-subtitle { margin-block-end: 15px; }   
+}
+
+
+
+@media (min-width: 992px){
+/**
+   * SERVICE
+   */
+
+   .service-card { position: relative; }
+
+   .service-card .img {
+     display: block;
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     width: 200px;
+     opacity: 0;
+     visibility: hidden;
+     transition: var(--transition-1);
+     z-index: -1;
+   }
+ 
+   .service-card:is(:hover, :focus-within) .img {
+     opacity: 1;
+     visibility: visible;
+   }
+} 
+
+@media (min-width: 1200px){
+/**
+   * SERVICE
+   */
+
+   .service-card { padding-block: 50px; }
+
+   .service-card .card-subtitle { --fs-7: 2.4rem; }
+ 
+   .service-card .img { width: max-content; }
+ 
+   .service-card .btn-icon {
+     width: 95px;
+     height: 95px;
+   }
+ 
+   .service-card .btn-icon svg { width: 40px; }
+ 
+}
+
+@media (min-width: 1400px) {
+    
+  /**
+   * SERVICE
+   */
+
+  .service { padding-inline: 70px; }
+
+  .service-card { padding-block: 65px; }
+}
+</style>
+
+{% schema %}
+    {
+      "name": "services",
+      "settings":[],
+      "blocks": [],
+      "presets": [
+        {
+          "name": "services"
+        }
+      ]
+    }
+{% endschema %}

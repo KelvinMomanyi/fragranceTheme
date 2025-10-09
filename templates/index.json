@@ -1,0 +1,135 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "title1": "Find the best",
+        "subtitle1": "Classy Shoe",
+        "title2": "Find the best",
+        "subtitle2": "Classy Shoe",
+        "title3": "Find the best",
+        "subtitle3": "Classy Shoe",
+        "description1": "Designed with clean, non-toxic materials, our shoes ensure style and comfort for everyone.",
+        "description2": "Designed with clean, non-toxic materials, our shoes ensure style and comfort for everyone.",
+        "description3": "Designed with clean, non-toxic materials, our shoes ensure style and comfort for everyone.",
+        "price1": "$17.99",
+        "price2": "$17.99",
+        "price3": "$17.99",
+        "link": "",
+        "btn_label": "Shop Now"
+      }
+    },
+    "collection": {
+      "type": "Collection-Banner",
+      "settings": {
+        "title": "Unveil Your Essence",
+        "info": "When you start with a portrait and search for a pure form, a clear volume, through successive eliminations, you arrive inevitably at the egg. Likewise, starting with the egg and following the same process in reverse, one finishes with the portrait.",
+        "link1": "",
+        "btn_label1": "Shop Now",
+        "title2": "What's New?",
+        "subtitle2": "Get the newest kicks",
+        "link2": "",
+        "btn_label2": "Discover Now",
+        "title3": "Buy 1 Get 1",
+        "subtitle3": "Starting at $17.99",
+        "link3": "",
+        "btn_label3": "Shop Now"
+      }
+    },
+    "productList": {
+      "type": "productList",
+      "settings": {}
+    },
+    "banner": {
+      "type": "banner",
+      "settings": {
+        "subtitle1": "NEW COLLECTION",
+        "title1": "Explore Our Latest Fragrance Collection",
+        "btn_label1": "Explore More",
+        "button_url1": "shopify://collections/all",
+        "title2": "25% off Everything",
+        "description": "Perfumes in distinctive notes to match every style",
+        "btn_label2": "Shop Now",
+        "button_url2": "shopify://collections/all"
+      }
+    },
+    "brands": {
+      "type": "brands",
+      "settings": {
+        "subtitle1": "NEW COLLECTION",
+        "title1": "Discover New Sneaker Collection",
+        "btn_label1": "Explore More",
+        "button_url1": "shopify://collections/all",
+        "title2": "25% off Everything",
+        "description": "Sneakers in a range of styles and colors for every taste",
+        "btn_label2": "Shop Now",
+        "button_url2": "shopify://collections/all"
+      }
+    },
+    "poster": {
+      "type": "poster",
+      "settings": {}
+    },
+    "services": {
+      "type": "services",
+      "settings": {}
+    },
+    "gallery": {
+      "type": "gallery",
+      "settings": {}
+    },
+    "offer": {
+      "type": "offer",
+      "settings": {
+        "percent_offer": "-20%",
+        "select_product": "",
+        "product_desc": "Conceived as an ode to nature, Sauvage is an act of creation inspired by wide-open spaces. Compositions marked by raw freshness, combining power and nobility.",
+        "offer_price": "$39",
+        "countdown_duration": 72
+      }
+    },
+    "blog": {
+      "type": "blog",
+      "settings": {
+        "heading_text": "Explore Our Blog",
+        "blog_type": ""
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    },
+    "newsletter-popup": {
+      "type": "newsletter-popup",
+      "settings": {}
+    },
+    "175551709675a5d6d4": {
+      "type": "apps",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "collection",
+    "productList",
+    "banner",
+    "brands",
+    "poster",
+    "services",
+    "gallery",
+    "offer",
+    "blog",
+    "newsletter",
+    "newsletter-popup",
+    "175551709675a5d6d4"
+  ]
+}

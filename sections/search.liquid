@@ -1,0 +1,546 @@
+<section class="section search-section" id="search" aria-labelledby="search-label">
+
+  <div class="container">
+    <p class="section-subtitle" id="search-label">{{ section.settings.subtitle }}</p>
+    
+    <div class="search-wrapper">
+      <div class="search-container">
+        <input 
+          type="search" 
+          id="main-search-input"
+          placeholder="{{ section.settings.placeholder }}" 
+          class="search-input"
+          aria-label="Search products"
+          autocomplete="off"
+        >
+        <button type="button" class="search-icon-btn" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div id="main-search-results" class="search-results-dropdown">
+        <div class="suggestions-section">
+          <p class="section-title">Popular Searches</p>
+          <div class="suggestions-list" id="suggestions-list"></div>
+        </div>
+        <div class="products-section" id="products-section">
+          <p class="section-title">Products</p>
+          <div class="products-list" id="products-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script>
+(function() {
+  const searchInput = document.getElementById('main-search-input');
+  const searchResults = document.getElementById('main-search-results');
+  const productsList = document.getElementById('products-list');
+  const productsSection = document.getElementById('products-section');
+  const suggestionsList = document.getElementById('suggestions-list');
+  const suggestionsSection = document.querySelector('.suggestions-section');
+
+  // Popular search suggestions
+  const popularSearches = {{ section.settings.popular_searches | default: "Luxury Perfumes, Fresh & Floral, Evening Elegance, Exclusive Collections, Men's Fragrances, Women's Fragrances" | split: ',' | json }};
+
+  function debounce(func, delay) {
+    let timeout;
+    return function() {
+      const context = this;
+      const args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), delay);
+    };
+  }
+
+  function showSuggestions() {
+    const query = searchInput.value.trim().toLowerCase();
+    
+    if (query.length === 0) {
+      // Show popular searches when input is empty
+      let suggestionsHTML = '';
+      popularSearches.forEach(search => {
+        const trimmedSearch = search.trim();
+        suggestionsHTML += `
+          <div class="suggestion-item" data-query="${trimmedSearch}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <span>${trimmedSearch}</span>
+          </div>
+        `;
+      });
+      suggestionsList.innerHTML = suggestionsHTML;
+      suggestionsSection.style.display = 'block';
+      productsSection.style.display = 'none';
+      searchResults.classList.add('active');
+    } else {
+      // Filter suggestions based on query
+      const filteredSuggestions = popularSearches.filter(search => 
+        search.trim().toLowerCase().includes(query)
+      );
+      
+      if (filteredSuggestions.length > 0) {
+        let suggestionsHTML = '';
+        filteredSuggestions.forEach(search => {
+          const trimmedSearch = search.trim();
+          suggestionsHTML += `
+            <div class="suggestion-item" data-query="${trimmedSearch}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+              <span>${trimmedSearch}</span>
+            </div>
+          `;
+        });
+        suggestionsList.innerHTML = suggestionsHTML;
+        suggestionsSection.style.display = 'block';
+      } else {
+        suggestionsSection.style.display = 'none';
+      }
+    }
+  }
+
+  function performSearch() {
+    const query = searchInput.value.trim();
+
+    if (query.length > 0) {
+      showSuggestions();
+      
+      if (query.length > 2) {
+        fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=6`)
+          .then(response => response.json())
+          .then(data => {
+            const results = data.resources.results.products;
+            let resultsHTML = '';
+
+            if (results.length) {
+              results.forEach(product => {
+                const price = product.price ? (product.price / 100).toFixed(2) : 'N/A';
+                const comparePrice = product.compare_at_price ? (product.compare_at_price / 100).toFixed(2) : null;
+                
+                resultsHTML += `
+                  <div class="search-result-item">
+                    <a href="${product.url}">
+                      <div class="product-image">
+                        <img src="${product.image}" alt="${product.title}">
+                      </div>
+                      <div class="product-info">
+                        <p class="product-title">${product.title}</p>
+                        <div class="product-pricing">
+                          ${comparePrice ? `<span class="compare-price">{{ cart.currency.symbol }}${comparePrice}</span>` : ''}
+                          <span class="product-price">{{ cart.currency.symbol }}${price}</span>
+                        </div>
+                      </div>
+                      <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 43 20" fill="none">
+                        <path d="M0 10H41" stroke="black" stroke-width="2" />
+                        <path d="M33 1L41.9 10.2727L33 19" stroke="black" stroke-width="2" />
+                      </svg>
+                    </a>
+                  </div>
+                `;
+              });
+              productsSection.style.display = 'block';
+            } else {
+              resultsHTML = '<p class="no-results">No products found</p>';
+              productsSection.style.display = 'block';
+            }
+
+            productsList.innerHTML = resultsHTML;
+            searchResults.classList.add('active');
+          })
+          .catch(error => {
+            console.error('Error fetching search results:', error);
+            productsList.innerHTML = '<p class="error-message">Error loading products</p>';
+            productsSection.style.display = 'block';
+          });
+      } else {
+        productsSection.style.display = 'none';
+      }
+    } else {
+      showSuggestions();
+    }
+  }
+
+  // Show suggestions on focus
+  searchInput.addEventListener('focus', function() {
+    if (searchInput.value.trim().length === 0) {
+      showSuggestions();
+    } else {
+      performSearch();
+    }
+  });
+
+  // Search on input
+  searchInput.addEventListener('input', debounce(performSearch, 300));
+
+  // Handle suggestion clicks
+  document.addEventListener('click', function(e) {
+    const suggestionItem = e.target.closest('.suggestion-item');
+    if (suggestionItem) {
+      const query = suggestionItem.getAttribute('data-query');
+      searchInput.value = query;
+      performSearch();
+    }
+  });
+
+  // Close search results when clicking outside
+  document.addEventListener('click', function(event) {
+    if (!searchResults.contains(event.target) && 
+        !searchInput.contains(event.target) && 
+        !event.target.closest('.search-container')) {
+      searchResults.classList.remove('active');
+    }
+  });
+
+  // Close search results on scroll
+  let scrollTimeout;
+  document.addEventListener('scroll', function() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(function() {
+      searchResults.classList.remove('active');
+    }, 100);
+  });
+})();
+</script>
+
+<style>
+.search-section { 
+  padding-inline: 15px;
+  padding-block: 60px;
+}
+
+.search-section .section-subtitle {
+  padding-inline: 10px;
+  margin-block-end: 50px;
+  font-size: var(--fs-4);
+  font-weight: var(--fw-500);
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.search-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 2px solid black;
+  background-color: var(--white);
+  transition: var(--transition-2);
+}
+
+.search-container:focus-within {
+  border-color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  font-family: inherit;
+  background: transparent;
+  padding: 18px 20px;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+.search-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-2);
+  border-left: 1px solid #eee;
+}
+
+.search-icon-btn:hover {
+  background-color: #f9f9f9;
+}
+
+.search-results-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 2px solid black;
+  z-index: 1000;
+  max-height: 600px;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.search-results-dropdown.active {
+  display: block;
+}
+
+.suggestions-section,
+.products-section {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.suggestions-section:last-child,
+.products-section:last-child {
+  border-bottom: none;
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: var(--fw-600);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 15px 0;
+  color: #666;
+}
+
+.suggestions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: var(--transition-2);
+  border-radius: 4px;
+}
+
+.suggestion-item:hover {
+  background-color: #f5f5f5;
+}
+
+.suggestion-item svg {
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+.suggestion-item span {
+  font-size: 14px;
+  color: #333;
+}
+
+.products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.search-result-item {
+  background-color: white;
+  transition: var(--transition-2);
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:hover {
+  background-color: #fafafa;
+}
+
+.search-result-item a {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-decoration: none;
+  color: inherit;
+  padding: 15px 10px;
+  position: relative;
+}
+
+.product-image {
+  width: 70px;
+  height: 70px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background-color: #f9f9f9;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-2);
+}
+
+.search-result-item:hover .product-image img {
+  transform: scale(1.05);
+}
+
+.product-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-title {
+  font-size: 14px;
+  font-weight: var(--fw-500);
+  margin: 0 0 8px 0;
+  color: black;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.product-pricing {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.product-price {
+  font-size: 14px;
+  font-weight: var(--fw-600);
+  color: black;
+}
+
+.compare-price {
+  font-size: 12px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.arrow-icon {
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.search-result-item:hover .arrow-icon {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.no-results,
+.error-message {
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.error-message {
+  color: #d32f2f;
+}
+
+@media (min-width: 768px) {
+  .search-input {
+    font-size: 18px;
+    padding: 22px 25px;
+  }
+
+  .search-icon-btn {
+    padding: 22px 25px;
+  }
+
+  .product-image {
+    width: 90px;
+    height: 90px;
+  }
+
+  .product-title {
+    font-size: 15px;
+  }
+
+  .product-price {
+    font-size: 15px;
+  }
+
+  .suggestions-section,
+  .products-section {
+    padding: 25px 30px;
+  }
+}
+
+@media (min-width: 992px) {
+  .search-section {
+    padding-block: 100px;
+  }
+
+  .search-results-dropdown {
+    max-height: 700px;
+  }
+
+  .search-wrapper {
+    max-width: 1000px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .search-input {
+    font-size: 20px;
+  }
+
+  .product-title {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .search-section { 
+    padding-inline: 70px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "search",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Discover Your Perfect Scent"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Search Placeholder",
+      "default": "Search for perfumes, collections..."
+    },
+    {
+      "type": "text",
+      "id": "popular_searches",
+      "label": "Popular Searches (comma-separated)",
+      "default": "Luxury Perfumes,  Evening Elegance, Exclusive Collections, Men's Fragrances, Women's Fragrances",
+      "info": "Enter popular search terms separated by commas"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Search Page"
+    }
+  ]
+}
+{% endschema %}

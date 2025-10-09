@@ -1,0 +1,77 @@
+ <!-- 
+        - #NEWSLETTER
+      -->
+
+      <section class="section newsletter" aria-label="newsletter" data-aos="fade-up">
+        <div class="container">
+
+          <div class="newsletter-card">
+
+            <div class="card-content">
+              <h2 class="h2 section-title">Our Newsletter</h2>
+
+              <p class="section-text">
+                Subscribe our newsletter and get discount 50% off
+              </p>
+            </div>
+
+            <form action="" class="card-form">
+              <input type="email" name="email_address" placeholder="Your email address" required class="email-field">
+
+              <button type="submit" class="newsletter-btn" aria-label="subscribe">
+                <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+              </button>
+            </form>
+
+          </div>
+
+        </div>
+      </section>
+
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const popup = document.getElementById('newsletter-popup');
+        const cookieName = 'newsletterPopupSeen';
+      
+        function showPopup() {
+          popup.style.display = 'flex';
+        }
+      
+        function closePopup() {
+          popup.style.display = 'none';
+          // Set a cookie to remember that the user has seen the popup
+          document.cookie = `${cookieName}=true; max-age=86400; path=/`; // Cookie expires in 1 day
+        }
+      
+        // Check if the popup has been shown before
+        if (!document.cookie.split('; ').find(row => row.startsWith(cookieName))) {
+          // Show the popup after 5 seconds (5000 milliseconds)
+          setTimeout(showPopup, 5000);
+        }
+      
+        // Add event listener to close the popup
+        document.querySelector('.close-popup').addEventListener('click', closePopup);
+      });
+      
+  </script> 
+  {% schema %}
+{
+  "name": "newsletter",
+  "settings": [
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Hero Image",
+      }
+
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "newsletter"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,219 @@
+{% comment %} 
+
+
+
+{% if product.collections.size > 0 %}
+  {% assign current_collection = product.collections.first %}
+  {% assign related_products = current_collection.products | where: "id", "!=", product.id | limit: 4 %}
+
+  {% if related_products.size > 0 %}
+    <section class="related-products">
+      <h2 class="section-title">You may also like</h2>
+      <div class="related-products-grid">
+        {% for related_product in related_products %}
+          <div class="product-card">
+            <a href="{{ related_product.url }}" class="product-link">
+              <div class="product-image">
+                <img src="{{ related_product.featured_image | img_url: 'medium' }}" alt="{{ related_product.title | escape }}">
+              </div>
+              <div class="product-details">
+                <h3 class="product-title">{{ related_product.title }}</h3>
+                <p class="product-price">{{ related_product.price | money }}</p>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+{% endif %}
+
+
+<style>
+  .related-products {
+    margin-top: 2rem;
+  }
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .related-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    justify-content: center;
+  }
+  .product-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    padding: 1rem;
+    transition: transform 0.3s ease-in-out;
+  }
+  .product-card:hover {
+    transform: scale(1.05);
+  }
+  .product-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  .product-title {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+  }
+  .product-price {
+    font-weight: bold;
+    color: #ff4500;
+  }
+</style> {% endcomment %}
+
+
+{% assign current_collection = product.collections.first | default: collections['all'] %}
+{% if current_collection %}
+  {% assign related_products = current_collection.products | where: "id", "!=", product.id | limit: 4 %}
+  {% if related_products.size > 0 %}
+    <section class="related-products">
+      <h2 class="section-title">You may also like</h2>
+      <div class="related-products-grid">
+        {% for related_product in related_products %}
+          <div class="product-card">
+            <a href="{{ related_product.url }}" class="product-link">
+              <div class="product-image">
+                <img src="{{ related_product.featured_image | img_url: 'medium' }}" alt="{{ related_product.title | escape }}">
+              </div>
+              <div class="product-details">
+                <h3 class="product-title">{{ related_product.title }}</h3>
+                <p class="product-price">{{ related_product.price | money }}</p>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% else %}
+    <p>No related products available in collection: {{ current_collection.title | escape }}.</p>
+  {% endif %}
+{% else %}
+  <p>No collections assigned to this product and no fallback collection available.</p>
+{% endif %}
+
+<style>
+  .related-products {
+    margin-top: 2rem;
+  }
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .related-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    justify-content: center;
+  }
+  .product-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    padding: 1rem;
+    transition: transform 0.3s ease-in-out;
+  }
+  .product-card:hover {
+    transform: scale(1.05);
+  }
+  .product-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  .product-title {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+  }
+  .product-price {
+    font-weight: bold;
+    color: #ff4500寻觾
+  }
+</style>
+
+
+
+{% comment %} {% if product.collections.size > 0 %}
+  {% assign current_collection = product.collections.first %}
+  {% assign related_products = current_collection.products | where: "id", "!=", product.id | limit: 4 %}
+  {% if related_products.size > 0 %}
+    <section class="related-products">
+      <h2 class="section-title">You may also like</h2>
+      <div class="related-products-grid">
+        {% for related_product in related_products %}
+          <div class="product-card">
+            <a href="{{ related_product.url }}" class="product-link">
+              <div class="product-image">
+                <img src="{{ related_product.featured_image | img_url: 'medium' }}" alt="{{ related_product.title | escape }}">
+              </div>
+              <div class="product-details">
+                <h3 class="product-title">{{ related_product.title }}</h3>
+                <p class="product-price">{{ related_product.price | money }}</p>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% else %}
+    <!-- Debug: No related products found -->
+    <p>No related products available.</p>
+  {% endif %}
+{% else %}
+  <!-- Debug: No collections assigned to this product -->
+  <p>This product is not assigned to any collections.</p>
+{% endif %}
+
+<style>
+  .related-products {
+    margin-top: 2rem;
+  }
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .related-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    justify-content: center;
+  }
+  .product-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    padding: 1rem;
+    transition: transform 0.3s ease-in-out;
+  }
+  .product-card:hover {
+    transform: scale(1.05);
+  }
+  .product-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  .product-title {
+    fontfluoro: 1rem;
+    margin: 0.5rem 0;
+  }
+  .product-price {
+    font-weight: bold;
+    color: #ff4500;
+  }
+</style> {% endcomment %}

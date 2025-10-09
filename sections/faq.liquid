@@ -1,0 +1,160 @@
+<div class="">
+  <!-- Hero Section -->
+  <div class="faq-hero" style="background-image: url('{{ 'Our-Story2.jpg' | asset_url }}');">
+    <div class="faq-overlay">
+      <h3 class="faq-title">FAQ'S</h3>
+      <p class="faq-subtitle">Discover the essence of luxury and sophistication</p>
+    </div>
+  </div>  
+  <div class="faq-container">
+    <h1>Frequently Asked Questions</h1>
+    
+    <div class="faq">
+        <button onclick="toggleFaq(this)">What types of perfumes do you sell?</button>
+        <div class="faq-content">
+            <p>We offer a wide variety of perfumes, including designer fragrances, niche perfumes, and exclusive scents for both men and women. Popular brands include Chanel, Dior, and Tom Ford.</p>
+        </div>
+    </div>
+    
+    <div class="faq">
+        <button onclick="toggleFaq(this)">Do you offer international shipping?</button>
+        <div class="faq-content">
+            <p>Yes! We ship worldwide. Shipping rates and delivery times vary depending on your location. Estimated delivery times are provided at checkout.</p>
+        </div>
+    </div>
+    
+    <div class="faq">
+        <button onclick="toggleFaq(this)">Are your perfumes authentic?</button>
+        <div class="faq-content">
+            <p>Absolutely! We guarantee authentic perfumes sourced directly from authorized distributors and brands. Every fragrance comes in its original packaging.</p>
+        </div>
+    </div>
+    
+    <div class="faq">
+        <button onclick="toggleFaq(this)">What is your return policy?</button>
+        <div class="faq-content">
+            <p>We accept returns within 14 days of purchase, provided the perfume is unopened and in its original packaging. Please contact our support team for return instructions.</p>
+        </div>
+    </div>
+    
+    <div class="faq">
+        <button onclick="toggleFaq(this)">How can I track my order?</button>
+        <div class="faq-content">
+            <p>Once your order has been shipped, we will send you a tracking number via email. You can use this to track your package on our shipping partner's website.</p>
+        </div>
+    </div>
+    
+    <div class="faq">
+        <button onclick="toggleFaq(this)">Do you offer gift wrapping?</button>
+        <div class="faq-content">
+            <p>Yes! We offer premium gift wrapping options at checkout, perfect for special occasions. Each wrapped item includes a personalized message if desired.</p>
+        </div>
+    </div>
+    
+    <div class="faq">
+        <button onclick="toggleFaq(this)">What payment methods do you accept?</button>
+        <div class="faq-content">
+            <p>We accept major credit cards (Visa, MasterCard, American Express), PayPal, Apple Pay, and Google Pay. All transactions are secure and encrypted.</p>
+        </div>
+    </div>
+
+    <div class="faq">
+        <button onclick="toggleFaq(this)">How long does shipping take?</button>
+        <div class="faq-content">
+            <p>Shipping times depend on your location. Domestic orders typically take 3-5 business days, while international orders can take 7-14 business days.</p>
+        </div>
+    </div>
+
+    <div class="faq">
+        <button onclick="toggleFaq(this)">Can I modify or cancel my order?</button>
+        <div class="faq-content">
+            <p>Orders can only be modified or canceled within 24 hours of purchase. Contact our customer support team as soon as possible for assistance.</p>
+        </div>
+    </div>
+  </div>
+</div>
+<script>
+    function toggleFaq(button) {
+        const faqItem = button.parentElement;
+        faqItem.classList.toggle("active");
+    }
+</script>
+<style>
+    .faq-hero {
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        height: 40vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .faq-overlay {
+        color: #fff;
+        text-align: center;
+        padding: 2rem;
+      }
+      
+      .faq-title {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+      
+      .faq-subtitle {
+        font-size: 1.5rem;
+      }
+      
+    .faq-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background: white;
+    }
+    h1 {
+        text-align: center;
+    }
+    .faq {
+        border-bottom: 1px solid #ddd;
+    }
+    .faq button {
+        display: block;
+        width: 100%;
+        font-size: 18px;
+        font-weight: light;
+        padding: 15px;
+        cursor: pointer;
+        background: #f1f1f1;
+        border: none;
+        text-align: left;
+        outline: none;
+        transition: background 0.3s;
+    }
+    .faq button:hover {
+        background: #e0e0e0;
+    }
+    .faq-content {
+        max-height: 0;
+        overflow: hidden;
+        padding: 0 15px;
+        transition: max-height 0.3s ease-out;
+        background:var(--granite-gray);
+    }
+    .faq.active .faq-content {
+        max-height: 200px;
+        padding: 15px;
+    }
+</style>    
+{% schema %}
+{
+  "name": "faq",
+  "settings": [],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "faq"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,133 @@
+<!-- sorting-filter.liquid -->
+
+<!-- Container for input and sorting options -->
+<div class="sort-filter-container">
+  <!-- Search Input -->
+  <input type="text" id="sort-filter-input" placeholder="Sort by" autocomplete="off">
+
+  <!-- Sorting Options List -->
+  <ul id="sort-options-list">
+    <li class="sort-option-item"><a href="?sort_by=best-selling">Best Selling</a></li>
+    <li class="sort-option-item"><a href="?sort_by=price-ascending">Price: Low to High</a></li>
+    <li class="sort-option-item"><a href="?sort_by=price-descending">Price: High to Low</a></li>
+    <li class="sort-option-item"><a href="?sort_by=title-ascending">Alphabetically, A-Z</a></li>
+    <li class="sort-option-item"><a href="?sort_by=title-descending">Alphabetically, Z-A</a></li>
+    <li class="sort-option-item"><a href="?sort_by=created-descending">Date: New to Old</a></li>
+    <li class="sort-option-item"><a href="?sort_by=created-ascending">Date: Old to New</a></li>
+  </ul>
+</div>
+
+
+<!-- JavaScript for Filtering -->
+<script>
+  {% comment %} document.getElementById('sort-filter-input').addEventListener('input', function() {
+    var filterValue = this.value.toLowerCase();
+    var sortItems = document.querySelectorAll('#sort-options-list .sort-option-item');
+
+    sortItems.forEach(function(item) {
+      if (item.textContent.toLowerCase().includes(filterValue)) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }); {% endcomment %}
+ 
+    document.addEventListener('DOMContentLoaded', function() {
+      var filterInput = document.getElementById('sort-filter-input');
+      var sortOptionsList = document.getElementById('sort-options-list');
+  
+      // Show the list when the input is focused or clicked
+      filterInput.addEventListener('focus', function() {
+        sortOptionsList.style.display = 'block';
+      });
+  
+      // Hide the list when clicking outside of the input or list
+      document.addEventListener('click', function(event) {
+        if (!filterInput.contains(event.target) && !sortOptionsList.contains(event.target)) {
+          sortOptionsList.style.display = 'none';
+        }
+      });
+  
+      // Keep the list open if the input is focused
+      filterInput.addEventListener('input', function() {
+        sortOptionsList.style.display = 'block';
+      });
+    });
+
+  
+</script>
+
+<!-- CSS Styling -->
+<style>
+  .sort-filter-container {
+    position: relative; /* Ensure the container is the reference for the absolute positioning */
+    width:40%;
+    display:flex;
+    justify-content:end;
+    align-items:start;
+  }
+
+  #sort-filter-input {
+    position: relative;
+    width: 100%;
+    padding: 5px auto;
+    font-size: 16px;
+    border-bottom: 1px solid #ccc;
+    z-index:5;
+  }
+
+  #sort-options-list {
+    position: absolute; /* Position the list absolutely */
+    top: 100%; /* Position it just below the input field */
+    right: 0;
+    left:0;
+    width: 100%;
+    z-index: 100; /* Ensure it appears above other elements */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none; /* Initially hide the list */
+  }
+
+  .sort-option-item {
+    margin-bottom: 0; /* Remove bottom margin for a continuous list */
+  }
+
+  .sort-option-item a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    padding: 10px;
+    display: block;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+
+  .sort-option-item a:last-child {
+    border-bottom: none; /* Remove bottom border from the last item */
+  }
+
+  .sort-option-item a:hover {
+    background-color: #f8f8f8;
+  }
+
+  /* Responsive styling */
+  @media (max-width: 768px) {
+    #sort-filter-input {
+      font-size: 14px;
+      padding: 8px 12px;
+    }
+
+    .sort-option-item a {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+</style>
+

@@ -1,0 +1,194 @@
+<section class="section hero1" aria-label="home">
+  <div class="container">
+    <h1 class="h2 hero-title">
+      <strong class="strong">{{ section.settings.heading_text }}</strong>
+    </h1>
+
+    <div class="wrapper1">
+
+      <form action="/contact#newsletter" method="post" class="newsletter-form" accept-charset="UTF-8">
+        <input type="hidden" name="form_type" value="customer" />
+        <input type="hidden" name="utf8" value="✓" />
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        
+        <input type="email" name="contact[email]" placeholder="Your email address" class="email-field" required>
+
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+
+      <p class="newsletter-text">
+        {{ section.settings.search_text }}
+      </p>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+/*-----------------------------------*\
+  #BLOG HERO SECTION
+\*-----------------------------------*/
+
+.section.hero1 {
+  padding-block-start: 120px;
+  padding-block-end: 60px;
+}
+
+.hero1 .container {
+  text-align: center;
+}
+
+.hero1 .hero-title {
+  margin-block-end: 30px;
+}
+
+.hero1 .wrapper1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 650px;
+  margin-inline: auto;
+}
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.newsletter-form .email-field {
+  padding: 12px 20px;
+  width: 100%;
+  border: 1px solid #000;
+  border-radius: 4px;
+  outline: none;
+  font-size: 1.4rem;
+  transition: border-color 0.2s ease;
+  height: 48px;
+}
+
+.newsletter-form .email-field:focus {
+  border-color: #333;
+}
+
+.newsletter-form .btn {
+  padding: 12px 32px;
+  width: 100%;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  height: 48px;
+}
+
+.newsletter-text {
+  max-width: 600px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+
+@media (min-width: 575px) {
+  .section.hero1 {
+    padding-block-start: 140px;
+    padding-block-end: 80px;
+  }
+}
+
+@media (min-width: 768px) {
+  .section.hero1 {
+    padding-block-start: 160px;
+    padding-block-end: 100px;
+  }
+
+  .hero1 .hero-title {
+    margin-block-end: 40px;
+  }
+
+  .hero1 .wrapper1 {
+    gap: 20px;
+  }
+
+  .newsletter-form {
+    flex-direction: row;
+    gap: 0;
+    align-items: stretch;
+    max-width: 550px;
+  }
+
+  .newsletter-form .email-field {
+    flex: 1;
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+  }
+
+  .newsletter-form .btn {
+    width: auto;
+    min-width: 130px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .newsletter-text {
+    margin-block-start: 4px;
+  }
+}
+
+@media (min-width: 992px) {
+  .section.hero1 {
+    padding-block-start: 180px;
+    padding-block-end: 120px;
+  }
+
+  .hero1 .wrapper1 {
+    gap: 24px;
+  }
+
+  .newsletter-form {
+    max-width: 600px;
+  }
+
+  .newsletter-text {
+    max-width: 650px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .section.hero1 {
+    padding-block-start: 200px;
+    padding-block-end: 140px;
+  }
+
+  .hero1 .hero-title {
+    margin-block-end: 50px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "blog-hero",
+  "settings": [
+    {
+      "type":"text",
+      "id":"heading_text",
+      "label":"Blog Heading",
+      "default":"See our thoughts, stories and ideas."
+     },
+     {
+      "type":"text",
+      "id":"search_text",
+      "label":"Newsletter Description",
+      "default":"Get the email newsletter and unlock access to members-only content and updates"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "blog-hero"
+    }
+  ]
+}
+{% endschema %}

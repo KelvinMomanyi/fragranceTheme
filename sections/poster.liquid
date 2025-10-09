@@ -1,0 +1,225 @@
+
+<section class="poster">
+  <div class="grid grid-3">
+    <div class="autoBLur" style="dislay:none;">.</div>
+    <div class="autoBLur">DESIGNER FRAGRANCES</div>
+    <div class="autoBLur">NICHE PERFUMES</div>
+    <div class="autoBLur">SUBSCRIBE +</div>
+    <div class="autoBLur">EXPLORE MORE &#8599;</div>
+  </div>
+</section>
+
+<style>
+.poster {
+    position: relative;
+    width: 100%;
+    height: 600px; /* Adjust height as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white; /* Ensure text is visible */
+}
+
+.poster::before {
+    content: "";
+    position: absolute;
+    top: 5%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("{{ 'frag.jpg' | asset_url}}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
+
+.poster h1, .poster .right h2, .poster .right p {
+    margin: 0;
+}
+
+
+.poster .image{
+        width: 100%;
+        height: 400px;
+        background-image: url(images/banner.png);
+        position: relative;
+        background-size:cover;
+        background-position:center;
+        
+    }
+
+    .grid figure img{
+        width: 100%;
+    }
+    
+    .grid{
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(var(--row), 100px);
+        margin-top: 50px;
+        gap: 50px;
+    }
+    
+    .grid-3{
+        --row: 6;
+        font-size: 1em;
+    }
+    .grid-3 div{
+        grid-column: 2/ 6;
+        text-wrap: nowrap;
+    }
+    .grid-3 div:nth-child(even){
+        text-align: right;
+    }
+    .grid-3 div:nth-child(5){
+        grid-column: 1/ 6;
+    }
+    .grid-3 div:nth-child(4){
+        grid-column: 1/ 7;
+    }
+    
+
+    .autoRotate{
+        animation: autoRotateAnimation;
+        animation-timeline: view();
+    }
+    @keyframes autoRotateAnimation{
+        from{
+            transform: rotate(0deg);
+        }
+        to{
+            transform: rotate(360deg);
+        }
+    }
+    .grid-3 .autoShow{
+        animation: autoShowAnimation both;
+        animation-timeline: view(70% 5%);
+    
+    }
+    @keyframes autoShowAnimation{
+        from{
+            opacity: 0;
+            transform: translateY(200px) scale(0.3);
+        }to{
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    .autoBLur{
+        animation: autoBLurAnimation linear both;
+        animation-timeline: view();
+    }
+    @keyframes autoBLurAnimation{
+        0%{
+            filter: blur(40px);
+        }
+        45%, 55%{
+            filter: blur(0px);
+        }
+        100%{
+            filter: blur(40px);
+        }
+    }
+    
+    @media screen and (min-width: 575px){
+        header img{
+            height: 1em;
+        }
+        .poster .content h1{
+            font-size: 6em;
+        }
+        .poster .content .right{
+            transform: none;
+        }
+        .grid-2 div:nth-child(1){
+            grid-row: 2;
+        }
+        .grid-2 div:nth-child(3){
+            grid-row: 6;
+        }
+        .grid-2 div:nth-child(4){
+            grid-row: 5;
+        }
+        .grid-3{
+            font-size: 2em;
+            line-height: 0.6em;
+        }
+    }
+    @media screen and (min-width: 768px){
+        header img{
+            height: 1em;
+        }
+        .poster .content h1{
+            font-size: 8em;
+        }
+        .poster .content .right{
+            transform: none;
+        }
+        .grid-2 div:nth-child(1){
+            grid-row: 2;
+        }
+        .grid-2 div:nth-child(3){
+            grid-row: 6;
+        }
+        .grid-2 div:nth-child(4){
+            grid-row: 5;
+        }
+        .grid-3{
+            font-size: 3em;
+            line-height: 0.8em;
+        }
+    }
+
+    @media (min-width: 992px){
+        .grid-3{
+            font-size: 4em;
+            line-height: 1em;
+        }
+    }
+    @media screen and (min-width: 1200px){
+        header img{
+            height: 2em;
+        }
+        .poster .content h1{
+            font-size: 12em;
+        }
+        .poster .content .right{
+            transform: none;
+        }
+        .grid-2 div:nth-child(1){
+            grid-row: 2;
+        }
+        .grid-2 div:nth-child(3){
+            grid-row: 6;
+        }
+        .grid-2 div:nth-child(4){
+            grid-row: 5;
+        }
+        .grid-3{
+            font-size: 5em;
+            line-height: 1.2em;
+        }
+    }
+
+
+
+   
+      
+</style>    
+
+{% schema %}
+{
+  "name": "poster",
+  "settings": [],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "poster",
+    }
+  ]
+}
+
+{%  endschema %}
