@@ -1,7 +1,7 @@
 {{ 'application.css' | asset_url | stylesheet_tag }} 
 {% if section.settings.image1 != blank %}
   <link rel="preload" as="image" href="{{ section.settings.image1 | image_url }}">
-{% else %}
+{% else %} 
   <link rel="preload" as="image" href="{{ 'shoe8.jpg' | asset_url }}">
 {% endif %}
 
@@ -17,10 +17,23 @@
   <link rel="preload" as="image" href="{{ 'shoe16.jpg' | asset_url }}">
 {% endif %}
 
+
+{% if section.settings.image4 != blank %}
+  <link rel="preload" as="image" href="{{ section.settings.image4 | image_url }}">
+{% else %}
+  <link rel="preload" as="image" href="{{ 'shoe16.jpg' | asset_url }}">
+{% endif %}
+
+{% if section.settings.image5 != blank %}
+  <link rel="preload" as="image" href="{{ section.settings.image5 | image_url }}">
+{% else %}
+  <link rel="preload" as="image" href="{{ 'shoe16.jpg' | asset_url }}">
+{% endif %}
+
 <link rel="preload" as="image" href="{{ 'MainLogo_png.svg' | asset_url }}">
 
 
-<<section class="section hero" id="home" aria-label="home">
+<section class="section hero" id="home" aria-label="home">
   <div class="container">
 
     <ul class="hero-list">
@@ -38,7 +51,7 @@
           </div>
           <div class="card-content">
             <h3>
-              <a href="#" class="card-title">{{ section.settings.title1 | default: "Jo Malone" }}</a>
+              <a href="#" class="card-title">{{ section.settings.title1 | default: "Product" }}</a>
             </h3>
             <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
           </div>
@@ -60,7 +73,7 @@
           <div class="overlay"></div>
           <div class="card-content">
             <h3>
-              <a href="#" class="card-title">{{ section.settings.title2 | default: "Juliette has a gun" }}</a>
+              <a href="#" class="card-title">{{ section.settings.title2 | default: "Product" }}</a>
             </h3>
             <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
           </div>
@@ -81,7 +94,7 @@
         </div>
           <div class="card-content">
             <h3>
-              <a href="#" class="card-title">{{ section.settings.title3 | default: "Dior" }}</a>
+              <a href="#" class="card-title">{{ section.settings.title3 | default: "Product" }}</a>
             </h3>
             <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
           </div>
