@@ -1,43 +1,171 @@
 <section class="section gallery" id="gallery">
   <div class="container">
-    <p>{{ section.settings.gallery_title }}</p>
+    <p>Explore Our Fragrance Collections</p>
     <ul class="gallery-list">
-      {% for block in section.blocks %}
-        {% if forloop.index == 1 or forloop.index == 3 or forloop.index == 5 or forloop.index == 7 %}
-          <li class="gallery-item" data-reveal>
-        {% endif %}
 
-            <div class="gallery-card">
-              <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
-                {% if block.settings.image != blank %}
-                  <img src="{{ block.settings.image | image_url: width: 450 }}" width="450" height="625" loading="lazy" alt="{{ block.settings.title }}" class="img-cover">
-                {% else %}
-                  {{ 'product-5' | placeholder_svg_tag: 'img-cover' }}
-                {% endif %}
-              </figure>
+      <li class="gallery-item" data-reveal>
 
-              <div class="card-content">
-                <h3 class="h6">
-                  <a href="{{ block.settings.link }}" class="card-title">{{ block.settings.title }}</a>
-                </h3>
-                <span class="card-tag">{{ block.settings.tag }}</span>
-              </div>
+        <div class="gallery-card">
+          <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
+            <img src="{{'gallery-1.jpg' | asset_url}}" width="450" height="625" loading="lazy" alt="Velour Essence"
+              class="img-cover">
+          </figure>
 
-              <a href="{{ block.settings.link }}" class="btn-icon">
-                <img src="{{ 'arrow-forward.svg' | asset_url }}" width="43" height="20" loading="lazy" alt="arrow-forward icon">
-              </a>
-            </div>
+          <div class="card-content">
+            <h3 class="h6">
+              <a href="#" class="card-title">Velour Essence</a>
+            </h3>
+            <span class="card-tag">Luxury, Signature</span>
+          </div>
 
-        {% if forloop.index == 2 or forloop.index == 4 or forloop.index == 6 or forloop.index == 8 %}
-          </li>
-        {% endif %}
-      {% endfor %}
+          <a href="#" class="btn-icon">
+            <img src="{{'arrow-forward.svg'| asset_url}}" width="43" height="20" loading="lazy" alt="arrow-forward icon">
+          </a>
+        </div>
+
+        <div class="gallery-card">
+          <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
+            <img src="{{'gallery-2.jpg' | asset_url }}" width="450" height="625" loading="lazy"
+              alt="Blooming Petals" class="img-cover">
+          </figure>
+
+          <div class="card-content">
+            <h3 class="h6">
+              <a href="#" class="card-title">Blooming Petals</a>
+            </h3>
+            <span class="card-tag">Floral, Fresh</span>
+          </div>
+
+          <a href="#" class="btn-icon">
+            <img src="{{'arrow-forward.svg' | asset_url}}" width="43" height="20" loading="lazy" alt="arrow-forward icon">
+          </a>
+        </div>
+      </li>
+
+      <li class="gallery-item" data-reveal>
+
+        <div class="gallery-card">
+          <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
+            <img src="{{'gallery-3.jpg' | asset_url}}" width="450" height="625" loading="lazy" alt="Midnight Noir"
+              class="img-cover">
+          </figure>
+
+          <div class="card-content">
+            <h3 class="h6">
+              <a href="#" class="card-title">Midnight Noir</a>
+            </h3>
+            <span class="card-tag">Bold, Evening</span>
+          </div>
+
+          <a href="#" class="btn-icon">
+            <img src="{{'arrow-forward.svg' | asset_url }}" width="43" height="20" loading="lazy" alt="arrow-forward icon">
+          </a>
+        </div>
+
+        <div class="gallery-card">
+          <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
+            <img src="{{'gallery-4.jpg' | asset_url }}" width="450" height="625" loading="lazy" alt="Citrus Mist"
+              class="img-cover">
+          </figure>
+
+          <div class="card-content">
+            <h3 class="h6">
+              <a href="#" class="card-title">Citrus Mist</a>
+            </h3>
+            <span class="card-tag">Fresh, Daily Wear</span>
+          </div>
+
+          <a href="#" class="btn-icon">
+            <img src="{{'arrow-forward.svg' | asset_url}}" width="43" height="20" loading="lazy" alt="arrow-forward icon">
+          </a>
+        </div>
+      </li>
+
+      <li class="gallery-item" data-reveal>
+
+        <div class="gallery-card">
+          <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
+            <img src="{{'gallery-5.jpg' | asset_url}}" width="450" height="625" loading="lazy" alt="Golden Aura"
+              class="img-cover">
+          </figure>
+
+          <div class="card-content">
+            <h3 class="h6">
+              <a href="#" class="card-title">Golden Aura</a>
+            </h3>
+            <span class="card-tag">Warm, Oriental</span>
+          </div>
+
+          <a href="#" class="btn-icon">
+            <img src="{{'arrow-forward.svg' | asset_url }}" width="43" height="20" loading="lazy" alt="arrow-forward icon">
+          </a>
+        </div>
+
+        <div class="gallery-card">
+          <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
+            <img src="{{'gallery-6.jpg' | asset_url }}" width="450" height="625" loading="lazy" alt="Ocean Breeze"
+              class="img-cover">
+          </figure>
+
+          <div class="card-content">
+            <h3 class="h6">
+              <a href="#" class="card-title">Ocean Breeze</a>
+            </h3>
+            <span class="card-tag">Aqua, Refreshing</span>
+          </div>
+
+          <a href="#" class="btn-icon">
+            <img src="{{'arrow-forward.svg' | asset_url}}" width="43" height="20" loading="lazy" alt="arrow-forward icon">
+          </a>
+        </div>
+      </li>
+
+      <li class="gallery-item" data-reveal>
+
+        <div class="gallery-card">
+          <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
+            <img src="{{'gallery-7.jpg' | asset_url }}" width="450" height="625" loading="lazy"
+              alt="Rose Éclat" class="img-cover">
+          </figure>
+
+          <div class="card-content">
+            <h3 class="h6">
+              <a href="#" class="card-title">Rose Éclat</a>
+            </h3>
+            <span class="card-tag">Romantic, Floral</span>
+          </div>
+
+          <a href="#" class="btn-icon">
+            <img src="{{'arrow-forward.svg' | asset_url}}" width="43" height="20" loading="lazy" alt="arrow-forward icon">
+          </a>
+        </div>
+
+        <div class="gallery-card">
+          <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
+            <img src="{{'gallery-8.jpg' | asset_url}}" width="450" height="625" loading="lazy"
+              alt="Vanilla Secrets" class="img-cover">
+          </figure>
+
+          <div class="card-content">
+            <h3 class="h6">
+              <a href="#" class="card-title">Vanilla Secrets</a>
+            </h3>
+            <span class="card-tag">Sweet, Cozy</span>
+          </div>
+
+          <a href="#" class="btn-icon">
+            <img src="{{'arrow-forward.svg' | asset_url}}" width="43" height="20" loading="lazy" alt="arrow-forward icon">
+          </a>
+        </div>
+      </li>
+
     </ul>
   </div>
 </section>
 
-<style>
-  /*-----------------------------------*\
+
+  <style>
+    /*-----------------------------------*\
   #GALLERY
 \*-----------------------------------*/
 
@@ -150,6 +278,7 @@
 @media (min-width:575px){
     :is(.gallery) { max-width: unset; }
 
+
     /**
    * GALLERY
    */
@@ -183,7 +312,15 @@
     transform: translateY(0);
     opacity: 1;
   }
+
+
+
+
+
+
 }
+
+
 
 @media (min-width: 992px){
   /**
@@ -210,6 +347,7 @@
    }
 }
 
+
 @media (min-width: 1200px){
   /**
    * GALLERY
@@ -220,113 +358,21 @@
    .gallery-card .card-title { font-weight: var(--fw-300); }
 }
 
+
+
 @media (min-width: 1400px){
   :is(.gallery)  { max-width: 1580px; }
 }
-</style>
+  </style>  
 
-{% schema %}
+  {% schema %}
 {
-  "name": "Gallery",
-  "settings": [
-    {
-      "type": "text",
-      "id": "gallery_title",
-      "label": "Gallery Title",
-      "default": "Explore Our Fragrance Collections"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "gallery_item",
-      "name": "Gallery Item",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Fragrance Name"
-        },
-        {
-          "type": "text",
-          "id": "tag",
-          "label": "Tag",
-          "default": "Category, Type"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        }
-      ]
-    }
-  ],
+  "name": "gallery",
+  "settings": [],
+  "blocks": [],
   "presets": [
     {
-      "name": "Gallery",
-      "blocks": [
-        {
-          "type": "gallery_item",
-          "settings": {
-            "title": "Velour Essence",
-            "tag": "Luxury, Signature"
-          }
-        },
-        {
-          "type": "gallery_item",
-          "settings": {
-            "title": "Blooming Petals",
-            "tag": "Floral, Fresh"
-          }
-        },
-        {
-          "type": "gallery_item",
-          "settings": {
-            "title": "Midnight Noir",
-            "tag": "Bold, Evening"
-          }
-        },
-        {
-          "type": "gallery_item",
-          "settings": {
-            "title": "Citrus Mist",
-            "tag": "Fresh, Daily Wear"
-          }
-        },
-        {
-          "type": "gallery_item",
-          "settings": {
-            "title": "Golden Aura",
-            "tag": "Warm, Oriental"
-          }
-        },
-        {
-          "type": "gallery_item",
-          "settings": {
-            "title": "Ocean Breeze",
-            "tag": "Aqua, Refreshing"
-          }
-        },
-        {
-          "type": "gallery_item",
-          "settings": {
-            "title": "Rose Éclat",
-            "tag": "Romantic, Floral"
-          }
-        },
-        {
-          "type": "gallery_item",
-          "settings": {
-            "title": "Vanilla Secrets",
-            "tag": "Sweet, Cozy"
-          }
-        }
-      ]
+      "name": "gallery"
     }
   ]
 }
