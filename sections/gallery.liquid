@@ -1,7 +1,7 @@
 <section class="section gallery" id="gallery">
   <div class="container">
     <p>Explore Our Fragrance Collections</p>
-    <ul class="gallery-list">
+    {% comment %} <ul class="gallery-list">
 
       <li class="gallery-item" data-reveal>
 
@@ -159,7 +159,50 @@
         </div>
       </li>
 
-    </ul>
+    </ul> {% endcomment %}
+    <ul class="gallery-list">
+  {% for block in section.blocks %}
+    {% if forloop.index == 1 or forloop.index == 3 or forloop.index == 5 or forloop.index == 7 %}
+      <li class="gallery-item" data-reveal>
+    {% endif %}
+
+        <div class="gallery-card">
+          <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 450 }}" 
+                   width="450" 
+                   height="625" 
+                   loading="lazy" 
+                   alt="{{ block.settings.image.alt | default: block.settings.title }}"
+                   class="img-cover">
+            {% else %}
+              {{ 'product-5' | placeholder_svg_tag: 'img-cover' }}
+            {% endif %}
+          </figure>
+
+          <div class="card-content">
+            <h3 class="h6">
+              <a href="{{ block.settings.link }}" class="card-title">
+                {{ block.settings.title }}
+              </a>
+            </h3>
+            <span class="card-tag">{{ block.settings.tag }}</span>
+          </div>
+
+          <a href="{{ block.settings.link }}" class="btn-icon">
+            <img src="{{ 'arrow-forward.svg' | asset_url }}" 
+                 width="43" 
+                 height="20" 
+                 loading="lazy" 
+                 alt="arrow-forward icon">
+          </a>
+        </div>
+
+    {% if forloop.index == 2 or forloop.index == 4 or forloop.index == 6 or forloop.index == 8 %}
+      </li>
+    {% endif %}
+  {% endfor %}
+     </ul>
   </div>
 </section>
 
@@ -366,14 +409,125 @@
   </style>  
 
   {% schema %}
-{
-  "name": "gallery",
-  "settings": [],
-  "blocks": [],
-  "presets": [
     {
-      "name": "gallery"
+      "name": "Gallery",
+      "tag": "section",
+      "class": "section gallery",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Section Settings"
+        },
+        {
+          "type": "text",
+          "id": "section_heading",
+          "label": "Section Heading",
+          "default": "Our Collection"
+        },
+        {
+          "type": "range",
+          "id": "items_per_row",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "label": "Items per row",
+          "default": 2
+        }
+      ],
+      "blocks": [
+        {
+          "type": "gallery_item",
+          "name": "Gallery Item",
+          "settings": [
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image",
+              "info": "450 x 625px recommended"
+            },
+            {
+              "type": "text",
+              "id": "title",
+              "label": "Title",
+              "default": "Product Name"
+            },
+            {
+              "type": "text",
+              "id": "tag",
+              "label": "Tag",
+              "default": "Category, Style",
+              "info": "Comma-separated tags"
+            },
+            {
+              "type": "url",
+              "id": "link",
+              "label": "Link"
+            }
+          ]
+        }
+      ],
+      "presets": [
+        {
+          "name": "Gallery",
+          "blocks": [
+            {
+              "type": "gallery_item",
+              "settings": {
+                "title": "Velour Essence",
+                "tag": "Luxury, Signature"
+              }
+            },
+            {
+              "type": "gallery_item",
+              "settings": {
+                "title": "Blooming Petals",
+                "tag": "Floral, Fresh"
+              }
+            },
+            {
+              "type": "gallery_item",
+              "settings": {
+                "title": "Midnight Noir",
+                "tag": "Bold, Evening"
+              }
+            },
+            {
+              "type": "gallery_item",
+              "settings": {
+                "title": "Citrus Mist",
+                "tag": "Fresh, Daily Wear"
+              }
+            },
+            {
+              "type": "gallery_item",
+              "settings": {
+                "title": "Golden Aura",
+                "tag": "Warm, Oriental"
+              }
+            },
+            {
+              "type": "gallery_item",
+              "settings": {
+                "title": "Ocean Breeze",
+                "tag": "Aqua, Refreshing"
+              }
+            },
+            {
+              "type": "gallery_item",
+              "settings": {
+                "title": "Rose Éclat",
+                "tag": "Romantic, Floral"
+              }
+            },
+            {
+              "type": "gallery_item",
+              "settings": {
+                "title": "Vanilla Secrets",
+                "tag": "Sweet, Cozy"
+              }
+            }
+          ]
+        }
+      ]
     }
-  ]
-}
-{% endschema %}
+    {% endschema %}
