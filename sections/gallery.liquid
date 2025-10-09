@@ -2,7 +2,6 @@
   <div class="container">
     <p>{{ section.settings.gallery_title }}</p>
     <ul class="gallery-list">
-
       {% for block in section.blocks %}
         {% if forloop.index == 1 or forloop.index == 3 or forloop.index == 5 or forloop.index == 7 %}
           <li class="gallery-item" data-reveal>
@@ -21,7 +20,7 @@
                 <h3 class="h6">
                   <a href="{{ block.settings.link }}" class="card-title">{{ block.settings.title }}</a>
                 </h3>
-                <span class="card-tag">{{ block.settings.tags }}</span>
+                <span class="card-tag">{{ block.settings.tag }}</span>
               </div>
 
               <a href="{{ block.settings.link }}" class="btn-icon">
@@ -33,7 +32,6 @@
           </li>
         {% endif %}
       {% endfor %}
-
     </ul>
   </div>
 </section>
@@ -152,7 +150,6 @@
 @media (min-width:575px){
     :is(.gallery) { max-width: unset; }
 
-
     /**
    * GALLERY
    */
@@ -226,7 +223,7 @@
 @media (min-width: 1400px){
   :is(.gallery)  { max-width: 1580px; }
 }
-</style>  
+</style>
 
 {% schema %}
 {
@@ -241,8 +238,8 @@
   ],
   "blocks": [
     {
-      "type": "gallery_card",
-      "name": "Gallery Card",
+      "type": "gallery_item",
+      "name": "Gallery Item",
       "settings": [
         {
           "type": "image_picker",
@@ -252,14 +249,14 @@
         {
           "type": "text",
           "id": "title",
-          "label": "Product Title",
+          "label": "Title",
           "default": "Fragrance Name"
         },
         {
           "type": "text",
-          "id": "tags",
-          "label": "Tags",
-          "default": "Category, Style"
+          "id": "tag",
+          "label": "Tag",
+          "default": "Category, Type"
         },
         {
           "type": "url",
@@ -274,59 +271,59 @@
       "name": "Gallery",
       "blocks": [
         {
-          "type": "gallery_card",
+          "type": "gallery_item",
           "settings": {
             "title": "Velour Essence",
-            "tags": "Luxury, Signature"
+            "tag": "Luxury, Signature"
           }
         },
         {
-          "type": "gallery_card",
+          "type": "gallery_item",
           "settings": {
             "title": "Blooming Petals",
-            "tags": "Floral, Fresh"
+            "tag": "Floral, Fresh"
           }
         },
         {
-          "type": "gallery_card",
+          "type": "gallery_item",
           "settings": {
             "title": "Midnight Noir",
-            "tags": "Bold, Evening"
+            "tag": "Bold, Evening"
           }
         },
         {
-          "type": "gallery_card",
+          "type": "gallery_item",
           "settings": {
             "title": "Citrus Mist",
-            "tags": "Fresh, Daily Wear"
+            "tag": "Fresh, Daily Wear"
           }
         },
         {
-          "type": "gallery_card",
+          "type": "gallery_item",
           "settings": {
             "title": "Golden Aura",
-            "tags": "Warm, Oriental"
+            "tag": "Warm, Oriental"
           }
         },
         {
-          "type": "gallery_card",
+          "type": "gallery_item",
           "settings": {
             "title": "Ocean Breeze",
-            "tags": "Aqua, Refreshing"
+            "tag": "Aqua, Refreshing"
           }
         },
         {
-          "type": "gallery_card",
+          "type": "gallery_item",
           "settings": {
             "title": "Rose Éclat",
-            "tags": "Romantic, Floral"
+            "tag": "Romantic, Floral"
           }
         },
         {
-          "type": "gallery_card",
+          "type": "gallery_item",
           "settings": {
             "title": "Vanilla Secrets",
-            "tags": "Sweet, Cozy"
+            "tag": "Sweet, Cozy"
           }
         }
       ]
