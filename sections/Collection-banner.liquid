@@ -1,336 +1,298 @@
-   <!-- 
-        - #ABOUT
-      -->
-
-      <section class="section about" id="about" aria-label="about" data-aos="fade-up">
-        <div class="container"> 
-
-          <h2 class="section-title">{{ section.settings.title}}</h2>
-
-          <p class="section-text">
-            {{ section.settings.info}}
-          </p>
-        </div>
-          <div class="about-card">
-            <figure class="card-banner img-holder" style="--width: 1380; --height: 550;">
-            {% comment %}<div style="width: 100%; height:100%; background-image: url('{{ 'F5.jpg' | asset_url }}'); background-size: cover; background-position: center; background-attachment: fixed;" role="img" aria-label="Woodex promo"></div>{% endcomment %}
-              <video id="promoVideo" width="1170" height="550" class="img-cover" autoplay loop muted playsinline>
-                <source src="{{ 'Ink.mp4' | asset_url }}" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
-            
-              {% comment %} <img src="{{'F5.jpg' | asset_url}}" width="1170" height="450" loading="lazy" alt="Woodex promo"
-                class="img-cover"> {% endcomment %}
-            </figure>
-
-            {% comment %} <button class="play-btn" aria-label="play video">
-              <p class="scents">Scents that Speak, Luxury You Can Wear.</p>
-            </button>  {% endcomment %}
-                <div class="box">
-                    <span>scent</span>
-                    <span>&nbsp;</span>
-                    <span>that</span>
-                    <span>&nbsp;</span>
-                    <span>you</span>
-                    <span>&nbsp;</span>
-                    <span>can</span>
-                    <span>&nbsp;</span>
-                    <span>wear</span>
-              </div>
-          </div>
-
-        {% comment %} </div> {% endcomment %}
-      </section>
-
- <style>
-
-  .collection {padding-block-start: 0; margin-top:5%;}
+<section class="section about" id="about" aria-label="about" data-aos="fade-up">
+  <div class="container"> 
+    <h2 class="section-title">{{ section.settings.title }}</h2>
+    <p class="section-text">{{ section.settings.info }}</p>
+  </div>
   
+  <div class="about-card">
+    <figure class="card-banner img-holder" style="--width: 1380; --height: 550;">
+      <video 
+        id="promoVideo" 
+        width="1170" 
+        height="550" 
+        class="img-cover" 
+        {% if section.settings.video_autoplay %}autoplay{% endif %}
+        {% if section.settings.video_loop %}loop{% endif %}
+        {% if section.settings.video_muted %}muted{% endif %}
+        playsinline
+      >
+        <source src="{{ section.settings.video_file | default: 'Ink.mp4' | asset_url }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </figure>
 
-  
-  .collection-list{
-   display: grid;
-   gap: 15px;
+    <div class="box" data-text-position="{{ section.settings.text_position }}">
+      {% assign words = section.settings.animation_text | split: ' ' %}
+      {% for word in words %}
+        <span>{{ word }}</span>
+        {% unless forloop.last %}<span>&nbsp;</span>{% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .collection {
+    padding-block-start: 0; 
+    margin-top: 5%;
   }
-  
-  .collection-card{
+
+  .collection-list {
+    display: grid;
+    gap: 15px;
+  }
+
+  .collection-card {
     background-color: var(--light-gray);
     min-height: 400px;
-    padding:40px;
+    padding: 40px;
     padding-block-end: 30px;
     display: flex;
     flex-direction: column;
   }
-  
-  .collection-card .card-title{
+
+  .collection-card .card-title {
     margin-block-end: 12px;
   }
-  
-  .collection-card .card-text{
-    color:var(--black);
+
+  .collection-card .card-text {
+    color: var(--black);
     font-size: var(--fs-6);
     font-weight: var(--fs-600);
     margin-block-end: auto;
   }
 
-  .scents{
+  .scents {
     font-size: large;
-    font-family:var(--ff-roboto) ;
-  }
-      /*
-  responsive for larger than 575px screen
-  */
-
-  .box {
-  position: fixed;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
-}
-
-.box span {
-  font-family: "Quicksand", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  text-shadow: 0px 0px 5px rgba(31, 29, 46, 0.55);
-  font-size: 4rem;
-  text-transform: uppercase;
-  color: rgb(212, 212, 212);
-  display: inline-block;
-}
-
-  @media screen and (max-width: 575px) {
-    
-    .scents{
-    font-size: medium;
+    font-family: var(--ff-roboto);
   }
 
   .box {
-
-    top: 70%;
-
+    position: fixed;
+    top: {{ section.settings.text_position }};
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    z-index: 10;
   }
+
   .box span {
-    font-size:2rem
-   }
+    font-family: "Quicksand", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-shadow: 0px 0px 5px rgba(31, 29, 46, 0.55);
+    font-size: 4rem;
+    text-transform: uppercase;
+    color: rgb(212, 212, 212);
+    display: inline-block;
+  }
 
-}
-    
-    
-    /*
-    responsive for larger than 768px screen
-    */
-    @media screen and (min-width: 768px) {
-       
-      .flex-item{max-width: calc(50% - 15px);}
-
-      
-      
-      
-      /*
-      COLLECTION
-      */
-      .collection-card{ min-height:450px;}
-      
-      }
-
-      .scents{
-        font-size: large;
-      }
-    
-    
-    /*
-    responsive for larger than 992px screen
-    */
-    @media screen and (min-width: 992px) {
-    
-      .scrollbar-item {min-width: calc(33.33% - 20px);}
-    
-      .flex-item {max-width: calc(33.33% - 20px);}
-    
-    
-         /*
-     COLLECTION
-      */
-    
-      .collection-list{
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-      }
-
-      .scents{
-        font-size: large;
-      }
-    
+  /* Responsive for larger than 575px screen */
+  @media screen and (max-width: 575px) {
+    .scents {
+      font-size: medium;
     }
-    
-    /*
-    responsive for larger than 1200px screen
-    */
-    @media screen and (min-width: 1200px) {
 
-     .scrollbar-item {min-width: calc(20% - 24px);}
-    
-     .flex-item {max-width: calc(33.33% - 20px);}
-     
-     .scents{
-       font-size:large;
+    .box {
+      top: 70%;
     }
-     
+
+    .box span {
+      font-size: 2rem;
     }
- </style>
+  }
+
+  /* Responsive for larger than 768px screen */
+  @media screen and (min-width: 768px) {
+    .flex-item {
+      max-width: calc(50% - 15px);
+    }
+
+    .collection-card {
+      min-height: 450px;
+    }
+
+    .scents {
+      font-size: large;
+    }
+  }
+
+  /* Responsive for larger than 992px screen */
+  @media screen and (min-width: 992px) {
+    .scrollbar-item {
+      min-width: calc(33.33% - 20px);
+    }
+
+    .flex-item {
+      max-width: calc(33.33% - 20px);
+    }
+
+    .collection-list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .scents {
+      font-size: large;
+    }
+  }
+
+  /* Responsive for larger than 1200px screen */
+  @media screen and (min-width: 1200px) {
+    .scrollbar-item {
+      min-width: calc(20% - 24px);
+    }
+
+    .flex-item {
+      max-width: calc(33.33% - 20px);
+    }
+
+    .scents {
+      font-size: large;
+    }
+  }
+</style>
+
 <script src="https://cdn.jsdelivr.net/npm/scrollmoo@1.0.7/dist/scrollmoo.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const video = document.getElementById("promoVideo");
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                video.currentTime = 1; // Restart video
-                video.play(); // Play video
-            } else {
-                video.pause(); // Pause video when out of view
-            }
-        });
-    }, { threshold: 0.5 }); // Trigger when at least 50% is visible
+  const video = document.getElementById("promoVideo");
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        video.currentTime = 1;
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+  }, { threshold: 0.5 });
 
-    observer.observe(video);
+  observer.observe(video);
 });
 
-
 function initSlowMotionEffect() {
-    const boxElement = document.querySelector('.box');
-    const spans = document.querySelectorAll('.box span');
-    
-    if (!boxElement || spans.length === 0) return;
-    
-    // Original effect parameters
-    let start = -300;
-    let end = 300;
-    let steps = spans.length;
-    let stepSize = (end - start) / (steps - 1);
-    
-    // Set initial state (normal/visible when in view)
-    spans.forEach((span, index) => {
-        span.style.transition = 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        span.style.transform = 'translateX(0%) scale(1)';
-        span.style.filter = 'blur(0px)';
-        span.style.opacity = '1';
-    });
-    
-    // Create intersection observer for the box
-    const boxObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const isIntersecting = entry.isIntersecting;
-            const rect = entry.boundingClientRect;
-            const isComingFromTop = rect.top > 0; // Coming from below viewport
-            const isLeavingToTop = rect.bottom < window.innerHeight && !isIntersecting; // Going above viewport
-            
-            spans.forEach((span, index) => {
-                const delay = index * 50; // Stagger effect
-                
-                setTimeout(() => {
-                    if (isIntersecting) {
-                        // Coming into view - animate TO normal state FROM the effect
-                        span.style.transform = 'translateX(0%) scale(1)';
-                        span.style.filter = 'blur(0px)';
-                        span.style.opacity = '1';
-                    } else {
-                        // Going out of view - apply the original effect
-                        const translateX = start + stepSize * index;
-                        
-                        // Opposite directions based on scroll direction
-                        let finalTranslateX;
-                        if (isComingFromTop) {
-                            // Going out bottom - use original direction
-                            finalTranslateX = translateX;
-                        } else {
-                            // Going out top - use opposite direction
-                            finalTranslateX = -translateX;
-                        }
-                        
-                        span.style.transform = `translateX(${finalTranslateX}%) scale(3)`;
-                        span.style.filter = 'blur(10px)';
-                        span.style.opacity = '0';
-                    }
-                }, delay);
-            });
-        });
-    }, {
-        threshold: [0, 0.1, 0.3, 0.7, 1],
-        rootMargin: '100px 0px 100px 0px' // Larger margin for smoother transitions
-    });
-    
-    boxObserver.observe(boxElement);
-    
-    // Fine-tuned scroll-based animation for when in view
-    function updateInViewEffect() {
-        const rect = boxElement.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
+  const boxElement = document.querySelector('.box');
+  const spans = document.querySelectorAll('.box span');
+  
+  if (!boxElement || spans.length === 0) return;
+  
+  // Get animation settings from section settings
+  const animationSpeed = {{ section.settings.animation_speed | default: 1200 }};
+  const maxBlur = {{ section.settings.animation_blur | default: 10 }};
+  const maxScale = {{ section.settings.animation_scale | default: 3 }};
+  
+  // Original effect parameters
+  let start = -300;
+  let end = 300;
+  let steps = spans.length;
+  let stepSize = (end - start) / (steps - 1);
+  
+  // Set initial state
+  spans.forEach((span, index) => {
+    span.style.transition = `all ${animationSpeed}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+    span.style.transform = 'translateX(0%) scale(1)';
+    span.style.filter = 'blur(0px)';
+    span.style.opacity = '1';
+  });
+  
+  // Create intersection observer
+  const boxObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const isIntersecting = entry.isIntersecting;
+      const rect = entry.boundingClientRect;
+      const isComingFromTop = rect.top > 0;
+      const isLeavingToTop = rect.bottom < window.innerHeight && !isIntersecting;
+      
+      spans.forEach((span, index) => {
+        const delay = index * 50;
         
-        // Check if element is in viewport
-        if (rect.top <= windowHeight && rect.bottom >= 0) {
-            // Calculate how centered the element is
-            const elementCenter = rect.top + rect.height / 2;
-            const viewportCenter = windowHeight / 2;
-            const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
-            const maxDistance = windowHeight / 2;
-            const centerRatio = 1 - Math.min(distanceFromCenter / maxDistance, 1);
+        setTimeout(() => {
+          if (isIntersecting) {
+            span.style.transform = 'translateX(0%) scale(1)';
+            span.style.filter = 'blur(0px)';
+            span.style.opacity = '1';
+          } else {
+            const translateX = start + stepSize * index;
+            let finalTranslateX;
             
-            // When perfectly centered, effects are minimal
-            // When entering/leaving, effects are stronger
-            const effectStrength = 1 - centerRatio;
+            if (isComingFromTop) {
+              finalTranslateX = translateX;
+            } else {
+              finalTranslateX = -translateX;
+            }
             
-            spans.forEach((span, index) => {
-                if (centerRatio > 0.7) {
-                    // Very close to center - minimal effect
-                    span.style.transform = 'translateX(0%) scale(1)';
-                    span.style.filter = 'blur(0px)';
-                    span.style.opacity = '1';
-                } else if (centerRatio > 0.3) {
-                    // Transitioning - slight effect
-                    const translateX = (start + stepSize * index) * effectStrength * 0.3;
-                    const scale = 1 + (effectStrength * 0.5);
-                    const blur = effectStrength * 3;
-                    const opacity = 1 - (effectStrength * 0.3);
-                    
-                    span.style.transform = `translateX(${translateX}%) scale(${scale})`;
-                    span.style.filter = `blur(${blur}px)`;
-                    span.style.opacity = opacity;
-                }
-            });
+            span.style.transform = `translateX(${finalTranslateX}%) scale(${maxScale})`;
+            span.style.filter = `blur(${maxBlur}px)`;
+            span.style.opacity = '0';
+          }
+        }, delay);
+      });
+    });
+  }, {
+    threshold: [0, 0.1, 0.3, 0.7, 1],
+    rootMargin: '100px 0px 100px 0px'
+  });
+  
+  boxObserver.observe(boxElement);
+  
+  // Fine-tuned scroll-based animation
+  function updateInViewEffect() {
+    const rect = boxElement.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    
+    if (rect.top <= windowHeight && rect.bottom >= 0) {
+      const elementCenter = rect.top + rect.height / 2;
+      const viewportCenter = windowHeight / 2;
+      const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
+      const maxDistance = windowHeight / 2;
+      const centerRatio = 1 - Math.min(distanceFromCenter / maxDistance, 1);
+      const effectStrength = 1 - centerRatio;
+      
+      spans.forEach((span, index) => {
+        if (centerRatio > 0.7) {
+          span.style.transform = 'translateX(0%) scale(1)';
+          span.style.filter = 'blur(0px)';
+          span.style.opacity = '1';
+        } else if (centerRatio > 0.3) {
+          const translateX = (start + stepSize * index) * effectStrength * 0.3;
+          const scale = 1 + (effectStrength * 0.5);
+          const blur = effectStrength * 3;
+          const opacity = 1 - (effectStrength * 0.3);
+          
+          span.style.transform = `translateX(${translateX}%) scale(${scale})`;
+          span.style.filter = `blur(${blur}px)`;
+          span.style.opacity = opacity;
         }
+      });
     }
+  }
+  
+  // Throttled scroll listener
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    if (scrollTimeout) return;
     
-    // Throttled scroll listener
-    let scrollTimeout;
-    window.addEventListener('scroll', () => {
-        if (scrollTimeout) return;
-        
-        scrollTimeout = setTimeout(() => {
-            updateInViewEffect();
-            scrollTimeout = null;
-        }, 16); // ~60fps
-    });
-    
-    // Initial call
-    updateInViewEffect();
+    scrollTimeout = setTimeout(() => {
+      updateInViewEffect();
+      scrollTimeout = null;
+    }, 16);
+  });
+  
+  updateInViewEffect();
 }
 
-// Initialize the effect
 initSlowMotionEffect();
- </script>
+</script>
 
- {% schema %}
+{% schema %}
 {
   "name": "Collection-Banner",
   "settings": [
     {
-      "type": "image_picker",
-      "id": "image1",
-      "label": "Image 1"
+      "type": "header",
+      "content": "Section Content"
     },
     {
       "type": "text",
@@ -339,21 +301,112 @@ initSlowMotionEffect();
       "default": "Unveil Your Essence"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "info",
-      "label": "Info",
+      "label": "Description",
       "default": "When you start with a portrait and search for a pure form, a clear volume, through successive eliminations, you arrive inevitably at the egg. Likewise, starting with the egg and following the same process in reverse, one finishes with the portrait."
+    },
+    {
+      "type": "header",
+      "content": "Video Settings"
+    },
+    {
+      "type": "text",
+      "id": "video_file",
+      "label": "Video File Name",
+      "default": "Ink.mp4",
+      "info": "Upload video to Files in Shopify admin, then enter filename here (e.g., video.mp4)"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "Autoplay Video",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_loop",
+      "label": "Loop Video",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_muted",
+      "label": "Mute Video",
+      "default": true,
+      "info": "Video must be muted for autoplay to work"
+    },
+    {
+      "type": "header",
+      "content": "Text Animation Settings"
+    },
+    {
+      "type": "text",
+      "id": "animation_text",
+      "label": "Animation Text",
+      "default": "scent that you can wear",
+      "info": "Words will be animated individually (separated by spaces)"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text Position",
+      "options": [
+        {"value": "40%", "label": "Upper Center"},
+        {"value": "50%", "label": "Center"},
+        {"value": "60%", "label": "Lower Center"},
+        {"value": "70%", "label": "Bottom Third"}
+      ],
+      "default": "60%"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "label": "Animation Speed (ms)",
+      "min": 500,
+      "max": 3000,
+      "step": 100,
+      "default": 1200,
+      "info": "Lower = faster animation"
+    },
+    {
+      "type": "range",
+      "id": "animation_blur",
+      "label": "Maximum Blur (px)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "animation_scale",
+      "label": "Maximum Scale",
+      "min": 1,
+      "max": 5,
+      "step": 0.5,
+      "default": 3,
+      "info": "How large text grows when scrolling away"
+    },
+    {
+      "type": "header",
+      "content": "Collection Cards (Legacy)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image 1"
     },
     {
       "type": "url",
       "id": "link1",
-      "label": "Button Url"
+      "label": "Button URL 1"
     },
     {
-      "type":"text",
-      "id":"btn_label1",
-      "label":"Button Label 1",
-      "default":"Shop Now"
+      "type": "text",
+      "id": "btn_label1",
+      "label": "Button Label 1",
+      "default": "Shop Now"
     },
     {
       "type": "image_picker",
@@ -375,13 +428,13 @@ initSlowMotionEffect();
     {
       "type": "url",
       "id": "link2",
-      "label": "Button Url"
+      "label": "Button URL 2"
     },
     {
-      "type":"text",
-      "id":"btn_label2",
-      "label":"Button Label 2",
-      "default":"Discover Now"
+      "type": "text",
+      "id": "btn_label2",
+      "label": "Button Label 2",
+      "default": "Discover Now"
     },
     {
       "type": "image_picker",
@@ -403,13 +456,13 @@ initSlowMotionEffect();
     {
       "type": "url",
       "id": "link3",
-      "label": "Button Url"
+      "label": "Button URL 3"
     },
     {
-      "type":"text",
-      "id":"btn_label3",
-      "label":"Button Label 3",
-      "default":"Shop Now"
+      "type": "text",
+      "id": "btn_label3",
+      "label": "Button Label 3",
+      "default": "Shop Now"
     }
   ],
   "blocks": [],
