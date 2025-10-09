@@ -16,7 +16,11 @@
         {% if section.settings.video_muted %}muted{% endif %}
         playsinline
       >
-        <source src="{{ section.settings.video_file | default: 'Ink.mp4' | asset_url }}" type="video/mp4">
+        {% if section.settings.video_url != blank %}
+          <source src="{{ section.settings.video_url }}" type="video/mp4">
+        {% else %}
+          <source src="{{ section.settings.video_file | default: 'Ink.mp4' | asset_url }}" type="video/mp4">
+        {% endif %}
         Your browser does not support the video tag.
       </video>
     </figure>
@@ -312,10 +316,17 @@ initSlowMotionEffect();
     },
     {
       "type": "text",
+      "id": "video_url",
+      "label": "Video URL",
+      "default": "https://cdn.shopify.com/videos/c/o/v/your-video.mp4",
+      "info": "Enter external video URL (e.g., from CDN, YouTube, or cloud storage). Replace default with your video URL."
+    },
+    {
+      "type": "text",
       "id": "video_file",
-      "label": "Video File Name",
+      "label": "OR Video File Name",
       "default": "Ink.mp4",
-      "info": "Upload video to Files in Shopify admin, then enter filename here (e.g., video.mp4)"
+      "info": "Upload video to Files in Shopify admin, then enter filename here (e.g., video.mp4). Used only if Video URL is empty."
     },
     {
       "type": "checkbox",
