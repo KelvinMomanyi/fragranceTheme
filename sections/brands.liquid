@@ -1,191 +1,515 @@
-<section class="clients" id="client">
-    <div class="carousel-wrapper">
-      <div class="carousel-title">
-        <h2 class="section-title">Our Brands</h2>
-      </div>
-
-      <ul class="carousel">
-        <li><img src='{{ "DIOR.png" | asset_url }}' alt="DIOR" /></li>
-        <li><img src='{{ "CHANNEL.png" | asset_url }}' alt="CHANNEL" /></li>
-        <li><img src='{{ "DOLCHE.png" | asset_url }}' alt="DOLCHE" /></li>
-        <li><img src='{{ "JoMalone.png" | asset_url }}' alt="joMalone" /></li>
-        <li><img src='{{ "Juliet.png" | asset_url }}' alt="Juliet" /></li>
-        <li><img src='{{ "Hugo.png" | asset_url }}' alt="Hugo" /></li>
-        <li><img src='{{ "Vers.png" | asset_url }}' alt="Vers" /></li>
-        <!-- Duplicate items -->
-        <li><img src='{{ "DIOR.png" | asset_url }}' alt="DIOR" /></li>
-        <li><img src='{{ "CHANNEL.png" | asset_url }}' alt="CHANNEL" /></li>
-        <li><img src='{{ "DOLCHE.png" | asset_url }}' alt="DOLCHE" /></li>
-        <li><img src='{{ "JoMalone.png" | asset_url }}' alt="joMalone" /></li>
-        <li><img src='{{ "Juliet.png" | asset_url }}' alt="Juliet" /></li>
-        <li><img src='{{ "Hugo.png" | asset_url }}' alt="Hugo" /></li>
-        <li><img src='{{ "Vers.png" | asset_url }}' alt="Vers" /></li>
-      </ul>
+<section class="clients" id="client" style="background-color: {{ section.settings.section_bg_color }}; padding-block: {{ section.settings.section_padding_vertical }}px;">
+  <div class="carousel-wrapper">
+    {% if section.settings.show_title %}
+    <div class="carousel-title">
+      <h2 class="section-title" style="color: {{ section.settings.title_color }}; font-size: {{ section.settings.title_font_size }}px; margin-bottom: {{ section.settings.title_margin_bottom }}px;">
+        {{ section.settings.section_title }}
+      </h2>
     </div>
-  </section>
-  
-  <style>
-  /* Clients */
+    {% endif %}
+
+    <ul class="carousel" style="gap: {{ section.settings.logo_gap }}px;">
+      {% if section.blocks.size == 0 %}
+        <!-- Default logos when no blocks -->
+        <li><img src='{{ "DIOR.png" | asset_url }}' alt="DIOR" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <li><img src='{{ "CHANNEL.png" | asset_url }}' alt="CHANNEL" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <li><img src='{{ "DOLCHE.png" | asset_url }}' alt="DOLCHE" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <li><img src='{{ "JoMalone.png" | asset_url }}' alt="joMalone" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <li><img src='{{ "Juliet.png" | asset_url }}' alt="Juliet" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <li><img src='{{ "Hugo.png" | asset_url }}' alt="Hugo" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <li><img src='{{ "Vers.png" | asset_url }}' alt="Vers" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <!-- Duplicate items for seamless loop -->
+        <li><img src='{{ "DIOR.png" | asset_url }}' alt="DIOR" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <li><img src='{{ "CHANNEL.png" | asset_url }}' alt="CHANNEL" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <li><img src='{{ "DOLCHE.png" | asset_url }}' alt="DOLCHE" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <li><img src='{{ "JoMalone.png" | asset_url }}' alt="joMalone" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <li><img src='{{ "Juliet.png" | asset_url }}' alt="Juliet" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <li><img src='{{ "Hugo.png" | asset_url }}' alt="Hugo" style="width: {{ section.settings.logo_width }}px;" /></li>
+        <li><img src='{{ "Vers.png" | asset_url }}' alt="Vers" style="width: {{ section.settings.logo_width }}px;" /></li>
+      {% else %}
+        <!-- Custom logos from blocks -->
+        {% for block in section.blocks %}
+          {% if block.settings.logo_image %}
+            <li>
+              {% if block.settings.logo_link != blank %}
+                <a href="{{ block.settings.logo_link }}" target="{{ block.settings.link_target }}">
+                  <img src="{{ block.settings.logo_image | image_url }}" alt="{{ block.settings.logo_alt }}" style="width: {{ section.settings.logo_width }}px;" />
+                </a>
+              {% else %}
+                <img src="{{ block.settings.logo_image | image_url }}" alt="{{ block.settings.logo_alt }}" style="width: {{ section.settings.logo_width }}px;" />
+              {% endif %}
+            </li>
+          {% endif %}
+        {% endfor %}
+        <!-- Duplicate for seamless loop -->
+        {% for block in section.blocks %}
+          {% if block.settings.logo_image %}
+            <li>
+              {% if block.settings.logo_link != blank %}
+                <a href="{{ block.settings.logo_link }}" target="{{ block.settings.link_target }}">
+                  <img src="{{ block.settings.logo_image | image_url }}" alt="{{ block.settings.logo_alt }}" style="width: {{ section.settings.logo_width }}px;" />
+                </a>
+              {% else %}
+                <img src="{{ block.settings.logo_image | image_url }}" alt="{{ block.settings.logo_alt }}" style="width: {{ section.settings.logo_width }}px;" />
+              {% endif %}
+            </li>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* Clients Section */
   .clients {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 250px;
-    overflow: hidden; /* Hide overflow */
+    min-height: {{ section.settings.section_height }}px;
+    overflow: hidden;
     position: relative;
   }
-  
+
   .carousel-wrapper {
     width: 100%;
     overflow: hidden;
     position: relative;
   }
-  
+
   .carousel {
     display: flex;
     align-items: center;
-    gap: 80px;
     list-style: none;
-    transition: transform 0.5s linear;
+    transition: transform {{ section.settings.transition_speed }}s linear;
     will-change: transform;
+    padding: 0;
+    margin: 0;
   }
+
   .carousel-title {
     display: flex;
     align-items: center;
     justify-content: center;
-    
   }
 
-  .carousel-title .section-title{
-    font-family: var(  --ff-mr_de_haviland);
-    font-size:35px;
-    font-weight: 300;
+  .carousel-title .section-title {
+    font-family: {{ section.settings.title_font_family }};
+    font-weight: {{ section.settings.title_font_weight }};
+    text-align: center;
+  }
+
+  .clients li {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .clients li img {
-    width: 100px;
     margin: 2px;
-    filter: grayscale(100%);
-    transition: transform 0.3s ease;
+    {% if section.settings.enable_grayscale %}
+    filter: grayscale({{ section.settings.grayscale_amount }}%);
+    {% endif %}
+    transition: transform {{ section.settings.hover_transition_speed }}s ease, filter {{ section.settings.hover_transition_speed }}s ease;
+    opacity: {{ section.settings.logo_opacity }};
   }
-  
+
+  {% if section.settings.enable_hover_effect %}
   .clients li img:hover {
     filter: grayscale(0%);
-    transform: scale(1.1);
+    transform: scale({{ section.settings.hover_scale }});
+    opacity: 1;
   }
-  
-  @media screen and (max-width: 1000px) {
+  {% endif %}
+
+  .clients li a {
+    display: block;
+    line-height: 0;
+  }
+
+  /* Mobile Styles */
+  @media screen and (max-width: 768px) {
+    .clients {
+      min-height: {{ section.settings.section_height_mobile }}px;
+    }
+
+    .carousel {
+      gap: {{ section.settings.logo_gap_mobile }}px !important;
+    }
+
     .clients li img {
-      width: 80px;
+      width: {{ section.settings.logo_width_mobile }}px !important;
+    }
+
+    .carousel-title .section-title {
+      font-size: {{ section.settings.title_font_size_mobile }}px !important;
     }
   }
-  </style>
-  
+</style>
 
 <script>  
-    document.addEventListener("DOMContentLoaded", () => {
-        const carousel = document.querySelector(".carousel");
-        const items = document.querySelectorAll(".carousel li");
-        const totalItems = items.length;
-        const itemWidth = items[0].offsetWidth + 80; // Include gap (80px)
-        const visibleItems = Math.ceil(document.querySelector(".carousel-wrapper").offsetWidth / itemWidth);
-        const resetPosition = -itemWidth * totalItems / 2; // Halfway through the list
-        let scrollPosition = 0;
-      
-        function moveCarousel() {
-          scrollPosition -= 1; // Move left 1px at a time
-          carousel.style.transform = `translateX(${scrollPosition}px)`;
-      
-          // Reset position when we reach the end of the duplicated list
-          if (scrollPosition <= resetPosition) {
-            scrollPosition = 0;
-            carousel.style.transition = "none"; // Disable transition for instant reset
-            carousel.style.transform = `translateX(${scrollPosition}px)`;
-      
-            // Re-enable smooth transition
-            setTimeout(() => {
-              carousel.style.transition = "transform 0.5s linear";
-            });
-          }
-      
-          requestAnimationFrame(moveCarousel); // Continue the animation
-        }
-      
-        // Start the animation
-        moveCarousel();
-      });
-      
-      
-</script>    
+  document.addEventListener("DOMContentLoaded", () => {
+    const carousel = document.querySelector(".carousel");
+    const items = document.querySelectorAll(".carousel li");
+    
+    if (!carousel || items.length === 0) return;
 
- {% schema %}
+    const totalItems = items.length;
+    const logoGap = {{ section.settings.logo_gap }};
+    const itemWidth = items[0].offsetWidth + logoGap;
+    const resetPosition = -itemWidth * totalItems / 2;
+    const scrollSpeed = {{ section.settings.scroll_speed }};
+    const enableAutoScroll = {{ section.settings.enable_auto_scroll | json }};
+    const pauseOnHover = {{ section.settings.pause_on_hover | json }};
+    
+    let scrollPosition = 0;
+    let isPaused = false;
+    let animationFrame;
+
+    function moveCarousel() {
+      if (!isPaused && enableAutoScroll) {
+        scrollPosition -= scrollSpeed;
+        carousel.style.transform = `translateX(${scrollPosition}px)`;
+
+        if (scrollPosition <= resetPosition) {
+          scrollPosition = 0;
+          carousel.style.transition = "none";
+          carousel.style.transform = `translateX(${scrollPosition}px)`;
+
+          setTimeout(() => {
+            carousel.style.transition = "transform {{ section.settings.transition_speed }}s linear";
+          }, 10);
+        }
+      }
+
+      animationFrame = requestAnimationFrame(moveCarousel);
+    }
+
+    // Pause on hover
+    if (pauseOnHover) {
+      carousel.addEventListener("mouseenter", () => {
+        isPaused = true;
+      });
+
+      carousel.addEventListener("mouseleave", () => {
+        isPaused = false;
+      });
+    }
+
+    // Start animation
+    if (enableAutoScroll) {
+      moveCarousel();
+    }
+  });
+</script>
+
+{% schema %}
 {
-  "name": "banner",
+  "name": "Brands Carousel",
   "settings": [
     {
-      "type": "image_picker",
-      "id": "image1",
-      "label": "Image 1"
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "min": 150,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Section Height (Desktop)",
+      "default": 250
+    },
+    {
+      "type": "range",
+      "id": "section_height_mobile",
+      "min": 100,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Section Height (Mobile)",
+      "default": 180
+    },
+    {
+      "type": "range",
+      "id": "section_padding_vertical",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "label": "Section Padding (Top & Bottom)",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Title Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show Section Title",
+      "default": true
     },
     {
       "type": "text",
-      "id": "subtitle1",
-      "label": "Subtitle 1",
-      "default": "NEW COLLECTION"
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Our Brands"
     },
     {
-      "type": "text",
-      "id": "title1",
-      "label": "Title 1",
-      "default": "Discover New Sneaker Collection"
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
     },
     {
-      "type": "text",
-      "id": "btn_label1",
-      "label": "Button Label",
-      "default":"Explore More"
+      "type": "range",
+      "id": "title_font_size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Title Font Size (Desktop)",
+      "default": 35
     },
     {
-      "type": "url",
-      "id": "button_url1",
-      "label": "Button URL 1",
-      "default": "/collections/all"
+      "type": "range",
+      "id": "title_font_size_mobile",
+      "min": 16,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Title Font Size (Mobile)",
+      "default": 28
     },
     {
-      "type": "image_picker",
-      "id": "image2",
-      "label": "Image 2"
+      "type": "select",
+      "id": "title_font_family",
+      "label": "Title Font Family",
+      "options": [
+        { "value": "var(--ff-mr_de_haviland)", "label": "Mr De Haviland (Default)" },
+        { "value": "Arial, sans-serif", "label": "Arial" },
+        { "value": "Georgia, serif", "label": "Georgia" },
+        { "value": "'Times New Roman', serif", "label": "Times New Roman" },
+        { "value": "'Courier New', monospace", "label": "Courier New" },
+        { "value": "inherit", "label": "Inherit from Theme" }
+      ],
+      "default": "var(--ff-mr_de_haviland)"
     },
     {
-      "type": "text",
-      "id": "title2",
-      "label": "Title 2",
-      "default": "25% off Everything"
+      "type": "select",
+      "id": "title_font_weight",
+      "label": "Title Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "300"
     },
     {
-      "type": "inline_richtext",
-      "id": "description",
-      "label": "Description",
-      "default": "Sneakers in a range of styles and colors for every taste"
+      "type": "range",
+      "id": "title_margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Title Bottom Margin",
+      "default": 40
     },
     {
-      "type": "text",
-      "id": "btn_label2",
-      "label": "Button Label 2",
-      "default":"Shop Now"
+      "type": "header",
+      "content": "Logo Settings"
     },
     {
-      "type": "url",
-      "id": "button_url2",
-      "label": "Button URL 2",
-      "default": "/collections/all"
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo Width (Desktop)",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "logo_width_mobile",
+      "min": 40,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo Width (Mobile)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "logo_gap",
+      "min": 20,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Space Between Logos (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "logo_gap_mobile",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Space Between Logos (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "logo_opacity",
+      "min": 0.1,
+      "max": 1,
+      "step": 0.1,
+      "label": "Logo Opacity",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Grayscale Effect"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_grayscale",
+      "label": "Enable Grayscale Effect",
+      "default": true,
+      "info": "Logos will be grayscale by default"
+    },
+    {
+      "type": "range",
+      "id": "grayscale_amount",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Grayscale Amount",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Hover Effects"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_hover_effect",
+      "label": "Enable Hover Effect",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "hover_scale",
+      "min": 1,
+      "max": 1.5,
+      "step": 0.05,
+      "label": "Hover Scale",
+      "default": 1.1,
+      "info": "How much logos grow on hover"
+    },
+    {
+      "type": "range",
+      "id": "hover_transition_speed",
+      "min": 0.1,
+      "max": 1,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Hover Transition Speed",
+      "default": 0.3
+    },
+    {
+      "type": "header",
+      "content": "Carousel Animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_auto_scroll",
+      "label": "Enable Auto-Scroll",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "min": 0.1,
+      "max": 5,
+      "step": 0.1,
+      "unit": "px",
+      "label": "Scroll Speed",
+      "default": 1,
+      "info": "Higher = faster scrolling"
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "min": 0.1,
+      "max": 2,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Transition Speed",
+      "default": 0.5
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause Carousel on Hover",
+      "default": true
     }
   ],
-  "blocks": [],
+  "blocks": [
+    {
+      "type": "brand_logo",
+      "name": "Brand Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Logo Image"
+        },
+        {
+          "type": "text",
+          "id": "logo_alt",
+          "label": "Logo Alt Text",
+          "default": "Brand Logo",
+          "info": "Describe the logo for accessibility"
+        },
+        {
+          "type": "url",
+          "id": "logo_link",
+          "label": "Logo Link (Optional)",
+          "info": "Leave empty if logo shouldn't be clickable"
+        },
+        {
+          "type": "select",
+          "id": "link_target",
+          "label": "Link Target",
+          "options": [
+            { "value": "_self", "label": "Same Window" },
+            { "value": "_blank", "label": "New Window" }
+          ],
+          "default": "_self"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "banner"
+      "name": "Brands Carousel",
+      "category": "Custom"
     }
   ]
 }
