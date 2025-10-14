@@ -8,106 +8,156 @@ FOOTER
 
       <div class="footer-brand">
 
-        <a href="#" class="logo">Fragrance</a>
+        <a href="#" class="logo">{{ section.settings.logo_text | default: 'Fragrance' }}</a>
 
         <ul>
 
+          {%- if section.settings.show_address -%}
           <li class="footer-list-item">
             <ion-icon name="location-sharp" aria-hidden="true"></ion-icon>
 
             <address class="address">
-              Springs, Carlifonia, USA
+              {{ section.settings.address_text }}
             </address>
           </li>
+          {%- endif -%}
 
+          {%- if section.settings.show_phone -%}
           <li class="footer-list-item">
             <ion-icon name="call-sharp" aria-hidden="true"></ion-icon>
 
-            <a href="tel:+1234567890" class="footer-link">+1234567890</a>
+            <a href="tel:{{ section.settings.phone_number }}" class="footer-link">{{ section.settings.phone_display }}</a>
           </li>
+          {%- endif -%}
 
+          {%- if section.settings.show_social -%}
           <li>
             <ul class="social-list">
 
+              {%- if section.settings.social_facebook != blank -%}
               <li>
-                <a href="#" class="social-link">
+                <a href="{{ section.settings.social_facebook }}" class="social-link" target="_blank" rel="noopener">
                   <ion-icon name="logo-facebook"></ion-icon>
                 </a>
               </li>
+              {%- endif -%}
 
+              {%- if section.settings.social_instagram != blank -%}
               <li>
-                <a href="#" class="social-link">
+                <a href="{{ section.settings.social_instagram }}" class="social-link" target="_blank" rel="noopener">
                   <ion-icon name="logo-instagram"></ion-icon>
                 </a>
               </li>
+              {%- endif -%}
+
+              {%- if section.settings.social_tiktok != blank -%}
               <li>
-                <a href="#" class="social-link">
+                <a href="{{ section.settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener">
                   <ion-icon name="logo-tiktok"></ion-icon>
                 </a>
               </li>
+              {%- endif -%}
 
+              {%- if section.settings.social_tumblr != blank -%}
               <li>
-                <a href="#" class="social-link">
+                <a href="{{ section.settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener">
                   <ion-icon name="logo-tumblr"></ion-icon>
                 </a>
               </li>
+              {%- endif -%}
+
+              {%- if section.settings.social_twitter != blank -%}
+              <li>
+                <a href="{{ section.settings.social_twitter }}" class="social-link" target="_blank" rel="noopener">
+                  <ion-icon name="logo-twitter"></ion-icon>
+                </a>
+              </li>
+              {%- endif -%}
+
+              {%- if section.settings.social_youtube != blank -%}
+              <li>
+                <a href="{{ section.settings.social_youtube }}" class="social-link" target="_blank" rel="noopener">
+                  <ion-icon name="logo-youtube"></ion-icon>
+                </a>
+              </li>
+              {%- endif -%}
 
             </ul>
           </li>
+          {%- endif -%}
 
         </ul>
 
       </div>
 
+    {%- if section.settings.show_quick_links -%}
     <ul class="footer-list">
 
       <li>
-      <p class="footer-list-title">Quick Links</p>
+      <p class="footer-list-title">{{ section.settings.quick_links_title }}</p>
       </li>
 
-      <li>
-      <a href="#" class="footer-link">Home</a>
-      </li>
-
-      <li>
-      <a href="#" class="footer-link">Shop</a>
-      </li>
-
-      <li>
-      <a href="#" class="footer-link">Blog</a>
-      </li>
-
-      <li>
-      <a href="#" class="footer-link">Terms & Conditions</a>
-      </li>
-
-      </ul> 
-
-      <ul class="footer-list">
-        <li>
-          <p class="footer-list-title">About Us</p>
-        </li>
-        {% assign nav_links = linklists.footer.links %}
-        <!-- Replace 'main-menu' with your menu handle -->
-        {% for link in nav_links %}
-          <li class="navbar-item">
-            <a
-              href="{{ link.url }}"
-              class="footer-link"
-              data-nav-link>{{ link.title }}</a>
+      {%- if section.settings.quick_links_menu != blank -%}
+        {% assign quick_nav_links = linklists[section.settings.quick_links_menu].links %}
+        {% for link in quick_nav_links %}
+          <li>
+            <a href="{{ link.url }}" class="footer-link">{{ link.title }}</a>
           </li>
         {% endfor %}
-      </ul>
+      {%- else -%}
+        <li>
+        <a href="#" class="footer-link">Home</a>
+        </li>
 
+        <li>
+        <a href="#" class="footer-link">Shop</a>
+        </li>
+
+        <li>
+        <a href="#" class="footer-link">Blog</a>
+        </li>
+
+        <li>
+        <a href="#" class="footer-link">Terms & Conditions</a>
+        </li>
+      {%- endif -%}
+
+      </ul>
+      {%- endif -%}
+
+      {%- if section.settings.show_about_links -%}
+      <ul class="footer-list">
+        <li>
+          <p class="footer-list-title">{{ section.settings.about_links_title }}</p>
+        </li>
+        {%- if section.settings.about_links_menu != blank -%}
+          {% assign nav_links = linklists[section.settings.about_links_menu].links %}
+          {% for link in nav_links %}
+            <li class="navbar-item">
+              <a
+                href="{{ link.url }}"
+                class="footer-link"
+                data-nav-link>{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        {%- endif -%}
+      </ul>
+      {%- endif -%}
+
+      {%- if section.settings.show_newsletter -%}
       <div class="footer-list">
 
-        <p class="footer-list-title">Newsletter</p>
+        <p class="footer-list-title">{{ section.settings.newsletter_title }}</p>
+
+        {%- if section.settings.newsletter_description != blank -%}
+        <p class="newsletter-description">{{ section.settings.newsletter_description }}</p>
+        {%- endif -%}
 
         <form action="" class="footer-form">
           <input
             type="email"
             name="email_address"
-            placeholder="Your email address"
+            placeholder="{{ section.settings.newsletter_placeholder }}"
             required
             class="email-field">
 
@@ -116,15 +166,26 @@ FOOTER
           </button>
         </form>
 
+        {%- if section.settings.show_footer_links -%}
         <div class="wrapper">
 
-          <a href="#" class="footer-link">Term & Condition</a>
-          <a href="#" class="footer-link">Policy</a>
-          <a href="#" class="footer-link">Map</a>
+          {%- if section.settings.terms_link != blank -%}
+          <a href="{{ section.settings.terms_link }}" class="footer-link">{{ section.settings.terms_text }}</a>
+          {%- endif -%}
+
+          {%- if section.settings.policy_link != blank -%}
+          <a href="{{ section.settings.policy_link }}" class="footer-link">{{ section.settings.policy_text }}</a>
+          {%- endif -%}
+
+          {%- if section.settings.map_link != blank -%}
+          <a href="{{ section.settings.map_link }}" class="footer-link">{{ section.settings.map_text }}</a>
+          {%- endif -%}
 
         </div>
+        {%- endif -%}
 
       </div>
+      {%- endif -%}
 
     </div>
 
@@ -132,15 +193,16 @@ FOOTER
 
       <p class="copyright">
         &copy;
-        <a href="#" class="copyright-link">Fragrance</a>.
+        <a href="#" class="copyright-link">{{ section.settings.copyright_text | default: 'Fragrance' }}</a>.
         <span id="year"></span>
-        Powered by Shopify
+        {%- if section.settings.show_powered_by -%}
+        {{ section.settings.powered_by_text }}
+        {%- endif -%}
 
       </p>
       <div class="footer__column--info">
         {%- if section.settings.payment_enable -%}
           <div class="footer__payment">
-            {% comment %} <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span> {% endcomment %}
             <ul class="list list-payment" role="list">
               {%- for type in shop.enabled_payment_types -%}
                 <li class="list-payment__item">
@@ -165,32 +227,227 @@ FOOTER
 
 {% schema %}
   {
-    "name": "footer",
+    "name": "Footer",
     "settings": [
       {
-        "type": "url",
-        "id": "social_twitter",
-        "label": "Twitter URL"
-
+        "type": "header",
+        "content": "Brand Settings"
+      },
+      {
+        "type": "text",
+        "id": "logo_text",
+        "label": "Logo Text",
+        "default": "Fragrance"
+      },
+      {
+        "type": "header",
+        "content": "Contact Information"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_address",
+        "label": "Show address",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "address_text",
+        "label": "Address",
+        "default": "Springs, California, USA"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_phone",
+        "label": "Show phone number",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "phone_number",
+        "label": "Phone Number (for tel: link)",
+        "default": "+1234567890",
+        "info": "Format: +1234567890"
+      },
+      {
+        "type": "text",
+        "id": "phone_display",
+        "label": "Phone Number (display)",
+        "default": "+1234567890"
+      },
+      {
+        "type": "header",
+        "content": "Social Media"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_social",
+        "label": "Show social media icons",
+        "default": true
       },
       {
         "type": "url",
         "id": "social_facebook",
         "label": "Facebook URL"
-
       },
       {
         "type": "url",
         "id": "social_instagram",
         "label": "Instagram URL"
-
+      },
+      {
+        "type": "url",
+        "id": "social_tiktok",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "url",
+        "id": "social_tumblr",
+        "label": "Tumblr URL"
+      },
+      {
+        "type": "url",
+        "id": "social_twitter",
+        "label": "Twitter URL"
       },
       {
         "type": "url",
         "id": "social_youtube",
         "label": "YouTube URL"
-
-      }, {
+      },
+      {
+        "type": "header",
+        "content": "Quick Links Column"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_quick_links",
+        "label": "Show quick links",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "quick_links_title",
+        "label": "Quick Links Title",
+        "default": "Quick Links"
+      },
+      {
+        "type": "link_list",
+        "id": "quick_links_menu",
+        "label": "Quick Links Menu",
+        "info": "Select a menu from Navigation settings"
+      },
+      {
+        "type": "header",
+        "content": "About Us Column"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_about_links",
+        "label": "Show about links",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "about_links_title",
+        "label": "About Links Title",
+        "default": "About Us"
+      },
+      {
+        "type": "link_list",
+        "id": "about_links_menu",
+        "label": "About Links Menu",
+        "default": "footer",
+        "info": "Select a menu from Navigation settings"
+      },
+      {
+        "type": "header",
+        "content": "Newsletter Section"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_newsletter",
+        "label": "Show newsletter",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "newsletter_title",
+        "label": "Newsletter Title",
+        "default": "Newsletter"
+      },
+      {
+        "type": "textarea",
+        "id": "newsletter_description",
+        "label": "Newsletter Description"
+      },
+      {
+        "type": "text",
+        "id": "newsletter_placeholder",
+        "label": "Newsletter Placeholder Text",
+        "default": "Your email address"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_footer_links",
+        "label": "Show footer links (Terms, Policy, Map)",
+        "default": true
+      },
+      {
+        "type": "url",
+        "id": "terms_link",
+        "label": "Terms & Conditions Link"
+      },
+      {
+        "type": "text",
+        "id": "terms_text",
+        "label": "Terms Link Text",
+        "default": "Term & Condition"
+      },
+      {
+        "type": "url",
+        "id": "policy_link",
+        "label": "Policy Link"
+      },
+      {
+        "type": "text",
+        "id": "policy_text",
+        "label": "Policy Link Text",
+        "default": "Policy"
+      },
+      {
+        "type": "url",
+        "id": "map_link",
+        "label": "Map Link"
+      },
+      {
+        "type": "text",
+        "id": "map_text",
+        "label": "Map Link Text",
+        "default": "Map"
+      },
+      {
+        "type": "header",
+        "content": "Footer Bottom"
+      },
+      {
+        "type": "text",
+        "id": "copyright_text",
+        "label": "Copyright Text",
+        "default": "Fragrance"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_powered_by",
+        "label": "Show 'Powered by' text",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "powered_by_text",
+        "label": "Powered By Text",
+        "default": "Powered by Shopify"
+      },
+      {
         "type": "checkbox",
         "id": "payment_enable",
         "label": "Show payment icons",
@@ -200,7 +457,7 @@ FOOTER
     "blocks": [],
     "presets": [
       {
-        "name": "footer"
+        "name": "Footer"
       }
     ]
   }
