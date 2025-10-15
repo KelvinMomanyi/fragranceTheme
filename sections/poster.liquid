@@ -23,7 +23,6 @@
     align-items: center;
     text-align: center;
     color: {{ section.settings.text_color }};
-    overflow: hidden;
 }
 
 .poster::before {
@@ -66,21 +65,15 @@
         grid-template-rows: repeat(var(--row), 100px);
         margin-top: 50px;
         gap: 50px;
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
     }
     
     .grid-3{
         --row: 6;
         font-size: 1em;
-        padding: 0 20px;
-        box-sizing: border-box;
     }
     .grid-3 div{
         grid-column: 2/ 6;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        text-wrap: nowrap;
     }
     .grid-3 div:nth-child(even){
         text-align: right;
