@@ -10,23 +10,23 @@
 
     <ul class="carousel" style="gap: {{ section.settings.logo_gap }}px;">
       {% if section.blocks.size == 0 %}
-        <!-- Default logos when no blocks -->
-        <li><img src='{{ "DIOR.png" | asset_url }}' alt="DIOR" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <li><img src='{{ "CHANNEL.png" | asset_url }}' alt="CHANNEL" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <li><img src='{{ "DOLCHE.png" | asset_url }}' alt="DOLCHE" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <li><img src='{{ "JoMalone.png" | asset_url }}' alt="joMalone" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <li><img src='{{ "Juliet.png" | asset_url }}' alt="Juliet" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <li><img src='{{ "Hugo.png" | asset_url }}' alt="Hugo" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <li><img src='{{ "Vers.png" | asset_url }}' alt="Vers" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <!-- Duplicate items for seamless loop -->
-        <li><img src='{{ "DIOR.png" | asset_url }}' alt="DIOR" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <li><img src='{{ "CHANNEL.png" | asset_url }}' alt="CHANNEL" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <li><img src='{{ "DOLCHE.png" | asset_url }}' alt="DOLCHE" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <li><img src='{{ "JoMalone.png" | asset_url }}' alt="joMalone" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <li><img src='{{ "Juliet.png" | asset_url }}' alt="Juliet" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <li><img src='{{ "Hugo.png" | asset_url }}' alt="Hugo" style="width: {{ section.settings.logo_width }}px;" /></li>
-        <li><img src='{{ "Vers.png" | asset_url }}' alt="Vers" style="width: {{ section.settings.logo_width }}px;" /></li>
-      {% else %}
+      <!-- Default logos when no blocks -->
+      <li>{{ 'product-1' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <li>{{ 'product-2' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <li>{{ 'product-3' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <li>{{ 'product-4' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <li>{{ 'product-5' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <li>{{ 'product-6' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <li>{{ 'image' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <!-- Duplicate items for seamless loop -->
+      <li>{{ 'product-1' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <li>{{ 'product-2' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <li>{{ 'product-3' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <li>{{ 'product-4' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <li>{{ 'product-5' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <li>{{ 'product-6' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+      <li>{{ 'image' | placeholder_svg_tag: 'logo-placeholder' }}</li>
+    {% else %}
         <!-- Custom logos from blocks -->
         {% for block in section.blocks %}
           {% if block.settings.logo_image %}
