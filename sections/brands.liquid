@@ -107,19 +107,23 @@
     justify-content: center;
   }
 
-  .clients li img {
+  .clients li img,
+  .clients li svg {
     margin: 2px;
     {% if section.settings.enable_grayscale %}
     filter: grayscale({{ section.settings.grayscale_amount }}%);
     {% endif %}
     transition: transform {{ section.settings.hover_transition_speed }}s ease, filter {{ section.settings.hover_transition_speed }}s ease;
     opacity: {{ section.settings.logo_opacity }};
+    width: {{ section.settings.logo_width }}px;
+    height: auto;
   }
 
   {% if section.settings.enable_hover_effect %}
-  .clients li img:hover {
+  .clients li img:hover,
+  .clients li svg:hover {
     filter: grayscale(0%);
-    transform: scale({{ section.settings.hover_scale }});
+    transform: scale({{ section.settings.hover_scale | divided_by: 10.0 }});
     opacity: 1;
   }
   {% endif %}
@@ -139,7 +143,8 @@
       gap: {{ section.settings.logo_gap_mobile }}px !important;
     }
 
-    .clients li img {
+    .clients li img,
+    .clients li svg {
       width: {{ section.settings.logo_width_mobile }}px !important;
     }
 
@@ -279,7 +284,7 @@
       "step": 2,
       "unit": "px",
       "label": "Title Font Size (Desktop)",
-      "default": 35
+      "default": 36
     },
     {
       "type": "range",
@@ -415,12 +420,12 @@
     {
       "type": "range",
       "id": "hover_scale",
-      "min": 1,
-      "max": 1.5,
-      "step": 0.05,
+      "min": 10,
+      "max": 15,
+      "step": 1,
       "label": "Hover Scale",
-      "default": 1.1,
-      "info": "How much logos grow on hover"
+      "default": 11,
+      "info": "10 = 1.0x (no scale), 11 = 1.1x, 15 = 1.5x"
     },
     {
       "type": "range",
