@@ -1,3 +1,11 @@
+<!-- Preload static hero images -->
+{% comment %} <link rel="preload" as="image" href="{{ 'ShoesNike6.jpg' | asset_url }}">
+<link rel="preload" as="image" href="{{ 'ShoesAsics3.jpg' | asset_url }}">
+<link rel="preload" as="image" href="{{ 'ShoesAdd2.jpg' | asset_url }}">
+<link rel="preload" as="image" href="{{ 'shoes32.png' | asset_url }}">
+<link rel="preload" as="image" href="{{ 'ShoesPuma2.jpg' | asset_url }}">
+<link rel="preload" as="image" href="{{ 'ShoesConverse2.jpg' | asset_url }}"> {% endcomment %}
+
 <!-- Preload images dynamically if section blocks are used -->
 {% for block in section.blocks %}
   {% if block.settings.hero_image %}
@@ -5,808 +13,422 @@
   {% endif %}
 {% endfor %}
 
-<section class="hero1 text-center" style="min-height: {{ section.settings.min_height }}vh;" aria-label="home" id="home">
-  <ul class="hero1-slider" data-hero-slider>
-    {% if section.blocks.size == 0 %}
-      <li class="slider-item active" data-hero-slider-item style="padding-block-start: 70px;">
-        <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,{{ section.settings.overlay_opacity }}), rgba(0,0,0,{{ section.settings.overlay_opacity }})), url('{{'collection-1' | placeholder_svg_tag: 'img-cover' }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
-        <div class="card-content">
-          <h1 class="h1 hero1-title slider-reveal">{{ section.settings.default_title }}</h1>
-          <p class="price slider-reveal">Starting at {{ section.settings.default_price }}</p>
-          <div style="display: flex; justify-content: flex-start;">
-            <a href="{{ section.settings.default_link }}" class="btn btn-primary slider-reveal">{{ section.settings.default_button_text }}</a>
-          </div>
-        </div>
-      </li>
-    {% else %}
-      {% for block in section.blocks %}
-        <li class="slider-item {% if forloop.first %}active{% endif %}" data-hero-slider-item style="padding-block-start: 70px;">
-          <div class="slider-bg hero1-card has-bg-image" 
-              style="background-image: linear-gradient(rgba(0,0,0,{{ section.settings.overlay_opacity }}), rgba(0,0,0,{{ section.settings.overlay_opacity }})), url('{{ block.settings.hero_image | image_url }}'); background-attachment: {% if section.settings.parallax_effect %}fixed{% else %}scroll{% endif %}; background-size: cover; background-repeat: no-repeat; background-position: center;">
-          </div>
-          <div class="card-content">
-            <h1 class="h1 hero1-title slider-reveal">{{ block.settings.brand_name }}</h1>
-            <p class="price slider-reveal">Starting at {{ block.settings.starting_price }}</p>
+
+<section class="hero1  text-center" style="min-height: 50vh;" aria-label="home" id="home">
+  {% comment %} <div class="container"> {% endcomment %}
+    <ul class="hero1-slider" data-hero-slider>
+      {% if section.blocks.size == 0 %}
+        <li class="slider-item active" data-hero-slider-item style="padding-block-start: 70px;">
+    
+            <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'r11.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
+           
+            </div>
+      
+            <div class="card-content">
+            <h1 class="h1 hero1-title slider-reveal">
+              Bleu De Chanel
+            </h1>
+            <p class="price slider-reveal"> Starting at $17.99</p>
             <div style="display: flex; justify-content: flex-start;">
-              <a href="{{ block.settings.shop_now_link }}" class="btn btn-primary slider-reveal">{{ block.settings.shop_now_text }}</a>
+              <a href="#" class="btn btn-primary slider-reveal">Shop Now</a>
+            </div>
+            </div>
+    
+        </li>
+        <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
+    
+          <div class="slider-bg hero1-card has-bg-image" style="background-image:  linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'r10.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
+            {% comment %} <img src="{{ 'shoe8.jpg' | asset_url }}" width="1880" height="950" alt="" class="img-cover hero-card has-bg-image"> {% endcomment %}
+          </div>
+    
+          <div class="card-content">
+            <h1 class="h1 hero1-title slider-reveal">
+              Sun di Gioia 
+              </h1>
+              <p class="price slider-reveal"> Starting at $17.99</p>
+              <div style="display: flex; justify-content: flex-start;">
+                <a href="#" class="btn btn-primary slider-reveal">Shop Now</a>
+              </div>
+            </div>
+        </li>
+        <li class="slider-item " data-hero-slider-item style="padding-block-start:70px;">
+    
+          <div class="slider-bg hero1-card has-bg-image" style="background-image:  linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'r9.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
+            {% comment %} <img src="{{ 'shoe8.jpg' | asset_url }}" width="1880" height="950" alt="" class="img-cover hero-card has-bg-image"> {% endcomment %}
+          </div>
+    
+          <div class="card-content">
+            <h1 class="h1 hero1-title slider-reveal">
+              Dior Sauvage
+            </h1>
+            <p class="price slider-reveal"> Starting at $17.99</p>
+            <div style="display: flex; justify-content: flex-start;">
+              <a href="#" class="btn btn-primary slider-reveal">Shop Now</a>
             </div>
           </div>
-        </li>
-      {% endfor %}
-    {% endif %}
-  </ul>
-
-  {% if section.settings.show_navigation %}
-    <button class="slider-btn prev" aria-label="slide to previous" data-prev-btn>
-      <ion-icon name="chevron-back"></ion-icon>
-    </button>
-    <button class="slider-btn next" aria-label="slide to next" data-next-btn>
-      <ion-icon name="chevron-forward"></ion-icon>
-    </button>
-  {% endif %}
-</section>
-
-<style>
-  /*-----------------------------------*\
-    #HERO CUSTOMIZABLE
-  \*-----------------------------------*/
-
-  .hero1 .slider-btn { 
-    display: {% if section.settings.show_navigation %}block{% else %}none{% endif %}; 
-    background-color: {{ section.settings.nav_button_bg }};
-    color: {{ section.settings.nav_button_color }};
-    opacity: {{ section.settings.nav_button_opacity }};
-  }
-
-  .hero1 .slider-btn:hover {
-    background-color: {{ section.settings.nav_button_bg_hover }};
-    opacity: 1;
-  }
-
-  .hero1 {
-    position: relative;
-    padding-block: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_bottom }}px;
-    min-height: {{ section.settings.min_height }}vh;
-    overflow: hidden;
-    z-index: 1;
-  }
-
-  .hero1 .slider-item {
-    position: absolute;
-    top: 50%;
-    left: 0%;
-    transform: translateY(-50%);
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: {{ section.settings.content_vertical_alignment }};
-    justify-content: {{ section.settings.content_horizontal_alignment }};
-    padding-inline-start: {{ section.settings.content_padding_left }}px;
-    padding-inline-end: {{ section.settings.content_padding_right }}px;
-    padding-block-end: 50px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity {{ section.settings.transition_speed }}s ease;
-    z-index: 1;
-  }
-
-  .hero1 .slider-item.active {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .hero1 .slider-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transform: scale(1.15);
-    pointer-events: none;
-    user-select: none;
-    z-index: -1;
-  }
-
-  {% if section.settings.enable_zoom_animation %}
-  .hero1 .slider-item.active .slider-bg {
-    animation: smoothScale {{ section.settings.zoom_duration }}s linear forwards;
-  }
-
-  @keyframes smoothScale {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.15); }
-  }
-  {% endif %}
-
-  .hero1 .slider-item .card-content {
-    color: {{ section.settings.text_color }};
-    text-align: {{ section.settings.text_alignment }};
-  }
-
-  .hero1 .hero1-title {
-    font-size: {{ section.settings.title_font_size }}px;
-    color: {{ section.settings.title_color }};
-    margin-bottom: {{ section.settings.title_margin_bottom }}px;
-  }
-
-  .hero1 .price {
-    font-size: {{ section.settings.price_font_size }}px;
-    color: {{ section.settings.price_color }};
-    margin-bottom: {{ section.settings.price_margin_bottom }}px;
-  }
-
-  .hero1 .btn-primary {
-    background-color: {{ section.settings.button_bg_color }};
-    color: {{ section.settings.button_text_color }};
-    padding: {{ section.settings.button_padding_vertical }}px {{ section.settings.button_padding_horizontal }}px;
-    border-radius: {{ section.settings.button_border_radius }}px;
-    font-size: {{ section.settings.button_font_size }}px;
-  }
-
-  .hero1 .btn-primary:hover {
-    background-color: {{ section.settings.button_bg_color_hover }};
-    color: {{ section.settings.button_text_color_hover }};
-  }
-
-  .slider-reveal {
-    transform: translateY({{ section.settings.reveal_distance }}px);
-    opacity: 0;
-  }
-
-  {% if section.settings.enable_slide_animation %}
-  .hero1 .slider-item.active .slider-reveal {
-    animation: sliderReveal {{ section.settings.reveal_duration }}s ease forwards;
-  }
-
-  @keyframes sliderReveal {
-    0% {
-      transform: translateY({{ section.settings.reveal_distance }}px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  .hero1 .slider-item.active .hero1-title { animation-delay: 0.3s; }
-  .hero1 .slider-item.active .price { animation-delay: 0.7s; }
-  .hero1 .slider-item.active .btn { animation-delay: 1s; }
-  {% endif %}
-
-  /* Navigation Button Styles */
-  .hero1 .slider-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: {{ section.settings.nav_button_size }}px;
-    height: {{ section.settings.nav_button_size }}px;
-    border-radius: {{ section.settings.nav_button_border_radius }}%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border: none;
-    z-index: 10;
-    transition: all 0.3s ease;
-  }
-
-  .hero1 .slider-btn.prev {
-    left: {{ section.settings.nav_button_position }}px;
-  }
-
-  .hero1 .slider-btn.next {
-    right: {{ section.settings.nav_button_position }}px;
-  }
-
-  .hero1 .slider-btn ion-icon {
-    font-size: {{ section.settings.nav_icon_size }}px;
-  }
-
-  /* Responsive */
-  @media screen and (max-width: 575px) {
-    .hero1 .slider-item {
-      padding-inline-start: {{ section.settings.content_padding_left_mobile }}px;
-      padding-inline-end: {{ section.settings.content_padding_right_mobile }}px;
-    }
     
-    .hero1 .hero1-title {
-      font-size: {{ section.settings.title_font_size_mobile }}px;
-    }
+        </li>
+        
+        <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
+    
+          <div class="slider-bg hero1-card has-bg-image" style="background-image:  linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'r12.jpg' | asset_url }}'); background-position: center;">
+            {% comment %} <img src="{{ 'shoe8.jpg' | asset_url }}" width="1880" height="950" alt="" class="img-cover hero-card has-bg-image"> {% endcomment %}
+          </div>
+    
+          <div class="card-content">
+            <h1 class="h1 hero1-title slider-reveal">
+              Dior
+              </h1>
+              <p class="price slider-reveal"> Starting at $17.99</p>
+              <div style="display: flex; justify-content: flex-start;">
+                <a href="#" class="btn btn-primary slider-reveal">Shop Now</a>
+              </div>
+            </div>
+        </li>
+        <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
+          <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'r7.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
+            {% comment %} <img src="{{ 'shoe8.jpg' | asset_url }}" width="1880" height="950" alt="" class="img-cover hero-card has-bg-image"> {% endcomment %}
+          </div>
+    
+          <div class="card-content">
+            <h1 class="h1 hero1-title slider-reveal">
+              Julliete has a gun
+              </h1>
+              <p class="price slider-reveal"> Starting at $17.99</p>
+              <div style="display: flex; justify-content: flex-start;">
+                <a href="#" class="btn btn-primary slider-reveal">Shop Now</a>
+              </div>
+            </div>
+        </li>
+        <li class="slider-item" data-hero-slider-item  style="padding-block-start:70px;">
+    
+          <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url('{{ 'r6.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
+            {% comment %} <img src="{{ 'shoe8.jpg' | asset_url }}" width="1880" height="950" alt="" class="img-cover hero-card has-bg-image"> {% endcomment %}
+          </div>
+    
+          <div class="card-content">
+            <h1 class="h1 hero1-title slider-reveal">
+              Valentino
+              </h1>
+              <p class="price slider-reveal"> Starting at $17.99</p>
+              <div style="display: flex; justify-content: flex-start;">
+                <a href="#" class="btn btn-primary slider-reveal">Shop Now</a>
+              </div>
+            </div>
+        </li>
+      {% else %}
+      {% for block in section.blocks %}
+          <li class="slider-item active" data-hero-slider-item style="padding-block-start: 70px;">
 
-    .hero1 .price {
-      font-size: {{ section.settings.price_font_size_mobile }}px;
-    }
+            <div class="slider-bg hero-card has-bg-image" 
+                style="background-image: url('{{ block.settings.hero_image | image_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-position: center;">
+            </div>
+          
+            <div class="card-content">
+              <h1 class="h1 hero-title slider-reveal">
+                {{ block.settings.brand_name }}
+              </h1>
+              <p class="price slider-reveal"> Starting at {{ block.settings.starting_price }}</p>
+              <div style="display: flex; justify-content: flex-start;">
+                <a href="{{ block.settings.shop_now_link }}" class="btn btn-primary slider-reveal">{{ block.settings.shop_now_text }}</a>
+              </div>
+            </div>
+          
+          </li>
+       {% endfor %}
+      {%  endif %}
+    </ul>
+  
+    <button class="slider-btn prev" aria-label="slide to previous" data-prev-btn>
+    <ion-icon name="chevron-back"></ion-icon>
+    </button>
+  
+    <button class="slider-btn next" aria-label="slide to next" data-next-btn>
+     <ion-icon name="chevron-forward"></ion-icon>
+    </button>
+  {% comment %} </div> {% endcomment %}
+</section>
+<style>
+   /*-----------------------------------*\
+  #HERO
+\*-----------------------------------*/
 
-    .hero1 .btn-primary {
-      font-size: {{ section.settings.button_font_size_mobile }}px;
-      padding: {{ section.settings.button_padding_vertical_mobile }}px {{ section.settings.button_padding_horizontal_mobile }}px;
-    }
+.hero1 .slider-btn { display: none; }
+
+.hero1 {
+  position: relative;
+  padding-block: 120px;
+  min-height: 85vh;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* .hero1 .slider-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%; 
+  height: 100%;
+  display: grid;
+  place-content:center;
+  padding-inline-start:50px;
+  padding-block-end:130px;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition-3);
+  z-index: 1;
+} */
+.hero1 .slider-item {
+  position: absolute;
+  top: 50%; /* Position the content halfway vertically */
+  left: 0%; /* Align content to the left */
+  transform: translateY(-50%); /* Correct vertical alignment */
+  width: 100%;
+  height: 100%;
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Vertically center the content */
+  justify-content: start; /* Align content to the start (left) */
+  padding-inline-start:130px; /* Adjust left padding */
+  padding-block-end: 50px; /* Keep padding at the bottom */
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition-3);
+  z-index: 1;
+}
+
+
+.hero1 .slider-item.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.hero1 .slider-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+   width: 100%; 
+  height: 100%;
+  transform: scale(1.15);
+  pointer-events: none;
+  user-select: none;
+  z-index: -1;
+}
+
+.hero1 .slider-item.active .slider-bg {
+  animation: smoothScale 7s linear forwards;
+}
+
+@keyframes smoothScale {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+
+.hero1 .section-subtitle::after { margin-block: 14px 20px; }
+
+.hero1-text { margin-block: 10px 40px; }
+
+/* .hero .btn { margin-inline: auto; } */
+
+.hero1-btn {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  z-index: 2;
+  background-color: white;
+  width: 110px;
+  height: 110px;
+  padding: 12px;
+  transform: scale(0.6);
+}
+
+.hero1-btn img {
+  margin-inline: auto;
+  margin-block-end: 6px;
+}
+
+.hero1-btn .span {
+  color: var(--black);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letterSpacing-1);
+  line-height: var(--lineHeight-3);
+}
+
+.hero1-btn::after {
+  inset: 0;
+  border: 1px solid var(--gold-crayola);
+  animation: rotate360 15s linear infinite;
+}
+
+.slider-reveal {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.hero1 .slider-item.active .slider-reveal {
+  animation: sliderReveal 1s ease forwards;
+}
+
+
+.hero1 .slider-item .card-content{
+color:white;
+}
+
+
+@keyframes sliderReveal {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
   }
 
-  @media (min-width: 1200px) {
-    .hero1 { height: auto; }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
-</style>
+}
+
+.hero1  .slider-item.active .section-subtitle { animation-delay: 100ms; }
+
+.hero1 .slider-item.active .hero-title { animation-delay: 300ms; }
+
+.hero1 .slider-item.active .hero-text { animation-delay: 700ms; }
+
+.hero1 .slider-item.active .price { animation-delay: 1s; }
+
+.hero1 .slider-item.active .btn { animation-delay: 1.5s;}
+
+/**
+ * responsive for larger than 1200px screen
+ */
+ @media screen and (max-width: 575px){
+  .hero1 .slider-item {
+    padding-inline-start: 35px;
+  }
+  
+ }
+
+ @media screen and(max-width: 992px){
+ 
+}
+ @media (min-width: 1200px) {
+
+  /**
+   * HERO
+   */
+
+   .hero1 { height: 420px; }
+
+  .hero1-btn {
+    bottom: 50px;
+    right: 50px;
+    transform: scale(1);
+  }
+}
+</style> 
 
 <script>
   const addEventOnElements = function(elements, eventType, callback){
-    for(let i = 0, len = elements.length; i < len; i++){
-      elements[i].addEventListener(eventType, callback);
+    for(let i = 0, len = elements.length; i< len; i++){
+        elements[i].addEventListener(eventType, callback)
     }
-  }
-
-  const heroSlider = document.querySelector('[data-hero-slider]');
-  const heroSliderItems = document.querySelectorAll("[data-hero-slider-item]");
-  const heroSliderPrevBtn = document.querySelector("[data-prev-btn]");
-  const heroSliderNextBtn = document.querySelector("[data-next-btn]");
-
+  }  
+    /*HERO SLIDER*/
+  const heroSlider = document.querySelector('[data-hero-slider]')
+  const heroSliderItems = document.querySelectorAll("[data-hero-slider-item]")
+  const heroSliderPrevBtn = document.querySelector("[data-prev-btn]")
+  const heroSliderNextBtn = document.querySelector("[data-next-btn]")
+  
   let currentSlidePos = 0;
   let lastActiveSliderItem = heroSliderItems[0];
-
+  
   const updateSliderPos = function(){
     lastActiveSliderItem.classList.remove('active');
     heroSliderItems[currentSlidePos].classList.add('active');
-    lastActiveSliderItem = heroSliderItems[currentSlidePos];
+    lastActiveSliderItem = heroSliderItems[currentSlidePos]
   }
-
+  
   const slideNext = function(){
-    if(currentSlidePos >= heroSliderItems.length - 1){
-      currentSlidePos = 0;
+    if(currentSlidePos >= heroSliderItems.length -1){
+      currentSlidePos =0
     } else {
-      currentSlidePos++;
+      currentSlidePos++
     }
-    updateSliderPos();
+   console.log("new")
+    updateSliderPos()
   }
-
+  
   const slidePrev = function(){
     if(currentSlidePos < 1){
-      currentSlidePos = heroSliderItems.length - 1;
-    } else {
-      currentSlidePos--;
+      currentSlidePos = heroSliderItems.length -1
+    }else{
+      currentSlidePos--
     }
-    updateSliderPos();
+    updateSliderPos()
   }
-
-  if(heroSliderPrevBtn && heroSliderNextBtn){
-    heroSliderPrevBtn.addEventListener("click", slidePrev);
-    heroSliderNextBtn.addEventListener("click", slideNext);
-  }
-
+  
+  heroSliderPrevBtn.addEventListener("click", slidePrev)
+  heroSliderNextBtn.addEventListener("click", slideNext)
   let autoSlideInterval;
-  const autoSlideEnabled = {{ section.settings.enable_autoplay | json }};
-  const autoSlideSpeed = {{ section.settings.autoplay_speed | times: 1000 }};
-
+  
   const autoSlide = function(){
-    if(autoSlideEnabled){
-      autoSlideInterval = setInterval(function(){
-        slideNext();
-      }, autoSlideSpeed);
-    }
+    autoSlideInterval = setInterval(function(){
+      slideNext()
+    }, 3000)
   }
-
-  if(heroSliderNextBtn && heroSliderPrevBtn){
-    addEventOnElements([heroSliderNextBtn, heroSliderPrevBtn], 'mouseover', function(){
-      clearInterval(autoSlideInterval);
-    });
-
-    addEventOnElements([heroSliderNextBtn, heroSliderPrevBtn], 'mouseout', autoSlide);
-  }
-
-  window.addEventListener("load", autoSlide);
+  
+  addEventOnElements([heroSliderNextBtn, heroSliderPrevBtn], 'mouseover', function(){
+    clearInterval(autoSlideInterval)
+  })
+  
+  addEventOnElements([heroSliderNextBtn, heroSliderPrevBtn], 'mouseout', autoSlide)
+  
+  window.addEventListener("load", autoSlide)
+  
+  const parallaxItems = document.querySelectorAll("[data-parallax-item]")
+  
+  let x,y;
+  
+  window.addEventListener('mousemove', function(event){
+   
+     x = (event.clientX / window.innerWidth * 10)-5;
+     y = (event.clientY/ window.innerHeight * 10)-5
+  
+     //reverse the number eg. 20 -> -20, -5 -> 5
+  
+     x = x - (x * 2)
+     y = y - (y * 2)
+  
+  
+     for(let i = 0, len = parallaxItems.length; i < len; i++){
+       x = x * Number(parallaxItems[i].dataset.parallaxSpeed)
+       y = y * Number(parallaxItems[i].dataset.parallaxSpeed)
+       parallaxItems[i].style.transform = `translate3d(${x}px, ${y}px, 0px)`
+     }
+  })
+  
 </script>
 
-{% schema %}
+  {% schema %}
 {
-  "name": "Shop Header Hero",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Layout Settings"
-    },
-    {
-      "type": "range",
-      "id": "min_height",
-      "min": 40,
-      "max": 100,
-      "step": 5,
-      "unit": "vh",
-      "label": "Minimum Section Height",
-      "default": 85
-    },
-    {
-      "type": "range",
-      "id": "section_padding_top",
-      "min": 0,
-      "max": 200,
-      "step": 10,
-      "unit": "px",
-      "label": "Section Padding Top",
-      "default": 120
-    },
-    {
-      "type": "range",
-      "id": "section_padding_bottom",
-      "min": 0,
-      "max": 200,
-      "step": 10,
-      "unit": "px",
-      "label": "Section Padding Bottom",
-      "default": 120
-    },
-    {
-      "type": "header",
-      "content": "Content Positioning"
-    },
-    {
-      "type": "select",
-      "id": "content_vertical_alignment",
-      "label": "Vertical Alignment",
-      "options": [
-        { "value": "flex-start", "label": "Top" },
-        { "value": "center", "label": "Center" },
-        { "value": "flex-end", "label": "Bottom" }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "select",
-      "id": "content_horizontal_alignment",
-      "label": "Horizontal Alignment",
-      "options": [
-        { "value": "flex-start", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "flex-end", "label": "Right" }
-      ],
-      "default": "flex-start"
-    },
-    {
-      "type": "select",
-      "id": "text_alignment",
-      "label": "Text Alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "range",
-      "id": "content_padding_left",
-      "min": 0,
-      "max": 300,
-      "step": 10,
-      "unit": "px",
-      "label": "Content Padding Left (Desktop)",
-      "default": 130
-    },
-    {
-      "type": "range",
-      "id": "content_padding_right",
-      "min": 0,
-      "max": 300,
-      "step": 10,
-      "unit": "px",
-      "label": "Content Padding Right (Desktop)",
-      "default": 130
-    },
-    {
-      "type": "range",
-      "id": "content_padding_left_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Content Padding Left (Mobile)",
-      "default": 35
-    },
-    {
-      "type": "range",
-      "id": "content_padding_right_mobile",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Content Padding Right (Mobile)",
-      "default": 35
-    },
-    {
-      "type": "header",
-      "content": "Background Overlay"
-    },
-    {
-      "type": "range",
-      "id": "overlay_opacity",
-      "min": 0,
-      "max": 1,
-      "step": 0.1,
-      "label": "Overlay Opacity",
-      "default": 0.5
-    },
-    {
-      "type": "checkbox",
-      "id": "parallax_effect",
-      "label": "Enable Parallax Effect",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Typography"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Title Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "range",
-      "id": "title_font_size",
-      "min": 24,
-      "max": 120,
-      "step": 2,
-      "unit": "px",
-      "label": "Title Font Size (Desktop)",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "title_font_size_mobile",
-      "min": 18,
-      "max": 60,
-      "step": 2,
-      "unit": "px",
-      "label": "Title Font Size (Mobile)",
-      "default": 32
-    },
-    {
-      "type": "range",
-      "id": "title_margin_bottom",
-      "min": 0,
-      "max": 60,
-      "step": 5,
-      "unit": "px",
-      "label": "Title Margin Bottom",
-      "default": 20
-    },
-    {
-      "type": "color",
-      "id": "price_color",
-      "label": "Price Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "range",
-      "id": "price_font_size",
-      "min": 12,
-      "max": 48,
-      "step": 2,
-      "unit": "px",
-      "label": "Price Font Size (Desktop)",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "price_font_size_mobile",
-      "min": 12,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "label": "Price Font Size (Mobile)",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "price_margin_bottom",
-      "min": 0,
-      "max": 60,
-      "step": 5,
-      "unit": "px",
-      "label": "Price Margin Bottom",
-      "default": 30
-    },
-    {
-      "type": "header",
-      "content": "Button Styling"
-    },
-    {
-      "type": "color",
-      "id": "button_bg_color",
-      "label": "Button Background Color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "button_bg_color_hover",
-      "label": "Button Background Hover",
-      "default": "#333333"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color",
-      "label": "Button Text Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color_hover",
-      "label": "Button Text Hover Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "range",
-      "id": "button_font_size",
-      "min": 12,
-      "max": 32,
-      "step": 1,
-      "unit": "px",
-      "label": "Button Font Size (Desktop)",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "button_font_size_mobile",
-      "min": 12,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "label": "Button Font Size (Mobile)",
-      "default": 14
-    },
-    {
-      "type": "range",
-      "id": "button_padding_vertical",
-      "min": 5,
-      "max": 40,
-      "step": 5,
-      "unit": "px",
-      "label": "Button Padding Vertical (Desktop)",
-      "default": 15
-    },
-    {
-      "type": "range",
-      "id": "button_padding_horizontal",
-      "min": 10,
-      "max": 80,
-      "step": 5,
-      "unit": "px",
-      "label": "Button Padding Horizontal (Desktop)",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "button_padding_vertical_mobile",
-      "min": 5,
-      "max": 30,
-      "step": 5,
-      "unit": "px",
-      "label": "Button Padding Vertical (Mobile)",
-      "default": 30
-    },
-    {
-      "type": "range",
-      "id": "button_padding_horizontal_mobile",
-      "min": 10,
-      "max": 60,
-      "step": 5,
-      "unit": "px",
-      "label": "Button Padding Horizontal (Mobile)",
-      "default": 30
-    },
-    {
-      "type": "range",
-      "id": "button_border_radius",
-      "min": 0,
-      "max": 50,
-      "step": 5,
-      "unit": "px",
-      "label": "Button Border Radius",
-      "default": 5
-    },
-    {
-      "type": "header",
-      "content": "Slider Navigation"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_navigation",
-      "label": "Show Navigation Arrows",
-      "default": true
-    },
-    {
-      "type": "color",
-      "id": "nav_button_bg",
-      "label": "Navigation Button Background",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "nav_button_bg_hover",
-      "label": "Navigation Button Background Hover",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "nav_button_color",
-      "label": "Navigation Button Icon Color",
-      "default": "#000000"
-    },
-    {
-      "type": "range",
-      "id": "nav_button_size",
-      "min": 30,
-      "max": 80,
-      "step": 5,
-      "unit": "px",
-      "label": "Navigation Button Size",
-      "default": 50
-    },
-    {
-      "type": "range",
-      "id": "nav_icon_size",
-      "min": 16,
-      "max": 48,
-      "step": 2,
-      "unit": "px",
-      "label": "Navigation Icon Size",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "nav_button_border_radius",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "label": "Navigation Button Border Radius",
-      "default": 50
-    },
-    {
-      "type": "range",
-      "id": "nav_button_opacity",
-      "min": 0,
-      "max": 1,
-      "step": 0.1,
-      "label": "Navigation Button Opacity",
-      "default": 0.7
-    },
-    {
-      "type": "range",
-      "id": "nav_button_position",
-      "min": 10,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Navigation Button Distance from Edge",
-      "default": 30
-    },
-    {
-      "type": "header",
-      "content": "Slider Autoplay"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_autoplay",
-      "label": "Enable Autoplay",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "autoplay_speed",
-      "min": 2,
-      "max": 10,
-      "step": 1,
-      "unit": "s",
-      "label": "Autoplay Speed",
-      "default": 3
-    },
-    {
-      "type": "header",
-      "content": "Animation Settings"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_zoom_animation",
-      "label": "Enable Background Zoom Animation",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "zoom_duration",
-      "min": 3,
-      "max": 15,
-      "step": 1,
-      "unit": "s",
-      "label": "Zoom Animation Duration",
-      "default": 7
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_slide_animation",
-      "label": "Enable Content Slide-in Animation",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "reveal_duration",
-      "min": 0.3,
-      "max": 2,
-      "step": 0.1,
-      "unit": "s",
-      "label": "Slide-in Animation Duration",
-      "default": 1
-    },
-    {
-      "type": "range",
-      "id": "reveal_distance",
-      "min": 10,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Slide-in Distance",
-      "default": 30
-    },
-    {
-      "type": "range",
-      "id": "transition_speed",
-      "min": 0.3,
-      "max": 2,
-      "step": 0.1,
-      "unit": "s",
-      "label": "Slide Transition Speed",
-      "default": 0.5
-    },
-    {
-      "type": "header",
-      "content": "Default Content (when no blocks)"
-    },
-    {
-      "type": "text",
-      "id": "default_title",
-      "label": "Default Title",
-      "default": "Welcome to Our Store"
-    },
-    {
-      "type": "text",
-      "id": "default_price",
-      "label": "Default Price",
-      "default": "$17.99"
-    },
-    {
-      "type": "url",
-      "id": "default_link",
-      "label": "Default Button Link",
-      "default": "/collections/all"
-    },
-    {
-      "type": "text",
-      "id": "default_button_text",
-      "label": "Default Button Text",
-      "default": "Shop Now"
-    }
-  ],
+  "name": "shop-header",
+  "settings": [],
   "blocks": [
     {
-      "type": "hero_section",
-      "name": "Hero Slide",
+     "type": "hero_section",
+      "name": "Hero Section",
       "settings": [
         {
           "type": "image_picker",
           "id": "hero_image",
-          "label": "Hero Image"
+          "label": "Hero Image",
+          
         },
         {
           "type": "text",
           "id": "brand_name",
           "label": "Brand Name",
-          "default": "Brand Name"
+          "default": "Nike"
         },
         {
           "type": "text",
@@ -831,8 +453,7 @@
   ],
   "presets": [
     {
-      "name": "Shop Header Hero",
-      "category": "Hero"
+      "name": "shop"
     }
   ]
 }
