@@ -1,0 +1,84 @@
+{% comment %}
+  Country/Currency Selector
+  Allows customers to select their country and currency for international sales
+  Required feature following UX guidelines
+{% endcomment %}
+
+{%- form 'localization', class: 'localization-form' -%}
+  <div class="localization-selector">
+    <div class="localization-selector__wrapper">
+      <label class="localization-selector__label" for="CountrySelector-{{ section.id }}">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1C4.13 1 1 4.13 1 8s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7zm0 12.5c-3.03 0-5.5-2.47-5.5-5.5S4.97 2.5 8 2.5s5.5 2.47 5.5 5.5-2.47 5.5-5.5 5.5z" fill="currentColor"/>
+        </svg>
+        <span class="visually-hidden">Country/region</span>
+      </label>
+      <select
+        class="localization-selector__select"
+        id="CountrySelector-{{ section.id }}"
+        name="country_code"
+        aria-label="Country/region"
+      >
+        {% for country in localization.available_countries %}
+          <option
+            value="{{ country.iso_code }}"
+            {% if country.iso_code == localization.country.iso_code %}selected{% endif %}
+          >
+            {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+{%- endform -%}
+
+<script>
+  document.querySelectorAll('.localization-selector__select').forEach(select => {
+    select.addEventListener('change', function() {
+      this.closest('form').submit();
+    });
+  });
+</script>
+
+<style>
+  .localization-selector {
+    position: relative;
+  }
+
+  .localization-selector__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .localization-selector__label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .localization-selector__select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+
+  .localization-selector__select:focus {
+    outline: 2px solid #008060;
+    outline-offset: 2px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+</style>

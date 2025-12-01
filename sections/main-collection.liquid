@@ -83,8 +83,18 @@
                              {% if product.compare_at_price > product.price %}
                                <del class="del">{{ product.compare_at_price | money }}</del>
                             {% endif %}
+                            {% if product.price_varies %}
+                              <span class="price-from">From </span>
+                            {% endif %}
                                <data class="price" value="{{ product.price }}">{{ product.price | money }}</data>
                              </div>
+                            {%- comment -%} Unit Pricing (Required) {%- endcomment -%}
+                            {% assign first_variant = product.selected_or_first_available_variant %}
+                            {% if first_variant.unit_price_measurement %}
+                              <div class="unit-price">
+                                {{ first_variant.unit_price | money }}/{{ first_variant.unit_price_measurement.reference_value }}{{ first_variant.unit_price_measurement.reference_unit }}
+                              </div>
+                            {% endif %}
                             </div>
                            </div>
                           </li>
@@ -147,8 +157,18 @@
                              {% if product.compare_at_price > product.price %}
                                <del class="del">{{ product.compare_at_price | money }}</del>
                             {% endif %}
+                            {% if product.price_varies %}
+                              <span class="price-from">From </span>
+                            {% endif %}
                                <data class="price" value="{{ product.price }}">{{ product.price | money }}</data>
                              </div>
+                            {%- comment -%} Unit Pricing (Required) {%- endcomment -%}
+                            {% assign first_variant = product.selected_or_first_available_variant %}
+                            {% if first_variant.unit_price_measurement %}
+                              <div class="unit-price">
+                                {{ first_variant.unit_price | money }}/{{ first_variant.unit_price_measurement.reference_value }}{{ first_variant.unit_price_measurement.reference_unit }}
+                              </div>
+                            {% endif %}
                             </div>
                            </div>
                           </li>

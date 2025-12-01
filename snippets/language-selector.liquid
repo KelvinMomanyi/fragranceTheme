@@ -1,0 +1,85 @@
+{% comment %}
+  Language Selector
+  Allows customers to select their preferred language for multi-language stores
+  Required feature following UX guidelines
+{% endcomment %}
+
+{%- form 'localization', class: 'localization-form' -%}
+  <div class="language-selector">
+    <div class="language-selector__wrapper">
+      <label class="language-selector__label" for="LanguageSelector-{{ section.id }}">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1C4.13 1 1 4.13 1 8s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7zm5.36 4.5H11.5c-.12-.8-.32-1.58-.59-2.3 1.37.63 2.49 1.73 3.11 3.09.15.3.27.62.36.95zm-10.72 0h1.88c.12-.8.32-1.58.59-2.3-1.37.63-2.49 1.73-3.11 3.09-.15.3-.27.62-.36.95zm5.36 9V11h1.5v3.5c-.48.04-.98.06-1.5.06s-1.02-.02-1.5-.06zM9 9.5H7V6h2v3.5z" fill="currentColor"/>
+        </svg>
+        <span class="visually-hidden">Language</span>
+      </label>
+      <select
+        class="language-selector__select"
+        id="LanguageSelector-{{ section.id }}"
+        name="locale_code"
+        aria-label="Language"
+      >
+        {% for language in localization.available_languages %}
+          <option
+            value="{{ language.iso_code }}"
+            lang="{{ language.iso_code }}"
+            {% if language.iso_code == localization.language.iso_code %}selected{% endif %}
+          >
+            {{ language.endonym_name | capitalize }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+{%- endform -%}
+
+<script>
+  document.querySelectorAll('.language-selector__select').forEach(select => {
+    select.addEventListener('change', function() {
+      this.closest('form').submit();
+    });
+  });
+</script>
+
+<style>
+  .language-selector {
+    position: relative;
+  }
+
+  .language-selector__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .language-selector__label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .language-selector__select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+
+  .language-selector__select:focus {
+    outline: 2px solid #008060;
+    outline-offset: 2px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+</style>

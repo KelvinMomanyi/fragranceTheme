@@ -85,20 +85,25 @@
                
               <div class="addBuyButtons">
                
-                  <form action="/cart/add" method="post" style='margin-top:1em;' enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
+                  <form action="{{ routes.cart_add_url }}" method="post" style='margin-top:1em;' enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
                     <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                     <button type="submit" class="action-btn btn btn-primary" aria-label="add to cart">
                     
                       Add to Cart
                     </button>
                   </form>
-                  <form action="/cart/add" method="post" style="margin-top:1em;" enctype="multipart/form-data">
+                  <form action="{{ routes.cart_add_url }}" method="post" style="margin-top:1em;" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                    <input type="hidden" name="return_to" value="/checkout">
+                    <input type="hidden" name="return_to" value="{{ routes.checkout_url }}">
                     <button type="submit" class="action-btn btn btn-secondary" aria-label="buy now">
                       Buy It Now
                    </button>
                  </form>
+
+                 {%- comment -%} Accelerated Checkout Buttons (Required - Must be enabled by default) {%- endcomment -%}
+                 <div class="product-form__payment-buttons" style="margin-top: 1em;">
+                   {{ form | payment_button }}
+                 </div>
 
               </div>
           </div>
@@ -773,12 +778,28 @@ let shoe =1
 
 {% schema %}
 {
-  "name": "main-product",
+  "name": "Product",
   "settings": [],
-  "blocks": [],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid",
+          "info": "Add custom Liquid code"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "main-product"
+      "name": "Product"
     }
   ]
 }

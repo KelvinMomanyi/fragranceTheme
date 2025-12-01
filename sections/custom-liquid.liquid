@@ -1,0 +1,28 @@
+{% comment %}
+  Custom Liquid Section
+  Allows merchants to add custom Liquid code to any template.
+  Also serves as an insertion point for certain types of apps.
+{% endcomment %}
+
+<div class="custom-liquid-section">
+  {{ section.settings.custom_liquid }}
+</div>
+
+{% schema %}
+{
+  "name": "Custom liquid",
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "custom_liquid",
+      "label": "Custom Liquid",
+      "info": "Add custom Liquid code. This section can also be used by apps to insert content."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom liquid"
+    }
+  ]
+}
+{% endschema %}
