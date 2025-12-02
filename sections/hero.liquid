@@ -1,36 +1,24 @@
 {{ 'application.css' | asset_url | stylesheet_tag }} 
+{% comment %} Preload only configured images {% endcomment %}
 {% if section.settings.image1 != blank %}
   <link rel="preload" as="image" href="{{ section.settings.image1 | image_url }}">
-{% else %} 
-  <link rel="preload" as="image" href="{{ 'shoe8.jpg' | asset_url }}">
 {% endif %}
 
 {% if section.settings.image2 != blank %}
   <link rel="preload" as="image" href="{{ section.settings.image2 | image_url }}">
-{% else %}
-  <link rel="preload" as="image" href="{{ 'shoes.jpg' | asset_url }}">
 {% endif %}
 
 {% if section.settings.image3 != blank %}
   <link rel="preload" as="image" href="{{ section.settings.image3 | image_url }}">
-{% else %}
-  <link rel="preload" as="image" href="{{ 'shoe16.jpg' | asset_url }}">
 {% endif %}
-
 
 {% if section.settings.image4 != blank %}
   <link rel="preload" as="image" href="{{ section.settings.image4 | image_url }}">
-{% else %}
-  <link rel="preload" as="image" href="{{ 'shoe16.jpg' | asset_url }}">
 {% endif %}
 
 {% if section.settings.image5 != blank %}
   <link rel="preload" as="image" href="{{ section.settings.image5 | image_url }}">
-{% else %}
-  <link rel="preload" as="image" href="{{ 'shoe16.jpg' | asset_url }}">
 {% endif %}
-
-<link rel="preload" as="image" href="{{ 'MainLogo_png.svg' | asset_url }}">
 
 
 <section class="section hero" id="home" aria-label="home">

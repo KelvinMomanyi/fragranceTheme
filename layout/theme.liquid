@@ -58,16 +58,11 @@
   </noscript>
 
   <!-- Critical Images Preload -->
-  <link rel="preload" as="image" href="{{'F1.jpg' | asset_url }}">
-  <link rel="preload" as="image" href="{{'F2.jpg' | asset_url }}">
-  <link rel="preload" as="image" href="{{'F3.jpg' | asset_url }}">
-  <link rel="preload" as="image" href="{{'F4.jpg' | asset_url }}">
-  <link rel="preload" as="image" href="{{'F5.jpg' | asset_url }}">
+  <!-- Images are loaded from hero section settings or placeholders -->
 
   {{ content_for_header }} <!-- Header hook for plugins -->
   
   <!-- Critical CSS - Load immediately -->
-  <link rel="stylesheet" href="./assets/css/style.css">
   {{ 'application.css' | asset_url | stylesheet_tag }} 
   
   <!-- Non-critical CSS - Defer loading -->
