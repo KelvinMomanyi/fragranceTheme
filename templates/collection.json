@@ -1,16 +1,11 @@
 {
     "sections": {
-        "faceted-filters": {
-            "type": "faceted-filters",
-            "settings": {}
-        },
         "main-collection": {
             "type": "main-collection",
             "settings": {}
         }
     },
     "order": [
-        "faceted-filters",
         "main-collection"
     ]
 }

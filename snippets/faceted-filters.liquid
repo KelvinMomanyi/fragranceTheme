@@ -1,10 +1,3 @@
-{% comment %}
-  Faceted Filtering Section
-  Provides filtering by availability, price, type, vendor, and variant options
-  Uses Shopify's native filtering system
-  Required for Theme Store compliance
-{% endcomment %}
-
 {%- liquid
   assign sort_by = collection.sort_by | default: collection.default_sort_by
   assign filter_count = 0
@@ -141,6 +134,7 @@
     margin-bottom: 30px;
     border-bottom: 1px solid #e0e0e0;
     padding-bottom: 20px;
+    width: 100%;
   }
 
   .active-facets {
@@ -198,6 +192,7 @@
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
+    justify-content: flex-end;
   }
 
   .facet-sort label {
@@ -223,6 +218,8 @@
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     overflow: hidden;
+    position: relative;
+    z-index: 10;
   }
 
   .facet-drawer__summary {
@@ -364,21 +361,14 @@
 
 <script>
   // Auto-submit form when filters change
-  document.getElementById('FacetFiltersForm').addEventListener('change', function(e) {
-    if (e.target.type === 'checkbox') {
-      this.submit();
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('FacetFiltersForm');
+    if (form) {
+      form.addEventListener('change', function(e) {
+        if (e.target.type === 'checkbox') {
+          form.submit();
+        }
+      });
     }
   });
 </script>
-
-{% schema %}
-{
-  "name": "Faceted filters",
-  "settings": [],
-  "presets": [
-    {
-      "name": "Faceted filters"
-    }
-  ]
-}
-{% endschema %}
