@@ -10,6 +10,16 @@
                         {{ collection.title }}
                     {% endif %}
                   </h2>
+                <div class="filter-controls"> 
+                    <a href="#" class="btn-link filter-btn">
+                        {% render 'sorting-filter' %}
+                      
+                    </a>
+                    <a href="#" class="btn-link filter-btn">
+                        {% render 'collection-filter' %}
+                        
+                    </a>
+                </div>
             </div>
             
             <div class="collection-container">
