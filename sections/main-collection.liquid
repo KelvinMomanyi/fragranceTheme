@@ -2,7 +2,7 @@
      <section class="section shop" id="shop" aria-label="shop">
           <div class="container">
             
-            <div class="title-wrapper">
+            <div class="title-wrapper" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
                   <h2 class="h2 section-title">
                     {% if section.settings.selected_collection != blank %}
                         {{ collections[section.settings.selected_collection].title }}
