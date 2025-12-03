@@ -1373,45 +1373,44 @@ a.card-meta-text:is(:hover, :focus) { color: var(--tan-crayola); }
    COLLECTION PAGE SIDEBAR LAYOUT
    =================================== */
 
-/* Collection page wrapper for sidebar + products */
-.template-collection .shopify-section:first-child {
-  padding: 0 15px;
-}
-
-.template-collection .shopify-section:first-child + .shopify-section {
-  padding: 0 15px;
-}
-
-/* Create two-column layout on collection pages */
-body.template-collection main {
+/* Wrapper for collection page two-column layout */
+.collection-page-wrapper {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 40px;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 20px 15px;
+  align-items: start;
 }
 
-/* Ensure sidebar section takes first column */
-body.template-collection main > .shopify-section:first-child {
+/* Target the faceted-filters section */
+#shopify-section-faceted-filters {
   grid-column: 1;
 }
 
-/* Ensure products section takes second column */
-body.template-collection main > .shopify-section:nth-child(2) {
+/* Target the main-collection section */
+#shopify-section-main-collection {
   grid-column: 2;
   min-width: 0;
 }
 
+/* Remove default padding from sections in collection template */
+.template-collection #shopify-section-faceted-filters .container,
+.template-collection #shopify-section-main-collection .container {
+  padding-inline: 0;
+}
+
 /* Mobile responsive - stack vertically */
 @media (max-width: 768px) {
-  body.template-collection main {
+  .collection-page-wrapper {
     grid-template-columns: 1fr;
     gap: 20px;
   }
   
-  body.template-collection main > .shopify-section:first-child,
-  body.template-collection main > .shopify-section:nth-child(2) {
+  #shopify-section-faceted-filters,
+  #shopify-section-main-collection {
     grid-column: 1;
   }
 }
+

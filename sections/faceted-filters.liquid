@@ -14,7 +14,7 @@
 -%}
 
 {%- comment -%} Sidebar Filter Layout {%- endcomment -%}
-<div class="facets-sidebar">
+<div class="facets-sidebar" style="display: inline-block; width: 280px; vertical-align: top; padding-right: 40px;">
   <div class="facets-sidebar__inner">
     <h2 class="facets-sidebar__title">Filter By</h2>
     
@@ -112,6 +112,20 @@
     </form>
   </div>
 </div>
+
+<script>
+  // Make the next section inline-block to sit side-by-side
+  document.addEventListener('DOMContentLoaded', function() {
+    var filterSection = document.querySelector('#shopify-section-faceted-filters');
+    var collectionSection = document.querySelector('#shopify-section-main-collection');
+    
+    if (filterSection && collectionSection) {
+      collectionSection.style.display = 'inline-block';
+      collectionSection.style.width = 'calc(100% - 320px)';
+      collectionSection.style.verticalAlign = 'top';
+    }
+  });
+</script>
 
 <style>
   :root {
