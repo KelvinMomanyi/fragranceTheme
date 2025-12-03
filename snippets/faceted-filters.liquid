@@ -8,79 +8,55 @@
 
 <div class="facets-container" id="main-collection-filters">
   <form class="facets-form" id="FacetFiltersForm">
-    <div class="facets-wrapper">
+    
+    {%- comment -%} Top Bar: Filters + Sort {%- endcomment -%}
+    <div class="facets-top-bar">
       
-      {%- comment -%} Active Filters Summary {%- endcomment -%}
-      {% if filter_count > 0 %}
-        <div class="active-facets">
-          <span class="active-facets__label">{{ filter_count }} filter{% if filter_count > 1 %}s{% endif %} applied:</span>
-          <div class="active-facets__list">
-            {%- for filter in collection.filters -%}
-              {%- for value in filter.active_values -%}
-                <a href="{{ value.url_to_remove }}" class="active-facet">
-                  <span class="active-facet__label">{{ filter.label }}: {{ value.label }}</span>
-                  <span class="active-facet__remove" aria-label="Remove filter">×</span>
-                </a>
-              {%- endfor -%}
-            {%- endfor -%}
-            <a href="{{ collection.url }}" class="active-facets__clear">Clear all</a>
-          </div>
-        </div>
-      {% endif %}
-
-      {%- comment -%} Sort By Dropdown {%- endcomment -%}
-      <div class="facet-sort">
-        <label for="SortBy">Sort by:</label>
-        <select name="sort_by" id="SortBy" aria-label="Sort products" onchange="this.closest('form').submit()">
-          {%- for option in collection.sort_options -%}
-            <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
-              {{ option.name }}
-            </option>
-          {%- endfor -%}
-        </select>
-      </div>
-
-      {%- comment -%} Filter Drawers {%- endcomment -%}
-      <div class="facets-list">
+      {%- comment -%} Filter Group (Availability, Price, etc.) {%- endcomment -%}
+      <div class="facets-group">
         {%- for filter in collection.filters -%}
-          <details class="facet-drawer" {% if filter.active_values.size > 0 %}open{% endif %}>
-            <summary class="facet-drawer__summary">
-              <span class="facet-drawer__title">{{ filter.label }}</span>
-              <span class="facet-drawer__icon">+</span>
-            </summary>
+          <div class="facet-wrapper">
+            <label class="facet-label" for="Filter-{{ filter.label | escape }}">{{ filter.label }}</label>
             
-            <div class="facet-drawer__content">
-              {%- case filter.type -%}
-                
-                {%- comment -%} List Filters (Type, Vendor, Availability, Variant Options) {%- endcomment -%}
-                {%- when 'list' -%}
-                  <ul class="facet-list">
-                    {%- for value in filter.values -%}
-                      <li class="facet-item">
-                        <label class="facet-checkbox">
-                          <input
-                            type="checkbox"
-                            name="{{ value.param_name }}"
-                            value="{{ value.value }}"
-                            {% if value.active %}checked{% endif %}
-                            {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                            onchange="this.closest('form').submit()"
-                          >
-                          <span class="facet-checkbox__label">
-                            {{ value.label }}
-                            <span class="facet-count">({{ value.count }})</span>
-                          </span>
-                        </label>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
+            {%- case filter.type -%}
+              {%- when 'list' -%}
+                {%- comment -%} List Filters as Select {%- endcomment -%}
+                <select 
+                  name="{{ filter.values.first.param_name }}" 
+                  id="Filter-{{ filter.label | escape }}"
+                  class="facet-select"
+                  onchange="this.closest('form').submit()"
+                >
+                  <option value="">All</option>
+                  {%- for value in filter.values -%}
+                    <option 
+                      value="{{ value.value }}" 
+                      {% if value.active %}selected{% endif %}
+                      {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                    >
+                      {{ value.label }} ({{ value.count }})
+                    </option>
+                  {%- endfor -%}
+                </select>
 
-                {%- comment -%} Price Range Filter {%- endcomment -%}
-                {%- when 'price_range' -%}
-                  <div class="facet-price-range">
+              {%- when 'price_range' -%}
+                {%- comment -%} Price Filter as Fake Dropdown (Details) {%- endcomment -%}
+                <details class="facet-disclosure">
+                  <summary class="facet-disclosure__summary">
+                    <span class="facet-disclosure__button">
+                      {%- if filter.min_value.value or filter.max_value.value -%}
+                        {%- if filter.min_value.value -%}{{ filter.min_value.value | money_without_currency }}{%- endif -%}
+                        -
+                        {%- if filter.max_value.value -%}{{ filter.max_value.value | money_without_currency }}{%- endif -%}
+                      {%- else -%}
+                        Any price
+                      {%- endif -%}
+                    </span>
+                  </summary>
+                  <div class="facet-disclosure__content">
                     <div class="price-range-inputs">
                       <div class="price-field">
-                        <label for="Filter-{{ filter.label }}-GTE">From</label>
+                        <label for="Filter-{{ filter.label }}-GTE">Min</label>
                         <input
                           name="{{ filter.min_value.param_name }}"
                           id="Filter-{{ filter.label }}-GTE"
@@ -93,7 +69,7 @@
                       </div>
                       <span class="price-separator">-</span>
                       <div class="price-field">
-                        <label for="Filter-{{ filter.label }}-LTE">To</label>
+                        <label for="Filter-{{ filter.label }}-LTE">Max</label>
                         <input
                           name="{{ filter.max_value.param_name }}"
                           id="Filter-{{ filter.label }}-LTE"
@@ -107,24 +83,57 @@
                     </div>
                     <button type="submit" class="price-range__button">Apply</button>
                   </div>
+                </details>
 
-              {%- endcase -%}
-            </div>
-          </details>
+            {%- endcase -%}
+          </div>
         {%- endfor -%}
       </div>
 
+      {%- comment -%} Sort By {%- endcomment -%}
+      <div class="facet-wrapper facet-sort-wrapper">
+        <label class="facet-label" for="SortBy">Sort by</label>
+        <select name="sort_by" id="SortBy" class="facet-select" onchange="this.closest('form').submit()">
+          {%- for option in collection.sort_options -%}
+            <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
+              {{ option.name }}
+            </option>
+          {%- endfor -%}
+        </select>
+      </div>
+
     </div>
+
+    {%- comment -%} Active Filters {%- endcomment -%}
+    {% if filter_count > 0 %}
+      <div class="active-facets">
+        <div class="active-facets__list">
+          {%- for filter in collection.filters -%}
+            {%- for value in filter.active_values -%}
+              <a href="{{ value.url_to_remove }}" class="active-facet">
+                {{ value.label }} <span class="remove-x">×</span>
+              </a>
+            {%- endfor -%}
+            {%- if filter.type == 'price_range' -%}
+              {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+                <a href="{{ filter.url_to_remove }}" class="active-facet">
+                  {%- if filter.min_value.value -%}{{ filter.min_value.value | money }}{%- else -%}{{ 0 | money }}{%- endif -%} - 
+                  {%- if filter.max_value.value -%}{{ filter.max_value.value | money }}{%- else -%}{{ filter.range_max | money }}{%- endif -%}
+                  <span class="remove-x">×</span>
+                </a>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <a href="{{ collection.url }}" class="active-facets__clear">Clear all</a>
+        </div>
+      </div>
+    {% endif %}
   </form>
 
-  {%- comment -%} Product Count {%- endcomment -%}
+  {%- comment -%} Results Count {%- endcomment -%}
   <div class="facets-results">
     <p class="facets-count">
-      {% if collection.results_count == collection.all_products_count %}
-        {{ collection.results_count }} product{% if collection.results_count != 1 %}s{% endif %}
-      {% else %}
-        Showing {{ collection.results_count }} of {{ collection.all_products_count }} product{% if collection.all_products_count != 1 %}s{% endif %}
-      {% endif %}
+      {{ collection.products_count }} products
     </p>
   </div>
 </div>
@@ -134,203 +143,119 @@
     margin-bottom: 30px;
     border-bottom: 1px solid #e0e0e0;
     padding-bottom: 20px;
-    width: 100%;
   }
 
-  .active-facets {
-    background: #f5f5f5;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-
-  .active-facets__label {
-    font-weight: 600;
-    margin-bottom: 10px;
-    display: block;
-  }
-
-  .active-facets__list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-  }
-
-  .active-facet {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 12px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    text-decoration: none;
-    color: #111;
-    font-size: 0.9em;
-    transition: all 0.2s;
-  }
-
-  .active-facet:hover {
-    background: #f0f0f0;
-    border-color: #111;
-  }
-
-  .active-facet__remove {
-    font-size: 1.2em;
-    line-height: 1;
-  }
-
-  .active-facets__clear {
-    color: #d32f2f;
-    text-decoration: underline;
-    font-size: 0.9em;
-  }
-
-  .facet-sort {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    justify-content: flex-end;
-  }
-
-  .facet-sort label {
-    font-weight: 600;
-  }
-
-  .facet-sort select {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: #fff;
-    cursor: pointer;
-    font-size: 0.95em;
-  }
-
-  .facets-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-  }
-
-  .facet-drawer {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    z-index: 10;
-  }
-
-  .facet-drawer__summary {
-    padding: 12px 15px;
-    background: #f9f9f9;
-    cursor: pointer;
+  /* Top Bar Layout */
+  .facets-top-bar {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    user-select: none;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 20px;
   }
 
-  .facet-drawer__summary:hover {
-    background: #f0f0f0;
-  }
-
-  .facet-drawer__title {
-    font-weight: 600;
-    font-size: 0.95em;
-  }
-
-  .facet-drawer__icon {
-    font-size: 1.2em;
-    transition: transform 0.2s;
-  }
-
-  .facet-drawer[open] .facet-drawer__icon {
-    transform: rotate(45deg);
-  }
-
-  .facet-drawer__content {
-    padding: 15px;
-    background: #fff;
-  }
-
-  .facet-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .facet-item {
-    margin-bottom: 10px;
-  }
-
-  .facet-checkbox {
+  .facets-group {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .facet-wrapper {
+    display: flex;
+    flex-direction: column;
     gap: 8px;
-    cursor: pointer;
   }
 
-  .facet-checkbox input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-  }
-
-  .facet-checkbox input[type="checkbox"]:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-
-  .facet-checkbox__label {
-    flex: 1;
+  .facet-label {
     font-size: 0.9em;
+    font-weight: 600;
+    color: #333;
   }
 
-  .facet-count {
-    color: #666;
+  /* Shared Select Style */
+  .facet-select,
+  .facet-disclosure__button {
+    appearance: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 35px 10px 15px;
+    font-size: 0.95em;
+    color: #333;
+    cursor: pointer;
+    min-width: 180px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23666' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    display: block;
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .facet-price-range {
-    padding: 10px 0;
+  .facet-select:focus,
+  .facet-disclosure__button:focus {
+    border-color: #000;
+    outline: none;
+  }
+
+  /* Disclosure (Price Dropdown) */
+  .facet-disclosure {
+    position: relative;
+  }
+
+  .facet-disclosure__summary {
+    list-style: none;
+  }
+  .facet-disclosure__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .facet-disclosure__content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 300px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 100;
+    margin-top: 5px;
   }
 
   .price-range-inputs {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     gap: 10px;
     margin-bottom: 15px;
   }
 
   .price-field {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
   }
 
   .price-field label {
-    font-size: 0.85em;
+    display: block;
+    font-size: 0.8em;
+    margin-bottom: 5px;
     color: #666;
   }
 
   .price-field input {
+    width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    width: 100%;
-  }
-
-  .price-separator {
-    margin-bottom: 8px;
-    color: #666;
   }
 
   .price-range__button {
     width: 100%;
     padding: 10px;
-    background: #111;
+    background: #000;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -338,37 +263,78 @@
     font-weight: 600;
   }
 
-  .price-range__button:hover {
-    background: #000;
+  /* Active Filters */
+  .active-facets {
+    margin-top: 15px;
+  }
+
+  .active-facets__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .active-facet {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #333;
+    font-size: 0.9em;
+  }
+
+  .active-facet:hover {
+    background: #e0e0e0;
+  }
+
+  .remove-x {
+    font-weight: bold;
+  }
+
+  .active-facets__clear {
+    color: #d32f2f;
+    text-decoration: underline;
+    font-size: 0.9em;
+    align-self: center;
   }
 
   .facets-results {
-    margin-top: 20px;
-    text-align: center;
-  }
-
-  .facets-count {
+    margin-top: 15px;
+    text-align: right;
+    font-size: 0.9em;
     color: #666;
-    font-size: 0.95em;
   }
 
+  /* Responsive */
   @media (max-width: 768px) {
-    .facets-list {
-      grid-template-columns: 1fr;
+    .facets-top-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .facets-group {
+      flex-direction: column;
+    }
+
+    .facet-select,
+    .facet-disclosure__button {
+      width: 100%;
     }
   }
 </style>
 
 <script>
-  // Auto-submit form when filters change
-  document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('FacetFiltersForm');
-    if (form) {
-      form.addEventListener('change', function(e) {
-        if (e.target.type === 'checkbox') {
-          form.submit();
-        }
-      });
-    }
+  // Close details when clicking outside
+  document.addEventListener('click', function(event) {
+    const details = document.querySelectorAll('.facet-disclosure[open]');
+    details.forEach(detail => {
+      if (!detail.contains(event.target)) {
+        detail.removeAttribute('open');
+      }
+    });
   });
 </script>
