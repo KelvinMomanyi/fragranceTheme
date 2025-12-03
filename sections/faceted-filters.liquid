@@ -13,119 +13,84 @@
   endfor
 -%}
 
-{%- comment -%} Sidebar Filter Layout {%- endcomment -%}
-<div class="facets-sidebar" style="display: inline-block; width: 280px; vertical-align: top; padding-right: 40px;">
-  <div class="facets-sidebar__inner">
-    <h2 class="facets-sidebar__title">Filter By</h2>
+{%- comment -%} Horizontal Filter Bar {%- endcomment -%}
+<div class="facets-horizontal">
+  <form class="facets-form" id="FacetFiltersForm">
     
-    <form class="facets-form" id="FacetFiltersForm">
-      {%- comment -%} Filter Drawers {%- endcomment -%}
-      <div class="facets-list">
-        {%- for filter in collection.filters -%}
-          <details class="facet-drawer" {% if filter.active_values.size > 0 %}open{% endif %}>
-            <summary class="facet-drawer__summary">
-              <span class="facet-drawer__title">{{ filter.label }}</span>
-              <span class="facet-drawer__icon">^</span>
-            </summary>
-            
-            <div class="facet-drawer__content">
-              {%- case filter.type -%}
-                
-                {%- comment -%} List Filters {%- endcomment -%}
-                {%- when 'list' -%}
-                  <ul class="facet-list">
-                    {%- for value in filter.values -%}
-                      <li class="facet-item">
-                        <label class="facet-checkbox">
-                          <input
-                            type="checkbox"
-                            name="{{ value.param_name }}"
-                            value="{{ value.value }}"
-                            {% if value.active %}checked{% endif %}
-                            {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                            onchange="this.closest('form').submit()"
-                          >
-                          <span class="facet-checkbox__label">
-                            {{ value.label }}
-                            <span class="facet-count">({{ value.count }})</span>
-                          </span>
-                        </label>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-
-                {%- comment -%} Price Range Filter {%- endcomment -%}
-                {%- when 'price_range' -%}
-                  <div class="facet-price-range">
-                    <div class="price-range-inputs">
-                      <div class="price-field">
-                        <label for="Filter-{{ filter.label }}-GTE">From</label>
-                        <input
-                          name="{{ filter.min_value.param_name }}"
-                          id="Filter-{{ filter.label }}-GTE"
-                          type="number"
-                          placeholder="0"
-                          min="0"
-                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                          {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
-                        >
-                      </div>
-                      <span class="price-separator">-</span>
-                      <div class="price-field">
-                        <label for="Filter-{{ filter.label }}-LTE">To</label>
-                        <input
-                          name="{{ filter.max_value.param_name }}"
-                          id="Filter-{{ filter.label }}-LTE"
-                          type="number"
-                          placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                          min="0"
-                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                          {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
-                        >
-                      </div>
-                    </div>
-                    <button type="submit" class="price-range__button">Apply</button>
-                  </div>
-
-              {%- endcase -%}
+    {%- comment -%} Filter Dropdowns {%- endcomment -%}
+    <div class="facets-row">
+      {%- for filter in collection.filters -%}
+        {%- case filter.type -%}
+          
+          {%- comment -%} List Filters as Dropdowns {%- endcomment -%}
+          {%- when 'list' -%}
+            <div class="facet-dropdown-wrapper">
+              <label class="facet-label">{{ filter.label }}</label>
+              <select 
+                name="{{ filter.values.first.param_name }}" 
+                class="facet-dropdown"
+                onchange="this.closest('form').submit()"
+              >
+                <option value="">All {{ filter.label }}</option>
+                {%- for value in filter.values -%}
+                  <option 
+                    value="{{ value.value }}" 
+                    {% if value.active %}selected{% endif %}
+                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                  >
+                    {{ value.label }} ({{ value.count }})
+                  </option>
+                {%- endfor -%}
+              </select>
             </div>
-          </details>
-        {%- endfor -%}
-      </div>
 
-      {%- comment -%} Active Filters {%- endcomment -%}
-      {% if filter_count > 0 %}
-        <div class="active-facets">
-          <div class="active-facets__list">
-            {%- for filter in collection.filters -%}
-              {%- for value in filter.active_values -%}
-                <a href="{{ value.url_to_remove }}" class="active-facet">
-                  <span class="active-facet__label">{{ value.label }}</span>
-                  <span class="active-facet__remove" aria-label="Remove filter">×</span>
-                </a>
-              {%- endfor -%}
+          {%- comment -%} Price Range Filter {%- endcomment -%}
+          {%- when 'price_range' -%}
+            <div class="facet-dropdown-wrapper">
+              <label class="facet-label">{{ filter.label }}</label>
+              <div class="price-inputs-inline">
+                <input
+                  name="{{ filter.min_value.param_name }}"
+                  type="number"
+                  placeholder="Min"
+                  min="0"
+                  class="price-input-small"
+                  {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                >
+                <span class="price-dash">-</span>
+                <input
+                  name="{{ filter.max_value.param_name }}"
+                  type="number"
+                  placeholder="Max"
+                  min="0"
+                  class="price-input-small"
+                  {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                >
+                <button type="submit" class="price-apply-btn">Go</button>
+              </div>
+            </div>
+
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} Active Filters {%- endcomment -%}
+    {% if filter_count > 0 %}
+      <div class="active-facets-horizontal">
+        <div class="active-facets__list">
+          {%- for filter in collection.filters -%}
+            {%- for value in filter.active_values -%}
+              <a href="{{ value.url_to_remove }}" class="active-facet-tag">
+                {{ value.label }} <span class="remove-x">×</span>
+              </a>
             {%- endfor -%}
-          </div>
-          <a href="{{ collection.url }}" class="active-facets__clear">Clear all</a>
+          {%- endfor -%}
+          <a href="{{ collection.url }}" class="clear-all-link">Clear all</a>
         </div>
-      {% endif %}
-    </form>
-  </div>
+      </div>
+    {% endif %}
+  </form>
 </div>
-
-<script>
-  // Make the next section inline-block to sit side-by-side
-  document.addEventListener('DOMContentLoaded', function() {
-    var filterSection = document.querySelector('#shopify-section-faceted-filters');
-    var collectionSection = document.querySelector('#shopify-section-main-collection');
-    
-    if (filterSection && collectionSection) {
-      collectionSection.style.display = 'inline-block';
-      collectionSection.style.width = 'calc(100% - 320px)';
-      collectionSection.style.verticalAlign = 'top';
-    }
-  });
-</script>
 
 <style>
   :root {
@@ -134,277 +99,193 @@
     --facet-spanish-gray: hsl(0, 0%, 60%);
     --facet-light-gray: hsl(0, 0%, 80%);
     --facet-cultured: hsl(220, 16%, 96%);
-    --facet-tan-crayola: hsla(54 0% 31% / 0.46);
     --facet-white: hsl(0, 0%, 100%);
     --facet-transition-1: 0.25s ease;
   }
 
-  /* Sidebar Container */
-  .facets-sidebar {
+  /* Horizontal Filter Container */
+  .facets-horizontal {
     width: 100%;
-    max-width: 280px;
-    background: var(--facet-white);
-    padding: 0;
-  }
-
-  .facets-sidebar__inner {
-    position: sticky;
-    top: 20px;
-  }
-
-  .facets-sidebar__title {
-    font-family: 'Cormorant Garamond', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 500;
-    color: var(--facet-smokey-black);
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--facet-light-gray);
-  }
-
-  /* Filter List */
-  .facets-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  /* Filter Drawer */
-  .facet-drawer {
-    border: none;
+    padding: 25px 15px;
     border-bottom: 1px solid var(--facet-light-gray);
     background: var(--facet-white);
   }
 
-  .facet-drawer__summary {
-    padding: 18px 0;
-    cursor: pointer;
+  /* Filter Row - Horizontal Flex Layout */
+  .facets-row {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    user-select: none;
-    list-style: none;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin-bottom: 20px;
   }
 
-  .facet-drawer__summary::-webkit-details-marker {
-    display: none;
+  /* Individual Filter Dropdown Wrapper */
+  .facet-dropdown-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 180px;
   }
 
-  .facet-drawer__title {
+  /* Filter Labels */
+  .facet-label {
+    font-family: 'Cormorant Garamond', sans-serif;
+    font-size: 1.4rem;
     font-weight: 500;
-    font-size: 1.5rem;
     color: var(--facet-smokey-black);
-    font-family: 'Cormorant Garamond', sans-serif;
+    letter-spacing: 0.5px;
   }
 
-  .facet-drawer__icon {
-    font-size: 1.4rem;
-    transition: transform var(--facet-transition-1);
-    color: var(--facet-granite-gray);
-    font-weight: 400;
-  }
-
-  .facet-drawer[open] .facet-drawer__icon {
-    transform: rotate(180deg);
-  }
-
-  .facet-drawer__content {
-    padding: 0 0 20px 0;
-    background: var(--facet-white);
-  }
-
-  /* Filter Items */
-  .facet-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .facet-item {
-    margin-bottom: 8px;
-  }
-
-  .facet-item:last-child {
-    margin-bottom: 0;
-  }
-
-  .facet-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    padding: 6px 0;
-  }
-
-  .facet-checkbox:hover .facet-checkbox__label {
-    color: var(--facet-smokey-black);
-  }
-
-  .facet-checkbox input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-    accent-color: var(--facet-smokey-black);
-    margin: 0;
-  }
-
-  .facet-checkbox input[type="checkbox"]:disabled {
-    cursor: not-allowed;
-    opacity: 0.3;
-  }
-
-  .facet-checkbox__label {
-    flex: 1;
-    font-size: 1.4rem;
-    color: var(--facet-granite-gray);
-    font-family: 'Cormorant Garamond', sans-serif;
-    transition: color var(--facet-transition-1);
-  }
-
-  .facet-count {
-    color: var(--facet-spanish-gray);
-    font-size: 1.3rem;
-  }
-
-  /* Price Range Filter */
-  .facet-price-range {
-    padding: 0;
-  }
-
-  .price-range-inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 15px;
-  }
-
-  .price-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .price-field label {
-    font-size: 1.3rem;
-    color: var(--facet-granite-gray);
-    font-weight: 400;
-    font-family: 'Cormorant Garamond', sans-serif;
-  }
-
-  .price-field input {
-    padding: 10px 12px;
+  /* Dropdown Selects */
+  .facet-dropdown {
+    padding: 10px 14px;
     border: 1px solid var(--facet-light-gray);
     border-radius: 0;
-    width: 100%;
-    font-size: 1.4rem;
+    background: var(--facet-white);
     font-family: 'Cormorant Garamond', sans-serif;
+    font-size: 1.4rem;
+    color: var(--facet-smokey-black);
+    cursor: pointer;
+    transition: var(--facet-transition-1);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 35px;
+  }
+
+  .facet-dropdown:hover,
+  .facet-dropdown:focus {
+    border-color: var(--facet-smokey-black);
+    outline: none;
+  }
+
+  /* Price Range Inline Inputs */
+  .price-inputs-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .price-input-small {
+    width: 80px;
+    padding: 10px 8px;
+    border: 1px solid var(--facet-light-gray);
+    border-radius: 0;
+    font-family: 'Cormorant Garamond', sans-serif;
+    font-size: 1.3rem;
+    color: var(--facet-smokey-black);
     transition: var(--facet-transition-1);
   }
 
-  .price-field input:focus {
+  .price-input-small:focus {
     outline: none;
     border-color: var(--facet-smokey-black);
   }
 
-  .price-separator {
-    display: none;
+  .price-dash {
+    color: var(--facet-granite-gray);
+    font-size: 1.4rem;
   }
 
-  .price-range__button {
-    width: 100%;
-    padding: 10px;
+  .price-apply-btn {
+    padding: 10px 18px;
     background: var(--facet-smokey-black);
     color: var(--facet-white);
     border: none;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 1.3rem;
     font-family: 'Cormorant Garamond', sans-serif;
-    letter-spacing: 0.5px;
+    font-size: 1.3rem;
+    font-weight: 500;
+    cursor: pointer;
     transition: var(--facet-transition-1);
+    letter-spacing: 0.5px;
   }
 
-  .price-range__button:hover {
+  .price-apply-btn:hover {
     background: var(--facet-granite-gray);
   }
 
-  /* Active Filters */
-  .active-facets {
-    margin-top: 25px;
-    padding-top: 20px;
+  /* Active Filters - Horizontal */
+  .active-facets-horizontal {
+    padding-top: 15px;
     border-top: 1px solid var(--facet-light-gray);
   }
 
   .active-facets__list {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
   }
 
-  .active-facet {
+  .active-facet-tag {
     display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
+    gap: 8px;
+    padding: 6px 14px;
     background: var(--facet-cultured);
     border: 1px solid var(--facet-light-gray);
     text-decoration: none;
     color: var(--facet-smokey-black);
     font-size: 1.3rem;
-    transition: all var(--facet-transition-1);
     font-family: 'Cormorant Garamond', sans-serif;
+    transition: all var(--facet-transition-1);
   }
 
-  .active-facet:hover {
+  .active-facet-tag:hover {
     background: var(--facet-smokey-black);
     color: var(--facet-white);
     border-color: var(--facet-smokey-black);
   }
 
-  .active-facet__label {
-    font-weight: 400;
-    flex: 1;
-  }
-
-  .active-facet__remove {
+  .remove-x {
     font-size: 1.6rem;
     line-height: 1;
     font-weight: 300;
-    margin-left: 8px;
   }
 
-  .active-facets__clear {
+  .clear-all-link {
     color: var(--facet-smokey-black);
     text-decoration: underline;
     font-size: 1.3rem;
-    font-weight: 400;
     font-family: 'Cormorant Garamond', sans-serif;
+    font-weight: 400;
     transition: opacity var(--facet-transition-1);
-    display: inline-block;
   }
 
-  .active-facets__clear:hover {
+  .clear-all-link:hover {
     opacity: 0.6;
   }
 
   /* Responsive Design */
   @media (max-width: 768px) {
-    .facets-sidebar {
-      max-width: 100%;
-      margin-bottom: 30px;
+    .facets-horizontal {
+      padding: 20px 15px;
     }
 
-    .facets-sidebar__inner {
-      position: static;
+    .facets-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 15px;
     }
 
-    .facets-sidebar__title {
-      font-size: 1.6rem;
+    .facet-dropdown-wrapper {
+      width: 100%;
     }
 
-    .facet-drawer__title {
-      font-size: 1.4rem;
+    .facet-dropdown {
+      width: 100%;
+    }
+
+    .price-inputs-inline {
+      flex-wrap: wrap;
+    }
+
+    .price-input-small {
+      flex: 1;
+      min-width: 70px;
     }
   }
 </style>
