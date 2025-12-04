@@ -86,6 +86,12 @@ FOOTER
           </li>
           {%- endif -%}
 
+          {%- if section.settings.show_follow_on_shop -%}
+          <li class="footer-list-item">
+            {% render 'follow-on-shop', button_size: section.settings.follow_button_size %}
+          </li>
+          {%- endif -%}
+
         </ul>
 
       </div>
@@ -313,6 +319,37 @@ FOOTER
         "type": "url",
         "id": "social_youtube",
         "label": "YouTube URL"
+      },
+      {
+        "type": "header",
+        "content": "Follow on Shop"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_follow_on_shop",
+        "label": "Show Follow on Shop button",
+        "default": true,
+        "info": "Allows customers to follow your store in the Shop app"
+      },
+      {
+        "type": "select",
+        "id": "follow_button_size",
+        "label": "Button size",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ],
+        "default": "medium"
       },
       {
         "type": "header",

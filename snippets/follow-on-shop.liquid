@@ -2,10 +2,17 @@
   Follow on Shop Button
   Allows customers to follow the store in the Shop app
   Required feature for Theme Store
+  
+  Parameters:
+  - button_size: 'small', 'medium', or 'large' (default: 'medium')
 {% endcomment %}
 
+{%- liquid
+  assign size = button_size | default: 'medium'
+-%}
+
 <div class="follow-on-shop">
-  {{ shop | login_button: size: 'large' }}
+  {{ shop | login_button: size: size }}
 </div>
 
 <style>
