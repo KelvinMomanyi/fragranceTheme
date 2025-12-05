@@ -1,16 +1,16 @@
 {
-    "name": "Footer",
-    "type": "footer",
-    "sections": {
-      "footer": {
-        "type": "footer",
-
-        "settings": {
-        }
+  "name": "Footer",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "show_follow_on_shop": true,
+        "follow_button_size": "medium"
       }
-    },
-    "order": [
-      "footer"
-    ]
-  }
-  
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}
