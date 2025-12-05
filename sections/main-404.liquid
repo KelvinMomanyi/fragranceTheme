@@ -1,49 +1,280 @@
+<section class="section section-404" aria-labelledby="error-title">
+  <div class="error-container">
+    <div class="content-wrapper">
+      <h1 class="error-title" id="error-title">404</h1>
+      <h2 class="error-subtitle">{{ 'general.404.title' | t | default: 'Page not found' }}</h2>
+      <p class="error-message">
+        {{ 'general.404.subtext' | t | default: "The page you're looking for doesn't exist or has been moved." }}
+      </p>
+      
+      {%- comment -%} Search Form (Required for Theme Store) {%- endcomment -%}
+      <div class="error-search">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="search-form-404">
+          <label for="search-404" class="visually-hidden">{{ 'general.search.placeholder' | t | default: 'Search' }}</label>
+          <input 
+            type="search" 
+            id="search-404"
+            name="q" 
+            class="search-input-404" 
+            placeholder="{{ 'general.search.placeholder' | t | default: 'Search our store...' }}"
+            aria-label="{{ 'general.search.placeholder' | t | default: 'Search' }}"
+          >
+          <button type="submit" class="search-btn-404" aria-label="{{ 'general.search.submit' | t | default: 'Search' }}">
+            <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+          </button>
+        </form>
+      </div>
+      
+      {%- comment -%} Navigation Links (Required for Theme Store) {%- endcomment -%}
+      <div class="error-links">
+        <a href="{{ routes.root_url }}" class="btn btn-primary">
+          {{ 'general.404.link' | t | default: 'Back to Home' }}
+        </a>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn-secondary">
+          {{ 'general.404.browse_products' | t | default: 'Browse Products' }}
+        </a>
+      </div>
+      
+      {%- comment -%} Popular Links {%- endcomment -%}
+      {% if section.settings.show_popular_links %}
+        <div class="popular-links">
+          <h3 class="popular-links-title">{{ 'general.404.popular_links' | t | default: 'Popular Pages' }}</h3>
+          <ul class="popular-links-list">
+            <li><a href="{{ routes.collections_url }}">{{ 'general.404.collections' | t | default: 'Collections' }}</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}">{{ 'general.404.products' | t | default: 'All Products' }}</a></li>
+            {% if shop.customer_accounts_enabled %}
+              <li><a href="{{ routes.account_url }}">{{ 'general.404.account' | t | default: 'My Account' }}</a></li>
+            {% endif %}
+            <li><a href="{{ routes.cart_url }}">{{ 'general.404.cart' | t | default: 'Cart' }}</a></li>
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-404 {
+    min-height: 70vh;
+    display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    min-height: 100vh;
-    background-color: #f4f4f4; /* Light neutral background */
-    color: #333; /* Text color for readability */
-    padding: 20px;
+    background-color: #f8f9fa;
+    padding: 60px 20px;
+  }
+  
+  .error-container {
+    max-width: 600px;
+    width: 100%;
   }
   
   .content-wrapper {
-    max-width: 600px;
-    background: #fff;
-    border-radius: 10px;
-    padding: 40px 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background: white;
+    border-radius: 16px;
+    padding: 60px 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    text-align: center;
   }
   
   .error-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: black; /* Attention-grabbing red */
+    font-size: 6rem;
+    font-weight: 800;
+    color: #111;
+    margin: 0;
+    line-height: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .error-subtitle {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 15px 0;
+    color: #333;
   }
   
   .error-message {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     line-height: 1.6;
-    color: #666; /* Subtle gray for text */
+    color: #666;
     margin-bottom: 30px;
   }
   
-  .button {
-    display: inline-block;
-    padding: 12px 25px;
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    color: #fff;
-    background-color: #007aff; /* Shopify blue */
-    border-radius: 5px;
-    transition: background-color 0.3s;
+  .error-search {
+    margin-bottom: 30px;
   }
   
-
-  </style>
+  .search-form-404 {
+    display: flex;
+    max-width: 400px;
+    margin: 0 auto;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
   
+  .search-form-404:focus-within {
+    border-color: #667eea;
+  }
   
+  .search-input-404 {
+    flex: 1;
+    padding: 14px 18px;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+  }
+  
+  .search-input-404::placeholder {
+    color: #999;
+  }
+  
+  .search-btn-404 {
+    padding: 14px 18px;
+    background: #f5f5f5;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+  }
+  
+  .search-btn-404:hover {
+    background: #e0e0e0;
+  }
+  
+  .search-btn-404 ion-icon {
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .error-links {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+  
+  .error-links .btn {
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  
+  .error-links .btn-primary {
+    background: #111;
+    color: white;
+  }
+  
+  .error-links .btn-primary:hover {
+    background: #333;
+    transform: translateY(-2px);
+  }
+  
+  .error-links .btn-secondary {
+    background: white;
+    color: #111;
+    border: 2px solid #111;
+  }
+  
+  .error-links .btn-secondary:hover {
+    background: #f5f5f5;
+    transform: translateY(-2px);
+  }
+  
+  .popular-links {
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+  }
+  
+  .popular-links-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #666;
+    margin-bottom: 15px;
+  }
+  
+  .popular-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .popular-links-list a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  
+  .popular-links-list a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+  }
+  
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+  
+  @media (max-width: 480px) {
+    .content-wrapper {
+      padding: 40px 25px;
+    }
+    
+    .error-title {
+      font-size: 4rem;
+    }
+    
+    .error-subtitle {
+      font-size: 1.4rem;
+    }
+    
+    .error-links {
+      flex-direction: column;
+    }
+    
+    .error-links .btn {
+      width: 100%;
+    }
+  }
+</style>
 
-
+{% schema %}
+{
+  "name": "404 Page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_popular_links",
+      "label": "Show popular links",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "404 Page"
+    }
+  ]
+}
+{% endschema %}
