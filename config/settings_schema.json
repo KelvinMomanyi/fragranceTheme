@@ -12,59 +12,207 @@
     "settings": [
       {
         "type": "header",
-        "content": "Color scheme"
+        "content": "Color Schemes"
+      },
+      {
+        "type": "header",
+        "content": "Scheme 1"
       },
       {
         "type": "color",
-        "id": "color_background",
+        "id": "scheme_1_background",
         "label": "Background",
         "default": "#FFFFFF"
       },
       {
         "type": "color",
-        "id": "color_text",
+        "id": "scheme_1_text",
         "label": "Text",
-        "default": "#000000",
-        "info": "Foreground color for background"
+        "default": "#121212"
       },
       {
         "type": "color",
-        "id": "color_button_background",
-        "label": "Button background",
-        "default": "#111111"
+        "id": "scheme_1_button",
+        "label": "Solid button background",
+        "default": "#121212"
       },
       {
         "type": "color",
-        "id": "color_button_text",
-        "label": "Button text",
-        "default": "#FFFFFF",
-        "info": "Foreground color for button background"
+        "id": "scheme_1_button_label",
+        "label": "Solid button label",
+        "default": "#FFFFFF"
       },
       {
         "type": "color",
-        "id": "color_accent",
-        "label": "Accent",
+        "id": "scheme_1_outline_button",
+        "label": "Outline button",
+        "default": "#121212"
+      },
+      {
+        "type": "color",
+        "id": "scheme_1_shadow",
+        "label": "Shadow",
+        "default": "#121212"
+      },
+      {
+        "type": "header",
+        "content": "Scheme 2"
+      },
+      {
+        "type": "color",
+        "id": "scheme_2_background",
+        "label": "Background",
+        "default": "#F3F3F3"
+      },
+      {
+        "type": "color",
+        "id": "scheme_2_text",
+        "label": "Text",
+        "default": "#121212"
+      },
+      {
+        "type": "color",
+        "id": "scheme_2_button",
+        "label": "Solid button background",
+        "default": "#121212"
+      },
+      {
+        "type": "color",
+        "id": "scheme_2_button_label",
+        "label": "Solid button label",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "scheme_2_outline_button",
+        "label": "Outline button",
+        "default": "#121212"
+      },
+      {
+        "type": "color",
+        "id": "scheme_2_shadow",
+        "label": "Shadow",
+        "default": "#121212"
+      },
+      {
+        "type": "header",
+        "content": "Scheme 3"
+      },
+      {
+        "type": "color",
+        "id": "scheme_3_background",
+        "label": "Background",
+        "default": "#242833"
+      },
+      {
+        "type": "color",
+        "id": "scheme_3_text",
+        "label": "Text",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "scheme_3_button",
+        "label": "Solid button background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "scheme_3_button_label",
+        "label": "Solid button label",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "scheme_3_outline_button",
+        "label": "Outline button",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "scheme_3_shadow",
+        "label": "Shadow",
+        "default": "#000000"
+      },
+      {
+        "type": "header",
+        "content": "Scheme 4"
+      },
+      {
+        "type": "color",
+        "id": "scheme_4_background",
+        "label": "Background",
+        "default": "#121212"
+      },
+      {
+        "type": "color",
+        "id": "scheme_4_text",
+        "label": "Text",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "scheme_4_button",
+        "label": "Solid button background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "scheme_4_button_label",
+        "label": "Solid button label",
+        "default": "#121212"
+      },
+      {
+        "type": "color",
+        "id": "scheme_4_outline_button",
+        "label": "Outline button",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "scheme_4_shadow",
+        "label": "Shadow",
+        "default": "#000000"
+      },
+      {
+        "type": "header",
+        "content": "Scheme 5"
+      },
+      {
+        "type": "color",
+        "id": "scheme_5_background",
+        "label": "Background",
         "default": "#D4AF37"
       },
       {
         "type": "color",
-        "id": "color_accent_text",
-        "label": "Accent text",
-        "default": "#FFFFFF",
-        "info": "Foreground color for accent background"
+        "id": "scheme_5_text",
+        "label": "Text",
+        "default": "#FFFFFF"
       },
       {
         "type": "color",
-        "id": "color_secondary_background",
-        "label": "Secondary background",
-        "default": "#F6F6F6"
+        "id": "scheme_5_button",
+        "label": "Solid button background",
+        "default": "#FFFFFF"
       },
       {
         "type": "color",
-        "id": "color_secondary_text",
-        "label": "Secondary text",
-        "default": "#333333",
-        "info": "Foreground color for secondary background"
+        "id": "scheme_5_button_label",
+        "label": "Solid button label",
+        "default": "#D4AF37"
+      },
+      {
+        "type": "color",
+        "id": "scheme_5_outline_button",
+        "label": "Outline button",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "scheme_5_shadow",
+        "label": "Shadow",
+        "default": "#000000"
       }
     ]
   },

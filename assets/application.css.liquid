@@ -1,32 +1,27 @@
 /*-----------------------------------*\
-  #style.css
-\*-----------------------------------*/
-
-/**
- * copyright 2022 codewithsadee
- */
-
-
-
-
-
-/*-----------------------------------*\
-  #CUSTOM PROPERTY
+  #style.css.liquid - Dynamic Color Schemes
 \*-----------------------------------*/
 
 :root {
-
-  /**
-   * colors
-   */
-
+  /* Default Scheme (Scheme 1) */
+  --color-background: {{ settings.scheme_1_background | default: '#FFFFFF' }};
+  --color-text: {{ settings.scheme_1_text | default: '#121212' }};
+  --color-button: {{ settings.scheme_1_button | default: '#121212' }};
+  --color-button-label: {{ settings.scheme_1_button_label | default: '#FFFFFF' }};
+  --color-outline-button: {{ settings.scheme_1_outline_button | default: '#121212' }};
+  --color-shadow: {{ settings.scheme_1_shadow | default: '#000000' }};
+  
+  /* Legacy Variable Mapping (Global Default) */
+  --white: var(--color-background);
+  --black: var(--color-text);
+  --tan-crayola: var(--color-button); 
+  
+  /* Retain other static variables */
   --red-orange-color-wheel: hsl(17, 96%, 48%);
   --middle-blue-green: hsl(167, 45%, 72%);
   --smokey-black: hsl(0, 0%, 7%);
   --spanish-gray: hsl(0, 0%, 60%);
   --granite-gray: hsl(0, 0%, 40%);
-  /* --tan-crayola: hsl(27, 46%, 58%); */
-  --tan-crayola: hsla(54 0% 31% / 0.46);
   --light-gray: hsl(0, 0%, 80%);
   --black_10: hsla(0, 0%, 0%, 0.1);
   --black_25: hsla(0, 0%, 0%, 0.25);
@@ -34,53 +29,63 @@
   --black_70: hsla(0, 0%, 0%, 0.7);
   --cultured: hsl(220, 16%, 96%);
   --manatee: hsl(218, 11%, 65%);
-  --black: hsl(0, 0%, 0%);
-  --white: hsl(0, 0%, 100%);
-
-  /**
-   * typography
-   */
-
+  
+  /* Typography */
   --ff-roboto: 'Cormorant Garamond', sans-serif;
   --ff-mr_de_haviland: 'Mr De Haviland', cursive;
-
   --fs-1: 6rem;
   --fs-2: 3rem;
   --fs-3: 2rem;
   --fs-4: 1.8rem;
   --fs-5: 1.4rem;
   --fs-6: 1.2rem;
-
   --fw-900: 900;
   --fw-700: 700;
   --fw-500: 500;
-
-  /**
-   * spacing
-   */
-
   --section-padding: 50px;
-
-  /**
-   * shadow
-   */
-
   --shadow: 0 0 2px hsla(0, 0%, 0%, 0.2);
-
-  /**
-   * transition
-   */
-
   --transition-1: 0.25s ease;
   --transition-2: 0.5s ease;
   --cubic-in: cubic-bezier(0.51, 0.03, 0.64, 0.28);
   --cubic-out: cubic-bezier(0.33, 0.85, 0.4, 0.96);
-
 }
 
+/* Dynamic Scheme Classes */
+{% for i in (1..5) %}
+  {% assign scheme_background = 'scheme_' | append: i | append: '_background' %}
+  {% assign scheme_text = 'scheme_' | append: i | append: '_text' %}
+  {% assign scheme_button = 'scheme_' | append: i | append: '_button' %}
+  {% assign scheme_button_label = 'scheme_' | append: i | append: '_button_label' %}
+  {% assign scheme_outline_button = 'scheme_' | append: i | append: '_outline_button' %}
+  {% assign scheme_shadow = 'scheme_' | append: i | append: '_shadow' %}
 
-
-
+  .color-scheme-{{ i }} {
+    --color-background: {{ settings[scheme_background] }};
+    --color-text: {{ settings[scheme_text] }};
+    --color-button: {{ settings[scheme_button] }};
+    --color-button-label: {{ settings[scheme_button_label] }};
+    --color-outline-button: {{ settings[scheme_outline_button] }};
+    --color-shadow: {{ settings[scheme_shadow] }};
+    
+    /* Overwrite internal vars for this scope */
+    --white: var(--color-background);
+    --black: var(--color-text);
+    --tan-crayola: var(--color-button);
+    
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+  
+  .color-scheme-{{ i }} .btn-primary {
+    background-color: var(--color-button);
+    color: var(--color-button-label);
+  }
+  
+  .color-scheme-{{ i }} .btn-secondary {
+     color: var(--color-outline-button);
+     border-color: var(--color-outline-button);
+  }
+{% endfor %}
 
 /*-----------------------------------*\
   #RESET
@@ -1582,7 +1587,7 @@ a.card-meta-text:is(:hover, :focus) {
 
 }
 
-COLLECTION PAGE SIDEBAR LAYOUT===================================*/
+/*COLLECTION PAGE SIDEBAR LAYOUT===================================*/
 
 /* Collection page wrapper for sidebar + products */
 .template-collection .shopify-section:first-child {
