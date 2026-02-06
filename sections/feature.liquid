@@ -1,5 +1,5 @@
  <!--FEATURE-->
-<section class="section feature" aria-label="feature" >
+<section class="section feature color-scheme-{{ section.settings.color_scheme | default: '1' }}" aria-label="feature" >
     <div class="container">
         <h2 class="h2-large section-title">{{section.settings.maintitle}}</h2>
         <ul class="flex-list">
@@ -39,6 +39,19 @@
 {
   "name": "feature",
   "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "1", "label": "Scheme 1" },
+        { "value": "2", "label": "Scheme 2" },
+        { "value": "3", "label": "Scheme 3" },
+        { "value": "4", "label": "Scheme 4" },
+        { "value": "5", "label": "Scheme 5" }
+      ],
+      "default": "1"
+    },
     {
       "type": "text",
       "id": "maintitle",

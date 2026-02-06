@@ -1,5 +1,5 @@
 <!-- Hero Section with Slider -->
-<section class="hero1 text-center" style="min-height: 50vh;" aria-label="home" id="home">
+<section class="hero1 text-center color-scheme-{{ section.settings.color_scheme | default: '1' }}" style="min-height: 50vh;" aria-label="home" id="home">
   <ul class="hero1-slider" data-hero-slider>
     {% if section.blocks.size == 0 %}
       <li class="slider-item active" data-hero-slider-item style="padding-block-start: 70px;">
@@ -1214,6 +1214,19 @@
 {
   "name": "Best Sellers",
   "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "1", "label": "Scheme 1" },
+        { "value": "2", "label": "Scheme 2" },
+        { "value": "3", "label": "Scheme 3" },
+        { "value": "4", "label": "Scheme 4" },
+        { "value": "5", "label": "Scheme 5" }
+      ],
+      "default": "1"
+    },
     {
       "type": "collection",
       "id": "best_sellers_collection",

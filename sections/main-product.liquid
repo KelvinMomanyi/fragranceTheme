@@ -47,7 +47,7 @@
   </script>
 {% endif %}
 
-<section class="section product-section" id="product-{{ product.id }}">
+<section class="section product-section color-scheme-{{ section.settings.color_scheme | default: '1' }}" id="product-{{ product.id }}">
   <div class="container">
     <div class="product-wrapper">
       
@@ -963,6 +963,19 @@ document.addEventListener('DOMContentLoaded', function() {
   "tag": "section",
   "class": "section-product",
   "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "1", "label": "Scheme 1" },
+        { "value": "2", "label": "Scheme 2" },
+        { "value": "3", "label": "Scheme 3" },
+        { "value": "4", "label": "Scheme 4" },
+        { "value": "5", "label": "Scheme 5" }
+      ],
+      "default": "1"
+    },
     {
       "type": "header",
       "content": "Media"
