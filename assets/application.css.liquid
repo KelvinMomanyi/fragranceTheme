@@ -1,15 +1,16 @@
 /*-----------------------------------*\
-  #style.css.liquid - Dynamic Color Schemes
+  #style.css.liquid - Dynamic Color Schemes (Dawn-Style)
 \*-----------------------------------*/
 
 :root {
-  /* Default Scheme (Scheme 1) */
-  --color-background: {{ settings.scheme_1_background | default: '#FFFFFF' }};
-  --color-text: {{ settings.scheme_1_text | default: '#121212' }};
-  --color-button: {{ settings.scheme_1_button | default: '#121212' }};
-  --color-button-label: {{ settings.scheme_1_button_label | default: '#FFFFFF' }};
-  --color-outline-button: {{ settings.scheme_1_outline_button | default: '#121212' }};
-  --color-shadow: {{ settings.scheme_1_shadow | default: '#000000' }};
+  /* Default Scheme - using first color scheme as default */
+  --color-background: {{ settings.color_schemes.scheme-1.settings.background | default: '#FFFFFF' }};
+  --color-background-gradient: {{ settings.color_schemes.scheme-1.settings.background_gradient | default: '' }};
+  --color-text: {{ settings.color_schemes.scheme-1.settings.text | default: '#121212' }};
+  --color-button: {{ settings.color_schemes.scheme-1.settings.button | default: '#121212' }};
+  --color-button-label: {{ settings.color_schemes.scheme-1.settings.button_label | default: '#FFFFFF' }};
+  --color-outline-button: {{ settings.color_schemes.scheme-1.settings.secondary_button_label | default: '#121212' }};
+  --color-shadow: {{ settings.color_schemes.scheme-1.settings.shadow | default: '#000000' }};
   
   /* Legacy Variable Mapping (Global Default) */
   --white: var(--color-background);
@@ -50,22 +51,19 @@
   --cubic-out: cubic-bezier(0.33, 0.85, 0.4, 0.96);
 }
 
-/* Dynamic Scheme Classes */
-{% for i in (1..5) %}
-  {% assign scheme_background = 'scheme_' | append: i | append: '_background' %}
-  {% assign scheme_text = 'scheme_' | append: i | append: '_text' %}
-  {% assign scheme_button = 'scheme_' | append: i | append: '_button' %}
-  {% assign scheme_button_label = 'scheme_' | append: i | append: '_button_label' %}
-  {% assign scheme_outline_button = 'scheme_' | append: i | append: '_outline_button' %}
-  {% assign scheme_shadow = 'scheme_' | append: i | append: '_shadow' %}
-
-  .color-scheme-{{ i }} {
-    --color-background: {{ settings[scheme_background] }};
-    --color-text: {{ settings[scheme_text] }};
-    --color-button: {{ settings[scheme_button] }};
-    --color-button-label: {{ settings[scheme_button_label] }};
-    --color-outline-button: {{ settings[scheme_outline_button] }};
-    --color-shadow: {{ settings[scheme_shadow] }};
+/* Dynamic Scheme Classes (Dawn-Style) */
+{% for scheme in settings.color_schemes %}
+  {% assign scheme_id = scheme[0] %}
+  {% assign scheme_settings = scheme[1].settings %}
+  
+  .color-scheme-{{ scheme_id }} {
+    --color-background: {{ scheme_settings.background }};
+    --color-background-gradient: {{ scheme_settings.background_gradient }};
+    --color-text: {{ scheme_settings.text }};
+    --color-button: {{ scheme_settings.button }};
+    --color-button-label: {{ scheme_settings.button_label }};
+    --color-outline-button: {{ scheme_settings.secondary_button_label }};
+    --color-shadow: {{ scheme_settings.shadow }};
     
     /* Overwrite internal vars for this scope */
     --white: var(--color-background);
@@ -76,12 +74,12 @@
     color: var(--color-text);
   }
   
-  .color-scheme-{{ i }} .btn-primary {
+  .color-scheme-{{ scheme_id }} .btn-primary {
     background-color: var(--color-button);
     color: var(--color-button-label);
   }
   
-  .color-scheme-{{ i }} .btn-secondary {
+  .color-scheme-{{ scheme_id }} .btn-secondary {
      color: var(--color-outline-button);
      border-color: var(--color-outline-button);
   }

@@ -11,208 +11,63 @@
     "name": "Colors",
     "settings": [
       {
-        "type": "header",
-        "content": "Color Schemes"
-      },
-      {
-        "type": "header",
-        "content": "Scheme 1"
-      },
-      {
-        "type": "color",
-        "id": "scheme_1_background",
-        "label": "Background",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "scheme_1_text",
-        "label": "Text",
-        "default": "#121212"
-      },
-      {
-        "type": "color",
-        "id": "scheme_1_button",
-        "label": "Solid button background",
-        "default": "#121212"
-      },
-      {
-        "type": "color",
-        "id": "scheme_1_button_label",
-        "label": "Solid button label",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "scheme_1_outline_button",
-        "label": "Outline button",
-        "default": "#121212"
-      },
-      {
-        "type": "color",
-        "id": "scheme_1_shadow",
-        "label": "Shadow",
-        "default": "#121212"
-      },
-      {
-        "type": "header",
-        "content": "Scheme 2"
-      },
-      {
-        "type": "color",
-        "id": "scheme_2_background",
-        "label": "Background",
-        "default": "#F3F3F3"
-      },
-      {
-        "type": "color",
-        "id": "scheme_2_text",
-        "label": "Text",
-        "default": "#121212"
-      },
-      {
-        "type": "color",
-        "id": "scheme_2_button",
-        "label": "Solid button background",
-        "default": "#121212"
-      },
-      {
-        "type": "color",
-        "id": "scheme_2_button_label",
-        "label": "Solid button label",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "scheme_2_outline_button",
-        "label": "Outline button",
-        "default": "#121212"
-      },
-      {
-        "type": "color",
-        "id": "scheme_2_shadow",
-        "label": "Shadow",
-        "default": "#121212"
-      },
-      {
-        "type": "header",
-        "content": "Scheme 3"
-      },
-      {
-        "type": "color",
-        "id": "scheme_3_background",
-        "label": "Background",
-        "default": "#242833"
-      },
-      {
-        "type": "color",
-        "id": "scheme_3_text",
-        "label": "Text",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "scheme_3_button",
-        "label": "Solid button background",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "scheme_3_button_label",
-        "label": "Solid button label",
-        "default": "#000000"
-      },
-      {
-        "type": "color",
-        "id": "scheme_3_outline_button",
-        "label": "Outline button",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "scheme_3_shadow",
-        "label": "Shadow",
-        "default": "#000000"
-      },
-      {
-        "type": "header",
-        "content": "Scheme 4"
-      },
-      {
-        "type": "color",
-        "id": "scheme_4_background",
-        "label": "Background",
-        "default": "#121212"
-      },
-      {
-        "type": "color",
-        "id": "scheme_4_text",
-        "label": "Text",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "scheme_4_button",
-        "label": "Solid button background",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "scheme_4_button_label",
-        "label": "Solid button label",
-        "default": "#121212"
-      },
-      {
-        "type": "color",
-        "id": "scheme_4_outline_button",
-        "label": "Outline button",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "scheme_4_shadow",
-        "label": "Shadow",
-        "default": "#000000"
-      },
-      {
-        "type": "header",
-        "content": "Scheme 5"
-      },
-      {
-        "type": "color",
-        "id": "scheme_5_background",
-        "label": "Background",
-        "default": "#D4AF37"
-      },
-      {
-        "type": "color",
-        "id": "scheme_5_text",
-        "label": "Text",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "scheme_5_button",
-        "label": "Solid button background",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "scheme_5_button_label",
-        "label": "Solid button label",
-        "default": "#D4AF37"
-      },
-      {
-        "type": "color",
-        "id": "scheme_5_outline_button",
-        "label": "Outline button",
-        "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "scheme_5_shadow",
-        "label": "Shadow",
-        "default": "#000000"
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "definition": [
+          {
+            "type": "color",
+            "id": "background",
+            "label": "Background",
+            "info": "Background color for sections using this scheme"
+          },
+          {
+            "type": "color",
+            "id": "background_gradient",
+            "label": "Background gradient",
+            "info": "Optional gradient that overlays the background color"
+          },
+          {
+            "type": "color",
+            "id": "text",
+            "label": "Text",
+            "info": "Text color"
+          },
+          {
+            "type": "color",
+            "id": "button",
+            "label": "Solid button background"
+          },
+          {
+            "type": "color",
+            "id": "button_label",
+            "label": "Solid button label"
+          },
+          {
+            "type": "color",
+            "id": "secondary_button_label",
+            "label": "Outline button"
+          },
+          {
+            "type": "color",
+            "id": "shadow",
+            "label": "Shadow"
+          }
+        ],
+        "role": {
+          "text": "text",
+          "background": {
+            "solid": "background",
+            "gradient": "background_gradient"
+          },
+          "links": "secondary_button_label",
+          "icons": "text",
+          "primary_button": "button",
+          "on_primary_button": "button_label",
+          "primary_button_border": "button",
+          "secondary_button": "background",
+          "on_secondary_button": "secondary_button_label",
+          "secondary_button_border": "secondary_button_label"
+        }
       }
     ]
   },

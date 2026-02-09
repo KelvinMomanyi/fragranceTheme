@@ -1,4 +1,4 @@
-<section class="section recommended color-scheme-{{ section.settings.color_scheme | default: '1' }}" aria-label="recommended post">
+<section class="section recommended color-scheme-{{ section.settings.color_scheme }}" aria-label="recommended post">
     <div class="container">
 
       <p class="section-subtitle">
@@ -65,17 +65,7 @@
     "name": "featured-blog",
     "settings": [
         {
-          "type": "select",
-          "id": "color_scheme",
-          "label": "Color scheme",
-          "options": [
-            { "value": "1", "label": "Scheme 1" },
-            { "value": "2", "label": "Scheme 2" },
-            { "value": "3", "label": "Scheme 3" },
-            { "value": "4", "label": "Scheme 4" },
-            { "value": "5", "label": "Scheme 5" }
-          ],
-          "default": "1"
+          "type": "color_scheme","id": "color_scheme","label": "Color scheme","default": "scheme-1"
         },
         {
         "type":"text",

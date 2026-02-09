@@ -1,7 +1,7 @@
 <!--
 FOOTER
 -->
-<footer class="footer color-scheme-{{ section.settings.color_scheme | default: '1' }}">
+<footer class="footer color-scheme-{{ section.settings.color_scheme }}">
   <div class="container">
 
     <div class="footer-top section">
@@ -236,17 +236,10 @@ FOOTER
     "name": "Footer",
     "settings": [
       {
-        "type": "select",
+        "type": "color_scheme",
         "id": "color_scheme",
         "label": "Color scheme",
-        "options": [
-          { "value": "1", "label": "Scheme 1" },
-          { "value": "2", "label": "Scheme 2" },
-          { "value": "3", "label": "Scheme 3" },
-          { "value": "4", "label": "Scheme 4" },
-          { "value": "5", "label": "Scheme 5" }
-        ],
-        "default": "1"
+        "default": "scheme-1"
       },
       {
         "type": "header",
