@@ -70,18 +70,98 @@
     --black: var(--color-text);
     --tan-crayola: var(--color-button);
     
+    /* Apply styles directly */
     background-color: var(--color-background);
     color: var(--color-text);
   }
   
-  .color-scheme-{{ scheme_id }} .btn-primary {
-    background-color: var(--color-button);
-    color: var(--color-button-label);
+  /* Typography inherits text color */
+  .color-scheme-{{ scheme_id }} h1,
+  .color-scheme-{{ scheme_id }} h2,
+  .color-scheme-{{ scheme_id }} h3,
+  .color-scheme-{{ scheme_id }} h4,
+  .color-scheme-{{ scheme_id }} h5,
+  .color-scheme-{{ scheme_id }} h6,
+  .color-scheme-{{ scheme_id }} .h1,
+  .color-scheme-{{ scheme_id }} .h2,
+  .color-scheme-{{ scheme_id }} .h3,
+  .color-scheme-{{ scheme_id }} .h4,
+  .color-scheme-{{ scheme_id }} p,
+  .color-scheme-{{ scheme_id }} span,
+  .color-scheme-{{ scheme_id }} .section-title,
+  .color-scheme-{{ scheme_id }} .section-subtitle,
+  .color-scheme-{{ scheme_id }} .card-title,
+  .color-scheme-{{ scheme_id }} .card-content {
+    color: var(--color-text);
   }
   
-  .color-scheme-{{ scheme_id }} .btn-secondary {
-     color: var(--color-outline-button);
-     border-color: var(--color-outline-button);
+  /* Links use outline button color */
+  .color-scheme-{{ scheme_id }} a:not(.btn) {
+    color: var(--color-outline-button);
+  }
+  
+  .color-scheme-{{ scheme_id }} a:not(.btn):hover {
+    color: var(--color-button);
+  }
+  
+  /* Primary buttons */
+  .color-scheme-{{ scheme_id }} .btn-primary,
+  .color-scheme-{{ scheme_id }} .btn {
+    background-color: var(--color-button);
+    color: var(--color-button-label);
+    border-color: var(--color-button);
+  }
+  
+  .color-scheme-{{ scheme_id }} .btn-primary:hover,
+  .color-scheme-{{ scheme_id }} .btn:hover {
+    background-color: var(--color-text);
+    border-color: var(--color-text);
+  }
+  
+  /* Secondary/Outline buttons */
+  .color-scheme-{{ scheme_id }} .btn-secondary,
+  .color-scheme-{{ scheme_id }} .btn-outline {
+    background-color: transparent;
+    color: var(--color-outline-button);
+    border-color: var(--color-outline-button);
+  }
+  
+  .color-scheme-{{ scheme_id }} .btn-secondary:hover,
+  .color-scheme-{{ scheme_id }} .btn-outline:hover {
+    background-color: var(--color-outline-button);
+    color: var(--color-background);
+  }
+  
+  /* Cards and containers */
+  .color-scheme-{{ scheme_id }} .card,
+  .color-scheme-{{ scheme_id }} .product-card,
+  .color-scheme-{{ scheme_id }} .blog-card {
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+  
+  /* Form inputs */
+  .color-scheme-{{ scheme_id }} input,
+  .color-scheme-{{ scheme_id }} textarea,
+  .color-scheme-{{ scheme_id }} select {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+  
+  /* Icons */
+  .color-scheme-{{ scheme_id }} ion-icon {
+    color: var(--color-text);
+  }
+  
+  /* Borders */
+  .color-scheme-{{ scheme_id }} .has-border {
+    border-color: var(--color-text);
+  }
+  
+  /* Box shadows */
+  .color-scheme-{{ scheme_id }} .has-shadow {
+    box-shadow: 0 2px 10px {{ scheme_settings.shadow }}40;
   }
 {% endfor %}
 
