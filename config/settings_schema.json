@@ -18,10 +18,10 @@
             "type": "color",
             "id": "background",
             "label": "Background",
-            "info": "Background color for sections using this scheme"
+            "default": "#FFFFFF"
           },
           {
-            "type": "color",
+            "type": "color_background",
             "id": "background_gradient",
             "label": "Background gradient",
             "info": "Optional gradient that overlays the background color"
@@ -30,27 +30,31 @@
             "type": "color",
             "id": "text",
             "label": "Text",
-            "info": "Text color"
+            "default": "#121212"
           },
           {
             "type": "color",
             "id": "button",
-            "label": "Solid button background"
+            "label": "Solid button background",
+            "default": "#121212"
           },
           {
             "type": "color",
             "id": "button_label",
-            "label": "Solid button label"
+            "label": "Solid button label",
+            "default": "#FFFFFF"
           },
           {
             "type": "color",
             "id": "secondary_button_label",
-            "label": "Outline button"
+            "label": "Outline button",
+            "default": "#121212"
           },
           {
             "type": "color",
             "id": "shadow",
-            "label": "Shadow"
+            "label": "Shadow",
+            "default": "#121212"
           }
         ],
         "role": {
