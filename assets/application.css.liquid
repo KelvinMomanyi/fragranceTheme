@@ -68,102 +68,116 @@
     /* Overwrite internal vars for this scope */
     --white: var(--color-background);
     --black: var(--color-text);
+    --smokey-black: var(--color-text);
     --tan-crayola: var(--color-button);
     
     /* Apply styles directly */
-    background-color: var(--color-background);
-    color: var(--color-text);
-  }
-  
-  /* Typography inherits text color */
-  .color-scheme-{{ scheme_id }} h1,
-  .color-scheme-{{ scheme_id }} h2,
-  .color-scheme-{{ scheme_id }} h3,
-  .color-scheme-{{ scheme_id }} h4,
-  .color-scheme-{{ scheme_id }} h5,
-  .color-scheme-{{ scheme_id }} h6,
-  .color-scheme-{{ scheme_id }} .h1,
-  .color-scheme-{{ scheme_id }} .h2,
-  .color-scheme-{{ scheme_id }} .h3,
-  .color-scheme-{{ scheme_id }} .h4,
-  .color-scheme-{{ scheme_id }} p,
-  .color-scheme-{{ scheme_id }} span,
-  .color-scheme-{{ scheme_id }} .section-title,
-  .color-scheme-{{ scheme_id }} .section-subtitle,
-  .color-scheme-{{ scheme_id }} .card-title,
-  .color-scheme-{{ scheme_id }} .card-content {
-    color: var(--color-text);
-  }
-  
-  /* Links use outline button color */
-  .color-scheme-{{ scheme_id }} a:not(.btn) {
-    color: var(--color-outline-button);
-  }
-  
-  .color-scheme-{{ scheme_id }} a:not(.btn):hover {
-    color: var(--color-button);
-  }
-  
-  /* Primary buttons */
-  .color-scheme-{{ scheme_id }} .btn-primary,
-  .color-scheme-{{ scheme_id }} .btn {
-    background-color: var(--color-button);
-    color: var(--color-button-label);
-    border-color: var(--color-button);
-  }
-  
-  .color-scheme-{{ scheme_id }} .btn-primary:hover,
-  .color-scheme-{{ scheme_id }} .btn:hover {
-    background-color: var(--color-text);
-    border-color: var(--color-text);
-  }
-  
-  /* Secondary/Outline buttons */
-  .color-scheme-{{ scheme_id }} .btn-secondary,
-  .color-scheme-{{ scheme_id }} .btn-outline {
-    background-color: transparent;
-    color: var(--color-outline-button);
-    border-color: var(--color-outline-button);
-  }
-  
-  .color-scheme-{{ scheme_id }} .btn-secondary:hover,
-  .color-scheme-{{ scheme_id }} .btn-outline:hover {
-    background-color: var(--color-outline-button);
-    color: var(--color-background);
-  }
-  
-  /* Cards and containers */
-  .color-scheme-{{ scheme_id }} .card,
-  .color-scheme-{{ scheme_id }} .product-card,
-  .color-scheme-{{ scheme_id }} .blog-card {
-    background-color: var(--color-background);
-    color: var(--color-text);
-  }
-  
-  /* Form inputs */
-  .color-scheme-{{ scheme_id }} input,
-  .color-scheme-{{ scheme_id }} textarea,
-  .color-scheme-{{ scheme_id }} select {
-    background-color: var(--color-background);
-    color: var(--color-text);
-    border-color: var(--color-text);
-  }
-  
-  /* Icons */
-  .color-scheme-{{ scheme_id }} ion-icon {
-    color: var(--color-text);
-  }
-  
-  /* Borders */
-  .color-scheme-{{ scheme_id }} .has-border {
-    border-color: var(--color-text);
-  }
-  
-  /* Box shadows */
-  .color-scheme-{{ scheme_id }} .has-shadow {
-    box-shadow: 0 2px 10px {{ scheme_settings.shadow }}40;
+    background-color: var(--color-background) !important;
+    color: var(--color-text) !important;
   }
 {% endfor %}
+
+/* ===== Color Scheme Overrides (force over hardcoded colors) ===== */
+/* These rules use !important to guarantee visibility when schemes change */
+
+[class*="color-scheme-"] h1,
+[class*="color-scheme-"] h2,
+[class*="color-scheme-"] h3,
+[class*="color-scheme-"] h4,
+[class*="color-scheme-"] h5,
+[class*="color-scheme-"] h6 {
+  color: var(--color-text) !important;
+}
+
+[class*="color-scheme-"] p,
+[class*="color-scheme-"] span:not(.shopify-product-reviews-badge),
+[class*="color-scheme-"] li,
+[class*="color-scheme-"] label,
+[class*="color-scheme-"] address,
+[class*="color-scheme-"] blockquote,
+[class*="color-scheme-"] figcaption {
+  color: var(--color-text) !important;
+}
+
+[class*="color-scheme-"] .section-title,
+[class*="color-scheme-"] .section-subtitle,
+[class*="color-scheme-"] .section-text,
+[class*="color-scheme-"] .card-title,
+[class*="color-scheme-"] .card-content,
+[class*="color-scheme-"] .card-text,
+[class*="color-scheme-"] .hero-title,
+[class*="color-scheme-"] .hero-subtitle {
+  color: var(--color-text) !important;
+}
+
+/* Links */
+[class*="color-scheme-"] a:not(.btn):not(.btn-primary):not(.btn-secondary) {
+  color: var(--color-outline-button) !important;
+}
+
+/* Primary buttons */
+[class*="color-scheme-"] .btn,
+[class*="color-scheme-"] .btn-primary {
+  background-color: var(--color-button) !important;
+  color: var(--color-button-label) !important;
+  border-color: var(--color-button) !important;
+}
+
+/* Secondary/Outline buttons */
+[class*="color-scheme-"] .btn-secondary {
+  background-color: transparent !important;
+  color: var(--color-outline-button) !important;
+  border-color: var(--color-outline-button) !important;
+}
+
+/* Cards, panels, and content blocks */
+[class*="color-scheme-"] .feature-item,
+[class*="color-scheme-"] .testimonial-item,
+[class*="color-scheme-"] .card,
+[class*="color-scheme-"] .product-card,
+[class*="color-scheme-"] .blog-card {
+  background-color: var(--color-background) !important;
+  color: var(--color-text) !important;
+}
+
+/* Override specific hardcoded backgrounds */
+[class*="color-scheme-"] .our-story-text,
+[class*="color-scheme-"] .hero-overlay,
+[class*="color-scheme-"] .cta {
+  background-color: var(--color-background) !important;
+  color: var(--color-text) !important;
+}
+
+/* Form inputs */
+[class*="color-scheme-"] input:not([type="submit"]):not([type="button"]),
+[class*="color-scheme-"] textarea,
+[class*="color-scheme-"] select:not(.color_scheme) {
+  color: var(--color-text) !important;
+  border-color: var(--color-text) !important;
+}
+
+/* Icons */
+[class*="color-scheme-"] ion-icon,
+[class*="color-scheme-"] .feature-icon {
+  color: var(--color-text) !important;
+}
+
+/* Social links */
+[class*="color-scheme-"] .social-link {
+  color: var(--color-text) !important;
+}
+
+/* Footer-specific */
+[class*="color-scheme-"] .footer,
+[class*="color-scheme-"] footer {
+  background-color: var(--color-background) !important;
+  color: var(--color-text) !important;
+}
+
+/* Gradient overlay sections */
+[class*="color-scheme-"] .gradient-overlay {
+  background-color: transparent !important;
+}
 
 /*-----------------------------------*\
   #RESET
