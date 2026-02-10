@@ -34,53 +34,77 @@ FOOTER
           <li>
             <ul class="social-list">
 
-              {%- if section.settings.social_facebook != blank -%}
-              <li>
-                <a href="{{ section.settings.social_facebook }}" class="social-link" target="_blank" rel="noopener">
-                  <ion-icon name="logo-facebook"></ion-icon>
-                </a>
-              </li>
-              {%- endif -%}
+          {%- if settings.social_facebook != blank -%}
+          <li>
+            <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+          </li>
+          {%- endif -%}
 
-              {%- if section.settings.social_instagram != blank -%}
-              <li>
-                <a href="{{ section.settings.social_instagram }}" class="social-link" target="_blank" rel="noopener">
-                  <ion-icon name="logo-instagram"></ion-icon>
-                </a>
-              </li>
-              {%- endif -%}
+          {%- if settings.social_instagram != blank -%}
+          <li>
+            <a href="{{ settings.social_instagram }}" class="social-link" target="_blank" rel="noopener">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+          </li>
+          {%- endif -%}
 
-              {%- if section.settings.social_tiktok != blank -%}
-              <li>
-                <a href="{{ section.settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener">
-                  <ion-icon name="logo-tiktok"></ion-icon>
-                </a>
-              </li>
-              {%- endif -%}
+          {%- if settings.social_tiktok != blank -%}
+          <li>
+            <a href="{{ settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener">
+              <ion-icon name="logo-tiktok"></ion-icon>
+            </a>
+          </li>
+          {%- endif -%}
 
-              {%- if section.settings.social_tumblr != blank -%}
-              <li>
-                <a href="{{ section.settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener">
-                  <ion-icon name="logo-tumblr"></ion-icon>
-                </a>
-              </li>
-              {%- endif -%}
+          {%- if settings.social_tumblr != blank -%}
+          <li>
+            <a href="{{ settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener">
+              <ion-icon name="logo-tumblr"></ion-icon>
+            </a>
+          </li>
+          {%- endif -%}
 
-              {%- if section.settings.social_twitter != blank -%}
-              <li>
-                <a href="{{ section.settings.social_twitter }}" class="social-link" target="_blank" rel="noopener">
-                  <ion-icon name="logo-twitter"></ion-icon>
-                </a>
-              </li>
-              {%- endif -%}
+          {%- if settings.social_twitter != blank -%}
+          <li>
+            <a href="{{ settings.social_twitter }}" class="social-link" target="_blank" rel="noopener">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+          </li>
+          {%- endif -%}
 
-              {%- if section.settings.social_youtube != blank -%}
-              <li>
-                <a href="{{ section.settings.social_youtube }}" class="social-link" target="_blank" rel="noopener">
-                  <ion-icon name="logo-youtube"></ion-icon>
-                </a>
-              </li>
-              {%- endif -%}
+          {%- if settings.social_pinterest != blank -%}
+          <li>
+            <a href="{{ settings.social_pinterest }}" class="social-link" target="_blank" rel="noopener">
+              <ion-icon name="logo-pinterest"></ion-icon>
+            </a>
+          </li>
+          {%- endif -%}
+
+          {%- if settings.social_snapchat != blank -%}
+          <li>
+            <a href="{{ settings.social_snapchat }}" class="social-link" target="_blank" rel="noopener">
+              <ion-icon name="logo-snapchat"></ion-icon>
+            </a>
+          </li>
+          {%- endif -%}
+
+          {%- if settings.social_youtube != blank -%}
+          <li>
+            <a href="{{ settings.social_youtube }}" class="social-link" target="_blank" rel="noopener">
+              <ion-icon name="logo-youtube"></ion-icon>
+            </a>
+          </li>
+          {%- endif -%}
+          
+          {%- if settings.social_vimeo != blank -%}
+          <li>
+            <a href="{{ settings.social_vimeo }}" class="social-link" target="_blank" rel="noopener">
+              <ion-icon name="logo-vimeo"></ion-icon>
+            </a>
+          </li>
+          {%- endif -%}
 
             </ul>
           </li>
@@ -295,36 +319,6 @@ FOOTER
         "id": "show_social",
         "label": "Show social media icons",
         "default": true
-      },
-      {
-        "type": "url",
-        "id": "social_facebook",
-        "label": "Facebook URL"
-      },
-      {
-        "type": "url",
-        "id": "social_instagram",
-        "label": "Instagram URL"
-      },
-      {
-        "type": "url",
-        "id": "social_tiktok",
-        "label": "TikTok URL"
-      },
-      {
-        "type": "url",
-        "id": "social_tumblr",
-        "label": "Tumblr URL"
-      },
-      {
-        "type": "url",
-        "id": "social_twitter",
-        "label": "Twitter URL"
-      },
-      {
-        "type": "url",
-        "id": "social_youtube",
-        "label": "YouTube URL"
       },
       {
         "type": "header",

@@ -171,6 +171,24 @@
         "id": "social_tiktok",
         "label": "TikTok",
         "info": "https://tiktok.com/@yourprofile"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr",
+        "label": "Tumblr",
+        "info": "https://tumblr.com/yourprofile"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat",
+        "label": "Snapchat",
+        "info": "https://www.snapchat.com/add/yourprofile"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo",
+        "label": "Vimeo",
+        "info": "https://vimeo.com/yourprofile"
       }
     ]
   },
