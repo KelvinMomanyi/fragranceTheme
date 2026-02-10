@@ -2,7 +2,7 @@
         - #NEWSLETTER
       -->
 
-      <section class="section newsletter color-scheme-{{ section.settings.color_scheme }}" aria-label="newsletter" data-aos="fade-up">
+      <section class="section newsletter color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" aria-label="newsletter" data-aos="fade-up">
         <div class="container">
 
           <div class="newsletter-card">

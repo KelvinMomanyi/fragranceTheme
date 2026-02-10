@@ -6,7 +6,7 @@
   endif
 -%}
 
-<div class="container color-scheme-{{ section.settings.color_scheme }}" style="padding-top:25px;">
+<div class="container color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %} padding-top:25px;">
   {%- comment -%} Collection Hero with Image (Required) {%- endcomment -%}
   {% if current_collection.image %}
     <div class="collection-hero">

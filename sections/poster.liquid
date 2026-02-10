@@ -1,4 +1,4 @@
-<section class="poster color-scheme-{{ section.settings.color_scheme }}" style="
+<section class="poster color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}
 {% if section.settings.background_image != blank %}
   --bg-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');
 {% else %}

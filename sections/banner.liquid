@@ -1,6 +1,6 @@
 
 {% comment %} data-section {% endcomment %}
-<section class="section banner color-scheme-{{ section.settings.color_scheme }}" aria-label="banner" data-aos="fade-up">
+<section class="section banner color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" aria-label="banner" data-aos="fade-up">
     <div class="container">
         <ul class="banner-list">
             <li>

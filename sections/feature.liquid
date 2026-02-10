@@ -1,5 +1,5 @@
  <!--FEATURE-->
-<section class="section feature color-scheme-{{ section.settings.color_scheme }}" aria-label="feature" >
+<section class="section feature color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" aria-label="feature" >
     <div class="container">
         <h2 class="h2-large section-title">{{section.settings.maintitle}}</h2>
         <ul class="flex-list">

@@ -1,5 +1,5 @@
 <!-- Hero Section with Slider -->
-<section class="hero1 text-center color-scheme-{{ section.settings.color_scheme }}" style="min-height: 50vh;" aria-label="home" id="home">
+<section class="hero1 text-center color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %} min-height: 50vh;" aria-label="home" id="home">
   <ul class="hero1-slider" data-hero-slider>
     {% if section.blocks.size == 0 %}
       <li class="slider-item active" data-hero-slider-item style="padding-block-start: 70px;">

@@ -1,4 +1,4 @@
-<section class="clients color-scheme-{{ section.settings.color_scheme }}" id="client" style="background-color: {{ section.settings.section_bg_color }}; padding-block: {{ section.settings.section_padding_vertical }}px;">
+<section class="clients color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %} background-color: {{ section.settings.section_bg_color }}; padding-block: {{ section.settings.section_padding_vertical }}px;" id="client">
   <div class="carousel-wrapper">
     {% if section.settings.show_title %}
     <div class="carousel-title">

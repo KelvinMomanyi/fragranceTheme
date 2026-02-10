@@ -1,0 +1,7 @@
+{%- comment -%}
+  Color Scheme Inline Styles
+  Usage: {% render 'color-scheme-styles', scheme: section.settings.color_scheme %}
+  Outputs: inline style attribute content for background-color and color
+{%- endcomment -%}
+{%- assign scheme_settings = settings.color_schemes[scheme].settings -%}
+background-color: {{ scheme_settings.background }}; color: {{ scheme_settings.text }}; --color-background: {{ scheme_settings.background }}; --color-text: {{ scheme_settings.text }}; --color-button: {{ scheme_settings.button }}; --color-button-label: {{ scheme_settings.button_label }}; --color-outline-button: {{ scheme_settings.secondary_button_label }}; --color-shadow: {{ scheme_settings.shadow }};

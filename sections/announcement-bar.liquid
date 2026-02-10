@@ -1,5 +1,5 @@
 {% if section.settings.enabled %}
- <header class="color-scheme-{{ section.settings.color_scheme }}"> 
+ <header class="color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}"> 
     <div class="alert">
         <div class="flexBox">
           <div id="phone-container">

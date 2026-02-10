@@ -2,7 +2,7 @@
     - #HEADER
   -->
 
-  <header class="header color-scheme-{{ section.settings.color_scheme }}" data-header style='background-color:{{section.settings.bg_color }}'>
+  <header class="header color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" data-header>
     <div class="container">
 
       

@@ -1,4 +1,4 @@
-<section class="section hero1 color-scheme-{{ section.settings.color_scheme }}" aria-label="home">
+<section class="section hero1 color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" aria-label="home">
   <div class="container">
     <h1 class="h2 hero-title">
       <strong class="strong">{{ section.settings.heading_text }}</strong>
