@@ -86,7 +86,7 @@
         "type": "font_picker",
         "id": "font_heading",
         "label": "Heading font",
-        "default": "mr_de_haviland_n4",
+        "default": "pinyon_script_n4",
         "info": "Font used for headings throughout the theme"
       },
       {
