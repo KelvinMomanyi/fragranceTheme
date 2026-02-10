@@ -86,14 +86,14 @@
         "type": "font_picker",
         "id": "font_heading",
         "label": "Heading font",
-        "default": "assistant_n4",
+        "default": "mr_de_haviland_n4",
         "info": "Font used for headings throughout the theme"
       },
       {
         "type": "font_picker",
         "id": "font_body",
         "label": "Body font",
-        "default": "assistant_n4",
+        "default": "cormorant_garamond_n4",
         "info": "Font used for body text throughout the theme"
       }
     ]
