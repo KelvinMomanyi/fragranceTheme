@@ -1,3 +1,24 @@
+{%- assign font_heading = settings.font_heading -%}
+{%- assign font_body = settings.font_body -%}
+
+{%- assign font_body_bold = font_body | font_modify: 'weight', 'bold' -%}
+{%- assign font_body_italic = font_body | font_modify: 'style', 'italic' -%}
+{%- assign font_body_bold_italic = font_body_bold | font_modify: 'style', 'italic' -%}
+
+{%- assign font_heading_bold = font_heading | font_modify: 'weight', 'bold' -%}
+{%- assign font_heading_italic = font_heading | font_modify: 'style', 'italic' -%}
+{%- assign font_heading_bold_italic = font_heading_bold | font_modify: 'style', 'italic' -%}
+
+{{ font_body | font_face: font_display: 'swap' }}
+{{ font_body_bold | font_face: font_display: 'swap' }}
+{{ font_body_italic | font_face: font_display: 'swap' }}
+{{ font_body_bold_italic | font_face: font_display: 'swap' }}
+
+{{ font_heading | font_face: font_display: 'swap' }}
+{{ font_heading_bold | font_face: font_display: 'swap' }}
+{{ font_heading_italic | font_face: font_display: 'swap' }}
+{{ font_heading_bold_italic | font_face: font_display: 'swap' }}
+
 /*-----------------------------------*\
   #style.css.liquid - Dynamic Color Schemes (Dawn-Style)
 \*-----------------------------------*/
@@ -32,8 +53,8 @@
   --manatee: hsl(218, 11%, 65%);
   
   /* Typography */
-  --ff-roboto: 'Cormorant Garamond', sans-serif;
-  --ff-mr_de_haviland: 'Mr De Haviland', cursive;
+  --ff-roboto: {{ font_body.family }}, {{ font_body.fallback_families }};
+  --ff-mr_de_haviland: {{ font_heading.family }}, {{ font_heading.fallback_families }};
   --fs-1: 6rem;
   --fs-2: 3rem;
   --fs-3: 2rem;
