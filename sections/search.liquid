@@ -4,24 +4,26 @@
     <p class="section-subtitle" id="search-label">{{ section.settings.subtitle }}</p>
     
     <div class="search-wrapper">
-      <div class="search-container">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-container">
         <input 
           type="search" 
+          name="q"
           id="main-search-input"
+          value="{{ search.terms | escape }}"
           placeholder="{{ section.settings.placeholder }}" 
           class="search-input"
           aria-label="Search products"
           autocomplete="off"
         >
-        <button type="button" class="search-icon-btn" aria-label="Search">
+        <button type="submit" class="search-icon-btn" aria-label="Search">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.35-4.35"></path>
           </svg>
         </button>
-      </div>
+      </form>
       
-      <div id="main-search-results" class="search-results-dropdown">
+      <div id="main-search-results-dropdown" class="search-results-dropdown">
         <div class="suggestions-section">
           <p class="section-title">Popular Searches</p>
           <div class="suggestions-list" id="suggestions-list"></div>
@@ -32,6 +34,51 @@
         </div>
       </div>
     </div>
+
+    {%- if search.performed -%}
+      <div class="liquid-search-results">
+        {%- if search.results_count == 0 -%}
+          <p class="no-results-main">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+        {%- else -%}
+          <p class="results-count">{{ 'general.search.results_count' | t: count: search.results_count, terms: search.terms }}</p>
+          
+          {%- paginate search.results by 24 -%}
+            <div class="search-results-grid">
+              {%- for item in search.results -%}
+                <div class="search-grid-item">
+                  <a href="{{ item.url }}" class="search-item-link">
+                    <div class="search-item-image">
+                      {%- if item.image -%}
+                        <img src="{{ item.image | image_url: width: 400 }}" alt="{{ item.image.alt | escape }}" loading="lazy">
+                      {%- elsif item.object_type == 'article' and item.image -%}
+                         <img src="{{ item.image | image_url: width: 400 }}" alt="{{ item.image.alt | escape }}" loading="lazy">
+                      {%- else -%}
+                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {%- endif -%}
+                      <span class="item-type-badge">{{ item.object_type | capitalize }}</span>
+                    </div>
+                    <div class="search-item-info">
+                      <h3 class="search-item-title">{{ item.title }}</h3>
+                      {%- if item.object_type == 'product' -%}
+                        <p class="search-item-price">{{ item.price | money }}</p>
+                      {%- else -%}
+                        <p class="search-item-excerpt">{{ item.content | strip_html | truncatewords: 20 }}</p>
+                      {%- endif -%}
+                    </div>
+                  </a>
+                </div>
+              {%- endfor -%}
+            </div>
+
+            {%- if paginate.pages > 1 -%}
+              <div class="pagination">
+                {{ paginate | default_pagination }}
+              </div>
+            {%- endif -%}
+          {%- endpaginate -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
   </div>
 
 </section>
@@ -39,7 +86,7 @@
 <script>
 (function() {
   const searchInput = document.getElementById('main-search-input');
-  const searchResults = document.getElementById('main-search-results');
+  const searchResults = document.getElementById('main-search-results-dropdown');
   const productsList = document.getElementById('products-list');
   const productsSection = document.getElementById('products-section');
   const suggestionsList = document.getElementById('suggestions-list');
@@ -509,6 +556,120 @@
   .search-section { 
     padding-inline: 70px;
   }
+}
+
+/* Liquid Search Results Styles */
+.liquid-search-results {
+  margin-top: 60px;
+}
+
+.no-results-main, .results-count {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.search-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.search-grid-item {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.search-grid-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.search-item-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.search-item-image {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #f9f9f9;
+}
+
+.search-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-type-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 1rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.search-item-info {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-item-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.search-item-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-top: auto;
+}
+
+.search-item-excerpt {
+  font-size: 1.4rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+.pagination {
+  margin-top: 50px;
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+.pagination .page, .pagination .prev, .pagination .next {
+  padding: 8px 15px;
+  margin: 0 4px;
+  color: #1a1a1a;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.pagination .current {
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
 }
 </style>
 

@@ -279,6 +279,66 @@
                   {%- form 'product', product, id: 'product-form', class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
                     <input type="hidden" name="id" value="{{ current_variant.id }}" id="product-variant-id">
                     
+                    {%- comment -%} Gift Card Recipient Form (Required) {%- endcomment -%}
+                    {%- if product.gift_card? -%}
+                      <div class="recipient-form-wrapper">
+                        <label class="recipient-checkbox">
+                          <input type="checkbox" name="properties[__shopify_send_gift_card_to_recipient]" id="Recipient-Checkbox-{{ section.id }}" class="recipient-checkbox-input">
+                          <span>{{ 'products.product.gift_cards.send_as_gift' | t | default: 'Send as a gift' }}</span>
+                        </label>
+
+                        <div class="recipient-fields" id="Recipient-Fields-{{ section.id }}" style="display: none;">
+                          <div class="field">
+                            <label class="field__label" for="Recipient-email-{{ section.id }}">{{ 'products.product.gift_cards.recipient_email' | t | default: 'Recipient email' }}</label>
+                            <input
+                              class="field__input"
+                              id="Recipient-email-{{ section.id }}"
+                              type="email"
+                              placeholder="{{ 'products.product.gift_cards.recipient_email' | t | default: 'Recipient email' }}"
+                              name="recipient[email]"
+                              value="{{ form.email }}"
+                            >
+                          </div>
+
+                          <div class="field">
+                            <label class="field__label" for="Recipient-name-{{ section.id }}">{{ 'products.product.gift_cards.recipient_name' | t | default: 'Recipient name (optional)' }}</label>
+                            <input
+                              class="field__input"
+                              id="Recipient-name-{{ section.id }}"
+                              type="text"
+                              placeholder="{{ 'products.product.gift_cards.recipient_name' | t | default: 'Recipient name' }}"
+                              name="recipient[name]"
+                              value="{{ form.name }}"
+                            >
+                          </div>
+
+                          <div class="field">
+                            <label class="field__label" for="Recipient-message-{{ section.id }}">{{ 'products.product.gift_cards.recipient_message' | t | default: 'Message (optional)' }}</label>
+                            <textarea
+                              rows="4"
+                              id="Recipient-message-{{ section.id }}"
+                              class="text-area field__input"
+                              name="recipient[message]"
+                              maxlength="200"
+                              placeholder="{{ 'products.product.gift_cards.recipient_message' | t | default: 'Message' }}"
+                            >{{ form.message }}</textarea>
+                          </div>
+
+                          <div class="field">
+                            <label class="field__label" for="Recipient-send-on-{{ section.id }}">{{ 'products.product.gift_cards.send_on' | t | default: 'Send on' }}</label>
+                            <input
+                              class="field__input"
+                              id="Recipient-send-on-{{ section.id }}"
+                              type="date"
+                              name="recipient[send_on]"
+                              pattern="\d{4}-\d{2}-\d{2}"
+                              value="{{ gift_card.send_on }}"
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    {%- endif -%}
+
                     <div class="product-form-buttons">
                       <button 
                         type="submit" 
@@ -598,6 +658,51 @@
   .product-tax-note,
   .product-shipping-note {
     font-size: 0.85rem;
+  }
+
+  /* Recipient Form Styles */
+  .recipient-form-wrapper {
+    margin-block: 25px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #eee;
+  }
+
+  .recipient-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .recipient-fields {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .recipient-fields .field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .recipient-fields label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #666;
+  }
+
+  .recipient-fields .field__input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.95rem;
+  }
     color: #666;
     margin: 5px 0 0;
   }
@@ -992,6 +1097,15 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  // Gift Card Recipient Toggle
+  const recipientCheckbox = document.getElementById('Recipient-Checkbox-{{ section.id }}');
+  const recipientFields = document.getElementById('Recipient-Fields-{{ section.id }}');
+  if (recipientCheckbox && recipientFields) {
+    recipientCheckbox.addEventListener('change', function() {
+      recipientFields.style.display = this.checked ? 'block' : 'none';
+    });
+  }
 });
 </script>
 

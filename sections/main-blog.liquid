@@ -9,80 +9,54 @@
      {{ section.settings.mainBlog_text }}
     </p>
 
-    <ul class="has-scrollbar">
-    {% assign selected_blog_handle = section.settings.blog_type %}
-    {% if selected_blog_handle != blank and blogs[selected_blog_handle].articles.size > 0 %}
-      {% for article in blogs[selected_blog_handle].articles  %}
-        <li class="scrollbar-item">
-          <div class="blog-card">
+    {%- paginate blog.articles by 12 -%}
+      <ul class="blog-grid">
+        {%- for article in blog.articles -%}
+          <li class="blog-grid-item">
+            <div class="blog-card">
+              <figure class="card-banner img-holder" style="--width: 500; --height: 600;">
+                {%- if article.image -%}
+                  <img src="{{ article.image | image_url: width: 500 }}" width="500" height="600" loading="lazy"
+                  alt="{{ article.image.alt | escape }}" class="img-cover"/>
+                {%- else -%}
+                   {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </figure>
 
-             <figure class="card-banner img-holder" style="--width: 500; --height: 600;">
-                <img src="{{ article.image | image_url: width: 500 }}" width="500" height="600" loading="lazy"
-               alt="{{ article.title }}" class="img-cover"/>
-             </figure>
+              <div class="card-content">
+                <ul class="card-meta-list">
+                  {%- for tag in article.tags -%}
+                    <li>
+                      <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="card-tag">{{ tag }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
 
-             <div class="card-content">
+                <h3 class="h4">
+                  <a href="{{ article.url }}" class="card-title hover:underline">
+                    {{ article.title }}
+                  </a>
+                </h3>
 
-             <ul class="card-meta-list">
-               {% for tag in article.tags %}
-               <li>
-                 <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="card-tag">{{ tag }}</a>
-               </li>
-                {% endfor %}
-             </ul>
+                <p class="card-text">
+                  {{ article.excerpt_or_content | strip_html | truncatewords: 30 }}
+                </p>
 
-             <h3 class="h4">
-               <a href="{{ article.url }}" class="card-title hover:underline">
-                 {{ article.title }}
-               </a>
-             </h3>
-
-             <p class="card-text">
-               {{ article.excerpt_or_content | strip_html | truncatewords: 30 }}
-             </p>
-
-             </div>
-
-          </div>
-        </li>
-      {% endfor %}  
-    {% else %}  
-      {% for article in blogs['news'].articles %}
-       <li class="scrollbar-item">
-         <div class="blog-card">
-
-            <figure class="card-banner img-holder" style="--width: 500; --height: 600;">
-               <img src="{{ article.image | image_url: width: 500 }}" width="500" height="600" loading="lazy"
-              alt="{{ article.title }}" class="img-cover"/>
-            </figure>
-
-            <div class="card-content">
-
-            <ul class="card-meta-list">
-              {% for tag in article.tags %}
-              <li>
-                <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="card-tag">{{ tag }}</a>
-              </li>
-               {% endfor %}
-            </ul>
-
-            <h3 class="h4">
-              <a href="{{ article.url }}" class="card-title hover:underline">
-                {{ article.title }}
-              </a>
-            </h3>
-
-            <p class="card-text">
-              {{ article.excerpt_or_content | strip_html | truncatewords: 30 }}
-            </p>
-
+                <div class="card-footer-meta">
+                  <span class="article-date">{{ article.published_at | date: "%b %d, %Y" }}</span>
+                </div>
+              </div>
             </div>
+          </li>
+        {%- endfor -%}
+      </ul>
 
-         </div>
-       </li>
-      {% endfor %}
-    {% endif %}  
-    </ul>
+      {%- if paginate.pages > 1 -%}
+        <div class="pagination">
+          {{ paginate | default_pagination }}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
 
   </div>
 </section>
@@ -360,6 +334,71 @@
 @media (min-width: 768px) {
   .search-bar { padding: 25px; }
   .search-bar .input-field { font-size: 4.6rem; }
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 50px;
+}
+
+@media (min-width: 575px) {
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .blog-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .blog-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.blog-grid-item {
+  height: 100%;
+}
+
+.pagination {
+  margin-top: 50px;
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+.pagination .page, .pagination .prev, .pagination .next {
+  padding: 8px 15px;
+  margin: 0 4px;
+  color: var(--eerie-black, #1a1a1a);
+  text-decoration: none;
+  border: 1px solid var(--cultured, #f5f5f5);
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.pagination .current {
+  background: var(--hoockers-green, #4CAF50);
+  color: #fff;
+  border-color: var(--hoockers-green, #4CAF50);
+}
+
+.pagination a:hover {
+  background: var(--cultured, #f5f5f5);
+}
+
+.card-footer-meta {
+  margin-top: 15px;
+  font-size: 0.85em;
+  color: var(--eerie-black_80, rgba(26, 26, 26, 0.8));
+  border-top: 1px solid #f0f0f0;
+  padding-top: 10px;
 }
 
 </style>
