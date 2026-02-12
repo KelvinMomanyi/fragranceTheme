@@ -275,7 +275,14 @@ body.active {
 }
 
 :focus-visible {
+  outline: 2px solid var(--color-text);
   outline-offset: 4px;
+}
+
+/* Minimum touch target size */
+a, button, input, select, textarea, label {
+  min-height: 24px;
+  min-width: 24px;
 }
 
 ::placeholder {

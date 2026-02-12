@@ -36,7 +36,7 @@ FOOTER
 
           {%- if settings.social_facebook != blank -%}
           <li>
-            <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener">
+            <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
               <ion-icon name="logo-facebook"></ion-icon>
             </a>
           </li>
@@ -44,7 +44,7 @@ FOOTER
 
           {%- if settings.social_instagram != blank -%}
           <li>
-            <a href="{{ settings.social_instagram }}" class="social-link" target="_blank" rel="noopener">
+            <a href="{{ settings.social_instagram }}" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
               <ion-icon name="logo-instagram"></ion-icon>
             </a>
           </li>
@@ -52,7 +52,7 @@ FOOTER
 
           {%- if settings.social_tiktok != blank -%}
           <li>
-            <a href="{{ settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener">
+            <a href="{{ settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener" aria-label="TikTok">
               <ion-icon name="logo-tiktok"></ion-icon>
             </a>
           </li>
@@ -60,7 +60,7 @@ FOOTER
 
           {%- if settings.social_tumblr != blank -%}
           <li>
-            <a href="{{ settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener">
+            <a href="{{ settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener" aria-label="Tumblr">
               <ion-icon name="logo-tumblr"></ion-icon>
             </a>
           </li>
@@ -68,7 +68,7 @@ FOOTER
 
           {%- if settings.social_twitter != blank -%}
           <li>
-            <a href="{{ settings.social_twitter }}" class="social-link" target="_blank" rel="noopener">
+            <a href="{{ settings.social_twitter }}" class="social-link" target="_blank" rel="noopener" aria-label="Twitter">
               <ion-icon name="logo-twitter"></ion-icon>
             </a>
           </li>
@@ -76,7 +76,7 @@ FOOTER
 
           {%- if settings.social_pinterest != blank -%}
           <li>
-            <a href="{{ settings.social_pinterest }}" class="social-link" target="_blank" rel="noopener">
+            <a href="{{ settings.social_pinterest }}" class="social-link" target="_blank" rel="noopener" aria-label="Pinterest">
               <ion-icon name="logo-pinterest"></ion-icon>
             </a>
           </li>
@@ -84,7 +84,7 @@ FOOTER
 
           {%- if settings.social_snapchat != blank -%}
           <li>
-            <a href="{{ settings.social_snapchat }}" class="social-link" target="_blank" rel="noopener">
+            <a href="{{ settings.social_snapchat }}" class="social-link" target="_blank" rel="noopener" aria-label="Snapchat">
               <ion-icon name="logo-snapchat"></ion-icon>
             </a>
           </li>
@@ -92,7 +92,7 @@ FOOTER
 
           {%- if settings.social_youtube != blank -%}
           <li>
-            <a href="{{ settings.social_youtube }}" class="social-link" target="_blank" rel="noopener">
+            <a href="{{ settings.social_youtube }}" class="social-link" target="_blank" rel="noopener" aria-label="YouTube">
               <ion-icon name="logo-youtube"></ion-icon>
             </a>
           </li>
@@ -100,7 +100,7 @@ FOOTER
           
           {%- if settings.social_vimeo != blank -%}
           <li>
-            <a href="{{ settings.social_vimeo }}" class="social-link" target="_blank" rel="noopener">
+            <a href="{{ settings.social_vimeo }}" class="social-link" target="_blank" rel="noopener" aria-label="Vimeo">
               <ion-icon name="logo-vimeo"></ion-icon>
             </a>
           </li>
@@ -189,9 +189,10 @@ FOOTER
             name="email_address"
             placeholder="{{ section.settings.newsletter_placeholder }}"
             required
-            class="email-field">
+            class="email-field"
+            aria-label="Email address">
 
-          <button type="submit" class="footer-form-btn">
+          <button type="submit" class="footer-form-btn" aria-label="Subscribe">
             <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
           </button>
         </form>

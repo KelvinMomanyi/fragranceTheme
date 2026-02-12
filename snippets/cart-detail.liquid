@@ -346,9 +346,9 @@
                                   {% for discount in item.discounts %}{{ discount.title }}{% endfor %}
                               </td>
                               <div class="quantity-selector">
-                                <button type="button" class="decrement" id="decrement_${item.key}">-</button>
+                                <button type="button" class="decrement" id="decrement_${item.key}" aria-label="Decrease quantity">-</button>
                                 <span id="quantity_${item.key}">${item.quantity}</span>
-                                <button type="button" class="increment" id="increment_${item.key}">+</button>
+                                <button type="button" class="increment" id="increment_${item.key}" aria-label="Increase quantity">+</button>
                               </div> 
                               </div>
                         </div>

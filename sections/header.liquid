@@ -7,7 +7,7 @@
 
       
       <div class="">
-        <button class="header-action-btn" aria-label="open menu" data-nav-toggler>
+        <button class="header-action-btn" aria-label="Open menu" data-nav-toggler>
           <ion-icon name="menu-outline" aria-hidden="true" style="font-size:24px;"></ion-icon>
           <i data-feather="circle"></i>
         </button>
@@ -23,7 +23,7 @@
           {% if section.settings.logo_image != blank %}
             <img 
               src="{{ section.settings.logo_image | image_url  }}"  
-              alt="logo"
+              alt="{{ shop.name }}"
               width="{{ scaled_width }}" 
               height="{{ scaled_height }}" 
               loading="lazy"
@@ -42,13 +42,13 @@
         <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
       </div> {% endcomment %}
       <div class="header-action"  id="headerActions">
-        <a href="#" class="header-action-btn" aria-label="favourite-item" id="search-icon">
+        <a href="#" class="header-action-btn" aria-label="Search" id="search-icon">
           <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
           {% comment %} <img src="{{ 'search.svg' | asset_url }}" alt="Your Icon" /> {% endcomment %}
         </a> 
        
 
-        <button class="header-action-btn" aria-label="cart" onclick="openCart()">
+        <button class="header-action-btn" aria-label="Cart" onclick="openCart()">
           <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
           {% comment %} <img src="{{ 'shopping-bag.svg' | asset_url }}" alt="Your Icon" /> {% endcomment %}
           <span class="btn-badge">0</span>
@@ -62,7 +62,7 @@
   
       <div id="search-bar" class="search-bar">
         <div class="container">
-          <input type="text" id="search-input" placeholder="Search for products...">
+          <input type="text" id="search-input" placeholder="Search for products..." aria-label="Search">
           <div id="search-results"></div>
         </div>
      </div>
@@ -153,7 +153,7 @@
 
     <!-- Language and Currency Selectors Container -->
     <div id="currency-language-container ">
-      <select name="locale_code" class="locale-selector" style="color:{{ section.settings.text_color }};">
+      <select name="locale_code" class="locale-selector" style="color:{{ section.settings.text_color }};" aria-label="Language">
         {% for language in localization.available_languages %}
           {% if language.iso_code == localization.language.iso_code %}
             <option value="{{ language.iso_code }}" selected="selected">{{ language.name }}</option>
@@ -231,7 +231,8 @@
 
         
       
-         <select name="currency" class="currency-selector" style="color: {{section.settings.text_color }};" id="currencySelect">
+      
+         <select name="currency" class="currency-selector" style="color: {{section.settings.text_color }};" id="currencySelect" aria-label="Currency">
           {% for currency in shop.enabled_currencies %}
             {% assign country_name = currency.iso_code %}
             {% assign country_code = currency.iso_code | slice: 0, 2 | downcase %}
@@ -254,11 +255,11 @@
 
 
     <div class="header-action" style="display:flex; justify-content:flex-start; padding-top:10px;">
-     <button class="header-action-btn" aria-label="user">
+     <button class="header-action-btn" aria-label="User account">
         <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
       </button>
 
-      <button class="header-action-btn" aria-label="favorite list">
+      <button class="header-action-btn" aria-label="Favorites">
         <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
         <span class="btn-badge">0</span>
       </button>
