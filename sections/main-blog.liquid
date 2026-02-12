@@ -38,9 +38,9 @@
                   </a>
                 </h3>
 
-                <p class="card-text">
+                <div class="card-text rte">
                   {{ article.excerpt_or_content | strip_html | truncatewords: 30 }}
-                </p>
+                </div>
 
                 <div class="card-footer-meta">
                   <span class="article-date">{{ article.published_at | date: "%b %d, %Y" }}</span>
