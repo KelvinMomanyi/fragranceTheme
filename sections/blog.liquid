@@ -24,7 +24,7 @@
           <li class="flex-item">
             <div class="blog-card">
               <figure class="card-banner img-holder has-before hover:shine" style="--width:700; --height:450;">
-                <img src="{{ article.image | img_url : 'large' }}" alt="{{ article.title }}" class="img-cover" width="700" height="450" loading="lazy">
+                <img src="{{ article.image | image_url: width: 700 }}" alt="{{ article.title }}" class="img-cover" width="700" height="450" loading="lazy">
               </figure>
       
               <h3 class="h3">

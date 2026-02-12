@@ -86,8 +86,22 @@
       <ul class="navbar-list">
         {% assign nav_links = linklists.main-menu.links %} <!-- Replace 'main-menu' with your menu handle -->
         {% for link in nav_links %}
-          <li class="navbar-item">
-            <a href="{{ link.url }}" class="navbar-link" data-nav-link>{{ link.title }}</a>
+          <li class="navbar-item {% if link.links != blank %}has-dropdown{% endif %}">
+            <a href="{{ link.url }}" class="navbar-link" data-nav-link>
+              {{ link.title }}
+              {% if link.links != blank %}
+                <ion-icon name="chevron-down-outline" aria-hidden="true" style="margin-left: 5px; font-size: 1rem;"></ion-icon>
+              {% endif %}
+            </a>
+            {% if link.links != blank %}
+              <ul class="dropdown-list">
+                {% for child_link in link.links %}
+                  <li class="dropdown-item">
+                    <a href="{{ child_link.url }}" class="dropdown-link">{{ child_link.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
           </li>
         {% endfor %}
       </ul>
@@ -165,91 +179,21 @@
       
     
     
-      {% form 'currency' %}
-        <div style="display:flex; gap:5px;">
-          <div class="dropdown">
-            {% for currency in shop.enabled_currencies %}
-              {% assign country_code = '' %}
-              {% assign country_name = '' %}
-            {% case currency.iso_code %}
-                {% when 'USD' %} {% assign country_code = 'us' %} {% assign country_name = 'United States' %}
-                {% when 'CAD' %} {% assign country_code = 'ca' %} {% assign country_name = 'Canada' %}
-                {% when 'EUR' %} {% assign country_code = 'eu' %} {% assign country_name = 'Eurozone' %}
-                {% when 'GBP' %} {% assign country_code = 'gb' %} {% assign country_name = 'United Kingdom' %}
-                {% when 'AUD' %} {% assign country_code = 'au' %} {% assign country_name = 'Australia' %}
-                {% when 'JPY' %} {% assign country_code = 'jp' %} {% assign country_name = 'Japan' %}
-                {% when 'INR' %} {% assign country_code = 'in' %} {% assign country_name = 'India' %}
-                {% when 'KES' %} {% assign country_code = 'ke' %} {% assign country_name = 'Kenya' %}
-                {% when 'CHF' %} {% assign country_code = 'ch' %} {% assign country_name = 'Switzerland' %}
-                {% when 'CNY' %} {% assign country_code = 'cn' %} {% assign country_name = 'China' %}
-                {% when 'SEK' %} {% assign country_code = 'se' %} {% assign country_name = 'Sweden' %}
-                {% when 'NZD' %} {% assign country_code = 'nz' %} {% assign country_name = 'New Zealand' %}
-                {% when 'MXN' %} {% assign country_code = 'mx' %} {% assign country_name = 'Mexico' %}
-                {% when 'SGD' %} {% assign country_code = 'sg' %} {% assign country_name = 'Singapore' %}
-                {% when 'HKD' %} {% assign country_code = 'hk' %} {% assign country_name = 'Hong Kong' %}
-                {% when 'NOK' %} {% assign country_code = 'no' %} {% assign country_name = 'Norway' %}
-                {% when 'ZAR' %} {% assign country_code = 'za' %} {% assign country_name = 'South Africa' %}
-                {% when 'BRL' %} {% assign country_code = 'br' %} {% assign country_name = 'Brazil' %}
-                {% when 'RUB' %} {% assign country_code = 'ru' %} {% assign country_name = 'Russia' %}
-                {% when 'KRW' %} {% assign country_code = 'kr' %} {% assign country_name = 'South Korea' %}
-                {% when 'TRY' %} {% assign country_code = 'tr' %} {% assign country_name = 'Turkey' %}
-                {% when 'SAR' %} {% assign country_code = 'sa' %} {% assign country_name = 'Saudi Arabia' %}
-                {% when 'AED' %} {% assign country_code = 'ae' %} {% assign country_name = 'United Arab Emirates' %}
-                {% when 'THB' %} {% assign country_code = 'th' %} {% assign country_name = 'Thailand' %}
-                {% when 'IDR' %} {% assign country_code = 'id' %} {% assign country_name = 'Indonesia' %}
-                {% when 'PLN' %} {% assign country_code = 'pl' %} {% assign country_name = 'Poland' %}
-                {% when 'MYR' %} {% assign country_code = 'my' %} {% assign country_name = 'Malaysia' %}
-                {% when 'DKK' %} {% assign country_code = 'dk' %} {% assign country_name = 'Denmark' %}
-                {% when 'PHP' %} {% assign country_code = 'ph' %} {% assign country_name = 'Philippines' %}
-                {% when 'HUF' %} {% assign country_code = 'hu' %} {% assign country_name = 'Hungary' %}
-                {% when 'CZK' %} {% assign country_code = 'cz' %} {% assign country_name = 'Czech Republic' %}
-                {% when 'ILS' %} {% assign country_code = 'il' %} {% assign country_name = 'Israel' %}
-                {% when 'CLP' %} {% assign country_code = 'cl' %} {% assign country_name = 'Chile' %}
-                {% when 'PKR' %} {% assign country_code = 'pk' %} {% assign country_name = 'Pakistan' %}
-                {% when 'VND' %} {% assign country_code = 'vn' %} {% assign country_name = 'Vietnam' %}
-                {% when 'EGP' %} {% assign country_code = 'eg' %} {% assign country_name = 'Egypt' %}
-                {% when 'NGN' %} {% assign country_code = 'ng' %} {% assign country_name = 'Nigeria' %}
-                {% when 'BDT' %} {% assign country_code = 'bd' %} {% assign country_name = 'Bangladesh' %}
-                {% when 'COP' %} {% assign country_code = 'co' %} {% assign country_name = 'Colombia' %}
-                {% when 'PEN' %} {% assign country_code = 'pe' %} {% assign country_name = 'Peru' %}
-                {% when 'LKR' %} {% assign country_code = 'lk' %} {% assign country_name = 'Sri Lanka' %}  
-          {% endcase %}
-          
-            {% if currency == cart.currency %}
-            <div class="select" id="currency-selector" style="color: {{section.settings.text_color }};">
-              <span class="selected">
-                <div class="flag-icon" style="background-image: url('https://flagcdn.com/16x12/{{ country_code }}.png');" aria-label="{{ currency }} flag"></div>
-              </span>
-            </div>
-            {% else %}
-            <ul class="newmenu" style="color: {{section.settings.text_color }};">
-             
-            </ul>
-            {% endif %}
-          {% endfor %}
+      {% form 'localization', id: 'localization_form', class: 'localization-form' %}
+          <div class="localization-wrapper" style="display: flex; gap: 10px;">
+            <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+            <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
+            
+            <select name="country_code" class="localization-selector" aria-label="Country">
+              {% for country in localization.available_countries %}
+                <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+                  {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                </option>
+              {% endfor %}
+            </select>
           </div>
-
-        
-      
-      
-         <select name="currency" class="currency-selector" style="color: {{section.settings.text_color }};" id="currencySelect" aria-label="Currency">
-          {% for currency in shop.enabled_currencies %}
-            {% assign country_name = currency.iso_code %}
-            {% assign country_code = currency.iso_code | slice: 0, 2 | downcase %}
-            {% if currency == cart.currency %}
-              <option selected="true" value="{{ currency.iso_code }}">
-                {{ currency.symbol }}&nbsp;{{ currency.name }}
-              </option>
-            {% else %}
-              <option value="{{ currency.iso_code }}">
-                {{ currency.symbol }}&nbsp;{{ currency.name }}
-              </option>
-            {% endif %}
-          {% endfor %}
-         </select> 
-         
-        </div> 
       {% endform %}
+        </div>
        {% comment %} <ion-icon name="close-outline"></ion-icon> {% endcomment %}
     </div>
 
@@ -628,12 +572,12 @@
 
     //CURRENCY SELECTOR
        
-    function currencyFormSubmit(event) {
+    function localizationFormSubmit(event) {
         event.target.form.submit();
     }
     
-    document.querySelectorAll('.shopify-currency-form select').forEach(function(element) {
-        element.addEventListener('change', currencyFormSubmit);
+    document.querySelectorAll('.localization-form select').forEach(function(element) {
+        element.addEventListener('change', localizationFormSubmit);
     }); 
 
   </script> 
@@ -798,6 +742,45 @@
     font-family:var(--ff-roboto);
     appearance: none; /* Remove the default browser appearance */
     -webkit-appearance: none; /* Remove appearance for Safari */
+    
+    .localization-selector {
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.2);
+        color: {{ section.settings.text_color }};
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    .localization-selector option {
+        color: #000;
+        background: #fff;
+    }
+
+    .dropdown-list {
+      display: none;
+      padding-left: 15px;
+      list-style: none;
+      margin-top: 5px;
+    }
+    
+    .navbar-item.has-dropdown:hover .dropdown-list,
+    .navbar-item.has-dropdown:focus-within .dropdown-list {
+      display: block;
+    }
+
+    .dropdown-link {
+        font-size: 0.9em;
+        color: inherit;
+        text-decoration: none;
+        padding: 5px 0;
+        display: block;
+        opacity: 0.8;
+    }
+    .dropdown-link:hover {
+        opacity: 1;
+        text-decoration: underline;
+    }
     -moz-appearance: none; /* Remove appearance for Firefox */
     position: relative; /* Required for positioning the arrow */
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="white" d="M5 7L2 3h6z"/></svg>'); /* Custom dropdown arrow */

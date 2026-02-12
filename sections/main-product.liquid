@@ -51,35 +51,37 @@
   <div class="container">
     <div class="product-wrapper">
       
-      {%- comment -%} Product Media Gallery {%- endcomment -%}
-      <div class="product-media">
-        <div class="product-media-main">
-          <div class="card-banner img-holder" id="main-product-image">
-            {% if current_variant.featured_media %}
-              <img 
-                src="{{ current_variant.featured_media | image_url: width: 800 }}" 
-                alt="{{ current_variant.featured_media.alt | escape | default: product.title }}" 
-                class="img-cover product-featured-image"
-                loading="eager"
-                width="800"
-                height="800"
-                id="product-image-main"
-              >
-            {% elsif product.featured_image %}
-              <img 
-                src="{{ product.featured_image | image_url: width: 800 }}" 
-                alt="{{ product.featured_image.alt | escape | default: product.title }}" 
-                class="img-cover product-featured-image"
-                loading="eager"
-                width="800"
-                height="800"
-                id="product-image-main"
-              >
-            {% else %}
-              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            {% endif %}
+        {%- comment -%} Product Media Gallery {%- endcomment -%}
+        <div class="product-media">
+          <div class="product-media-list">
+            {% for media in product.media %}
+              <div class="product-media-item {% if media.id == current_variant.featured_media.id or product.selected_or_first_available_variant.featured_media == null and forloop.first %}active{% endif %}" data-media-id="{{ media.id }}">
+                {% case media.media_type %}
+                  {% when 'image' %}
+                    <img 
+                      src="{{ media | image_url: width: 800 }}" 
+                      alt="{{ media.alt | escape | default: product.title }}" 
+                      class="img-cover product-featured-image"
+                      loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                      width="800"
+                      height="800"
+                    >
+                  {% when 'external_video' %}
+                    <div class="media-video external-video" style="height: 100%;">
+                      {{ media | external_video_tag: class: 'video-iframe', style: 'width: 100%; height: 100%;' }}
+                    </div>
+                  {% when 'video' %}
+                    <div class="media-video" style="height: 100%;">
+                      {{ media | video_tag: loop: true, controls: true, class: 'video-element', style: 'width: 100%; height: 100%;' }}
+                    </div>
+                  {% when 'model' %}
+                    <div class="media-model" style="height: 100%;">
+                      {{ media | model_viewer_tag: reveal: 'interaction', toggleable: true, data-model-id: media.id, style: 'width: 100%; height: 100%;' }}
+                    </div>
+                {% endcase %}
+              </div>
+            {% endfor %}
           </div>
-        </div>
         
         {%- comment -%} Thumbnail Gallery {%- endcomment -%}
         {% if product.images.size > 1 %}
@@ -458,26 +460,42 @@
     }
   }
   
-  .product-media-main {
+  .product-media-list {
     position: relative;
     border-radius: 12px;
     overflow: hidden;
     background: #f8f8f8;
-  }
-  
-  .product-media-main .img-holder {
     aspect-ratio: 1;
   }
   
-  .product-media-main img {
+  .product-media-item {
+    display: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  .product-media-item.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .product-media-item img,
+  .product-media-item video,
+  .product-media-item iframe,
+  .product-media-item model-viewer {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
   }
   
-  .product-media-main:hover img {
-    transform: scale(1.05);
+  .media-video, .media-model {
+    width: 100%;
+    height: 100%;
   }
   
   .product-thumbnails {
@@ -842,12 +860,30 @@ document.addEventListener('DOMContentLoaded', function() {
   
   thumbnails.forEach(thumb => {
     thumb.addEventListener('click', function() {
-      const imageUrl = this.dataset.imageUrl;
-      if (mainImage && imageUrl) {
-        mainImage.src = imageUrl;
-        thumbnails.forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-      }
+      const mediaId = this.dataset.mediaId;
+      
+      // Update Active Thumbnail
+      thumbnails.forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+
+      // Update Active Media
+      const mediaItems = document.querySelectorAll('.product-media-item');
+      mediaItems.forEach(item => {
+        if (item.dataset.mediaId === mediaId) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+          // Pause videos when switching away
+          const video = item.querySelector('video');
+          if (video) video.pause();
+          const iframe = item.querySelector('iframe');
+          if (iframe) {
+             // Optional: Post message to pause if API enabled, or just reset src
+             const src = iframe.src;
+             iframe.src = src; 
+          }
+        }
+      });
     });
   });
   
@@ -925,9 +961,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Update main image if variant has featured media
-        if (variant.featured_media && mainImage) {
-          const newImageUrl = variant.featured_media.preview_image.src.replace(/\.(jpg|png|gif|jpeg)/, '_800x.$1');
-          mainImage.src = newImageUrl;
+        if (variant.featured_media) {
+           const mediaId = variant.featured_media.id;
+           // Trigger click on corresponding thumbnail
+           const targetThumb = document.querySelector(`.thumbnail-btn[data-media-id="${mediaId}"]`);
+           if (targetThumb) targetThumb.click();
         }
         
         // Update SKU

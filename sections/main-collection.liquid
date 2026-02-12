@@ -50,7 +50,7 @@
                             <div class="product-card">
                               <a href="{{ product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
                                 {% if product.featured_image %}
-                                  <img src="{{ product.featured_image | img_url: 'large' }}" 
+                                  <img src="{{ product.featured_image | image_url: width: 600 }}" 
                                     alt="{{ product.featured_image.alt | escape }}" 
                                     class="img-cover" 
                                     width="300" 
@@ -124,7 +124,7 @@
                             <div class="product-card">
                               <a href="{{ product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
                                 {% if product.featured_image %}
-                                  <img src="{{ product.featured_image | img_url: 'large' }}" 
+                                  <img src="{{ product.featured_image | image_url: width: 600 }}" 
                                     alt="{{ product.featured_image.alt | escape }}" 
                                     class="img-cover" 
                                     width="300" 

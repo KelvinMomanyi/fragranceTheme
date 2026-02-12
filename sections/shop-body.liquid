@@ -25,7 +25,7 @@
               <a href="#" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
                 {% comment %} <img src="./assets/images/product-1.jpg" width="300" height="300" loading="lazy"
                   alt="Animi Dolor Pariatur" class="img-cover"> {% endcomment %}
-                  <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" class="img-cover" width="300" height="300"loading="lazy">
+                  <img src="{{ product.featured_image.src | image_url: width: 300 }}" alt="{{ product.featured_image.alt | escape }}" class="img-cover" width="300" height="300"loading="lazy">
                 <ul class="card-action-list">
 
                   <li>
@@ -85,7 +85,7 @@
            <div class="product-card">
              <a href="{{ product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
                {% if product.featured_image %}
-                 <img src="{{ product.featured_image | img_url: 'large' }}" 
+                 <img src="{{ product.featured_image | image_url: width: 600 }}" 
                    alt="{{ product.featured_image.alt | escape }}" 
                    class="img-cover" 
                    width="300" 
