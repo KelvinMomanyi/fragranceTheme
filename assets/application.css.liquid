@@ -230,7 +230,11 @@ span,
 input,
 button,
 .icon {
-  display: block;
+  pointer-events: none;
+  transition: transform 0.2s ease-in-out
+  , opacity 0.2s ease-in-out;
+  will-change: transform
+  , opacity;
 }
 
 a {
@@ -351,6 +355,8 @@ label {
 
 .section {
   padding-block: var(--section-padding);
+  content-visibility: auto;
+  contain-intrinsic-size: 100px 800px;
 }
 
 .img-holder {

@@ -220,21 +220,10 @@
   (function() {
     'use strict';
 
-    /* Debounce utility */
-    function debounce(func, delay) {
-      var timeout;
-      return function() {
-        var context = this;
-        var args = arguments;
-        clearTimeout(timeout);
-        timeout = setTimeout(function() { func.apply(context, args); }, delay);
-      };
-    }
-
     /* Consolidated search handler - debounced */
     var searchInput = document.getElementById('search-input');
     if (searchInput) {
-      searchInput.addEventListener('input', debounce(function() {
+      searchInput.addEventListener('input', FragranceUtils.debounce(function() {
         var query = this.value.trim();
         var searchResultsContainer = document.getElementById('search-results');
         if (!searchResultsContainer) return;
@@ -247,7 +236,7 @@
               var resultsHTML = '';
               if (results.length) {
                 results.forEach(function(product) {
-                  resultsHTML += '<div class="search-result-item"><a href="' + product.url + '"><img src="' + product.image + '" alt="' + product.title + '" loading="lazy"><div><p>' + product.title + '</p><p>' + product.price + '</p></div></a></div>';
+                  resultsHTML += `<div class="search-result-item"><a href="${product.url}"><img src="${product.image}" alt="${product.title}" loading="lazy"><div><p>${product.title}</p><p>${product.price}</p></div></a></div>`;
                 });
               } else {
                 resultsHTML = '<p>No products found</p>';
@@ -263,297 +252,50 @@
         }
       }, 300));
     }
-              const query = this.value.trim();
-              const searchResultsContainer = document.getElementById('search-results');
-          
-              if (query.length > 2) {  // Start searching after at least 3 characters
-                  fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product`)
-                      .then(response => response.json())
-                      .then(data => {
-                          const results = data.resources.results.products;
-                          let resultsHTML = '';
-          
-                          if (results.length) {
-                              results.forEach(product => {
-                                  resultsHTML += `
-                                      <div class="search-result-item">
-                                          <a href="${product.url}">
-                                              <img src="${product.image}" alt="${product.title}">
-                                              <div>
-                                                  <p>${product.title}</p>
-                                                  <p>${product.price}</p>
-                                              </div>
-                                          </a>
-                                      </div>
-                                  `;
-                              });
-                          } else {
-                              resultsHTML = '<p>No products found</p>';
-                          }
-          
-                          searchResultsContainer.innerHTML = resultsHTML;
-                      })
-                      .catch(error => {
-                          console.error('Error fetching search results:', error);
-                          searchResultsContainer.innerHTML = '<p>There was an error retrieving search results.</p>';
-                      });
-              } else {
-                  searchResultsContainer.innerHTML = '';  // Clear results if query is too short
-              }
 
-    /* Search icon toggle */
-        document.getElementById('search-icon').addEventListener('click', function(event) {
-               event.preventDefault();
-               const searchBar = document.getElementById('search-bar');
-               searchBar.classList.toggle('active');
-        });
-
-    // Close search bar when scrolling
-      document.addEventListener('scroll', function() {
-        const searchBar = document.getElementById('search-bar');
+    /* UI Toggles (Header) */
+    document.addEventListener('click', function(event) {
+      var searchIcon = document.getElementById('search-icon');
+      var searchBar = document.getElementById('search-bar');
+      
+      if (searchIcon && searchIcon.contains(event.target)) {
+        event.preventDefault();
+        searchBar.classList.toggle('active');
+      } else if (searchBar && !searchBar.contains(event.target)) {
         searchBar.classList.remove('active');
-      });
-
-// Close search bar when clicking outside
-      document.addEventListener("click", function(event) {
-        const searchBar = document.getElementById("search-bar");
-        const searchIcon = document.getElementById("search-icon");
-
-       // Check if the clicked element is NOT inside the search bar or the search icon
-        if (!searchBar.contains(event.target) && !searchIcon.contains(event.target)) {
-          searchBar.classList.remove('active');
-        }
-     });
-
-    /* Cart count */
-          fetch('/cart.js')
-            .then(response => response.json())
-            .then(cart => {
-              // Update the span with class btn-badge with the cart's item count
-              document.querySelector('.btn-badge').textContent = cart.item_count;
-            })
-            .catch(error => console.error('Error fetching cart data:', error));
-        }
-        
-        // Call the function when the page loads
-        document.addEventListener('DOMContentLoaded', function () {
-          updateCartCount();
-        });
-        
-        // Listen for a custom event when the cart is updated
-        document.addEventListener('cart:updated', function() {
-          updateCartCount();
-        });
-        
-
-
-
-
-
-
-
-       function fetchCart() {
-          // Fetch the cart data from Shopify's cart API
-          fetch('/cart.js')
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              return response.json();
-            })
-            .then(cart => {
-              // Call updateCartUI with the fetched cart data
-              updateCartUI(cart);
-            })
-            .catch(error => {
-              console.error('Error fetching cart:', error);
-            });
-        }
-        
-        function updateCartUI(cart) {
-          var cartContent = document.getElementById('cart-content');
-          cartContent.innerHTML = ''; // Clear existing content
-          
-          if (cart.item_count > 0) {
-            var cartHTML = `
-            <div style="display: flex; flex-direction: column;">
-              <h1>Cart</h1>
-              <form action="/cart" method="post" novalidate>`;
-            
-            let subtotal = 0;
-            cart.items.forEach(function(item, index) {
-              const itemPrice = item.price / 100;  // Convert cents to dollars
-              const initialTotalPrice = itemPrice * item.quantity;
-              subtotal += initialTotalPrice;
-              const safeItemId = `item_${item.key.replace(/[^a-zA-Z0-9_-]/g, '')}`;
-        
-              cartHTML += `
-              <div style="display:flex; padding:20px; margin-bottom:1rem;" id="${safeItemId}">
-                <div style="flex:1; display:flex; align-items:center; justify-content:center;">
-                  <a href="${item.url}">
-                    <img src="${item.image}" alt="${item.title}" class="img-cover" width="480" height="640" loading="lazy">
-                  </a>
-                </div>
-                <div style="flex:1; display:flex; flex-direction:column;">
-                  <div style="flex:1; display:flex; justify-content:space-between">
-                    <a href="${item.url}" style="font-size:1.5rem;">${item.product_title}</a>
-                    <a href="#" class="remove-item" data-line="${index + 1}" data-key="${item.key}" style="color: black;">
-                      <span class="icon icon--close-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M320 320L192 192M320 192L192 320"/></svg></span>
-                    </a>
-                  </div>
-                  <div>
-                    <p style="font-size:1.5rem;">${currency_code}${itemPrice.toFixed(2)}</p>
-                    <p id="line_price_${item.key}" style="font-size:1.5rem;">Total: ${currency_code}${initialTotalPrice.toFixed(2)}</p>
-                  </div>
-                  <input type="number" name="updates[]" id="updates_${item.key}" value="${item.quantity}" min="0" style="display:none;">
-                  <div class="quantity-selector" style="flex:1; display:flex; align-items:center; justify-content:center;">
-                    <button type="button" class="decrement" id="decrement_${item.key}">-</button>
-                    <span id="quantity_${item.key}">${item.quantity}</span>
-                    <button type="button" class="increment" id="increment_${item.key}">+</button>
-                  </div>
-                </div>
-              </div>`;
-            });
-        
-            cartHTML += `
-              <div>
-                <p id="subtotal">Subtotal: ${currency_code}${subtotal.toFixed(2)}</p>
-                <button type="submit" name="update">Update</button>
-                <button type="submit" name="checkout" class="btn btn-primary">Checkout</button>
-              </div>
-            </form>
-            </div>`;
-        
-            cartContent.innerHTML = cartHTML;
-        
-            // Add event listeners for increment and decrement buttons
-            cart.items.forEach(function(item, index) {
-              const decrementButton = document.getElementById(`decrement_${item.key}`);
-              const incrementButton = document.getElementById(`increment_${item.key}`);
-              const quantityDisplay = document.getElementById(`quantity_${item.key}`);
-              const quantityInput = document.getElementById(`updates_${item.key}`);
-              const linePriceDisplay = document.getElementById(`line_price_${item.key}`);
-              const subtotalDisplay = document.getElementById('subtotal');
-              const safeItemId = `item_${item.key.replace(/[^a-zA-Z0-9_-]/g, '')}`;
-        
-              function updatePriceAndQuantity(newQuantity) {
-                const newLinePrice = (item.price * newQuantity) / 100;
-                quantityDisplay.textContent = newQuantity;
-                quantityInput.value = newQuantity;
-                linePriceDisplay.textContent = `Total: ${currency_code}${newLinePrice.toFixed(2)}`;
-        
-                // Update the subtotal
-                subtotal += (newLinePrice - (item.price * item.quantity) / 100);
-                subtotalDisplay.textContent = `Subtotal: ${currency_code}${subtotal.toFixed(2)}`;
-                item.quantity = newQuantity; // Update item quantity 
-              }
-        
-
-
-              
-              decrementButton.addEventListener('click', function() {
-                let currentQuantity = parseInt(quantityInput.value, 10);
-                if (currentQuantity > 1) {
-                  currentQuantity--;
-                  updatePriceAndQuantity(currentQuantity);
-                }
-              });
-        
-              incrementButton.addEventListener('click', function() {
-
-                let currentQuantity = parseInt(quantityInput.value, 10); 
-                currentQuantity++;
-                updatePriceAndQuantity(currentQuantity);
-              });
-        
-              // Handle item removal
-              const removeButton = document.querySelector(`.remove-item[data-key="${item.key}"]`);
-        
-              removeButton.addEventListener('click', function(e) {
-                 e.preventDefault();
-                  removeCartItem(safeItemId, index +1);
-               });
-             });
-          } else {
-            cartContent.innerHTML = '<h2>Cart</h2><p>Cart is empty</p>';
-          }
-
-         function removeCartItem(safeItemId, line) {
-            console.log(`Attempting to remove item with ID: ${safeItemId}`);
-            const itemElement = document.getElementById(safeItemId);
-            if (itemElement) {
-              fetch(`/cart/change.js`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify({
-                  line: line,
-                  quantity: 0
-                })
-              })
-              .then(response => response.json())
-              .then(updatedCart => {
-                itemElement.remove();
-                updateSubtotal();
-              })
-              .catch(error => {
-                console.error('Error removing item from cart:', error);
-              });
-            } else {
-              console.error(`Element with ID ${safeItemId} not found.`);
-            }
-        
-        }
-       function updateSubtotal() {
-          let subtotal = 0; // Initialize the subtotal
-          
-          // Iterate over all items in the cart to calculate the new subtotal
-          cart.items.forEach(item => {
-            const quantityInput = document.getElementById(`updates_${item.key}`); 
-            
-            if (quantityInput) {
-              // Get the current quantity from the input field
-              let currentQuantity = parseInt(quantityInput.value, 10);
-              if (isNaN(currentQuantity) || currentQuantity < 0) {
-                currentQuantity = 0; // Handle cases where the input is not a valid number
-              }
-        
-              // Calculate the price for this item
-              const itemSubtotal = (item.price * currentQuantity) / 100;
-              subtotal += itemSubtotal; // Add this item's subtotal to the total
-               item.quantity = currentQuantity; 
-            }
-          });
-        
-          // Update the subtotal display
-          let subtotalDisplay = document.getElementById('subtotal');
-          subtotalDisplay.textContent = `Subtotal: ${currencySymbol}${subtotal.toFixed(2)}`;
-        } 
-      
-        
-
       }
-        
-      
-         
-         
+    });
 
-        function openCart() {
-          document.getElementById('myModal2').style.display = 'flex';
-          fetchCart();
-        }
+    window.addEventListener('scroll', function() {
+      var searchBar = document.getElementById('search-bar');
+      if (searchBar) searchBar.classList.remove('active');
+    }, { passive: true });
 
-       fetchCart()  
+    /* Cart State */
+    window.updateCartCount = function() {
+      fetch('/cart.js')
+        .then(response => response.json())
+        .then(cart => {
+          document.querySelectorAll('.btn-badge').forEach(el => el.textContent = cart.item_count);
+        })
+        .catch(error => console.error('Error fetching cart data:', error));
+    };
 
-    //CURRENCY SELECTOR
-    function localizationFormSubmit(event) {
-        event.target.form.submit();
-    }
-    
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+    document.addEventListener('cart:updated', updateCartCount);
+
+    /* Cart Modal Actions */
+    window.openCart = function() {
+      var modal = document.getElementById('myModal2');
+      if (modal) {
+        modal.style.display = 'flex';
+        if (typeof fetchCart === 'function') fetchCart();
+      }
+    };
+
+    /* Localization Management */
     document.querySelectorAll('.localization-form select').forEach(function(element) {
-        element.addEventListener('change', localizationFormSubmit);
+        element.addEventListener('change', function(e) { e.target.form.submit(); });
     }); 
 
   })();

@@ -154,50 +154,44 @@
 
 <script>
 (function() {
+  'use strict';
   document.addEventListener('DOMContentLoaded', function() {
-    var slider = document.querySelector('.product-slider');
+    const section = document.querySelector('.section.product-list'); // Assuming a unique class or using ID
+    const slider = section?.querySelector('.product-slider');
     if (!slider) return;
 
-    var prevBtn = document.querySelector('.slider-prev');
-    var nextBtn = document.querySelector('.slider-next');
-
-    function getScrollAmount() {
-      var firstItem = slider.querySelector('li');
+    const getScrollAmount = () => {
+      const firstItem = slider.querySelector('li');
       return firstItem ? firstItem.offsetWidth + 15 : 300;
-    }
+    };
 
-    if (nextBtn) {
-      nextBtn.addEventListener('click', function() {
+    // Delegation for controls
+    section.addEventListener('click', function(event) {
+      if (event.target.closest('.slider-next')) {
         slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-      });
-    }
-    if (prevBtn) {
-      prevBtn.addEventListener('click', function() {
+      } else if (event.target.closest('.slider-prev')) {
         slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
-      });
-    }
-
-    // Autoplay
-    var autoplayInterval = setInterval(function() {
-      var maxScroll = slider.scrollWidth - slider.clientWidth;
-      if (slider.scrollLeft >= maxScroll - 5) {
-        slider.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
       }
-    }, 3000);
+    });
 
-    slider.addEventListener('mouseenter', function() { clearInterval(autoplayInterval); });
-    slider.addEventListener('mouseleave', function() {
-      autoplayInterval = setInterval(function() {
-        var maxScroll = slider.scrollWidth - slider.clientWidth;
+    // Optimized Autoplay
+    let autoplayInterval;
+    const startAutoplay = () => {
+      autoplayInterval = setInterval(() => {
+        const maxScroll = slider.scrollWidth - slider.clientWidth;
         if (slider.scrollLeft >= maxScroll - 5) {
           slider.scrollTo({ left: 0, behavior: 'smooth' });
         } else {
           slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
         }
-      }, 3000);
-    });
+      }, 4000);
+    };
+
+    const stopAutoplay = () => clearInterval(autoplayInterval);
+
+    slider.addEventListener('mouseenter', stopAutoplay);
+    slider.addEventListener('mouseleave', startAutoplay);
+    startAutoplay();
   });
 })();
 </script>
