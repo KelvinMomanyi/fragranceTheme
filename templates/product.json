@@ -69,9 +69,13 @@
         "share",
         "shipping_info"
       ]
+    },
+    "complementary-products": {
+      "type": "complementary-products"
     }
   },
   "order": [
-    "main-product"
+    "main-product",
+    "complementary-products"
   ]
 }

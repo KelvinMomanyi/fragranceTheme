@@ -1,33 +1,35 @@
-{% comment %}
-  Complementary Products Section
-  Displays products that pair well with the current product
-  Uses Shopify's complementary products API
-{% endcomment %}
-
-<div class="complementary-products">
+<div class="complementary-products section-{{ section.id }} color-scheme-{{ section.settings.color_scheme }}">
   {% if product.id %}
     <product-recommendations
       data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.product_limit }}&intent=complementary"
     >
       {% if recommendations.performed and recommendations.products_count > 0 %}
         <div class="container">
-          <h2 class="complementary-heading">{{ section.settings.heading }}</h2>
-          <p class="complementary-description">{{ section.settings.description }}</p>
+          {%- if section.settings.heading != blank -%}
+            <h2 class="section-title">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.description != blank -%}
+            <p class="complementary-description">{{ section.settings.description }}</p>
+          {%- endif -%}
           
           <div class="complementary-grid">
             {% for complementary_product in recommendations.products %}
               <div class="complementary-card">
                 <a href="{{ complementary_product.url }}" class="complementary-link">
-                  {% if complementary_product.featured_image %}
-                    <img
-                      src="{{ complementary_product.featured_image | image_url: width: 300 }}"
-                      alt="{{ complementary_product.featured_image.alt | escape }}"
-                      class="complementary-image"
-                      loading="lazy"
-                      width="300"
-                      height="{{ 300 | divided_by: complementary_product.featured_image.aspect_ratio | ceil }}"
-                    >
-                  {% endif %}
+                  <div class="complementary-image-wrapper">
+                    {% if complementary_product.featured_image %}
+                      <img
+                        src="{{ complementary_product.featured_image | image_url: width: 400 }}"
+                        alt="{{ complementary_product.featured_image.alt | escape }}"
+                        class="complementary-image"
+                        loading="lazy"
+                        width="400"
+                        height="400"
+                      >
+                    {% else %}
+                       {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                  </div>
                   <div class="complementary-content">
                     <h3 class="complementary-title">{{ complementary_product.title }}</h3>
                     <div class="complementary-price">
@@ -46,66 +48,85 @@
 
 <script>
 (function() {
-  class ProductRecommendations extends HTMLElement {
-    constructor() {
-      super();
-      this.fetchRecommendations();
+  if (!customElements.get('product-recommendations')) {
+    class ProductRecommendations extends HTMLElement {
+      constructor() {
+        super();
+        this.fetchRecommendations();
+      }
+
+      fetchRecommendations() {
+        const url = this.dataset.url;
+        fetch(url)
+          .then(response => response.text())
+          .then(text => {
+            const html = new DOMParser().parseFromString(text, 'text/html');
+            const recommendations = html.querySelector('product-recommendations');
+            if (recommendations && recommendations.innerHTML.trim().length) {
+              this.innerHTML = recommendations.innerHTML;
+            }
+          })
+          .catch(error => {
+            console.error('Error loading complementary products:', error);
+          });
+      }
     }
 
-    fetchRecommendations() {
-      const url = this.dataset.url;
-      fetch(url)
-        .then(response => response.text())
-        .then(text => {
-          const html = new DOMParser().parseFromString(text, 'text/html');
-          const recommendations = html.querySelector('product-recommendations');
-          if (recommendations && recommendations.innerHTML.trim().length) {
-            this.innerHTML = recommendations.innerHTML;
-          }
-        })
-        .catch(error => {
-          console.error('Error loading complementary products:', error);
-        });
-    }
+    customElements.define('product-recommendations', ProductRecommendations);
   }
-
-  customElements.define('product-recommendations', ProductRecommendations);
 })();
 </script>
 
 <style>
   .complementary-products {
-    padding: 40px 0;
-    background: #f9f9f9;
+    padding: var(--section-padding) 0;
+    background: var(--white);
   }
 
-  .complementary-heading {
-    text-align: center;
-    font-size: 1.8em;
+  .section-title {
+    font-family: var(--ff-mr_de_haviland);
+    font-size: 3rem;
+    font-weight: 500;
     margin-bottom: 10px;
+    text-align: center;
+    color: var(--color-text);
   }
 
   .complementary-description {
     text-align: center;
-    color: #666;
-    margin-bottom: 30px;
+    color: var(--granite-gray);
+    margin-bottom: 40px;
+    font-family: var(--ff-roboto);
+    max-width: 600px;
+    margin-inline: auto;
   }
 
   .complementary-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
 
+  @media (min-width: 768px) {
+    .complementary-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+  }
+
   .complementary-card {
-    background: white;
-    border-radius: 8px;
+    background: var(--white);
+    border-radius: var(--radius-3, 12px);
     overflow: hidden;
-    transition: transform 0.3s;
+    transition: var(--transition-1);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--light-gray);
   }
 
   .complementary-card:hover {
     transform: translateY(-5px);
+    box-shadow: var(--shadow-2);
+    border-color: var(--tan-crayola);
   }
 
   .complementary-link {
@@ -114,24 +135,46 @@
     display: block;
   }
 
+  .complementary-image-wrapper {
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--cultured);
+  }
+
   .complementary-image {
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
+    transition: var(--transition-1);
+  }
+
+  .complementary-card:hover .complementary-image {
+    transform: scale(1.05);
   }
 
   .complementary-content {
     padding: 15px;
+    text-align: center;
   }
 
   .complementary-title {
-    font-size: 1em;
+    font-size: 1.1rem;
     margin-bottom: 8px;
+    font-family: var(--ff-roboto);
+    color: var(--color-text);
+    font-weight: 500;
   }
 
   .complementary-price {
     font-weight: 600;
-    color: #111;
+    color: var(--tan-crayola);
+    font-family: var(--ff-roboto);
+  }
+
+  .placeholder-svg {
+    width: 100%;
+    height: 100%;
+    background: var(--cultured);
   }
 </style>
 
