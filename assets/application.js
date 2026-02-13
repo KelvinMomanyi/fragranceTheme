@@ -1,288 +1,170 @@
-// Put your applicaiton javascript here
-'use strict';
-/**Modal toggle */
+/**
+ * Fragrance Theme - Application JavaScript
+ * All code wrapped in IIFE to prevent global namespace collisions.
+ */
+(function () {
+  'use strict';
 
-//Open close modal
-function openModal() {
-  document.getElementById('myModal').style.display = 'flex';
-}
-
-// function openCart() {
-//   document.getElementById('myModal2').style.display = 'flex';
-// }
-
-function toggleForm(formToShow) {
-  const login = document.getElementById('login')
-  const register = document.getElementById('register')
-
-
-
-  if (formToShow === 'register') {
-    login.classList.add('hidden')
-    register.classList.remove('hidden')
-  } else {
-    login.classList.remove('hidden')
-    register.classList.add('hidden')
-  }
-}
-
-
-// Function to close the modal
-function closeModal() {
-  document.getElementById('myModal').style.display = 'none';
-}
-
-
-// Function to close the cart
-function closeCartbar() {
-  document.getElementById('myModal2').style.display = 'none';
-}
-
-// Close the modal if the overlay (background) is clicked
-window.onclick = function (event) {
-  if (event.target === document.getElementById('myModal')) {
-    closeModal();
-  }
-};
-
-
-
-
-
-
-
-/**add event on element */
-
-
-const addEventOnElem = function (elem, type, callback) {
-  if (!elem) {
-    return;
-  }
-
-  if (elem.length > 1) {
-    for (let i = 0; i < elem.length; i++) {
-      if (elem[i] && typeof elem[i].addEventListener === 'function') {
-        elem[i].addEventListener(type, callback);
-      } else {
-        console.error('Element is not valid or does not support addEventListener:', elem[i]);
+  /* --------------------------------
+   * Utility: Add event to element(s)
+   * -------------------------------- */
+  var addEventOnElem = function (elem, type, callback) {
+    if (!elem) return;
+    if (elem.length > 1) {
+      for (var i = 0; i < elem.length; i++) {
+        if (elem[i] && typeof elem[i].addEventListener === 'function') {
+          elem[i].addEventListener(type, callback);
+        }
+      }
+    } else {
+      if (typeof elem.addEventListener === 'function') {
+        elem.addEventListener(type, callback);
       }
     }
-  } else {
-    if (typeof elem.addEventListener === 'function') {
-      elem.addEventListener(type, callback);
+  };
+
+  /* --------------------------------
+   * Modal toggle
+   * -------------------------------- */
+  window.openModal = function () {
+    var modal = document.getElementById('myModal');
+    if (modal) modal.style.display = 'flex';
+  };
+
+  window.closeModal = function () {
+    var modal = document.getElementById('myModal');
+    if (modal) modal.style.display = 'none';
+  };
+
+  window.closeCartbar = function () {
+    var modal = document.getElementById('myModal2');
+    if (modal) modal.style.display = 'none';
+  };
+
+  window.toggleForm = function (formToShow) {
+    var login = document.getElementById('login');
+    var register = document.getElementById('register');
+    if (!login || !register) return;
+    if (formToShow === 'register') {
+      login.classList.add('hidden');
+      register.classList.remove('hidden');
     } else {
-      console.error('Element is not valid or does not support addEventListener:', elem);
+      login.classList.remove('hidden');
+      register.classList.add('hidden');
     }
-  }
-}
+  };
 
-/**navbar- toggle */
-
-const navTogglers = document.querySelectorAll("[data-nav-toggler]");
-const navbar = document.querySelector("[data-navbar]");
-const navbarLinks = document.querySelectorAll("data-nav-link")
-const overlay = document.querySelector("[data-overlay]")
-
-const toggleNavbar = function () {
-  navbar.classList.toggle('active');
-  overlay.classList.toggle('active');
-}
-
-addEventOnElem(navTogglers, "click", toggleNavbar)
-
-
-const closeNavbar = function () {
-  navbar.classList.remove('active')
-  overlay.classList.remove('active')
-}
-
-addEventOnElem(navbarLinks, "click", closeNavbar)
-
-
-/**
- * sticky-header & back-to-top
- */
-
-const header = document.querySelector("[data-header]");
-const backTopBtn = document.querySelector("[data-back-top-btn]");
-
-let lastScrolledPos = 0;
-let isScrolling = false;
-
-const handleScroll = function () {
-  const currentScrollY = window.scrollY;
-
-  // Header Active (Background & Back-to-top)
-  if (currentScrollY > 150) {
-    header.classList.add("active");
-    backTopBtn.classList.add("active");
-  } else {
-    header.classList.remove("active");
-    backTopBtn.classList.remove("active");
-  }
-
-  // Header Sticky (Hide on scroll down, show on scroll up)
-  if (lastScrolledPos >= currentScrollY) {
-    header.classList.remove("header-hide");
-  } else {
-    header.classList.add("header-hide");
-  }
-
-  lastScrolledPos = currentScrollY;
-  isScrolling = false;
-};
-
-// Throttle scroll events using requestAnimationFrame
-window.addEventListener("scroll", function () {
-  if (!isScrolling) {
-    window.requestAnimationFrame(handleScroll);
-    isScrolling = true;
-  }
-}, { passive: true });
-
-/**scroll reveal effect using IntersectionObserver (Replaces getBoundingClientRect) */
-
-const sections = document.querySelectorAll("[data-section]");
-
-const revealObserver = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("active");
-      observer.unobserve(entry.target); // Stop observing once revealed
+  // Close modal on overlay click
+  window.addEventListener('click', function (event) {
+    var modal = document.getElementById('myModal');
+    if (modal && event.target === modal) {
+      window.closeModal();
     }
   });
-}, {
-  threshold: 0.2 // Trigger when 20% of the section is visible
-});
 
-sections.forEach(section => revealObserver.observe(section));
+  /* --------------------------------
+   * Navbar toggle
+   * -------------------------------- */
+  var navTogglers = document.querySelectorAll('[data-nav-toggler]');
+  var navbar = document.querySelector('[data-navbar]');
+  var navbarLinks = document.querySelectorAll('[data-nav-link]');
+  var overlay = document.querySelector('[data-overlay]');
 
+  var toggleNavbar = function () {
+    if (navbar) navbar.classList.toggle('active');
+    if (overlay) overlay.classList.toggle('active');
+  };
 
+  addEventOnElem(navTogglers, 'click', toggleNavbar);
 
+  var closeNavbar = function () {
+    if (navbar) navbar.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+  };
 
+  addEventOnElem(navbarLinks, 'click', closeNavbar);
 
-// document.addEventListener('DOMContentLoaded', function(){
-//   const text1 = document.getElementById('text1');
-//   const text2 = document.getElementById('text2');
-//   const text3 = document.getElementById('text3');
+  /* --------------------------------
+   * Sticky header & back-to-top
+   * -------------------------------- */
+  var header = document.querySelector('[data-header]');
+  var backTopBtn = document.querySelector('[data-back-top-btn]');
+  var lastScrolledPos = 0;
+  var isScrolling = false;
 
-//   const texts = [text1, text2, text3];
-//   let currentIndex = 0;
+  var handleScroll = function () {
+    var currentScrollY = window.scrollY;
 
-//   // Apply CSS styles for smoother transitions
-//   texts.forEach(text => {
-//     text.style.position = 'absolute';
-//     text.style.transition = 'left 0.5s ease-in-out';
-//   });
+    if (header) {
+      if (currentScrollY > 150) {
+        header.classList.add('active');
+      } else {
+        header.classList.remove('active');
+      }
+      if (lastScrolledPos >= currentScrollY) {
+        header.classList.remove('header-hide');
+      } else {
+        header.classList.add('header-hide');
+      }
+    }
 
-//   function slideToMiddle(element){
-//     element.style.left = '40%';
-//   }
+    if (backTopBtn) {
+      if (currentScrollY > 150) {
+        backTopBtn.classList.add('active');
+      } else {
+        backTopBtn.classList.remove('active');
+      }
+    }
 
-//   function resetPosition(element){
-//     element.style.left = '-100%';
-//   }
+    lastScrolledPos = currentScrollY;
+    isScrolling = false;
+  };
 
-//   function slideText(){
-//     resetPosition(texts[currentIndex]);
-//     currentIndex = (currentIndex + 1) % texts.length;
-//     slideToMiddle(texts[currentIndex]);
-//   }
+  window.addEventListener('scroll', function () {
+    if (!isScrolling) {
+      window.requestAnimationFrame(handleScroll);
+      isScrolling = true;
+    }
+  }, { passive: true });
 
-//   // Initially, display the first element in the middle
-//   slideToMiddle(texts[currentIndex]);
+  /* --------------------------------
+   * Section reveal (IntersectionObserver)
+   * -------------------------------- */
+  var sections = document.querySelectorAll('[data-section]');
+  var revealObserver = new IntersectionObserver(function (entries, observer) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
 
-//   // Change text every 3 seconds
-//   setInterval(slideText, 3000);
-// });
+  sections.forEach(function (section) {
+    revealObserver.observe(section);
+  });
 
+  /* --------------------------------
+   * AOS replacement (lightweight)
+   * Uses CSS classes defined in theme.liquid
+   * -------------------------------- */
+  var aosElements = document.querySelectorAll('[data-aos]');
+  if (aosElements.length > 0) {
+    var aosObserver = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('aos-animate');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
 
-
-
-
-
-// async function updateCartUI(cartData) {
-//   try {
-//     // Assuming you have elements in your side cart with specific IDs or classes
-//     let cartItemElements = document.querySelectorAll('.cart-item');
-//     let cartSubtotalElement = document.getElementById('cart-subtotal');
-
-//     // Loop through the cart items to update or fetch additional data if needed
-//     for (let [index, item] of cartData.items.entries()) {
-//       let itemElement = cartItemElements[index];
-
-//       if (itemElement) {
-//         // Update the existing item in the cart
-//         itemElement.querySelector('.cart-item-title').textContent = item.product_title;
-//         itemElement.querySelector('.cart-item-variant').textContent = item.variant_title;
-//         itemElement.querySelector('.cart-item-quantity').textContent = `Quantity: ${item.quantity}`;
-//         itemElement.querySelector('.cart-item-price').textContent = `${(item.price / 100).toFixed(2)} ${cartData.currency}`;
-
-//         // Async fetch additional data if necessary (e.g., fetching an image)
-//         let imageUrl = await fetchImageUrl(item);
-//         itemElement.querySelector('.cart-item-image').src = imageUrl;
-//         itemElement.querySelector('.cart-item-image').alt = item.title;
-//       } else {
-//         // Optionally handle adding new items asynchronously
-//         await addNewCartItem(item);
-//       }
-//     }
-
-//     // Update the subtotal
-//     if (cartSubtotalElement) {
-//       cartSubtotalElement.textContent = `Subtotal: ${(cartData.total_price / 100).toFixed(2)} ${cartData.currency}`;
-//     }
-//   } catch (error) {
-//     console.error('Error updating cart UI:', error);
-//   }
-// }
-
-
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-  var loader = document.getElementById('loader');
-  var cartContent = document.getElementById('cart-content');
-
-  // Show the loader
-  loader.style.display = 'block';
-
-  // Simulate data fetching (you can replace this with actual data fetching logic)
-  setTimeout(function () {
-    // Hide the loader
-    loader.style.display = 'none';
-
-    // Show the cart content
-    cartContent.style.display = 'block';
-  }, 1000); // Adjust the time according to your data fetching process
-});
-
-
-
-// Initializations
-document.addEventListener("DOMContentLoaded", function () {
-  // Initialize AOS if available (Avoid duplicate check)
-  if (typeof AOS !== 'undefined') {
-    AOS.init({
-      duration: 800,
-      easing: "ease-in-out",
-      once: true,
-      offset: 100
+    aosElements.forEach(function (el) {
+      aosObserver.observe(el);
     });
   }
-});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+})();

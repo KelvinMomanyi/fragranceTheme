@@ -55,6 +55,7 @@
 </style>
 
 <script>
+(function() {
   document.addEventListener('DOMContentLoaded', function() {
     // Check if the cookie has been set
     if (!getCookie('cookieConsent')) {
@@ -95,8 +96,7 @@
       return "";
     }
   });
-  
-
+})();
 </script>
 {% comment %} <div class="bouncing-div">
   <div class="hidden-content" style="display:flex;">
@@ -180,6 +180,7 @@
       
 </style> {% endcomment %}
 {% comment %} <script>
+(function() {
  // Function to start the animation loop with a delay
   function startBouncingAnimation() {
     const circleDiv = document.querySelector('.bouncing-div');
@@ -207,6 +208,7 @@
   
   // Trigger the animation on page load
   window.onload = startBouncingAnimation;
+})();
 </script> {% endcomment %}
 {% schema %}
 {

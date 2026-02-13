@@ -155,6 +155,7 @@
 </style>
 
 <script>  
+(function() {
   document.addEventListener("DOMContentLoaded", () => {
     const carousel = document.querySelector(".carousel");
     const items = document.querySelectorAll(".carousel li");
@@ -208,6 +209,7 @@
       moveCarousel();
     }
   });
+})();
 </script>
 
 {% schema %}

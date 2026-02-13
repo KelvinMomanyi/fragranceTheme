@@ -28,6 +28,7 @@
     "name": {{ shop.name | json }}
   }
 }
+})();
 </script>
   <!-- Hero Section -->
   <div class="article-hero">
@@ -977,6 +978,7 @@
 </style>
 
 <script>
+(function() {
 // Reading Progress Bar
 window.addEventListener('scroll', () => {
   const article = document.querySelector('.article-body');
@@ -995,4 +997,5 @@ window.addEventListener('scroll', () => {
     progressFill.style.width = clampedProgress + '%';
   }
 });
+})();
 </script>

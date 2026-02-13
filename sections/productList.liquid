@@ -30,10 +30,14 @@
                 <a href="{{ product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
                   {% if product.featured_image %}
                     <img src="{{ product.featured_image | image_url: width: 600 }}" 
+                      srcset="{{ product.featured_image | image_url: width: 300 }} 300w,
+                              {{ product.featured_image | image_url: width: 450 }} 450w,
+                              {{ product.featured_image | image_url: width: 600 }} 600w"
+                      sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 25vw"
                       alt="{{ product.featured_image.alt | escape }}" 
                       class="img-cover" 
-                      width="200" 
-                      height="200" 
+                      width="300" 
+                      height="300" 
                       loading="lazy">
                       <ul class="card-action-list">
 
@@ -64,45 +68,7 @@
     
                       </ul>
                   {% else %}
-                    <img src="default-image.jpg" 
-                      alt="No image available" 
-                      class="img-cover" 
-                      width="200" 
-                      height="200" 
-                      loading="lazy">
-                      <ul class="card-action-list">
-
-                        <li>
-                          <button class="card-action-btn" aria-label="add to cart" title="add to cart">
-                            <ion-icon name="add-outline" aria-hidden="true"></ion-icon>
-                          </button>
-                        </li>
-    
-                        <li>
-                          <button class="card-action-btn" aria-label="add to cart" title="add to cart">
-                            <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
-                          </button>
-                        </li>
-    
-                        <li>
-                          <button class="card-action-btn" aria-label="add to whishlist" title="add to whishlist">
-                            <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
-                          </button>
-                        </li>
-    
-                      </ul>
-    
-                      <ul class="badge-list">
-    
-                        <li>
-                          <div class="badge orange">Sale</div>
-                        </li>
-    
-                        <li>
-                          <div class="badge cyan">-10%</div>
-                        </li>
-    
-                      </ul>
+                    {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
                   {% endif %}
                 </a>
                 <div class="card-content">
@@ -121,67 +87,120 @@
           {% endfor %}
     </ul>
 
+    <div class="slider-nav">
+      <button class="slider-prev" aria-label="Previous">&larr;</button>
+      <button class="slider-next" aria-label="Next">&rarr;</button>
+    </div>
+
   </div>
 </section>
-
-
-<!-- jQuery (Required for Slick Slider) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Slick Slider JS -->
-<script src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
-
-<script>
-  $(document).ready(function(){
-    $('.product-slider').slick({
-      slidesToShow: 4,  // Adjust for desktop
-      slidesToScroll: 1,
-      infinite: true,
-      autoplay: true,
-      autoplaySpeed: 3000,
-      arrows: true,
-      dots: true,
-      responsive: [
-        {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 3
-          }
-        },
-        {
-          breakpoint: 768,
-          settings: {
-            slidesToShow: 2
-          }
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 1
-          }
-        }
-      ]
-    });
-  });
-</script>
 
 <style>
 .product-slider {
   display: flex;
-  overflow: hidden;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 15px;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
 }
-
+.product-slider::-webkit-scrollbar {
+  display: none;
+}
+.product-slider > li {
+  flex: 0 0 calc(25% - 12px);
+  scroll-snap-align: start;
+}
 .product-card {
   text-align: center;
   padding: 10px;
 }
-
-.slick-prev, .slick-next {
-  background-color: #000;
-  color: #fff;
+.slider-nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+.slider-nav button {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
+  background: var(--smokey-black, #000);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+.slider-nav button:hover { opacity: 0.7; }
+
+@media (max-width: 1024px) {
+  .product-slider > li { flex: 0 0 calc(33.33% - 10px); }
+}
+@media (max-width: 768px) {
+  .product-slider > li { flex: 0 0 calc(50% - 8px); }
+}
+@media (max-width: 480px) {
+  .product-slider > li { flex: 0 0 100%; }
 }
 </style>
+
+<script>
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    var slider = document.querySelector('.product-slider');
+    if (!slider) return;
+
+    var prevBtn = document.querySelector('.slider-prev');
+    var nextBtn = document.querySelector('.slider-next');
+
+    function getScrollAmount() {
+      var firstItem = slider.querySelector('li');
+      return firstItem ? firstItem.offsetWidth + 15 : 300;
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function() {
+        slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+      });
+    }
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function() {
+        slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+      });
+    }
+
+    // Autoplay
+    var autoplayInterval = setInterval(function() {
+      var maxScroll = slider.scrollWidth - slider.clientWidth;
+      if (slider.scrollLeft >= maxScroll - 5) {
+        slider.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+      }
+    }, 3000);
+
+    slider.addEventListener('mouseenter', function() { clearInterval(autoplayInterval); });
+    slider.addEventListener('mouseleave', function() {
+      autoplayInterval = setInterval(function() {
+        var maxScroll = slider.scrollWidth - slider.clientWidth;
+        if (slider.scrollLeft >= maxScroll - 5) {
+          slider.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+        }
+      }, 3000);
+    });
+  });
+})();
+</script>
 
 {% schema %}
 {
@@ -250,5 +269,3 @@
   ]
 }
 {% endschema %}
-
-

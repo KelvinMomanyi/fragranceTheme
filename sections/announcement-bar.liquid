@@ -507,6 +507,7 @@
 </style> 
 
 <script>
+(function() {
  document.addEventListener('DOMContentLoaded', function() {
   const text1 = document.getElementById('text1');
   const text2 = document.getElementById('text2');
@@ -616,10 +617,8 @@ dropdowns.forEach(dropdown => {
             option.classList.add("active")
         })
     })
-}) 
-
-
-
+})
+})();
 </script>
 
 {% schema %}

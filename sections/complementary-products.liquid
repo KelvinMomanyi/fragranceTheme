@@ -45,6 +45,7 @@
 </div>
 
 <script>
+(function() {
   class ProductRecommendations extends HTMLElement {
     constructor() {
       super();
@@ -69,6 +70,7 @@
   }
 
   customElements.define('product-recommendations', ProductRecommendations);
+})();
 </script>
 
 <style>

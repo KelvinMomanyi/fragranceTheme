@@ -516,6 +516,7 @@
     }
 </style>     
 <script>
+(function() {
     function fetchCart() {
       fetch('/cart.js')
         .then(response => response.json())
@@ -704,6 +705,7 @@
     
       return false;
     }
+})();
 </script>
       
  {% schema %}

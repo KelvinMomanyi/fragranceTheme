@@ -41,6 +41,7 @@
 </div>
 
 <script>
+(function() {
   // Fetch product recommendations
   const recommendationsSection = document.querySelector('.product-recommendations');
   if (recommendationsSection) {
@@ -58,6 +59,7 @@
         console.error('Error loading recommendations:', error);
       });
   }
+})();
 </script>
 
 <style>

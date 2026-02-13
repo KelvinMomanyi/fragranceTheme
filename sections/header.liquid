@@ -26,7 +26,7 @@
               alt="{{ shop.name }}"
               width="{{ scaled_width }}" 
               height="{{ scaled_height }}" 
-              loading="lazy"
+              loading="eager"
             />
            {% else %}
             <a href="/" class="logo">Fragrance</a>
@@ -221,7 +221,52 @@
 
 
   <script>
-        document.getElementById('search-input').addEventListener('input', function() {
+  (function() {
+    'use strict';
+
+    /* Debounce utility */
+    function debounce(func, delay) {
+      var timeout;
+      return function() {
+        var context = this;
+        var args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(function() { func.apply(context, args); }, delay);
+      };
+    }
+
+    /* Consolidated search handler - debounced */
+    var searchInput = document.getElementById('search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', debounce(function() {
+        var query = this.value.trim();
+        var searchResultsContainer = document.getElementById('search-results');
+        if (!searchResultsContainer) return;
+
+        if (query.length > 2) {
+          fetch('/search/suggest.json?q=' + encodeURIComponent(query) + '&resources[type]=product')
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+              var results = data.resources.results.products;
+              var resultsHTML = '';
+              if (results.length) {
+                results.forEach(function(product) {
+                  resultsHTML += '<div class="search-result-item"><a href="' + product.url + '"><img src="' + product.image + '" alt="' + product.title + '" loading="lazy"><div><p>' + product.title + '</p><p>' + product.price + '</p></div></a></div>';
+                });
+              } else {
+                resultsHTML = '<p>No products found</p>';
+              }
+              searchResultsContainer.innerHTML = resultsHTML;
+            })
+            .catch(function(error) {
+              console.error('Error fetching search results:', error);
+              searchResultsContainer.innerHTML = '<p>There was an error retrieving search results.</p>';
+            });
+        } else {
+          searchResultsContainer.innerHTML = '';
+        }
+      }, 300));
+    }
               const query = this.value.trim();
               const searchResultsContainer = document.getElementById('search-results');
           
@@ -259,24 +304,8 @@
               } else {
                   searchResultsContainer.innerHTML = '';  // Clear results if query is too short
               }
-            });
-          
 
-          function debounce(func, delay) {
-            let timeout;
-            return function() {
-                const context = this;
-                const args = arguments;
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(context, args), delay);
-            };
-        }
-        
-        document.getElementById('search-input').addEventListener('input', debounce(function() {
-            // Fetch logic here
-        }, 300));
-        
-            //NEEW
+    /* Search icon toggle */
         document.getElementById('search-icon').addEventListener('click', function(event) {
                event.preventDefault();
                const searchBar = document.getElementById('search-bar');
@@ -300,39 +329,7 @@
         }
      });
 
-        
-          
-        document.getElementById('search-input').addEventListener('input', function() {
-            const query = this.value.trim();
-        
-            if (query.length > 2) {
-                fetch(`/search?q=${encodeURIComponent(query)}&view=json`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const resultsContainer = document.getElementById('search-results');
-                        resultsContainer.innerHTML = '';
-        
-                        if (data.results.length > 0) {
-                            data.results.forEach(product => {
-                                const productHTML = `
-                                    <div class="search-result-item">
-                                        <a href="${product.url}">
-                                            <img src="${product.image}" alt="${product.title}">
-                                            <p>${product.title}</p>
-                                        </a>
-                                    </div>
-                                `;
-                                resultsContainer.innerHTML += productHTML;
-                            });
-                        } else {
-                            resultsContainer.innerHTML = '<p>No products found.</p>';
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-        });
-    
-        function updateCartCount() {
+    /* Cart count */
           fetch('/cart.js')
             .then(response => response.json())
             .then(cart => {
@@ -554,24 +551,7 @@
 
        fetchCart()  
 
-
-
-          //Closing cart when clicking outside its area
-          //document.addEventListener("click", function(event) {
-          //  const cartTab = document.getElementById('myModal2');
-            
-    
-           // Check if the clicked element is NOT inside the search bar or the search icon
-        //    if (!cartTab.contains(event.target)) {
-       //       document.getElementById('myModal2').style.display = 'none';
-        //    }
-       //  });
-    
-        
-
-
     //CURRENCY SELECTOR
-       
     function localizationFormSubmit(event) {
         event.target.form.submit();
     }
@@ -580,6 +560,7 @@
         element.addEventListener('change', localizationFormSubmit);
     }); 
 
+  })();
   </script> 
      
   

@@ -1,23 +1,6 @@
-{{ 'application.css' | asset_url | stylesheet_tag }} 
-{% comment %} Preload only configured images {% endcomment %}
+{% comment %} Preload only first above-the-fold image {% endcomment %}
 {% if section.settings.image1 != blank %}
-  <link rel="preload" as="image" href="{{ section.settings.image1 | image_url }}">
-{% endif %}
-
-{% if section.settings.image2 != blank %}
-  <link rel="preload" as="image" href="{{ section.settings.image2 | image_url }}">
-{% endif %}
-
-{% if section.settings.image3 != blank %}
-  <link rel="preload" as="image" href="{{ section.settings.image3 | image_url }}">
-{% endif %}
-
-{% if section.settings.image4 != blank %}
-  <link rel="preload" as="image" href="{{ section.settings.image4 | image_url }}">
-{% endif %}
-
-{% if section.settings.image5 != blank %}
-  <link rel="preload" as="image" href="{{ section.settings.image5 | image_url }}">
+  <link rel="preload" as="image" href="{{ section.settings.image1 | image_url: width: 600 }}">
 {% endif %}
 
 
@@ -31,7 +14,12 @@
          <div class="gradient-overlay">
           <figure class="card-banner img-holder" style="--width: 285; --height: 396;">
             {% if section.settings.image1 != blank %}
-               <img src='{{ section.settings.image1 | image_url }}' width="285" height="396" alt="Art Deco Home" class="img-cover">   
+               <img src="{{ section.settings.image1 | image_url: width: 600 }}"
+                    srcset="{{ section.settings.image1 | image_url: width: 285 }} 285w,
+                            {{ section.settings.image1 | image_url: width: 570 }} 570w,
+                            {{ section.settings.image1 | image_url: width: 600 }} 600w"
+                    sizes="(max-width: 575px) 100vw, 285px"
+                    width="285" height="396" alt="Art Deco Home" class="img-cover">
              {% else %}
                {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
               {% endif %} 
@@ -52,7 +40,13 @@
           <div class="gradient-overlay">
            <figure class="card-banner img-holder" style="--width: 568; --height: 389;">
               {% if section.settings.image2 != blank %}
-               <img src='{{ section.settings.image2 | image_url }}' width="568" height="389" alt="Helen Chair" class="img-cover">   
+               <img src="{{ section.settings.image2 | image_url: width: 1200 }}"
+                    srcset="{{ section.settings.image2 | image_url: width: 568 }} 568w,
+                            {{ section.settings.image2 | image_url: width: 900 }} 900w,
+                            {{ section.settings.image2 | image_url: width: 1200 }} 1200w"
+                    sizes="(max-width: 575px) 100vw, 568px"
+                    width="568" height="389" alt="Helen Chair" class="img-cover"
+                    loading="lazy">
              {% else %}
                {{ 'product-2' | placeholder_svg_tag: 'img-cover' }}
               {% endif %}   
@@ -74,7 +68,13 @@
          <div class="gradient-overlay">
           <figure class="card-banner img-holder" style="--width: 285; --height: 396;">
            {% if section.settings.image3 != blank %}
-             <img src='{{ section.settings.image3 | image_url }}' width="285" height="396" alt="Vase Of Flowers" class="img-cover">   
+             <img src="{{ section.settings.image3 | image_url: width: 600 }}"
+                  srcset="{{ section.settings.image3 | image_url: width: 285 }} 285w,
+                          {{ section.settings.image3 | image_url: width: 570 }} 570w,
+                          {{ section.settings.image3 | image_url: width: 600 }} 600w"
+                  sizes="(max-width: 575px) 100vw, 285px"
+                  width="285" height="396" alt="Vase Of Flowers" class="img-cover"
+                  loading="lazy">
            {% else %}
               {{ 'product-3' | placeholder_svg_tag: 'img-cover' }}
            {% endif %}
@@ -95,7 +95,13 @@
          <div class="gradient-overlay">
             <figure class="card-banner img-holder" style="--width: 580; --height: 213;">
               {% if section.settings.image4 != blank %}
-                <img src='{{ section.settings.image4 | image_url }}' width="580" height="213" alt="Product Image" class="img-cover">   
+                <img src="{{ section.settings.image4 | image_url: width: 1200 }}"
+                     srcset="{{ section.settings.image4 | image_url: width: 580 }} 580w,
+                             {{ section.settings.image4 | image_url: width: 900 }} 900w,
+                             {{ section.settings.image4 | image_url: width: 1200 }} 1200w"
+                     sizes="(max-width: 575px) 100vw, 580px"
+                     width="580" height="213" alt="Product Image" class="img-cover"
+                     loading="lazy">
               {% else %}
                 {{ 'product-4' | placeholder_svg_tag: 'img-cover' }}
                {% endif %}
@@ -116,7 +122,13 @@
           <div class="gradient-overlay">
             <figure class="card-banner img-holder" style="--width: 580; --height: 213;">
               {% if section.settings.image5 != blank %}
-                <img src='{{ section.settings.image5 | image_url }}' width="580" height="213" alt="Product Image" class="img-cover">   
+                <img src="{{ section.settings.image5 | image_url: width: 1200 }}"
+                     srcset="{{ section.settings.image5 | image_url: width: 580 }} 580w,
+                             {{ section.settings.image5 | image_url: width: 900 }} 900w,
+                             {{ section.settings.image5 | image_url: width: 1200 }} 1200w"
+                     sizes="(max-width: 575px) 100vw, 580px"
+                     width="580" height="213" alt="Product Image" class="img-cover"
+                     loading="lazy">
               {% else %}
                   {{ 'product-5' | placeholder_svg_tag: 'img-cover' }}
               {% endif %}        
