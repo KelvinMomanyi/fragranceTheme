@@ -16,6 +16,16 @@
   <link rel="canonical" href="{{ canonical_url }}" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.shopify.com">
+
+  {%- unless settings.font_body.system? -%}
+    <link rel="preload" as="font" href="{{ settings.font_body | font_url }}" type="font/woff2" crossorigin>
+  {%- endunless -%}
+  {%- unless settings.font_heading.system? -%}
+    <link rel="preload" as="font" href="{{ settings.font_heading | font_url }}" type="font/woff2" crossorigin>
+  {%- endunless -%}
+
   <!-- Open Graph & Twitter Card Tags -->
   {% render 'social-meta-tags' %}
   {% render 'structured-data' %}
