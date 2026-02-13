@@ -36,35 +36,41 @@
     }
   };
 
-  // Close modal on overlay click
-  window.addEventListener('click', function (event) {
+  /* --------------------------------
+   * Global Event Delegation
+   * -------------------------------- */
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+
+    // 1. Modal Close (Overlay click)
     var modal = document.getElementById('myModal');
-    if (modal && event.target === modal) {
+    if (modal && target === modal) {
       window.closeModal();
+      return;
+    }
+
+    // 2. Navbar Toggler (Matches Open/Close buttons)
+    var toggleBtn = target.closest('[data-nav-toggler]');
+    if (toggleBtn) {
+      var navbar = document.querySelector('[data-navbar]');
+      var overlay = document.querySelector('[data-overlay]');
+
+      // Prevent browser default if it's a link
+      if (toggleBtn.tagName === 'A') event.preventDefault();
+
+      if (navbar) navbar.classList.toggle('active');
+      if (overlay) overlay.classList.toggle('active');
+      return;
+    }
+
+    // 3. Navbar Link / Overlay Click (Always Close)
+    if (target.closest('[data-nav-link]') || target.closest('[data-overlay]')) {
+      var navbar = document.querySelector('[data-navbar]');
+      var overlay = document.querySelector('[data-overlay]');
+      if (navbar) navbar.classList.remove('active');
+      if (overlay) overlay.classList.remove('active');
     }
   });
-
-  /* --------------------------------
-   * Navbar toggle
-   * -------------------------------- */
-  var navTogglers = document.querySelectorAll('[data-nav-toggler]');
-  var navbar = document.querySelector('[data-navbar]');
-  var navbarLinks = document.querySelectorAll('[data-nav-link]');
-  var overlay = document.querySelector('[data-overlay]');
-
-  var toggleNavbar = function () {
-    if (navbar) navbar.classList.toggle('active');
-    if (overlay) overlay.classList.toggle('active');
-  };
-
-  addEventOnElem(navTogglers, 'click', toggleNavbar);
-
-  var closeNavbar = function () {
-    if (navbar) navbar.classList.remove('active');
-    if (overlay) overlay.classList.remove('active');
-  };
-
-  addEventOnElem(navbarLinks, 'click', closeNavbar);
 
   /* --------------------------------
    * Sticky header & back-to-top
