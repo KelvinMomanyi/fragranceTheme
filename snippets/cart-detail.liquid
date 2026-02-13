@@ -1,7 +1,7 @@
 <div id="myModal2" class="cartBar" >
     <div class="cartBar-content" style="overflow-y:auto;" >
       <button class="nav-close-btn" onclick="closeCartbar()">
-        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+        {% render 'icon-fragrance', icon: 'close' %}
       </button>
   
       <div id="loader" style="display: none;">Loading...</div>
@@ -206,7 +206,7 @@
    color: var(--hoockers-green);
  }
  
- .cart-close-btn ion-icon {
+ .cart-close-btn .icon {
    --ionicon-stroke-width:40px;
  }
  
@@ -328,7 +328,7 @@
                                   <div style="flex:1; display:flex; justify-content:space-between">
                                     <a href="${item.url}" style="font-size:1.5rem;">${item.product_title}</a>
                                       {% comment %} ${currency_code}${item.price.toFixed(2)} {% endcomment %}
-                                    <a href="#" class="remove-item" data-line="${index + 1}" data-key="${item.key}" style="color: black;"><ion-icon name="close-circle-outline"></ion-icon></a>
+                                    <a href="#" class="remove-item" data-line="${index + 1}" data-key="${item.key}" style="color: black;"><span class="icon icon--close-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M320 320L192 192M320 192L192 320"/></svg></span></a>
                                   </div>
                                   {% comment %} <td id="price_${item.key}">
                                     ${currency_code}${initialTotalPrice.toFixed(2)}

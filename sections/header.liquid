@@ -8,10 +8,8 @@
       
       <div class="">
         <button class="header-action-btn" aria-label="Open menu" data-nav-toggler>
-          <ion-icon name="menu-outline" aria-hidden="true" style="font-size:24px;"></ion-icon>
-          <i data-feather="circle"></i>
-        </button>
- 
+          {% render 'icon-fragrance', icon: 'menu' %}
+        </button> 
       </div>
       
       <div>
@@ -39,18 +37,16 @@
       {% comment %} <div class="input-wrapper">
         <input type="search" name="search" placeholder="Search Anything..." class="input-field">
 
-        <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+        {% render 'icon-fragrance', icon: 'search' %}
       </div> {% endcomment %}
       <div class="header-action"  id="headerActions">
         <a href="#" class="header-action-btn" aria-label="Search" id="search-icon">
-          <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
-          {% comment %} <img src="{{ 'search.svg' | asset_url }}" alt="Your Icon" /> {% endcomment %}
+          {% render 'icon-fragrance', icon: 'search' %}
         </a> 
        
 
         <button class="header-action-btn" aria-label="Cart" onclick="openCart()">
-          <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
-          {% comment %} <img src="{{ 'shopping-bag.svg' | asset_url }}" alt="Your Icon" /> {% endcomment %}
+          {% render 'icon-fragrance', icon: 'bag-handle' %}
           <span class="btn-badge">0</span>
         </button>
 
@@ -79,7 +75,7 @@
   <div class="sidebar" data-navbar>
     <div class="navClose">
        <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
-        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+        {% render 'icon-fragrance', icon: 'close' %}
       </button>
     </div>
     <nav class="navbar">
@@ -90,7 +86,7 @@
             <a href="{{ link.url }}" class="navbar-link" data-nav-link>
               {{ link.title }}
               {% if link.links != blank %}
-                <ion-icon name="chevron-down-outline" aria-hidden="true" style="margin-left: 5px; font-size: 1rem;"></ion-icon>
+                {% render 'icon-fragrance', icon: 'chevron-down', size: 'small' %}
               {% endif %}
             </a>
             {% if link.links != blank %}
@@ -143,20 +139,20 @@
       <ul class="social-list">
 
         <li>
-          <a href="#" class="social-link">
-            <ion-icon name="logo-facebook"></ion-icon>
+          <a href="#" class="social-link" aria-label="Facebook">
+            {% render 'icon-fragrance', icon: 'facebook' %}
           </a>
         </li>
 
         <li>
-          <a href="#" class="social-link">
-            <ion-icon name="logo-instagram"></ion-icon>
+          <a href="#" class="social-link" aria-label="Instagram">
+            {% render 'icon-fragrance', icon: 'instagram' %}
           </a>
         </li>
 
         <li>
-          <a href="#" class="social-link">
-            <ion-icon name="logo-tumblr"></ion-icon>
+          <a href="#" class="social-link" aria-label="Tumblr">
+            {% render 'icon-fragrance', icon: 'tumblr' %}
           </a>
         </li>
 
@@ -194,19 +190,19 @@
           </div>
       {% endform %}
         </div>
-       {% comment %} <ion-icon name="close-outline"></ion-icon> {% endcomment %}
+       {% comment %} {% render 'icon-fragrance', icon: 'close' %} {% endcomment %}
     </div>
 
 
     <div class="header-action" style="display:flex; justify-content:flex-start; padding-top:10px;">
-     <button class="header-action-btn" aria-label="User account">
-        <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
-      </button>
+     <a href="/account" class="header-action-btn" aria-label="User account">
+        {% render 'icon-fragrance', icon: 'person' %}
+      </a>
 
-      <button class="header-action-btn" aria-label="Favorites">
-        <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+      <a href="/wishlist" class="header-action-btn" aria-label="Favorites">
+        {% render 'icon-fragrance', icon: 'heart' %}
         <span class="btn-badge">0</span>
-      </button>
+      </a>
     </div>
 
   </div>
@@ -402,7 +398,7 @@
                   <div style="flex:1; display:flex; justify-content:space-between">
                     <a href="${item.url}" style="font-size:1.5rem;">${item.product_title}</a>
                     <a href="#" class="remove-item" data-line="${index + 1}" data-key="${item.key}" style="color: black;">
-                      <ion-icon name="close-circle-outline"></ion-icon>
+                      <span class="icon icon--close-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M320 320L192 192M320 192L192 320"/></svg></span>
                     </a>
                   </div>
                   <div>

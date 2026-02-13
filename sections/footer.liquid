@@ -14,7 +14,7 @@ FOOTER
 
           {%- if section.settings.show_address -%}
           <li class="footer-list-item">
-            <ion-icon name="location-sharp" aria-hidden="true"></ion-icon>
+            {% render 'icon-fragrance', icon: 'location' %}
 
             <address class="address">
               {{ section.settings.address_text }}
@@ -24,7 +24,7 @@ FOOTER
 
           {%- if section.settings.show_phone -%}
           <li class="footer-list-item">
-            <ion-icon name="call-sharp" aria-hidden="true"></ion-icon>
+            {% render 'icon-fragrance', icon: 'call' %}
 
             <a href="tel:{{ section.settings.phone_number }}" class="footer-link">{{ section.settings.phone_display }}</a>
           </li>
@@ -37,7 +37,7 @@ FOOTER
           {%- if settings.social_facebook != blank -%}
           <li>
             <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
-              <ion-icon name="logo-facebook"></ion-icon>
+              {% render 'icon-fragrance', icon: 'facebook' %}
             </a>
           </li>
           {%- endif -%}
@@ -45,7 +45,7 @@ FOOTER
           {%- if settings.social_instagram != blank -%}
           <li>
             <a href="{{ settings.social_instagram }}" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
-              <ion-icon name="logo-instagram"></ion-icon>
+              {% render 'icon-fragrance', icon: 'instagram' %}
             </a>
           </li>
           {%- endif -%}
@@ -53,7 +53,7 @@ FOOTER
           {%- if settings.social_tiktok != blank -%}
           <li>
             <a href="{{ settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener" aria-label="TikTok">
-              <ion-icon name="logo-tiktok"></ion-icon>
+              {% render 'icon-fragrance', icon: 'tiktok' %}
             </a>
           </li>
           {%- endif -%}
@@ -61,7 +61,7 @@ FOOTER
           {%- if settings.social_tumblr != blank -%}
           <li>
             <a href="{{ settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener" aria-label="Tumblr">
-              <ion-icon name="logo-tumblr"></ion-icon>
+              {% render 'icon-fragrance', icon: 'tumblr' %}
             </a>
           </li>
           {%- endif -%}
@@ -69,7 +69,7 @@ FOOTER
           {%- if settings.social_twitter != blank -%}
           <li>
             <a href="{{ settings.social_twitter }}" class="social-link" target="_blank" rel="noopener" aria-label="Twitter">
-              <ion-icon name="logo-twitter"></ion-icon>
+              {% render 'icon-fragrance', icon: 'twitter' %}
             </a>
           </li>
           {%- endif -%}
@@ -77,7 +77,7 @@ FOOTER
           {%- if settings.social_pinterest != blank -%}
           <li>
             <a href="{{ settings.social_pinterest }}" class="social-link" target="_blank" rel="noopener" aria-label="Pinterest">
-              <ion-icon name="logo-pinterest"></ion-icon>
+              {% render 'icon-fragrance', icon: 'pinterest' %}
             </a>
           </li>
           {%- endif -%}
@@ -85,7 +85,7 @@ FOOTER
           {%- if settings.social_snapchat != blank -%}
           <li>
             <a href="{{ settings.social_snapchat }}" class="social-link" target="_blank" rel="noopener" aria-label="Snapchat">
-              <ion-icon name="logo-snapchat"></ion-icon>
+              {% render 'icon-fragrance', icon: 'snapchat' %}
             </a>
           </li>
           {%- endif -%}
@@ -93,7 +93,7 @@ FOOTER
           {%- if settings.social_youtube != blank -%}
           <li>
             <a href="{{ settings.social_youtube }}" class="social-link" target="_blank" rel="noopener" aria-label="YouTube">
-              <ion-icon name="logo-youtube"></ion-icon>
+              {% render 'icon-fragrance', icon: 'youtube' %}
             </a>
           </li>
           {%- endif -%}
@@ -101,7 +101,7 @@ FOOTER
           {%- if settings.social_vimeo != blank -%}
           <li>
             <a href="{{ settings.social_vimeo }}" class="social-link" target="_blank" rel="noopener" aria-label="Vimeo">
-              <ion-icon name="logo-vimeo"></ion-icon>
+              {% render 'icon-fragrance', icon: 'vimeo' %}
             </a>
           </li>
           {%- endif -%}
@@ -193,7 +193,7 @@ FOOTER
             aria-label="Email address">
 
           <button type="submit" class="footer-form-btn" aria-label="Subscribe">
-            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+            {% render 'icon-fragrance', icon: 'arrow-forward' %}
           </button>
         </form>
 

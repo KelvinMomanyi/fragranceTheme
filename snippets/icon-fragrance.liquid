@@ -1,0 +1,99 @@
+{%- comment -%}
+  Icon Fragrance Snippet
+  Accepts:
+  - icon: {String} Name of the icon
+  - class: {String} Optional custom class
+  - size: {String} Optional size (small, medium, large)
+{%- endcomment -%}
+
+{%- capture icon_svg -%}
+  {%- case icon -%}
+    {%- when 'menu' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="48" d="M88 152h336M88 256h336M88 360h336"/></svg>
+    {%- when 'search' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"/></svg>
+    {%- when 'bag' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M341 267.33l-34.13-34.13L256 283.87l-50.87-50.67L171 267.33l50.87 50.67L171 368.67l34.13 34.13L256 352.13l50.87 50.67 34.13-34.13-50.87-50.67L341 267.33z" fill="currentColor"/></svg>
+    {%- when 'bag-handle' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M80 176a16 16 0 00-16 16v272a16 16 0 0016 16h352a16 16 0 0016-16V192a16 16 0 00-16-16H80z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M160 176v-48a96 96 0 0196-96 96 96 0 0196 96v48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+    {%- when 'heart' -%}
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M352.92 80C288 80 256 144 256 144s-32-64-96.92-64c-52.76 0-94.54 44.14-94.54 96.81 0 106.38 119.25 216.01 211.54 273.39a15.36 15.36 0 0016.92 0c92.29-57.38 211.54-167.01 211.54-273.39 0-52.67-41.78-96.81-94.54-96.81z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+    {%- when 'heart-filled' -%}
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M256 448l-30.16-27.42C118.66 329.14 56 272.33 56 201.27 56 143.14 101.62 97.5 159.73 97.5c32.83 0 64.35 15.29 84.77 39.42 20.42-24.13 51.94-39.42 84.77-39.42 58.11 0 103.73 45.64 103.73 103.77 0 71.06-62.66 127.87-169.84 219.46L256 448z" fill="currentColor"/></svg>
+    {%- when 'close' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"/></svg>
+    {%- when 'close-circle' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M320 320L192 192M320 192L192 320"/></svg>
+    {%- when 'add' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 112v288M400 256H112"/></svg>
+    {%- when 'chevron-down' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 184l144 144 144-144"/></svg>
+    {%- when 'chevron-back' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M328 112L184 256l144 144"/></svg>
+    {%- when 'chevron-forward' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M184 112l144 144-144 144"/></svg>
+    {%- when 'arrow-forward' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M268 112l144 144-144 144M392 256H100"/></svg>
+    {%- when 'person' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-104 88-104s92 49 88 104z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.43 0 17.61-10.48 15.64-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>
+    {%- when 'location' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M256 32C167.67 32 96 96.51 96 176c0 128 160 304 160 304s160-176 160-304c0-79.49-71.67-144-160-144zm0 224a64 64 0 1164-64 64 64 0 01-64 64z" fill="currentColor"/></svg>
+    {%- when 'call' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M451 374c-12 30-44 51-77 56-51 7-105-15-155-65s-72-104-65-155c5-33 26-65 56-77 34-14 74 1 92 33l28 50c11 20 6 43-11 57l-35 28c11 25 28 54 51 77s52 40 77 51l28-35c14-17 37-22 57-11l50 28c32 18 47 58 33 92z" fill="currentColor"/></svg>
+    {%- when 'facebook' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M480 257.35c0-123.7-100.3-224-224-224s-224 100.3-224 224c0 111.8 81.9 204.47 189 221.29V322.12h-56.89v-64.77h56.89V208c0-56.13 33.45-87.16 84.61-87.16 24.51 0 50.15 4.38 50.15 4.38v55.13H291.5c-27.81 0-36.46 17.26-36.46 35v42h62.11l-9.93 64.77h-52.18V478.64c107.11-16.82 189-109.49 189-221.29z" fill="currentColor"/></svg>
+    {%- when 'instagram' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M349.33 69.33a92.63 92.63 0 0193.34 93.34V349.34a92.63 92.63 0 01-93.34 93.34H162.67a92.63 92.63 0 01-93.34-93.34V162.67a92.63 92.63 0 0193.34-93.34H349.33m0-37.33H162.67C90.8 32 32 90.8 32 162.67V349.33C32 421.2 90.8 480 162.67 480H349.33C421.2 480 480 421.2 480 349.33V162.67C480 90.8 421.2 32 349.33 32z" fill="currentColor"/><path d="M256 141.33A114.67 114.67 0 10370.67 256 114.65 114.65 0 00256 141.33zm0 192A77.33 77.33 0 11333.33 256 77.35 77.35 0 01256 333.33z" fill="currentColor"/><circle cx="390.47" cy="121.53" r="27.13" fill="currentColor"/></svg>
+    {%- when 'twitter' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M496 109.5a201.8 201.8 0 01-56.55 15.3 97.51 97.51 0 0043.33-53.6 197.74 197.74 0 01-62.56 23.5A99.14 99.14 0 00348.31 64c-54.42 0-98.46 43.4-98.46 96.9a93.21 93.21 0 002.54 22.1 280.53 280.53 0 01-203.06-101.5 95.45 95.45 0 00-13.31 48.7c0 33.7 17.39 63.5 43.81 80.8a98.4 98.4 0 01-44.59-12.1v1.2c0 47.1 33.91 86.4 78.91 95.3a99.71 99.71 0 01-44.46 1.7c12.51 38.5 48.74 66.5 91.74 67.3A200.36 200.36 0 0132 408.9a279.19 279.19 0 00151.05 43.5c181.24 0 280.44-147.7 280.44-275.8 0-4.2-.11-8.4-.31-12.5A198.48 198.48 0 00512 112.5a196.62 196.62 0 01-16 -3z" fill="currentColor"/></svg>
+    {%- when 'pinterest' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M256 32a224 224 0 00-79.64 435.48c-1.39-12.52-2.65-31.75.55-45.43 2.9-12.38 18.66-78.92 18.66-78.92s-4.76-9.52-4.76-23.59c0-22.1 12.82-38.6 28.76-38.6 13.56 0 20.11 10.19 20.11 22.4 0 13.63-8.68 34.01-13.15 52.92-3.75 15.79 7.91 28.67 23.47 28.67 28.17 0 49.82-29.69 49.82-72.56 0-37.93-27.24-64.45-66.21-64.45-45.21 0-71.74 33.9-71.74 68.96 0 13.66 5.25 28.3 11.82 36.29a3.86 3.86 0 01.89 3.69c-1 4.09-3.15 12.78-3.58 14.54a3.18 3.18 0 01-3 2.19c-19.65-9.15-31.95-37.87-31.95-60.94 0-49.62 36.05-95.19 103.95-95.19 54.55 0 96.94 38.86 96.94 90.8 0 54.21-34.17 97.85-81.59 97.85-15.93 0-30.89-8.27-36-18l-9.8 37.28c-3.54 13.54-13.08 30.52-19.46 40.89A224 224 0 10256 32z" fill="currentColor"/></svg>
+    {%- when 'tiktok' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M412.19 118.66a109.27 109.27 0 01-9.45-5.5 132.87 132.87 0 01-24.27-20.62c-18.1-20.32-26-44.47-23.27-71.77h-69.1v313.13c0 45.42-36.93 82.35-82.36 82.35s-82.36-36.93-82.36-82.35 36.93-82.36 82.36-82.36c8.5 0 16.69 1.3 24.38 3.7v-73.43c-7.7-1.32-15.63-2-23.75-2-86.84 0-157.25 70.4-157.25 157.25s70.4 157.25 157.25 157.25 157.25-70.41 157.25-157.25V184.45a165.71 165.71 0 0092.42 27.67v-69.1a100 100 0 01-23.85-4.36z" fill="currentColor"/></svg>
+    {%- when 'snapchat' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M256 32c-35.35 0-64.88 32.74-72.37 81.3-4.11 26.65-1.57 53.64 5.91 75.3a21.75 21.75 0 012.38 8.61c0 6.13-10.45 10.12-25.1 13.25-24.89 5.3-44.62 10.74-56 12.06a38.68 38.68 0 00-16.14 5.75c-15.82 9.4-15.82 43.64-15.82 50.81s0 5.67 5.16 8.56c11.08 6.19 32.4 8.24 51.6 8.24 16.27 0 35.53-.28 51.05-1.87 6.64-.68 11.23.47 13.62 3.44a56 56 0 017.37 14.12 7.15 7.15 0 01.32 1.63 26.21 26.21 0 004.38 12.44c10.51 15.63 24.62 15.88 32.8 15.88s22.29-.25 32.8-15.88a26.21 26.21 0 004.38-12.44 7.15 7.15 0 01.32-1.63 56 56 0 017.37-14.12c2.39-2.97 6.98-4.12 13.62-3.44 15.52 1.59 34.78 1.87 51.05 1.87 19.2 0 40.52-2.05 51.6-8.24 5.16-2.89 5.16-1.39 5.16-8.56s0-41.41-15.82-50.81a38.68 38.68 0 00-16.14-5.75c-11.38-1.32-31.11-6.76-56-12.06-14.65-3.13-25.1-7.12-25.1-13.25a21.75 21.75 0 012.38-8.61c7.48-21.66 10-48.65 5.91-75.3C320.88 64.74 291.35 32 256 32z" fill="currentColor"/></svg>
+    {%- when 'youtube' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M508.64 148.79c0-45-33.11-81.21-74-81.21C392.26 64 256 64 256 64s-136.26 0-178.64 3.58c-40.89 0-74 36.21-74 81.21-3.58 45-3.58 91.21-3.58 91.21s0 46.21 3.58 91.21c0 45 33.11 81.21 74 81.21C119.74 448 256 448 256 448s136.26 0 178.64-3.58c40.89 0 74-36.21 74-81.21 3.58-45 3.58-91.21 3.58-91.21s0-46.21-3.58-91.21z" fill="currentColor"/><path d="M204.14 316c0-10 0-110 0-120a10 10 0 0115.42-8.33l93 55a10 10 0 010 16.66l-93 55a10 10 0 01-15.42-8.33z" fill="#fff"/></svg>
+    {%- when 'vimeo' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M488.74 126.79c-3.11 25.11-23.33 59.56-60.67 103.33-38.67 45.33-71.33 68-98 68-16.44 0-30.44-15.11-42-45.33l-28.44-104c-8.67-31.56-17.78-47.33-27.56-47.33-2.22 0-10 4.67-23.33 14l-18.22 13.11-12-15.56 31.56-27.56c24.44-21.33 42.89-32.44 55.56-33.33 21.33-1.78 34.44 12.67 39.33 43.33l19.56 73.11c6.22 30.67 14.67 46 25.33 46 8 0 20.44-14.44 37.33-43.33 16.89-28.89 25.78-50.89 26.67-66 0.89-21.33-6.22-32-21.33-32a51.48 51.48 0 00-24 6.22c20.44-66.67 59.56-98.89 117.33-96.67 42.67 1.78 62.67 29.56 60 83.11z" fill="currentColor"/></svg>
+    {%- when 'star' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M394 480a16 16 0 01-9.39-3L256 383.76 127.39 477a16 16 0 01-24.55-18.08L153 310.35 23 221.2a16 16 0 019-27.2l152.32-22.12L252.34 33a16 16 0 0131.32 0l68 138.88L504 194a16 16 0 019 27.2l-130 89.15 50.16 148.57A16 16 0 01394 480z" fill="currentColor"/></svg>
+    {%- when 'checkmark-circle' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm108.25 138.25l-131 131a16 16 0 01-22.62 0l-63-63a16 16 0 0122.62-22.62l51.69 51.69 120-120a16 16 0 0122.62 22.63z" fill="currentColor"/></svg>
+    {%- when 'shield-checkmark' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M336 176L225.2 286.8l-49.2-49.2c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l71.8 71.8c12.5 12.5 32.8 12.5 45.3 0L381.3 221.3c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z" fill="currentColor"/><path d="M464.1 110.4c-97.9-12.8-164.8-14-208.1-78.4-43.3 64.4-110.2 65.5-208.1 78.4-5.3.7-8.9 5.8-7.8 11.2 5.8 28.5 21.6 86.8 59.4 146.5 43.1 68.3 111.9 121.2 153.6 149.2a6.38 6.38 0 005.9 0c41.7-28 110.5-80.9 153.6-149.2 37.8-59.7 53.6-118 59.4-146.5 1.1-5.3-2.5-10.4-7.9-11.2zM256 448c-36.9-24.6-96.1-71.3-134.4-131.9-34.1-54-47.5-106.6-52.6-132.3 84.8-11.1 146-13.6 187-57.8 41 44.2 102.2 46.7 187 57.8-5.1 25.7-18.5 78.3-52.6 132.3C352.1 376.7 292.9 423.4 256 448z" fill="currentColor"/></svg>
+    {%- when 'flash' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M432 208H288l32-192L80 304h144l-32 192z" fill="currentColor"/></svg>
+    {%- when 'refresh' -%}
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M320 146s24.36-12-64-12a160 160 0 10160 160" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 58l80 80-80 80"/></svg>
+    {%- when 'people' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M402 168c-2.93 40.67-33.1 72-66 72s-63.12-31.32-66-72c-3-42.31 26.37-80 66-80s69 37.69 66 80z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M336 304c-65.17 0-127.84 32.37-143.54 100.13C190.44 415.36 195.09 432 208 432h256c12.91 0 17.56-16.64 15.54-27.87C463.84 336.37 401.17 304 336 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M200 152c-2.53 35.14-28.59 64-56 64s-53.47-28.86-56-64c-2.59-36 22.77-64 56-64s58.59 28 56 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M208 248c-3.16 0-6.19.24-9.16.71 30.15 22.18 51.58 54.1 63.38 92 10.15-2.28 20.67-3.71 31.78-3.71s21.63 1.43 31.78 3.71c11.8-37.9 33.23-69.82 63.38-92-2.97-.47-6-.71-9.16-.71h-172z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M144 272c-54.34 0-106.53 27-119.61 83.44C22.63 365 26.54 384 37.33 384h213.34c10.79 0 14.7-19 12.94-28.56C250.53 299 198.34 272 144 272z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>
+     {%- when 'arrow-up' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 328l144-144 144 144"/></svg>
+    {%- when 'bag-check' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M80 176a16 16 0 00-16 16v272a16 16 0 0016 16h352a16 16 0 0016-16V192a16 16 0 00-16-16H80z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M160 176v-48a96 96 0 0196-96 96 96 0 0196 96v48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M336 240L233.14 342.86l-57.14-57.14"/></svg>
+    {%- when 'card' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><rect x="48" y="96" width="416" height="320" rx="40" ry="40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32" d="M48 192h416M128 320h64M256 320h128"/></svg>
+    {%- when 'paper-plane' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M473 39.05a24 24 0 00-25.5-5.46L47.47 185h-.08a24 24 0 00.1 45.16l.41.13 137.3 51.34 51.34 137.3.13.41a24 24 0 0045.17.1l151.39-400a24 24 0 00-5.44-25.43z" fill="currentColor"/></svg>
+    {%- when 'checkmark' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M416 128L192 384l-96-96"/></svg>
+  {%- endcase -%}
+{%- endcapture -%}
+
+<span class="icon icon--{{ icon }} {{ class }} icon--size-{{ size | default: 'medium' }}" aria-hidden="true">
+  {{ icon_svg }}
+</span>
+
+<style>
+  .icon svg {
+    display: block;
+    width: 1em;
+    height: 1em;
+    fill: none;
+    stroke: currentColor;
+  }
+  .icon--size-small { font-size: 16px; }
+  .icon--size-medium { font-size: 24px; }
+  .icon--size-large { font-size: 32px; }
+</style>

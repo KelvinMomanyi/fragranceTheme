@@ -20,7 +20,7 @@
             aria-label="{{ 'general.search.placeholder' | t | default: 'Search' }}"
           >
           <button type="submit" class="search-btn-404" aria-label="{{ 'general.search.submit' | t | default: 'Search' }}">
-            <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+            {% render 'icon-fragrance', icon: 'search' %}
           </button>
         </form>
       </div>
@@ -147,7 +147,7 @@
     background: #e0e0e0;
   }
   
-  .search-btn-404 ion-icon {
+  .search-btn-404 .icon {
     font-size: 1.2rem;
     color: #333;
   }

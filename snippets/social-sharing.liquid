@@ -10,13 +10,13 @@
   <span class="share-label">{{ 'products.product.share' | t | default: 'Share' }}:</span>
   <div class="share-buttons">
     <a href="https://www.facebook.com/sharer.php?u={{ shop.url }}{{ share_permalink }}" target="_blank" rel="noopener" class="share-btn share-btn--facebook" aria-label="Share on Facebook">
-      <ion-icon name="logo-facebook"></ion-icon>
+      {% render 'icon-fragrance', icon: 'facebook' %}
     </a>
     <a href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ share_permalink }}&text={{ share_title | url_encode }}" target="_blank" rel="noopener" class="share-btn share-btn--twitter" aria-label="Share on Twitter">
-      <ion-icon name="logo-twitter"></ion-icon>
+      {% render 'icon-fragrance', icon: 'twitter' %}
     </a>
     <a href="https://pinterest.com/pin/create/button/?url={{ shop.url }}{{ share_permalink }}&media={{ share_image | image_url: width: 1024 }}&description={{ share_title | url_encode }}" target="_blank" rel="noopener" class="share-btn share-btn--pinterest" aria-label="Share on Pinterest">
-      <ion-icon name="logo-pinterest"></ion-icon>
+      {% render 'icon-fragrance', icon: 'pinterest' %}
     </a>
   </div>
 </div>

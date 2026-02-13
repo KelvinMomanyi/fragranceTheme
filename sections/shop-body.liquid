@@ -30,19 +30,19 @@
 
                   <li>
                     <button class="card-action-btn" aria-label="add to cart" title="add to cart">
-                      <ion-icon name="add-outline" aria-hidden="true"></ion-icon>
+                      {% render 'icon-fragrance', icon: 'add' %}
                     </button>
                   </li>
 
                   <li>
                     <button class="card-action-btn" aria-label="add to cart" title="add to cart">
-                      <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                      {% render 'icon-fragrance', icon: 'bag-handle' %}
                     </button>
                   </li>
 
                   <li>
                     <button class="card-action-btn" aria-label="add to whishlist" title="add to whishlist">
-                      <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+                      {% render 'icon-fragrance', icon: 'heart' %}
                     </button>
                   </li>
 
@@ -102,23 +102,23 @@
             <ul class="card-action-list">
              <li>
               <button class="card-action-btn" aria-label="add to cart" title="add to cart">
-                <ion-icon name="add-outline" aria-hidden="true"></ion-icon>
+                {% render 'icon-fragrance', icon: 'add' %}
               </button>
             </li>
             <li>
               <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
                 <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                 <button type="submit" class="card-action-btn" aria-label="add to cart">
-                  <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                  {% render 'icon-fragrance', icon: 'bag-handle' %}
                 </button>
               </form>
             {% comment %} <button class="card-action-btn" aria-label="view cart" title="view cart">
-            <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+            {% render 'icon-fragrance', icon: 'bag-handle' %}
         </button> {% endcomment %}
       </li>
       <li>
         <button class="card-action-btn" aria-label="add to wishlist" title="add to wishlist">
-          <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+          {% render 'icon-fragrance', icon: 'heart' %}
         </button>
       </li>
     </ul>

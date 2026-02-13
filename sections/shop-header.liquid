@@ -140,11 +140,11 @@
     </ul>
   
     <button class="slider-btn prev" aria-label="slide to previous" data-prev-btn>
-    <ion-icon name="chevron-back"></ion-icon>
+    {% render 'icon-fragrance', icon: 'chevron-back' %}
     </button>
   
     <button class="slider-btn next" aria-label="slide to next" data-next-btn>
-     <ion-icon name="chevron-forward"></ion-icon>
+     {% render 'icon-fragrance', icon: 'chevron-forward' %}
     </button>
   {% comment %} </div> {% endcomment %}
 </section>
@@ -422,7 +422,7 @@ color:white;
         {
           "type": "image_picker",
           "id": "hero_image",
-          "label": "Hero Image",
+          "label": "Hero Image"
           
         },
         {

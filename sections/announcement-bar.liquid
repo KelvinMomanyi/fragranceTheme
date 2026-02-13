@@ -5,15 +5,15 @@
           <div id="phone-container">
             <!-- Phone Icon -->
 
-                {% if section.settings.show_facebook_icon %}<ion-icon name="logo-facebook" id="phone-icon"  style="color: {{section.settings.text_color }}; "></ion-icon>{% endif %}
+                {% if section.settings.show_facebook_icon %}{% render 'icon-fragrance', icon: 'facebook', style: 'color: {{ section.settings.text_color }};' %}{% endif %}
  
-                {% if section.settings.show_instagram_icon %}<ion-icon name="logo-instagram" id="phone-icon"  style="color: {{section.settings.text_color }};"></ion-icon>{% endif %}
+                {% if section.settings.show_instagram_icon %}{% render 'icon-fragrance', icon: 'instagram', style: 'color: {{ section.settings.text_color }};' %}{% endif %}
 
-                {% if section.settings.show_tiktok_icon %}<ion-icon name="logo-tiktok" id="phone-icon"  style="color: {{section.settings.text_color }};"></ion-icon>{% endif %}
+                {% if section.settings.show_tiktok_icon %}{% render 'icon-fragrance', icon: 'tiktok', style: 'color: {{ section.settings.text_color }};' %}{% endif %}
 
-                {% if section.settings.show_tumblr_icon %}<ion-icon name="logo-tumblr" id="phone-icon"   style="color: {{section.settings.text_color }};"></ion-icon>{% endif %}
+                {% if section.settings.show_tumblr_icon %}{% render 'icon-fragrance', icon: 'tumblr', style: 'color: {{ section.settings.text_color }};' %}{% endif %}
 
-            {% comment %} <ion-icon name="call-outline" id="phone-icon" style="color: {{section.settings.text_color }};"></ion-icon>
+            {% comment %} {% render 'icon-fragrance', icon: 'call' %} {% endcomment %}
             <!-- Phone Number -->
             <span id="phone-number" style="color: {{section.settings.text_color }};">{{section.settings.phone_number}}</span> {% endcomment %}
           </div>
@@ -122,7 +122,7 @@
              
             </div> 
           {% endform %}
-           {% comment %} <ion-icon name="close-outline"></ion-icon> {% endcomment %}
+           {% comment %} {% render 'icon-fragrance', icon: 'close' %} {% endcomment %}
         </div>
       </div>
     </div>
