@@ -16,7 +16,7 @@
                  <div style="display:flex;" >
                     <div style="flex:1; display:flex; align-items:center; justify-content:center;">
                       <a href="{{ item.url | within: collections.all }}">
-                        <img src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}" class="img-cover" width="540" height="720" loading="lazy">
+                        <img src="{{ item | image_url: width: 480 }}" alt="{{ item.title | escape }}" class="img-cover" width="540" height="720" loading="lazy">
                       </a>
                     </div>
                     <div style="flex:1; display:flex; align-items:center; justify-content:center; flex-direction:column;" >

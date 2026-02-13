@@ -1,0 +1,254 @@
+{%- comment -%}
+  Featured Product Section
+  Showcases a single product on pages other than the product page.
+  Meets Shopify Theme Store requirements for:
+  - Block-based architecture
+  - @app block support
+  - Custom Liquid support
+{%- endcomment -%}
+
+{%- liquid
+  assign product = section.settings.product
+  assign current_variant = product.selected_or_first_available_variant
+-%}
+
+<section class="section featured-product color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="featured-product-{{ section.id }}">
+  <div class="container">
+    {%- if product != blank -%}
+      <div class="product-wrapper">
+        
+        {%- comment -%} Product Media Gallery {%- endcomment -%}
+        <div class="product-media">
+          <div class="product-media-list">
+            {% for media in product.media %}
+              <div class="product-media-item {% if forloop.first %}active{% endif %}" data-media-id="{{ media.id }}">
+                {% case media.media_type %}
+                  {% when 'image' %}
+                    <img 
+                      src="{{ media | image_url: width: 800 }}" 
+                      alt="{{ media.alt | escape | default: product.title }}" 
+                      class="img-cover"
+                      loading="lazy"
+                      width="800"
+                      height="800"
+                    >
+                  {% when 'external_video' %}
+                    <div class="media-video external-video">
+                      {{ media | external_video_tag: class: 'video-iframe' }}
+                    </div>
+                  {% when 'video' %}
+                    <div class="media-video">
+                      {{ media | video_tag: loop: true, controls: true, class: 'video-element' }}
+                    </div>
+                  {% when 'model' %}
+                    <div class="media-model">
+                      {{ media | model_viewer_tag: reveal: 'interaction', toggleable: true, data-model-id: media.id }}
+                    </div>
+                {% endcase %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        
+        {%- comment -%} Product Info with Blocks {%- endcomment -%}
+        <div class="product-info">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              
+              {% when 'title' %}
+                <div class="product-block product-block--title" {{ block.shopify_attributes }}>
+                  <h2 class="h2 product-title">
+                    <a href="{{ product.url }}">{{ product.title }}</a>
+                  </h2>
+                </div>
+              
+              {% when 'price' %}
+                <div class="product-block product-block--price" {{ block.shopify_attributes }}>
+                  <div class="product-price-wrapper">
+                    {%- if current_variant.compare_at_price > current_variant.price -%}
+                      <del class="product-compare-price">{{ current_variant.compare_at_price | money }}</del>
+                      <span class="product-price product-price--sale">{{ current_variant.price | money }}</span>
+                    {%- else -%}
+                      <span class="product-price">{{ current_variant.price | money }}</span>
+                    {%- endif -%}
+                    
+                    {%- if current_variant.unit_price_measurement -%}
+                      <div class="product-unit-price">
+                        {{ current_variant.unit_price | money }}/{{ current_variant.unit_price_measurement.reference_value }}{{ current_variant.unit_price_measurement.reference_unit }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              
+              {% when 'variant_picker' %}
+                <div class="product-block product-block--variants" {{ block.shopify_attributes }}>
+                  {%- unless product.has_only_default_variant -%}
+                    <variant-selects class="product-variants" data-section="{{ section.id }}" data-url="{{ product.url }}">
+                      {%- for option in product.options_with_values -%}
+                        <div class="product-option">
+                          <label class="product-option-label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+                            {{ option.name }}
+                          </label>
+                          <select id="Option-{{ section.id }}-{{ forloop.index0 }}" class="product-option-select" name="options[{{ option.name | escape }}]">
+                            {%- for value in option.values -%}
+                              <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
+                                {{ value }}
+                              </option>
+                            {%- endfor -%}
+                          </select>
+                        </div>
+                      {%- endfor -%}
+                    </variant-selects>
+                  {%- endunless -%}
+                </div>
+              
+              {% when 'quantity_selector' %}
+                <div class="product-block product-block--quantity" {{ block.shopify_attributes }}>
+                  <label class="product-option-label" for="Quantity-{{ section.id }}">Quantity</label>
+                  <div class="quantity-selector">
+                    <input type="number" id="Quantity-{{ section.id }}" name="quantity" min="1" value="1" class="qty-input">
+                  </div>
+                </div>
+              
+              {% when 'buy_buttons' %}
+                <div class="product-block product-block--buy-buttons" {{ block.shopify_attributes }}>
+                  <product-form class="product-form">
+                    {%- form 'product', product -%}
+                      <input type="hidden" name="id" value="{{ current_variant.id }}">
+                      <div class="product-form-buttons">
+                        <button type="submit" name="add" class="btn btn-primary add-to-cart-btn" {% unless current_variant.available %}disabled{% endunless %}>
+                          <span>{% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}</span>
+                        </button>
+                        {%- if block.settings.show_dynamic_checkout -%}
+                          {{ form | payment_button }}
+                        {%- endif -%}
+                      </div>
+                    {%- endform -%}
+                  </product-form>
+                </div>
+
+              {% when 'description' %}
+                <div class="product-block product-block--description" {{ block.shopify_attributes }}>
+                  <div class="product-description rte">
+                    {{ product.description | truncatewords: 30 }}
+                  </div>
+                </div>
+              
+              {% when 'social_sharing' %}
+                <div class="product-block product-block--share" {{ block.shopify_attributes }}>
+                  {% render 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media %}
+                </div>
+
+              {% when 'custom_liquid' %}
+                <div class="product-block product-block--custom" {{ block.shopify_attributes }}>
+                  {{ block.settings.custom_liquid }}
+                </div>
+
+              {% when '@app' %}
+                <div class="product-block product-block--app" {{ block.shopify_attributes }}>
+                  {% render block %}
+                </div>
+                
+            {% endcase %}
+          {% endfor %}
+        </div>
+      </div>
+    {%- else -%}
+      <div class="featured-product-placeholder">
+        <p>Please select a product to display.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured product",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1
+    },
+    {
+      "type": "quantity_selector",
+      "name": "Quantity selector",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "label": "Show dynamic checkout buttons",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "social_sharing",
+      "name": "Social sharing",
+      "limit": 1
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured product",
+      "blocks": [
+        { "type": "title" },
+        { "type": "price" },
+        { "type": "variant_picker" },
+        { "type": "quantity_selector" },
+        { "type": "buy_buttons" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -148,7 +148,7 @@ FOOTER
         </li>
 
         <li>
-        <a href="#" class="footer-link">Terms & Conditions</a>
+        <a href="#" class="footer-link">Terms and Conditions</a>
         </li>
       {%- endif -%}
 
@@ -227,7 +227,7 @@ FOOTER
         <a href="#" class="copyright-link">{{ section.settings.copyright_text | default: 'Fragrance' }}</a>.
         <span id="year"></span>
         {%- if section.settings.show_powered_by -%}
-        {{ section.settings.powered_by_text }}
+        {{ powered_by_link }}
         {%- endif -%}
 
       </p>
@@ -433,13 +433,13 @@ FOOTER
       {
         "type": "url",
         "id": "terms_link",
-        "label": "Terms & Conditions Link"
+        "label": "Terms and Conditions Link"
       },
       {
         "type": "text",
         "id": "terms_text",
         "label": "Terms Link Text",
-        "default": "Term & Condition"
+        "default": "Terms and Conditions"
       },
       {
         "type": "url",
@@ -480,10 +480,8 @@ FOOTER
         "default": true
       },
       {
-        "type": "text",
-        "id": "powered_by_text",
-        "label": "Powered By Text",
-        "default": "Powered by Shopify"
+        "label": "Show Powered by Shopify",
+        "default": true
       },
       {
         "type": "checkbox",
