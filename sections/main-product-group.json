@@ -1,0 +1,18 @@
+{
+    "name": "Product Section Group",
+    "type": "custom",
+    "sections": {
+        "main-product": {
+            "type": "main-product",
+            "settings": {}
+        },
+        "complementary-products": {
+            "type": "complementary-products",
+            "settings": {}
+        }
+    },
+    "order": [
+        "main-product",
+        "complementary-products"
+    ]
+}
