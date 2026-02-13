@@ -253,16 +253,38 @@
       }, 300));
     }
 
-    /* UI Toggles (Header) */
+    /* UI Toggles (Header & Sidebar) */
     document.addEventListener('click', function(event) {
+      var target = event.target;
+      
+      // Search Toggle
       var searchIcon = document.getElementById('search-icon');
       var searchBar = document.getElementById('search-bar');
       
-      if (searchIcon && searchIcon.contains(event.target)) {
+      if (searchIcon && searchIcon.contains(target)) {
         event.preventDefault();
         searchBar.classList.toggle('active');
-      } else if (searchBar && !searchBar.contains(event.target)) {
+        return;
+      } else if (searchBar && !searchBar.contains(target)) {
         searchBar.classList.remove('active');
+      }
+
+      // Sidebar Toggle (Nav Toggler)
+      var navToggler = target.closest('[data-nav-toggler]');
+      if (navToggler) {
+        var navbar = document.querySelector('[data-navbar]');
+        var overlay = document.querySelector('[data-overlay]');
+        if (navbar) navbar.classList.toggle('active');
+        if (overlay) overlay.classList.toggle('active');
+        return;
+      }
+
+      // Close Sidebar on link click or overlay click
+      if (target.closest('[data-nav-link]') || target.closest('[data-overlay]')) {
+        var navbar = document.querySelector('[data-navbar]');
+        var overlay = document.querySelector('[data-overlay]');
+        if (navbar) navbar.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
       }
     });
 
