@@ -100,55 +100,62 @@ addEventOnElem(navbarLinks, "click", closeNavbar)
 
 
 /**
- * header-sticky
+ * sticky-header & back-to-top
  */
 
-const header = document.querySelector("[data-header]")
-const backTopBtn = document.querySelector("[data-back-top-btn]")
-const headerActions = document.getElementById('headerActions')
-const headerActive = function () {
-  if (window.scrollY > 150) {
+const header = document.querySelector("[data-header]");
+const backTopBtn = document.querySelector("[data-back-top-btn]");
+
+let lastScrolledPos = 0;
+let isScrolling = false;
+
+const handleScroll = function () {
+  const currentScrollY = window.scrollY;
+
+  // Header Active (Background & Back-to-top)
+  if (currentScrollY > 150) {
     header.classList.add("active");
     backTopBtn.classList.add("active");
-
   } else {
     header.classList.remove("active");
     backTopBtn.classList.remove("active");
   }
-}
 
-addEventOnElem(window, "scroll", headerActive)
-
-let lastScrolledPos = 0;
-
-const headerSticky = function () {
-  if (lastScrolledPos >= window.scrollY) {
-    header.classList.remove("header-hide")
+  // Header Sticky (Hide on scroll down, show on scroll up)
+  if (lastScrolledPos >= currentScrollY) {
+    header.classList.remove("header-hide");
   } else {
-    header.classList.add("header-hide")
+    header.classList.add("header-hide");
   }
-  lastScrolledPos = window.scrollY;
-}
 
-addEventOnElem(window, "scroll", headerSticky)
+  lastScrolledPos = currentScrollY;
+  isScrolling = false;
+};
 
+// Throttle scroll events using requestAnimationFrame
+window.addEventListener("scroll", function () {
+  if (!isScrolling) {
+    window.requestAnimationFrame(handleScroll);
+    isScrolling = true;
+  }
+}, { passive: true });
 
+/**scroll reveal effect using IntersectionObserver (Replaces getBoundingClientRect) */
 
-/**scroll reveal effect */
+const sections = document.querySelectorAll("[data-section]");
 
-const sections = document.querySelectorAll("[data-section]")
-
-const scrollReveal = function () {
-  for (let i = 0; i < sections.length; i++) {
-    if (sections[i].getBoundingClientRect().top < window.innerHeight / 2) {
-      sections[i].classList.add("active")
+const revealObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("active");
+      observer.unobserve(entry.target); // Stop observing once revealed
     }
-  }
-}
+  });
+}, {
+  threshold: 0.2 // Trigger when 20% of the section is visible
+});
 
-scrollReveal();
-
-addEventOnElem(window, "scroll", scrollReveal)
+sections.forEach(section => revealObserver.observe(section));
 
 
 
@@ -253,12 +260,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+// Initializations
 document.addEventListener("DOMContentLoaded", function () {
-  AOS.init({
-    duration: 800, // Animation duration
-    easing: "ease-in-out", // Easing function
-    once: true, // Whether animation should happen only once
-  });
+  // Initialize AOS if available (Avoid duplicate check)
+  if (typeof AOS !== 'undefined') {
+    AOS.init({
+      duration: 800,
+      easing: "ease-in-out",
+      once: true,
+      offset: 100
+    });
+  }
 });
 
 
