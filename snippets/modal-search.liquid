@@ -3,7 +3,7 @@
     <span class="close-modal" onclick="closeSearchModal()">&times;</span>
     <div class="container">
       <h2 class="h2 section-title text-center">Search</h2>
-      <predictive-search search-open>
+      <predictive-search search-open data-loading-text="{{ 'accessibility.loading' | t }}">
         <form action="{{ routes.search_url }}" method="get" role="search" class="search">
           <div class="field">
             <input
@@ -31,7 +31,7 @@
           </div>
           <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
             <div class="predictive-search__loading-state">
-              <span class="spinner"></span>
+              {% render 'loading-spinner', class: 'predictive-search__loading-state' %}
             </div>
           </div>
           <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
