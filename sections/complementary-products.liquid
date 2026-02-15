@@ -1,7 +1,7 @@
 <div class="complementary-products section-{{ section.id }} color-scheme-{{ section.settings.color_scheme }}">
   {% if product.id %}
     <product-recommendations
-      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.product_limit }}&intent=complementary"
+      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.product_limit }}&intent=related"
     >
       {% if recommendations.performed and recommendations.products_count > 0 %}
         <div class="container">
