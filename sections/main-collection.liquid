@@ -701,6 +701,7 @@
       .then(data => {     
         openCart(); 
         fetchCart();
+        if (window.updateCartCount) window.updateCartCount(); // Update header cart count
         setTimeout(function() {
           loader.style.display = 'none';
           cartContent.style.display = 'block';
