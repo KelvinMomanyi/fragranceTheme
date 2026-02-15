@@ -39,13 +39,21 @@
 
         {% render 'icon-fragrance', icon: 'search' %}
       </div> {% endcomment %}
-      <div class="header-action"  id="headerActions">
-        <a href="#" class="header-action-btn" aria-label="Search" id="search-icon">
+      <div class="header-action" id="headerActions">
+        <button class="header-action-btn" aria-label="Search" onclick="openSearchModal()">
           {% render 'icon-fragrance', icon: 'search' %}
-        </a> 
-        <a href="/account" class="header-action-btn" aria-label="User account">
-          {% render 'icon-fragrance', icon: 'person' %}
-        </a>
+        </button> 
+        {% if shop.customer_accounts_enabled %}
+          {% if customer %}
+            <a href="{{ routes.account_url }}" class="header-action-btn" aria-label="Account">
+              {% render 'icon-fragrance', icon: 'person' %}
+            </a>
+          {% else %}
+            <button class="header-action-btn" aria-label="Login" onclick="openLoginModal()">
+              {% render 'icon-fragrance', icon: 'person' %}
+            </button>
+          {% endif %}
+        {% endif %}
         <button class="header-action-btn" aria-label="Cart" onclick="openCart()">
           {% render 'icon-fragrance', icon: 'bag-handle' %}
           <span class="btn-badge">0</span>
@@ -55,60 +63,13 @@
 
     </div>
 
-    <!-- SEARCH BAR TOP -->
-  
-      <div id="search-bar" class="search-bar">
-        <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
-        <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
-        {{ 'component-predictive-search.css' | asset_url | stylesheet_tag }}
-        
-        <div class="container">
-          <predictive-search search-open data-loading-text="{{ 'accessibility.loading' | t }}">
-            <form action="{{ routes.search_url }}" method="get" role="search" class="search">
-              <div class="field">
-                <input
-                  class="search__input field__input"
-                  id="Search-In-Modal"
-                  type="search"
-                  name="q"
-                  value="{{ search.terms | escape }}"
-                  placeholder="Search for products..."
-                  role="combobox"
-                  aria-expanded="false"
-                  aria-owns="predictive-search-results"
-                  aria-controls="predictive-search-results"
-                  aria-haspopup="listbox"
-                  aria-autocomplete="list"
-                  autocorrect="off"
-                  autocomplete="off"
-                  autocapitalize="off"
-                  spellcheck="false"
-                  style="width: 100%; padding: 10px; border: none; border-bottom: 1px solid #ccc;"
-                >
-                <input name="options[prefix]" type="hidden" value="last">
-                <button type="reset" class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}" aria-label="{{ 'general.search.reset' | t }}">
-                  <svg class="icon icon-close" aria-hidden="true" focusable="false">
-                    <use href="#icon-close">
-                  </svg>
-                </button>
-              </div>
-              
-              <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
-                <div class="predictive-search__loading-state">
-                  {% render 'loading-spinner', class: 'predictive-search__loading-state' %}
-                </div>
-              </div>
+    <!-- Modals -->
+    {% render 'modal-search' %}
+    {% render 'modal-login' %}
 
-              <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
-              <span class="hidden" data-predictive-search-live-region-count-value>
-                {%- if search.results_count == 0 -%}
-                  {{ 'templates.search.no_results' | t: terms: search.terms }}
-                {%- endif -%}
-              </span>
-            </form>
-          </predictive-search>
-        </div>
-     </div>
+    <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {{ 'component-predictive-search.css' | asset_url | stylesheet_tag }}
   </header>
 
 
@@ -267,25 +228,40 @@
   (function() {
     'use strict';
 
-    /* Consolidated search handler - debounced */
-    /* Predictive search is now handled by predictive-search.js */
+    /* Modal Actions */
+    window.openSearchModal = function() {
+      document.getElementById('search-modal').style.display = 'block';
+      document.getElementById('Search-In-Modal').focus();
+    };
 
-    /* UI Toggles (Header & Sidebar) */
+    window.closeSearchModal = function() {
+      document.getElementById('search-modal').style.display = 'none';
+    };
+
+    window.openLoginModal = function() {
+      document.getElementById('login-modal').style.display = 'block';
+    };
+
+    window.closeLoginModal = function() {
+      document.getElementById('login-modal').style.display = 'none';
+    };
+
+    // Close modals on outside click
+    window.onclick = function(event) {
+      var searchModal = document.getElementById('search-modal');
+      var loginModal = document.getElementById('login-modal');
+      if (event.target == searchModal) {
+        searchModal.style.display = "none";
+      }
+      if (event.target == loginModal) {
+        loginModal.style.display = "none";
+      }
+    }
+
+    /* UI Toggles (Sidebar) */
     document.addEventListener('click', function(event) {
       var target = event.target;
       
-      // Search Toggle
-      var searchIcon = document.getElementById('search-icon');
-      var searchBar = document.getElementById('search-bar');
-      
-      if (searchIcon && searchIcon.contains(target)) {
-        event.preventDefault();
-        searchBar.classList.toggle('active');
-        return;
-      } else if (searchBar && !searchBar.contains(target)) {
-        searchBar.classList.remove('active');
-      }
-
       // Sidebar Toggle (Nav Toggler)
       var navToggler = target.closest('[data-nav-toggler]');
       if (navToggler) {
@@ -305,11 +281,6 @@
       }
     });
 
-    window.addEventListener('scroll', function() {
-      var searchBar = document.getElementById('search-bar');
-      if (searchBar) searchBar.classList.remove('active');
-    }, { passive: true });
-
     /* Cart State */
     window.updateCartCount = function() {
       fetch('/cart.js')
@@ -323,11 +294,11 @@
     document.addEventListener('DOMContentLoaded', updateCartCount);
     document.addEventListener('cart:updated', updateCartCount);
 
-    /* Cart Modal Actions */
+    /* Cart Modal Actions - uses the existing myModal2 */
     window.openCart = function() {
       var modal = document.getElementById('myModal2');
       if (modal) {
-        modal.style.display = 'flex';
+        modal.style.display = 'block'; // Open cart drawer
         if (typeof fetchCart === 'function') fetchCart();
       }
     };
