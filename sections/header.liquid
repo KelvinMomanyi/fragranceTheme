@@ -231,7 +231,9 @@
     /* Modal Actions */
     window.openSearchModal = function() {
       document.getElementById('search-modal').style.display = 'block';
-      document.getElementById('Search-In-Modal').focus();
+      setTimeout(() => {
+        document.getElementById('Search-In-Modal').focus();
+      }, 100);
     };
 
     window.closeSearchModal = function() {

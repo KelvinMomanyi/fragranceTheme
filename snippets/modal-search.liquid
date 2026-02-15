@@ -1,11 +1,19 @@
-<div id="search-modal" class="modal">
+<div id="search-modal" class="modal search-modal">
   <div class="modal-content search-modal-content">
-    <span class="close-modal" onclick="closeSearchModal()">&times;</span>
-    <div class="container">
-      <h2 class="h2 section-title text-center">Search</h2>
+    <div class="search-modal__header">
+      <h2 class="visually-hidden">Search</h2>
+      <button type="button" class="close-modal-btn" onclick="closeSearchModal()" aria-label="Close search">
+        {% render 'icon-fragrance', icon: 'close' %}
+      </button>
+    </div>
+    
+    <div class="search-modal__form-wrapper">
       <predictive-search search-open data-loading-text="{{ 'accessibility.loading' | t }}">
-        <form action="{{ routes.search_url }}" method="get" role="search" class="search">
-          <div class="field">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="predictive-search-form">
+          <div class="predictive-search__field">
+            <span class="predictive-search__icon">
+              {% render 'icon-fragrance', icon: 'search' %}
+            </span>
             <input
               class="search__input field__input"
               id="Search-In-Modal"
@@ -25,11 +33,9 @@
               spellcheck="false"
             >
             <input name="options[prefix]" type="hidden" value="last">
-            <button class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
-              {% render 'icon-fragrance', icon: 'search' %}
-            </button>
           </div>
-          <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+          
+          <div class="predictive-search-results-wrapper" tabindex="-1" data-predictive-search>
             <div class="predictive-search__loading-state">
               {% render 'loading-spinner', class: 'predictive-search__loading-state' %}
             </div>

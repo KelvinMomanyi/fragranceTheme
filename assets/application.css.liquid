@@ -1902,7 +1902,7 @@ body.template-collection main > .shopify-section:nth-child(2) {
 
 /*
    ========================================= 
-   SEARCH & LOGIN MODAL STYLES 
+   SEARCH & LOGIN MODAL STYLES (DAWN ALIGNED) 
    =========================================
 */
 .modal {
@@ -1913,86 +1913,109 @@ body.template-collection main > .shopify-section:nth-child(2) {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
   animation: fadeIn 0.3s;
 }
 
 .modal-content {
   background-color: var(--white);
-  margin: 10% auto;
-  padding: 40px;
-  border: 1px solid #888;
-  width: 90%;
-  max-width: 600px;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
   position: relative;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  animation: slideIn 0.3s;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
 }
 
+/* Search Modal Specific */
 .search-modal-content {
-  max-width: 800px;
-  margin-top: 15vh;
+  height: auto;
+  max-height: 100vh;
+  padding-bottom: 20px;
 }
 
+@media screen and (min-width: 750px) {
+  .search-modal-content {
+    width: 60%;
+    margin-top: 10vh;
+    border-radius: 8px;
+    max-height: 80vh;
+  }
+}
+
+.search-modal__header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 20px;
+}
+
+.close-modal-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.close-modal-btn:hover {
+  transform: scale(1.1);
+}
+
+.search-modal__form-wrapper {
+  padding: 0 40px 20px;
+}
+
+.predictive-search__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--light-gray);
+  padding-bottom: 5px;
+}
+
+.predictive-search__icon {
+  position: absolute;
+  left: 0;
+  color: var(--dark-gray);
+  pointer-events: none;
+}
+
+.predictive-search__field input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: none;
+  font-size: 1.4rem;
+  background: transparent;
+  outline: none;
+}
+
+.predictive-search-results-wrapper {
+  margin-top: 10px;
+  max-height: 50vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/* Login Modal Specific */
 .login-modal-content {
   max-width: 450px;
-  margin-top: 15vh;
+  margin: 15vh auto;
+  border-radius: 8px;
+  padding: 40px;
 }
 
-.close-modal {
-  color: #aaa;
-  position: absolute;
-  top: 15px;
-  right: 25px;
-  font-size: 35px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: color 0.2s;
-  line-height: 1;
-}
-
-.close-modal:hover,
-.close-modal:focus {
-  color: var(--black);
-  text-decoration: none;
-}
-
-.modal-header {
-  margin-bottom: 2rem;
-}
-
-.modal-body .field {
-  margin-bottom: 1.5rem;
-}
-
-.modal-body input {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid var(--light-gray);
-  border-radius: 4px;
-  font-family: inherit;
-}
-
-.forgot-password {
-  display: block;
+.modal-header h2 {
   margin-bottom: 20px;
-  font-size: 0.9em;
-  color: var(--dark-gray);
-  text-decoration: underline;
 }
 
-.create-account {
-  margin-top: 20px;
-  font-size: 0.95em;
-}
-
-.btn-full {
-  width: 100%;
-}
-
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -2004,38 +2027,11 @@ body.template-collection main > .shopify-section:nth-child(2) {
 
 @keyframes slideIn {
   from {
-    transform: translateY(-50px);
+    transform: translateY(-30px);
     opacity: 0;
   }
   to {
     transform: translateY(0);
     opacity: 1;
   }
-}
-
-/* Predictive Search Style Overrides for Modal */
-#search-modal .predictive-search {
-  margin-top: 20px;
-  max-height: 50vh;
-  overflow-y: auto;
-}
-
-#search-modal .field {
-  display: flex;
-  position: relative;
-}
-
-#search-modal .search__input {
-  padding-right: 50px;
-  font-size: 1.2rem;
-}
-
-#search-modal .search__button {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
 }
