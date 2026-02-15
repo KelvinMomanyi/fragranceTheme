@@ -57,9 +57,53 @@
     <!-- SEARCH BAR TOP -->
   
       <div id="search-bar" class="search-bar">
+        <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+        {{ 'component-predictive-search.css' | asset_url | stylesheet_tag }}
+        
         <div class="container">
-          <input type="text" id="search-input" placeholder="Search for products..." aria-label="Search">
-          <div id="search-results"></div>
+          <predictive-search search-open>
+            <form action="{{ routes.search_url }}" method="get" role="search" class="search">
+              <div class="field">
+                <input
+                  class="search__input field__input"
+                  id="Search-In-Modal"
+                  type="search"
+                  name="q"
+                  value="{{ search.terms | escape }}"
+                  placeholder="Search for products..."
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-owns="predictive-search-results"
+                  aria-controls="predictive-search-results"
+                  aria-haspopup="listbox"
+                  aria-autocomplete="list"
+                  autocorrect="off"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  style="width: 100%; padding: 10px; border: none; border-bottom: 1px solid #ccc;"
+                >
+                <input name="options[prefix]" type="hidden" value="last">
+                <button type="reset" class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}" aria-label="{{ 'general.search.reset' | t }}">
+                  <svg class="icon icon-close" aria-hidden="true" focusable="false">
+                    <use href="#icon-close">
+                  </svg>
+                </button>
+              </div>
+              
+              <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+                <div class="predictive-search__loading-state">
+                  {% render 'loading-spinner', class: 'predictive-search__loading-state' %}
+                </div>
+              </div>
+
+              <span class="hidden" data-predictive-search-live-region-count-value>
+                {%- if search.results_count == 0 -%}
+                  {{ 'templates.search.no_results' | t: terms: search.terms }}
+                {%- endif -%}
+              </span>
+            </form>
+          </predictive-search>
         </div>
      </div>
   </header>
@@ -221,37 +265,7 @@
     'use strict';
 
     /* Consolidated search handler - debounced */
-    var searchInput = document.getElementById('search-input');
-    if (searchInput) {
-      searchInput.addEventListener('input', FragranceUtils.debounce(function() {
-        var query = this.value.trim();
-        var searchResultsContainer = document.getElementById('search-results');
-        if (!searchResultsContainer) return;
-
-        if (query.length > 2) {
-          fetch('/search/suggest.json?q=' + encodeURIComponent(query) + '&resources[type]=product')
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-              var results = data.resources.results.products;
-              var resultsHTML = '';
-              if (results.length) {
-                results.forEach(function(product) {
-                  resultsHTML += `<div class="search-result-item"><a href="${product.url}"><img src="${product.image}" alt="${product.title}" loading="lazy"><div><p>${product.title}</p><p>${product.price}</p></div></a></div>`;
-                });
-              } else {
-                resultsHTML = '<p>No products found</p>';
-              }
-              searchResultsContainer.innerHTML = resultsHTML;
-            })
-            .catch(function(error) {
-              console.error('Error fetching search results:', error);
-              searchResultsContainer.innerHTML = '<p>There was an error retrieving search results.</p>';
-            });
-        } else {
-          searchResultsContainer.innerHTML = '';
-        }
-      }, 300));
-    }
+    /* Predictive search is now handled by predictive-search.js */
 
     /* UI Toggles (Header & Sidebar) */
     document.addEventListener('click', function(event) {

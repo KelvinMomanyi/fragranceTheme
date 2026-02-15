@@ -31,7 +31,7 @@
         {% unless current_collection.image %}
           <h1 class="h2 section-title">{{ current_collection.title }}</h1>
         {% endunless %}
-        {% render 'faceted-filters' %}
+        {% render 'facets', results: current_collection, enable_filtering: true, enable_sorting: true, filter_type: 'vertical', paginate: paginate %}
       </div>
       
       {%- comment -%} Collection Description (Required) {%- endcomment -%}
@@ -41,8 +41,9 @@
         </div>
       {% endif %}
             
-            <div class="collection-container">
-                <div class="collection">
+            <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+            <div class="collection-container" id="ProductGridContainer">
+                <div class="collection" id="product-grid" data-id="{{ section.id }}">
                     {% if section.settings.selected_collection != blank %}
                         {% assign selected_collection = collections[section.settings.selected_collection] %}
                         {% for product in selected_collection.products %}
