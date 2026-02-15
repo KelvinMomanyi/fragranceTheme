@@ -1,126 +1,31 @@
 {% comment %}
-  Pickup Availability Component
-  Shows store pickup availability for products
-  Must be included on product pages
+    Renders the pickup availability for a product variant.
+    Accepts:
+    - product: {Object} Product object.
+    - variant: {Object} Product variant object.
+
+    Usage:
+    {% render 'pickup-availability', product: product, variant: variant %}
 {% endcomment %}
 
-{% if product.selected_or_first_available_variant.available and product.selected_or_first_available_variant.store_availabilities.size > 0 %}
-  <div class="pickup-availability">
-    <h4 class="pickup-availability__title">
-      <svg class="pickup-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-        <path d="M10 2C7.24 2 5 4.24 5 7c0 4.5 5 11 5 11s5-6.5 5-11c0-2.76-2.24-5-5-5zm0 7c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" fill="currentColor"/>
-      </svg>
-      Pickup available
-    </h4>
-    
-    <div class="pickup-availability__list">
-      {% for availability in product.selected_or_first_available_variant.store_availabilities limit: 3 %}
-        <div class="pickup-availability__item">
-          <div class="pickup-availability__location">
-            <strong>{{ availability.location.name }}</strong>
-          </div>
-          {% if availability.pick_up_time %}
-            <div class="pickup-availability__time">
-              Usually ready in {{ availability.pick_up_time }}
-            </div>
-          {% endif %}
-          {% if availability.location.address %}
-            <div class="pickup-availability__address">
-              {{ availability.location.address.street }}, {{ availability.location.address.city }} {{ availability.location.address.zip }}
-            </div>
-          {% endif %}
+{%- assign pick_up_availabilities = variant.store_availabilities | where: 'pick_up_enabled', true -%}
+
+<pickup-availability
+  class="product__pickup-availability"
+  {% if variant.available and pick_up_availabilities.size > 0 %} available{% endif %}
+  data-root-url="{{ routes.root_url }}"
+  data-variant-id="{{ variant.id }}"
+  data-product-page-color-scheme="color-{{ section.settings.color_scheme }}"
+>
+  <template>
+    <pickup-availability-preview class="pickup-availability-preview">
+        <img src="{{ 'icon-unavailable.svg' | asset_url }}" aria-hidden="true" width="20" height="20" alt="">
+        <div class="pickup-availability-info">
+            <p class="caption-large">{{ 'products.product.pickup_availability.unavailable' | t }}</p>
+            <button class="pickup-availability-button link link--text underlined-link">{{ 'products.product.pickup_availability.refresh' | t }}</button>
         </div>
-      {% endfor %}
-    </div>
+    </pickup-availability-preview>
+  </template>
+</pickup-availability>
 
-    {% if product.selected_or_first_available_variant.store_availabilities.size > 3 %}
-      <button type="button" class="pickup-availability__toggle" onclick="this.parentElement.querySelector('.pickup-availability__all').classList.toggle('hidden')">
-        View more locations
-      </button>
-      
-      <div class="pickup-availability__all hidden">
-        {% for availability in product.selected_or_first_available_variant.store_availabilities offset: 3 %}
-          <div class="pickup-availability__item">
-            <div class="pickup-availability__location">
-              <strong>{{ availability.location.name }}</strong>
-            </div>
-            {% if availability.pick_up_time %}
-              <div class="pickup-availability__time">
-                Usually ready in {{ availability.pick_up_time }}
-              </div>
-            {% endif %}
-            {% if availability.location.address %}
-              <div class="pickup-availability__address">
-                {{ availability.location.address.street }}, {{ availability.location.address.city }} {{ availability.location.address.zip }}
-              </div>
-            {% endif %}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-  </div>
-{% endif %}
-
-<style>
-  .pickup-availability {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px 0;
-    background: #f9f9f9;
-  }
-
-  .pickup-availability__title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 15px;
-    font-size: 1.1em;
-  }
-
-  .pickup-icon {
-    color: #008060;
-  }
-
-  .pickup-availability__list {
-    margin-bottom: 10px;
-  }
-
-  .pickup-availability__item {
-    padding: 12px 0;
-    border-bottom: 1px solid #e0e0e0;
-  }
-
-  .pickup-availability__item:last-child {
-    border-bottom: none;
-  }
-
-  .pickup-availability__location {
-    margin-bottom: 5px;
-  }
-
-  .pickup-availability__time {
-    color: #008060;
-    font-size: 0.9em;
-    margin-bottom: 3px;
-  }
-
-  .pickup-availability__address {
-    color: #666;
-    font-size: 0.85em;
-  }
-
-  .pickup-availability__toggle {
-    background: none;
-    border: none;
-    color: #111;
-    text-decoration: underline;
-    cursor: pointer;
-    padding: 10px 0;
-    font-size: 0.9em;
-  }
-
-  .pickup-availability__all.hidden {
-    display: none;
-  }
-</style>
+<script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
