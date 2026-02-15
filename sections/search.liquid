@@ -43,38 +43,49 @@
           <p class="results-count">{{ 'general.search.results_count' | t: count: search.results_count, terms: search.terms }}</p>
           
           {%- paginate search.results by 24 -%}
-            <div class="search-results-grid">
-              {%- for item in search.results -%}
-                <div class="search-grid-item">
-                  <a href="{{ item.url }}" class="search-item-link">
-                    <div class="search-item-image">
-                      {%- if item.image -%}
-                        <img src="{{ item.image | image_url: width: 400 }}" alt="{{ item.image.alt | escape }}" loading="lazy">
-                      {%- elsif item.object_type == 'article' and item.image -%}
-                         <img src="{{ item.image | image_url: width: 400 }}" alt="{{ item.image.alt | escape }}" loading="lazy">
-                      {%- else -%}
-                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                      {%- endif -%}
-                      <span class="item-type-badge">{{ item.object_type | capitalize }}</span>
-                    </div>
-                    <div class="search-item-info">
-                      <h3 class="search-item-title">{{ item.title }}</h3>
-                      {%- if item.object_type == 'product' -%}
-                        <p class="search-item-price">{{ item.price | money }}</p>
-                      {%- else -%}
-                        <p class="search-item-excerpt">{{ item.content | strip_html | truncatewords: 20 }}</p>
-                      {%- endif -%}
-                    </div>
-                  </a>
-                </div>
-              {%- endfor -%}
-            </div>
+            <div class="facets-vertical page-width">
+              {%- if search.results_count > 0 -%}
+                <aside aria-labelledby="verticalTitle" class="facets-wrapper" id="main-search-filters" data-id="{{ section.id }}">
+                  {% render 'facets', results: search, enable_filtering: true, enable_sorting: true, filter_type: 'vertical', paginate: paginate %}
+                </aside>
+              {%- endif -%}
 
-            {%- if paginate.pages > 1 -%}
-              <div class="pagination">
-                {{ paginate | default_pagination }}
+              <div class="product-grid-container" id="ProductGridContainer">
+                <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+                <div class="search-results-grid" id="product-grid" data-id="{{ section.id }}">
+                  {%- for item in search.results -%}
+                    <div class="search-grid-item">
+                      <a href="{{ item.url }}" class="search-item-link">
+                        <div class="search-item-image">
+                          {%- if item.image -%}
+                            <img src="{{ item.image | image_url: width: 400 }}" alt="{{ item.image.alt | escape }}" loading="lazy">
+                          {%- elsif item.object_type == 'article' and item.image -%}
+                             <img src="{{ item.image | image_url: width: 400 }}" alt="{{ item.image.alt | escape }}" loading="lazy">
+                          {%- else -%}
+                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                          {%- endif -%}
+                          <span class="item-type-badge">{{ item.object_type | capitalize }}</span>
+                        </div>
+                        <div class="search-item-info">
+                          <h3 class="search-item-title">{{ item.title }}</h3>
+                          {%- if item.object_type == 'product' -%}
+                            <p class="search-item-price">{{ item.price | money }}</p>
+                          {%- else -%}
+                            <p class="search-item-excerpt">{{ item.content | strip_html | truncatewords: 20 }}</p>
+                          {%- endif -%}
+                        </div>
+                      </a>
+                    </div>
+                  {%- endfor -%}
+                </div>
+
+                {%- if paginate.pages > 1 -%}
+                  <div class="pagination">
+                    {{ paginate | default_pagination }}
+                  </div>
+                {%- endif -%}
               </div>
-            {%- endif -%}
+            </div>
           {%- endpaginate -%}
         {%- endif -%}
       </div>
