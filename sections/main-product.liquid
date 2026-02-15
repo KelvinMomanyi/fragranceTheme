@@ -45,7 +45,10 @@
       }
     }
   </script>
+  </script>
 {% endif %}
+
+{{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
 
 <section class="section product-section color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="product-{{ product.id }}">
   <div class="container">
