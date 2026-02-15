@@ -5,9 +5,9 @@
 <section class="section featured" aria-label="featured post">
   <div class="container">
 
-    <p class="section-subtitle">
-     {{ section.settings.mainBlog_text }}
-    </p>
+    <h1 class="section-title">
+      {{ blog.title | escape }}
+    </h1>
 
     {%- paginate blog.articles by 12 -%}
       <ul class="blog-grid">
