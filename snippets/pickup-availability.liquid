@@ -19,7 +19,7 @@
 >
   <template>
     <pickup-availability-preview class="pickup-availability-preview">
-        <img src="{{ 'icon-unavailable.svg' | asset_url }}" aria-hidden="true" width="20" height="20" alt="">
+        {% render 'icon-fragrance', icon: 'close-circle' %}
         <div class="pickup-availability-info">
             <p class="caption-large">{{ 'products.product.pickup_availability.unavailable' | t }}</p>
             <button class="pickup-availability-button link link--text underlined-link">{{ 'products.product.pickup_availability.refresh' | t }}</button>
@@ -27,5 +27,14 @@
     </pickup-availability-preview>
   </template>
 </pickup-availability>
+
+{%- if request.design_mode -%}
+  <div style="padding: 1rem; border: 1px dashed #ccc; margin-top: 1rem;">
+    <p style="margin: 0; font-size: 0.9rem; color: #666;">
+      <strong>Pickup Availability Block</strong><br>
+      This block will only appear on the live site if the product has inventory at a location with local pickup enabled.
+    </p>
+  </div>
+{%- endif -%}
 
 <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
