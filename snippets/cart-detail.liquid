@@ -648,7 +648,7 @@
           })
           .then(response => response.json())
           .then(data => {     
-            openCart(); 
+            // openCart(); // Disabled auto-open
             fetchCart();
             if (window.updateCartCount) window.updateCartCount();
             setTimeout(function() {
