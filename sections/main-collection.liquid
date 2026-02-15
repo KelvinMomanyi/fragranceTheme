@@ -31,7 +31,7 @@
         {% unless current_collection.image %}
           <h1 class="h2 section-title">{{ current_collection.title }}</h1>
         {% endunless %}
-        {% render 'facets', results: current_collection, enable_filtering: true, enable_sorting: true, filter_type: 'vertical', paginate: paginate %}
+
       </div>
       
       {%- comment -%} Collection Description (Required) {%- endcomment -%}
@@ -41,9 +41,17 @@
         </div>
       {% endif %}
             
-            <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
-            <div class="collection-container" id="ProductGridContainer">
-                <div class="collection" id="product-grid" data-id="{{ section.id }}">
+      {% paginate current_collection.products by 24 %}
+      <div class="facets-vertical page-width">
+        {%- if current_collection.all_products_count > 0 -%}
+          <aside aria-labelledby="verticalTitle" class="facets-wrapper" id="main-collection-filters" data-id="{{ section.id }}">
+            {% render 'facets', results: current_collection, enable_filtering: true, enable_sorting: true, filter_type: 'vertical', paginate: paginate %}
+          </aside>
+        {%- endif -%}
+
+        <div class="product-grid-container" id="ProductGridContainer">
+          <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+          <div class="collection" id="product-grid" data-id="{{ section.id }}">
                     {% if section.settings.selected_collection != blank %}
                         {% assign selected_collection = collections[section.settings.selected_collection] %}
                         {% for product in selected_collection.products %}
@@ -207,10 +215,7 @@
                   </a>
                 </div>
               {% endif %}
-            </div>
-            
             {%- comment -%} Pagination (Required) {%- endcomment -%}
-            {% paginate current_collection.products by 24 %}
               {% if paginate.pages > 1 %}
                 <nav class="pagination" aria-label="Pagination">
                   <ul class="pagination-list">
@@ -254,9 +259,10 @@
                   </ul>
                 </nav>
               {% endif %}
-            {% endpaginate %}
-            
           </div>
+        </div>
+      {% endpaginate %}
+    </div>
       </section> 
 </div>  
  <style>
