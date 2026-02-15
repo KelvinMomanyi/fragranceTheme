@@ -695,9 +695,9 @@
       var loader = myModal2.querySelector('#loader');
       var cartContent = myModal2.querySelector('#cart-content');
     
-      myModal2.style.display = 'block';
-      loader.style.display = 'block';
-      cartContent.style.display = 'none';
+      // myModal2.style.display = 'block'; // Disabled auto-open
+      // loader.style.display = 'block'; // Disabled auto-open
+      // cartContent.style.display = 'none'; // Disabled auto-open
     
       fetch(window.Shopify.routes.root + 'cart/add.js', {
         method: 'POST',
