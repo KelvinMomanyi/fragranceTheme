@@ -126,7 +126,7 @@
     </div>
     <nav class="navbar">
       <ul class="navbar-list">
-        {% assign nav_links = linklists.main-menu.links %} <!-- Replace 'main-menu' with your menu handle -->
+        {% assign nav_links = linklists[section.settings.main_menu_linklist].links %}
         {% for link in nav_links %}
           <li class="navbar-item {% if link.links != blank %}has-dropdown{% endif %}">
             <a href="{{ link.url }}" class="navbar-link" data-nav-link>
