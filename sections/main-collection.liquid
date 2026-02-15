@@ -79,11 +79,14 @@
                                  {% render 'icon-fragrance', icon: 'add' %}
                                </button>
                              </li>
-                             <li>
-                             <button class="card-action-btn" aria-label="view cart" title="view cart">
-                             {% render 'icon-fragrance', icon: 'bag-handle' %}
-                         </button>
-                       </li>
+                              <li>
+                              <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
+                                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                                <button type="submit" class="card-action-btn" aria-label="add to cart">
+                                  {% render 'icon-fragrance', icon: 'bag-handle' %}
+                                </button>
+                              </form>
+                            </li>
                        <li>
                          <button class="card-action-btn" aria-label="add to wishlist" title="add to wishlist">
                            {% render 'icon-fragrance', icon: 'heart' %}
@@ -154,10 +157,13 @@
                                </button>
                              </li>
                              <li>
-                             <button class="card-action-btn" aria-label="view cart" title="view cart">
-                             {% render 'icon-fragrance', icon: 'bag-handle' %}
-                         </button>
-                       </li>
+                             <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
+                               <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                               <button type="submit" class="card-action-btn" aria-label="add to cart">
+                                 {% render 'icon-fragrance', icon: 'bag-handle' %}
+                               </button>
+                             </form>
+                           </li>
                        <li>
                          <button class="card-action-btn" aria-label="add to wishlist" title="add to wishlist">
                            {% render 'icon-fragrance', icon: 'heart' %}
