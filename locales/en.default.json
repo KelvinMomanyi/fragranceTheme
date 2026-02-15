@@ -7,6 +7,12 @@
     "search": {
       "search": "Search",
       "reset": "Clear search term"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "page": "Page {{ number }}",
+      "next": "Next page",
+      "previous": "Previous page"
     }
   },
   "accessibility": {
