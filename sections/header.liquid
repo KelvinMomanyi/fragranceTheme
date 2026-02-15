@@ -62,7 +62,7 @@
         {{ 'component-predictive-search.css' | asset_url | stylesheet_tag }}
         
         <div class="container">
-          <predictive-search search-open>
+          <predictive-search search-open data-loading-text="{{ 'accessibility.loading' | t }}">
             <form action="{{ routes.search_url }}" method="get" role="search" class="search">
               <div class="field">
                 <input
@@ -98,6 +98,7 @@
                 </div>
               </div>
 
+              <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
               <span class="hidden" data-predictive-search-live-region-count-value>
                 {%- if search.results_count == 0 -%}
                   {{ 'templates.search.no_results' | t: terms: search.terms }}
