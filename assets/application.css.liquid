@@ -1901,9 +1901,10 @@ body.template-collection main > .shopify-section:nth-child(2) {
 
 
 /*
+
    ========================================= 
    SEARCH & LOGIN MODAL STYLES (DAWN ALIGNED) 
-   =========================================
+   ========================================= 
 */
 .modal {
   display: none;
@@ -1987,13 +1988,30 @@ body.template-collection main > .shopify-section:nth-child(2) {
   pointer-events: none;
 }
 
-.predictive-search__field input {
-  width: 100%;
-  padding: 12px 12px 12px 40px;
+.predictive-search__field input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.predictive-search__reset-button {
+  background: none;
   border: none;
-  font-size: 1.4rem;
-  background: transparent;
-  outline: none;
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dark-gray);
+  position: absolute;
+  right: 0;
+}
+
+.predictive-search__reset-button.hidden {
+  display: none;
+}
+
+.predictive-search__reset-button svg {
+  width: 15px;
+  height: 15px;
 }
 
 .predictive-search-results-wrapper {
