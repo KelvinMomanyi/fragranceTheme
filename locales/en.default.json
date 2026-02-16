@@ -99,6 +99,10 @@
       "filter_and_sort": "Filter and sort",
       "filter_by_label": "Filter:",
       "filter_button": "Filter",
+      "availability": "Product availability",
+      "price_range": "Price range",
+      "min_price_label": "Minimum price",
+      "max_price_label": "Maximum price",
       "filters_selected": {
         "one": "{{ count }} selected",
         "other": "{{ count }} selected"

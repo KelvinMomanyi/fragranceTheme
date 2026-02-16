@@ -139,7 +139,15 @@
                     >
                       <div>
                         <span class="facets__summary-label">
-                          {{- filter.label | escape }}
+                          {%- liquid
+                            assign mapped_label = filter.label | escape
+                            if mapped_label == 'Availability'
+                               assign mapped_label = 'products.facets.availability' | t
+                            elsif mapped_label == 'Price'
+                               assign mapped_label = 'products.facets.price_range' | t
+                            endif
+                          -%}
+                          {{- mapped_label }}
                           {%- if filter_type == 'vertical' -%}
                             <span class="facets__selected{% if filter.active_values.size == 0 %} hidden{% endif %}">
                               ({{ filter.active_values.size }})</span
@@ -178,7 +186,17 @@
                         </div>
                       {%- endif -%}
                       <fieldset class="facets-wrap parent-wrap {% if filter_type == 'vertical' %} facets-wrap-vertical{% endif %}">
-                        <legend class="visually-hidden">{{ filter.label | escape }}</legend>
+                        <legend class="visually-hidden">
+                          {%- liquid
+                            assign mapped_label = filter.label | escape
+                            if mapped_label == 'Availability'
+                               assign mapped_label = 'products.facets.availability' | t
+                            elsif mapped_label == 'Price'
+                               assign mapped_label = 'products.facets.price_range' | t
+                            endif
+                          -%}
+                          {{ mapped_label }}
+                        </legend>
                         {%- liquid
                           assign sorted_values = filter.values
                           # Keep the selected values grouped together when operator is AND
@@ -306,7 +324,17 @@
                   >
                     <summary class="facets__summary caption-large focus-offset">
                       <div>
-                        <span>{{ filter.label | escape }}</span>
+                        <span>
+                          {%- liquid
+                            assign mapped_label = filter.label | escape
+                            if mapped_label == 'Availability'
+                               assign mapped_label = 'products.facets.availability' | t
+                            elsif mapped_label == 'Price'
+                               assign mapped_label = 'products.facets.price_range' | t
+                            endif
+                          -%}
+                          {{ mapped_label }}
+                        </span>
                         {% render 'icon-fragrance', icon: 'chevron-down' %}
                       </div>
                     </summary>
@@ -527,7 +555,17 @@
                       >
                         <summary class="mobile-facets__summary focus-inset">
                           <div>
-                            <span>{{ filter.label | escape }}</span>
+                            <span>
+                              {%- liquid
+                                 assign mapped_label = filter.label | escape
+                                 if mapped_label == 'Availability'
+                                    assign mapped_label = 'products.facets.availability' | t
+                                 elsif mapped_label == 'Price'
+                                    assign mapped_label = 'products.facets.price_range' | t
+                                 endif
+                               -%}
+                               {{ mapped_label }}
+                            </span>
                             <span class="mobile-facets__arrow">
                               {% render 'icon-fragrance', icon: 'arrow-forward' %}
                             </span>
@@ -539,11 +577,21 @@
                         >
                           <button
                             class="mobile-facets__close-button link link--text focus-inset"
-                            aria-expanded="true"
+                             aria-expanded="true"
                             type="button"
                           >
                             {% render 'icon-fragrance', icon: 'arrow-forward', class: 'rotate-180' %}
-                            <span>{{ filter.label | escape }}</span>
+                            <span>
+                              {%- liquid
+                                assign mapped_label = filter.label | escape
+                                if mapped_label == 'Availability'
+                                   assign mapped_label = 'products.facets.availability' | t
+                                elsif mapped_label == 'Price'
+                                   assign mapped_label = 'products.facets.price_range' | t
+                                endif
+                              -%}
+                              {{ mapped_label }}
+                            </span>
                             {%- if filter.operator == 'AND' -%}
                               <span class="facets__and-helptext">
                                 {{ 'products.facets.filter_and_operator_subtitle' | t }}
@@ -669,7 +717,17 @@
                       >
                         <summary class="mobile-facets__summary focus-inset">
                           <div>
-                            <span>{{ filter.label | escape }}</span>
+                            <span>
+                              {%- liquid
+                                 assign mapped_label = filter.label | escape
+                                 if mapped_label == 'Availability'
+                                    assign mapped_label = 'products.facets.availability' | t
+                                 elsif mapped_label == 'Price'
+                                    assign mapped_label = 'products.facets.price_range' | t
+                                 endif
+                               -%}
+                               {{ mapped_label }}
+                            </span>
                             <span class="mobile-facets__arrow">
                               {% render 'icon-fragrance', icon: 'arrow-forward' %}
                             </span>
@@ -681,11 +739,19 @@
                         >
                           <button
                             class="mobile-facets__close-button link link--text focus-inset"
-                            aria-expanded="true"
+                             aria-expanded="true"
                             type="button"
                           >
                             {% render 'icon-fragrance', icon: 'arrow-forward', class: 'rotate-180' %}
-                            {{ filter.label | escape }}
+                            {%- liquid
+                                assign mapped_label = filter.label | escape
+                                if mapped_label == 'Availability'
+                                   assign mapped_label = 'products.facets.availability' | t
+                                elsif mapped_label == 'Price'
+                                   assign mapped_label = 'products.facets.price_range' | t
+                                endif
+                              -%}
+                              {{ mapped_label }}
                           </button>
 
                           {%- assign max_price_amount = filter.range_max | money | strip_html | escape -%}
@@ -788,7 +854,15 @@
         <facet-remove>
           <a href="{{ value.url_to_remove }}" class="active-facets__button active-facets__button--light">
             <span class="active-facets__button-inner button button--tertiary">
-              {{ filter.label | escape }}: {{ value.label | escape }}
+              {%- liquid
+                assign mapped_label = filter.label | escape
+                if mapped_label == 'Availability'
+                   assign mapped_label = 'products.facets.availability' | t
+                elsif mapped_label == 'Price'
+                   assign mapped_label = 'products.facets.price_range' | t
+                endif
+              -%}
+              {{ mapped_label }}: {{ value.label | escape }}
               <span class="svg-wrapper">
                 {% render 'icon-fragrance', icon: 'close' %}
               </span>
