@@ -197,7 +197,8 @@
 .facets__summary {
     color: var(--color-foreground);
     font-size: 1.4rem;
-    font-weight: 500;
+    font-weight: 600;
+    /* Made bolder */
     padding: 1.5rem 0;
     margin-bottom: 0;
 }
@@ -527,21 +528,19 @@
     background-color: transparent;
     margin-right: 1.2rem;
     flex-shrink: 0;
-    width: 18px;
-    height: 18px;
-    border: 1px solid rgba(var(--color-foreground), 0.3);
-    border-radius: 3px;
-    /* Slightly rounded corners */
+    width: 20px;
+    /* Slightly larger */
+    height: 20px;
+    border: 1px solid rgba(var(--color-foreground), 0.5);
+    /* Darker border */
+    border-radius: 4px;
     display: flex;
-    /* Centering content */
     align-items: center;
     justify-content: center;
     position: relative;
     top: auto;
-    /* Reset positioning */
     left: auto;
     visibility: visible;
-    /* Always visible as the box */
     transition: all 0.2s ease;
 }
 
@@ -549,16 +548,14 @@
     width: 12px;
     height: 12px;
     visibility: hidden;
-    /* Hidden by default */
     color: var(--color-background);
-    /* Checkmark color (usually white) */
 }
 
 /* Checked State */
 .facet-checkbox>input[type='checkbox']:checked~.svg-wrapper {
     background-color: var(--color-foreground);
-    /* Fill with black/foreground */
     border-color: var(--color-foreground);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .facet-checkbox>input[type='checkbox']:checked~.svg-wrapper .icon-checkmark {
@@ -636,12 +633,13 @@ span.active-facets__button-inner {
     box-shadow: none;
     /* Removed default border */
     border: 1px solid rgba(var(--color-foreground), 0.1);
-    border-radius: 6px;
-    /* modern rounded corners */
+    border-radius: 20px;
+    /* Pill shape */
     font-size: 1.2rem;
     min-height: 0;
     min-width: 0;
-    padding: 0.6rem 1.2rem;
+    padding: 0.8rem 1.6rem;
+    /* More padding */
     display: flex;
     align-items: center;
     font-weight: 500;
@@ -652,6 +650,7 @@ span.active-facets__button-inner:hover {
     background-color: rgb(var(--color-foreground));
     color: rgb(var(--color-background));
     border-color: rgb(var(--color-foreground));
+    transform: translateY(-1px);
 }
 
 span.active-facets__button-inner:hover .icon-close {
@@ -798,7 +797,6 @@ a.active-facets__button.focused .active-facets__button-inner {
     align-items: center;
     display: flex;
     justify-content: center;
-    padding: 20px;
 }
 
 .mobile-facets {
@@ -1201,38 +1199,50 @@ input.mobile-facets__checkbox {
 @media screen and (min-width: 750px) {
     .facets-vertical {
         display: flex;
+        gap: 3rem;
+        /* Added gap */
+        align-items: flex-start;
+        /* Ensure sticky works */
     }
 
     .facets-vertical .facets-wrapper {
-        width: 26rem;
+        width: 28rem;
+        /* Slightly wider */
+        flex-shrink: 0;
+        position: sticky;
+        /* Make it sticky */
+        top: 2rem;
+        height: fit-content;
+        max-height: 100vh;
+        overflow-y: auto;
+        padding-right: 1rem;
     }
 
     .facets-vertical .facets-wrapper>* {
-        position: sticky;
-        top: 5rem;
+        /* Remove sticky from children since parent is sticky */
+        position: static;
     }
 
     .facets-vertical .facets__form-vertical {
         display: flex;
         flex-direction: column;
-        width: 26rem;
+        width: 100%;
     }
 
     .facets-vertical .facets-container {
-        width: 26rem;
+        width: 100%;
     }
 
     .facets-vertical .facets__disclosure-vertical {
         border-top: none;
-        /* Clean separation */
-        border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
-        /* Divider below */
+        border-bottom: 1px solid rgba(var(--color-foreground), 0.1);
         margin-right: 0;
-        padding-bottom: 1rem;
+        padding-bottom: 1.5rem;
+        padding-top: 1.5rem;
     }
 
     .facets-vertical .facets__disclosure-vertical[open] {
-        padding-bottom: 1.5rem;
+        padding-bottom: 2rem;
     }
 
     .facets-vertical .facets-wrapper--no-filters {
@@ -1245,6 +1255,7 @@ input.mobile-facets__checkbox {
 
     .facets-vertical .product-grid-container {
         width: 100%;
+        flex-grow: 1;
     }
 
     .facets-vertical-sort {
