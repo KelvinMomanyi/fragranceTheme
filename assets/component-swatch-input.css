@@ -9,7 +9,7 @@
     outline-color: transparent;
     outline-style: solid;
     transition-property: outline-color, outline-width, box-shadow;
-    transition-duration: var(--duration-short);
+    transition-duration: 0.2s;
     transition-timing-function: ease;
     forced-color-adjust: none;
 }
@@ -21,26 +21,26 @@
 /* Active state */
 .swatch-input__input:active+.swatch-input__label,
 .swatch-input__input:checked+.swatch-input__label {
-    outline: 0.1rem solid rgb(var(--color-foreground));
+    outline: 2px solid var(--color-text, #121212);
 }
 
 /* Hover state */
 .swatch-input__input+.swatch-input__label:hover,
 .swatch-input__input:hover+.swatch-input__label {
-    outline: 0.2rem solid rgba(var(--color-foreground), 0.4);
+    outline: 2px solid var(--spanish-gray, hsl(0, 0%, 60%));
 }
 
 /* Focus visible */
 .swatch-input__input:focus-visible+.swatch-input__label {
-    outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
-    box-shadow: 0 0 0 0.2rem rgb(var(--color-background)), 0 0 0.1rem 0.5rem rgba(var(--color-foreground), 0.25);
+    outline: 2px solid var(--tan-crayola, #c9a96e);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 /* Active and focused */
 .swatch-input__input:active:focus-visible+.swatch-input__label,
 .swatch-input__input:checked:focus-visible+.swatch-input__label {
-    outline: 0.1rem solid rgb(var(--color-foreground));
-    box-shadow: 0 0 0 0.2rem rgb(var(--color-background)), 0 0 0.1rem 0.4rem rgba(var(--color-foreground), 0.25);
+    outline: 2px solid var(--color-text, #121212);
+    box-shadow: 0 0 0 2px var(--color-background, #fff), 0 0 0 4px var(--tan-crayola, #c9a96e);
 }
 
 /* Visually disabled */
@@ -73,7 +73,6 @@
 /* Display crossed out line over swatch when input is disabled */
 .swatch-input__input:disabled+.swatch-input__label>.swatch::after,
 .swatch-input__input.visually-disabled+.swatch-input__label>.swatch::after {
-    /* Diagonal of a square = length of the side * sqrt(2)  */
     --diagonal--size: calc(var(--swatch-input--size) * 1.414);
     --crossed-line--size: 0.1rem;
     content: '';
@@ -82,7 +81,7 @@
     left: 0;
     width: var(--diagonal--size);
     height: var(--crossed-line--size);
-    background-color: rgb(var(--color-foreground));
+    background-color: var(--color-text, #121212);
     transform: rotate(-45deg);
     transform-origin: left;
 }
