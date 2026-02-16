@@ -505,9 +505,10 @@
     position: absolute;
     left: 0.3rem;
     z-index: 5;
-    top: 1.4rem;
+    top: 50%;
+    transform: translateY(-50%);
     width: 1.1rem;
-    height: 0.7rem;
+    height: 1.1rem;
 }
 
 .facet-checkbox>input[type='checkbox']:checked~svg {
@@ -515,8 +516,11 @@
     background-color: var(--facet-accent);
 }
 
-.facet-checkbox>input[type='checkbox']:checked~.svg-wrapper>.icon-checkmark {
+.facet-checkbox>input[type='checkbox']:checked~.svg-wrapper {
     visibility: visible;
+}
+
+.facet-checkbox>input[type='checkbox']:checked~.svg-wrapper>.icon--checkmark {
     color: var(--facet-bg);
 }
 
@@ -526,7 +530,7 @@
         border: 0.1rem solid currentColor;
     }
 
-    .facet-checkbox>input[type='checkbox']:checked~.svg-wrapper>.icon-checkmark {
+    .facet-checkbox>input[type='checkbox']:checked~.svg-wrapper>.icon--checkmark {
         border: none;
     }
 }

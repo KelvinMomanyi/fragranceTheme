@@ -1,3 +1,28 @@
+/**
+ * Fallback for debounce and onKeyUpEscape in case global.js is not loaded yet
+ */
+if (typeof debounce !== 'function') {
+    window.debounce = (fn, wait) => {
+        let t;
+        return (...args) => {
+            clearTimeout(t);
+            t = setTimeout(() => fn.apply(this, args), wait);
+        };
+    };
+}
+
+if (typeof onKeyUpEscape !== 'function') {
+    window.onKeyUpEscape = (event) => {
+        if (event.code.toUpperCase() !== 'ESCAPE') return;
+        const openDetailsElement = event.target.closest('details[open]');
+        if (!openDetailsElement) return;
+        const summaryElement = openDetailsElement.querySelector('summary');
+        openDetailsElement.removeAttribute('open');
+        summaryElement.setAttribute('aria-expanded', false);
+        summaryElement.focus();
+    };
+}
+
 class FacetFiltersForm extends HTMLElement {
     constructor() {
         super();
