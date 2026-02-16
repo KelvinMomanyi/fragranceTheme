@@ -6,503 +6,264 @@
   endif
 -%}
 
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-facets.css' | asset_url | stylesheet_tag }}
+
 <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
 
-<div class="container color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %} padding-top:25px;">
-  {%- comment -%} Collection Hero with Image (Required) {%- endcomment -%}
-  {% if current_collection.image %}
-    <div class="collection-hero">
-      <img
-        src="{{ current_collection.image | image_url: width: 1600 }}"
-        alt="{{ current_collection.image.alt | escape | default: current_collection.title }}"
-        class="collection-hero-image"
-        loading="eager"
-        width="1600"
-        height="400"
-      >
-      <div class="collection-hero-overlay">
-        <h1 class="collection-hero-title">{{ current_collection.title }}</h1>
-      </div>
-    </div>
-  {% endif %}
+<div class="section-{{ section.id }}-padding">
+  {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+    <aside
+      aria-labelledby="verticalTitle"
+      class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+      id="main-collection-filters"
+      data-id="{{ section.id }}"
+    >
+      {% render 'facets',
+        results: current_collection,
+        enable_filtering: section.settings.enable_filtering,
+        enable_sorting: section.settings.enable_sorting,
+        filter_type: section.settings.filter_type,
+        paginate: paginate
+      %}
+    </aside>
+  {%- endif -%}
 
-  <section class="section shop" id="shop" aria-label="shop">
-    <div class="title-wrapper">
-      {% unless current_collection.image %}
-        <h1 class="h2 section-title">{{ current_collection.title }}</h1>
-      {% endunless %}
-      {%- comment -%} Product Count {%- endcomment -%}
-      <div class="product-count-wrapper">
-         <p id="ProductCountDesktop" class="product-count__text">
-            {%- if current_collection.all_products_count > 0 -%}
-              {{ 'products.facets.product_count' | t: product_count: current_collection.products_count, count: current_collection.all_products_count }}
-            {%- endif -%}
-         </p>
-      </div>
-    </div>
+  <div class="product-grid-container" id="ProductGridContainer">
+    {% paginate current_collection.products by section.settings.products_per_page %}
+      {%- if current_collection.products.size == 0 -%}
+        <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
+          <div class="loading-overlay gradient"></div>
+          <div class="title-wrapper center">
+            <h2 class="title title--primary">
+              {{ 'sections.collection_template.empty' | t -}}
+              <br>
+              {{
+                'sections.collection_template.use_fewer_filters_html'
+                | t: link: current_collection.url, class: 'underlined-link link'
+              }}
+            </h2>
+          </div>
+        </div>
+      {%- else -%}
+        <div class="collection page-width">
+          <div class="loading-overlay gradient"></div>
+          <ul
+            id="product-grid"
+            data-id="{{ section.id }}"
+            class="
+              grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
+              grid--{{ section.settings.columns_desktop }}-col-desktop
+            "
+          >
+            {%- for product in current_collection.products -%}
+              {% assign lazy_load = false %}
+              {%- if forloop.index > 2 -%}
+                {%- assign lazy_load = true -%}
+              {%- endif -%}
+              <li class="grid__item">
+                {% render 'card-product',
+                  card_product: product,
+                  media_aspect_ratio: section.settings.image_ratio,
+                  image_shape: section.settings.image_shape,
+                  show_secondary_image: section.settings.show_secondary_image,
+                  show_vendor: section.settings.show_vendor,
+                  show_rating: section.settings.show_rating,
+                  lazy_load: lazy_load,
+                  show_quick_add: section.settings.enable_quick_add,
+                  section_id: section.id
+                %}
+              </li>
+            {%- endfor -%}
+          </ul>
 
-    {%- comment -%} Collection Description (Required) {%- endcomment -%}
-    {% if current_collection.description != blank %}
-      <div class="collection-description rte">
-        {{ current_collection.description }}
-      </div>
-    {% endif %}
-
-    <div class="facets-vertical page-width">
-      {%- if current_collection.all_products_count > 0 -%}
-        <aside
-          aria-labelledby="verticalTitle"
-          class="facets-wrapper"
-          id="main-collection-filters"
-          data-id="{{ section.id }}"
-        >
-          {% render 'facets',
-            results: current_collection,
-            enable_filtering: true,
-            enable_sorting: true,
-            filter_type: 'vertical',
-            paginate: paginate
-          %}
-        </aside>
-      {%- endif -%}
-
-      <div class="product-grid-container" id="ProductGridContainer">
-        {% paginate current_collection.products by 24 %}
-          {%- if current_collection.products.size == 0 -%}
-             <div class="collection-empty" id="product-grid" data-id="{{ section.id }}">
-              <div class="loading-overlay gradient"></div>
-               <div class="title-wrapper center">
-                 <h2 class="title title--primary">
-                   {{ 'sections.collection_template.empty' | t -}}
-                   <br>
-                   {{ 'sections.collection_template.use_fewer_filters_html' | t: link: current_collection.url, class: "underlined-link link" }}
-                 </h2>
-               </div>
-             </div>
-          {%- else -%}
-            <div class="collection">
-              <div class="loading-overlay gradient"></div>
-              <ul
-                id="product-grid"
-                data-id="{{ section.id }}"
-                class="collection-grid"
-                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; list-style: none; padding: 0;"
-              >
-                {% for product in current_collection.products %}
-                  <li class="decoration">
-                    <div class="product-card">
-                      <a
-                        href="{{ product.url }}"
-                        class="card-banner img-holder has-before"
-                        style="--width: 300; --height: 300;"
-                      >
-                        {% if product.featured_image %}
-                          <img
-                            src="{{ product.featured_image | image_url: width: 600 }}"
-                            alt="{{ product.featured_image.alt | escape }}"
-                            class="img-cover"
-                            width="300"
-                            height="300"
-                            loading="lazy"
-                          >
-                        {% else %}
-                          <img
-                            src="default-image.jpg"
-                            alt="No image available"
-                            class="img-cover"
-                            width="300"
-                            height="300"
-                            loading="lazy"
-                          >
-                        {% endif %}
-                        <ul class="card-action-list">
-                          <li>
-                            <button class="card-action-btn" aria-label="add to cart" title="add to cart">
-                              {% render 'icon-fragrance', icon: 'add' %}
-                            </button>
-                          </li>
-                          <li>
-                             <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
-                                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                                <button type="submit" class="card-action-btn" aria-label="add to cart">
-                                  {% render 'icon-fragrance', icon: 'bag-handle' %}
-                                </button>
-                              </form>
-                          </li>
-                          <li>
-                            <button class="card-action-btn" aria-label="add to wishlist" title="add to wishlist">
-                              {% render 'icon-fragrance', icon: 'heart' %}
-                            </button>
-                          </li>
-                        </ul>
-                        {% if product.compare_at_price > product.price %}
-                          <ul class="badge-list">
-                            <li>
-                              <div class="badge orange">Sale</div>
-                            </li>
-                            <li>
-                              <div class="badge cyan">10%</div>
-                            </li>
-                          </ul>
-                        {% endif %}
-                      </a>
-                      <div class="card-content">
-                        <h3 class="h3">
-                          <a href="{{ product.url }}" class="card-title">{{ product.title }}</a>
-                        </h3>
-                        <div class="card-price">
-                          {% if product.compare_at_price > product.price %}
-                            <del class="del">{{ product.compare_at_price | money }}</del>
-                          {% endif %}
-                          {% if product.price_varies %}
-                            <span class="price-from">From </span>
-                          {% endif %}
-                          <data class="price" value="{{ product.price }}">{{ product.price | money }}</data>
-                        </div>
-                        {%- comment -%} Unit Pricing (Required) {%- endcomment -%}
-                        {% assign first_variant = product.selected_or_first_available_variant %}
-                        {% if first_variant.unit_price_measurement %}
-                          <div class="unit-price">
-                            {{ first_variant.unit_price | money }}/
-                            {{- first_variant.unit_price_measurement.reference_value -}}
-                            {{- first_variant.unit_price_measurement.reference_unit }}
-                          </div>
-                        {% endif %}
-                      </div>
-                    </div>
-                  </li>
-                {% endfor %}
-              </ul>
-
-              {%- comment -%} Pagination (Required) {%- endcomment -%}
-              {% if paginate.pages > 1 %}
-                <nav class="pagination" aria-label="Pagination">
-                  <ul class="pagination-list">
-                    {% if paginate.previous %}
-                      <li>
-                        <a
-                          href="{{ paginate.previous.url }}"
-                          class="pagination-link pagination-prev"
-                          aria-label="Previous page"
-                        >
-                          &larr; {{ 'general.pagination.previous' | t | default: 'Previous' }}
-                        </a>
-                      </li>
-                    {% endif %}
-
-                    {% for part in paginate.parts %}
-                      {% if part.is_link %}
-                        <li>
-                          <a href="{{ part.url }}" class="pagination-link" aria-label="Page {{ part.title }}">
-                            {{ part.title }}
-                          </a>
-                        </li>
-                      {% else %}
-                        {% if part.title == paginate.current_page %}
-                          <li>
-                            <span class="pagination-link pagination-current" aria-current="page">
-                              {{ part.title }}
-                            </span>
-                          </li>
-                        {% else %}
-                          <li>
-                            <span class="pagination-link pagination-ellipsis">{{ part.title }}</span>
-                          </li>
-                        {% endif %}
-                      {% endif %}
-                    {% endfor %}
-
-                    {% if paginate.next %}
-                      <li>
-                        <a
-                          href="{{ paginate.next.url }}"
-                          class="pagination-link pagination-next"
-                          aria-label="Next page"
-                        >
-                          {{ 'general.pagination.next' | t | default: 'Next' }} &rarr;
-                        </a>
-                      </li>
-                    {% endif %}
-                  </ul>
-                </nav>
-              {% endif %}
-            </div>
+          {%- if paginate.pages > 1 -%}
+            {% render 'pagination', paginate: paginate, anchor: '' %}
           {%- endif -%}
-        {% endpaginate %}
-      </div>
-    </div>
-  </section>
+        </div>
+      {%- endif -%}
+    {% endpaginate %}
+  </div>
 </div>
 
-<style>
-  /* Collection Hero Styles */
-  .collection-hero {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 30px;
-  }
-
-  .collection-hero-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .collection-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
-    display: flex;
-    align-items: flex-end;
-    padding: 30px;
-  }
-
-  .collection-hero-title {
-    color: white;
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  }
-
-  .collection-description {
-    margin-bottom: 30px;
-    line-height: 1.7;
-    color: #555;
-  }
-
-  /* Empty Collection */
-  .collection-empty {
-    text-align: center;
-    padding: 60px 20px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    margin: 40px 0;
-  }
-
-  .collection-empty p {
-    font-size: 1.1rem;
-    color: #666;
-    margin-bottom: 20px;
-  }
-
-  .collection-empty .btn {
-    display: inline-block;
-    padding: 12px 25px;
-    background: #111;
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    transition: background 0.3s;
-  }
-
-  .collection-empty .btn:hover {
-    background: #333;
-  }
-
-  /* Pagination */
-  .pagination {
-    margin: 40px 0;
-    display: flex;
-    justify-content: center;
-  }
-
-  .pagination-list {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .pagination-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-    height: 40px;
-    padding: 0 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    transition: all 0.3s;
-  }
-
-  .pagination-link:hover {
-    background: #f5f5f5;
-    border-color: #333;
-  }
-
-  .pagination-current {
-    background: #111;
-    color: white;
-    border-color: #111;
-  }
-
-  .pagination-ellipsis {
-    border: none;
-  }
-
-  .pagination-prev,
-  .pagination-next {
-    font-weight: 500;
-  }
-
-  .hero-small {
-      min-height: 30vh;
-  }
-
-  .collection-container {
-      box-sizing: border-box;
-  }
-
-  /* .collection class removed grid styles as we used inline styles for 'product-grid' to ensure it overrides */
-  /* Re-adding basic card styles */
-
-  .card {
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .card.in-view {
-      opacity: 1;
-      transform: translateY(0);
-  }
-
-  .card img {
-      width: 100%;
-      height: auto;
-  }
-
-  .card-content {
-      padding: 20px;
-  }
-
-  .card h3 {
-      margin: 0 0 10px;
-  }
-
-  .card p {
-      margin: 0;
-      color: #666;
-  }
-
-  /* New Styles for Title Wrapper and Filter Controls */
-  .title-wrapper {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-  }
-
-  .filter-controls {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      z-index: 5;
-  }
-
-  .filter-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.25rem;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      color: inherit;
-      font-size: 0.95rem;
-  }
-
-  .filter-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .filter-btn .icon {
-      font-size: 1.1rem;
-  }
-
-  @media (max-width: 768px) {
-      .title-wrapper {
-          flex-direction: column;
-          align-items: flex-start;
-      }
-
-      .filter-controls {
-          width: 100%;
-          justify-content: flex-start;
-      }
-
-      .filter-btn {
-          flex: 1;
-          justify-content: center;
-      }
-  }
-
-  @media (max-width: 480px) {
-      .filter-controls {
-          flex-direction: column;
-          width: 100%;
-      }
-
-      .filter-btn {
-          width: 100%;
-      }
-  }
-</style>
-
-<script>
-(function() {
-    function fetchCart() {
-      fetch('/cart.js')
-        .then(response => response.json())
-        .then(cart => {
-          updateCartUI(cart);
-        })
-        .catch(error => console.error('Error-fetching cart:', error));
+{% schema %}
+{
+  "name": "t:sections.main-collection-product-grid.name",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "default": 16,
+      "label": "t:sections.main-collection-product-grid.settings.products_per_page.label"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.main-collection-product-grid.settings.columns_desktop.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__3.content"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.main-collection-product-grid.settings.image_ratio.label"
+    },
+    {
+      "type": "select",
+      "id": "image_shape",
+      "options": [
+        {
+          "value": "default",
+          "label": "t:sections.all.image_shape.options__1.label"
+        },
+        {
+          "value": "arch",
+          "label": "t:sections.all.image_shape.options__2.label"
+        },
+        {
+          "value": "blob",
+          "label": "t:sections.all.image_shape.options__3.label"
+        },
+        {
+          "value": "chevronleft",
+          "label": "t:sections.all.image_shape.options__4.label"
+        },
+        {
+          "value": "chevronright",
+          "label": "t:sections.all.image_shape.options__5.label"
+        },
+        {
+          "value": "diamond",
+          "label": "t:sections.all.image_shape.options__6.label"
+        },
+        {
+          "value": "parallelogram",
+          "label": "t:sections.all.image_shape.options__7.label"
+        },
+        {
+          "value": "round",
+          "label": "t:sections.all.image_shape.options__8.label"
+        }
+      ],
+      "default": "default",
+      "label": "t:sections.all.image_shape.label",
+      "info": "t:sections.all.image_shape.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
+      "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.enable_quick_add.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__1.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_filtering.label",
+      "info": "t:sections.main-collection-product-grid.settings.enable_filtering.info"
+    },
+    {
+      "type": "select",
+      "id": "filter_type",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__1.label"
+        },
+        {
+          "value": "vertical",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__2.label"
+        },
+        {
+          "value": "drawer",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__3.label"
+        }
+      ],
+      "default": "horizontal",
+      "label": "t:sections.main-collection-product-grid.settings.filter_type.label",
+      "info": "t:sections.main-collection-product-grid.settings.filter_type.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header_mobile.content"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "default": "2",
+      "label": "t:sections.main-collection-product-grid.settings.columns_mobile.label",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__1.label"
+        },
+        {
+          "value": "2",
+          "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__2.label"
+        }
+      ]
+    },
+    {
+       "type": "collection",
+       "id": "selected_collection",
+       "label": "Select Collection"
     }
-     // ... (Rest of the cart script - keeping it as is)
-     const currencySymbol = "{{ shop.currency | escape }}";
-    function updateCartUI(cart) {
-      // ... (Same content as previous)
-    }
-     // For brevity, I am effectively keeping the existing JS logic here.
-})();
-</script>
-
- {% schema %}
-      {
-        "name": "main-collection",
-        "settings": [
-            {
-              "type": "color_scheme","id": "color_scheme","label": "Color scheme","default": "scheme-1"
-            },
-            {
-             "type": "collection",
-             "id": "selected_collection",
-             "label": "Select Collection"
-           }
-        ],
-        "blocks": [],
-        "presets": [
-          {
-            "name": "main-collection"
-          }
-        ]
-      }
- {% endschema %}
+  ]
+}
+{% endschema %}
