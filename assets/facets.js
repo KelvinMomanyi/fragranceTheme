@@ -5,7 +5,7 @@ class FacetFiltersForm extends HTMLElement {
 
         this.debouncedOnSubmit = debounce((event) => {
             this.onSubmitHandler(event);
-        }, 500);
+        }, 800);
 
         const facetForm = this.querySelector('form');
         facetForm.addEventListener('input', this.debouncedOnSubmit.bind(this));
@@ -96,10 +96,8 @@ class FacetFiltersForm extends HTMLElement {
         const count = new DOMParser().parseFromString(html, 'text/html').getElementById('ProductCount').innerHTML;
         const container = document.getElementById('ProductCount');
         const containerDesktop = document.getElementById('ProductCountDesktop');
-        if (container) {
-            container.innerHTML = count;
-            container.classList.remove('loading');
-        }
+        container.innerHTML = count;
+        container.classList.remove('loading');
         if (containerDesktop) {
             containerDesktop.innerHTML = count;
             containerDesktop.classList.remove('loading');
@@ -298,10 +296,8 @@ class FacetFiltersForm extends HTMLElement {
 FacetFiltersForm.filterData = [];
 FacetFiltersForm.searchParamsInitial = window.location.search.slice(1);
 FacetFiltersForm.searchParamsPrev = window.location.search.slice(1);
-if (!customElements.get('facet-filters-form')) {
-    customElements.define('facet-filters-form', FacetFiltersForm);
-    FacetFiltersForm.setListeners();
-}
+customElements.define('facet-filters-form', FacetFiltersForm);
+FacetFiltersForm.setListeners();
 
 class PriceRange extends HTMLElement {
     constructor() {
@@ -345,9 +341,7 @@ class PriceRange extends HTMLElement {
     }
 }
 
-if (!customElements.get('price-range')) {
-    customElements.define('price-range', PriceRange);
-}
+customElements.define('price-range', PriceRange);
 
 class FacetRemove extends HTMLElement {
     constructor() {
@@ -368,18 +362,4 @@ class FacetRemove extends HTMLElement {
     }
 }
 
-if (!customElements.get('facet-remove')) {
-    customElements.define('facet-remove', FacetRemove);
-}
-
-function onKeyUpEscape(event) {
-    if (event.code.toUpperCase() !== 'ESCAPE') return;
-
-    const openDetailsElement = event.target.closest('details[open]');
-    if (!openDetailsElement) return;
-
-    const summaryElement = openDetailsElement.querySelector('summary');
-    openDetailsElement.removeAttribute('open');
-    summaryElement.setAttribute('aria-expanded', false);
-    summaryElement.focus();
-}
+customElements.define('facet-remove', FacetRemove);
