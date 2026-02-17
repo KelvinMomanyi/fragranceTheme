@@ -192,34 +192,42 @@
 
 
     <!-- Language and Currency Selectors Container -->
-    <div id="currency-language-container ">
-      <select name="locale_code" class="locale-selector" style="color:{{ section.settings.text_color }};" aria-label="Language">
-        {% for language in localization.available_languages %}
-          {% if language.iso_code == localization.language.iso_code %}
-            <option value="{{ language.iso_code }}" selected="selected">{{ language.name }}</option>
-          {% else %}
-            <option value="{{ language.iso_code }}">{{ language.name }}</option>
-          {% endif %}
-        {% endfor %}
-      </select>
-      
-    
-    
-      {% form 'localization', id: 'localization_form', class: 'localization-form' %}
-          <div class="localization-wrapper" style="display: flex; gap: 10px;">
-            <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
-            <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
-            
-            <select name="country_code" class="localization-selector" aria-label="Country">
+    <div id="currency-language-container">
+      {%- form 'localization', id: 'SidebarLocalizationForm', class: 'localization-form' -%}
+        <select name="language_code" class="locale-selector" style="color:{{ section.settings.text_color }};" onchange="this.form.submit()">
+          {% for language in localization.available_languages %}
+            <option value="{{ language.iso_code }}" {% if language.iso_code == localization.language.iso_code %}selected{% endif %}>
+              {{ language.endonym_name | capitalize }}
+            </option>
+          {% endfor %}
+        </select>
+        
+        <div class='separator' style="color: {{ section.settings.text_color }};"></div>
+
+        <div class="currency-custom-container">
+          <div class="dropdown" id="currency-dropdown-header">
+            <div class="select" style="color: {{section.settings.text_color }};">
+              <span class="selected">
+                <div class="flag-icon" style="background-image: url('{{ localization.country | image_url: width: 32 }}');" aria-label="{{ localization.country.name }} flag"></div>
+                <span>{{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }}</span>
+              </span>
+              <div class="caret-icon-wrapper" style="color: {{ section.settings.text_color }};">
+                {% render 'icon-fragrance', icon: 'chevron-down', size: 'small' %}
+              </div>
+            </div>
+            <ul class="newmenu">
               {% for country in localization.available_countries %}
-                <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
-                  {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
-                </option>
+                <li data-value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}class="active"{% endif %}>
+                  <div class="flag-icon" style="background-image: url('{{ country | image_url: width: 32 }}');"></div>
+                  <span>{{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})</span>
+                </li>
               {% endfor %}
-            </select>
+            </ul>
           </div>
-      {% endform %}
+          <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
         </div>
+      {%- endform -%}
+    </div>
        {% comment %} {% render 'icon-fragrance', icon: 'close' %} {% endcomment %}
     </div>
 
@@ -302,6 +310,29 @@
         var overlay = document.querySelector('[data-overlay]');
         if (navbar) navbar.classList.remove('active');
         if (overlay) overlay.classList.remove('active');
+      }
+
+      // Sidebar Localization Dropdown
+      const sidebarDropdown = document.querySelector('#currency-dropdown-header');
+      if (sidebarDropdown) {
+        const select = sidebarDropdown.querySelector('.select');
+        const caretWrapper = sidebarDropdown.querySelector('.caret-icon-wrapper');
+        const menu = sidebarDropdown.querySelector('.newmenu');
+        const options = sidebarDropdown.querySelectorAll('.newmenu li');
+        const form = sidebarDropdown.closest('form');
+        const hiddenInput = form.querySelector('input[name="country_code"]');
+
+        if (target.closest('#currency-dropdown-header .select')) {
+            caretWrapper.classList.toggle('caret-rotate');
+            menu.classList.toggle('menu-open');
+        } else if (target.closest('#currency-dropdown-header .newmenu li')) {
+            const value = target.closest('li').getAttribute('data-value');
+            hiddenInput.value = value;
+            form.submit();
+        } else {
+            if (caretWrapper) caretWrapper.classList.remove('caret-rotate');
+            if (menu) menu.classList.remove('menu-open');
+        }
       }
     });
 
@@ -599,13 +630,13 @@
 
 
   .flag-icon {
-    width: 16px;  /* Same width as the original image */
-    height: 12px; /* Same height as the original image */
-    display: inline-block; /* Allows it to be treated like text/image */
-    background-size: cover; /* Ensures the image covers the entire div */
-    background-position: center; /* Centers the image within the div */
-    background-repeat: no-repeat; /* Prevents the image from repeating */
-    vertical-align: middle; /* Aligns with text if placed next to text */
+    width: 20px;
+    height: 15px;
+    display: inline-block;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    vertical-align: middle;
   }
 
   .dropdown{
@@ -636,50 +667,64 @@
 }
 
 
-.newmenu{
+.caret-icon-wrapper {
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.caret-rotate {
+  transform: rotate(180deg);
+}
+
+.newmenu {
     list-style-type: none;
-    padding: 0.1em 0.2em;
-    background:rgb(255, 255, 255);
-    color:#9fa5b5;
-    position:fixed; 
-    top: 3em;
-    right: 0;
-    width:8%;
-    transform: translateX(-50%);
+    padding: 8px 0;
+    background-color: var(--white);
+    color: var(--black);
+    position: absolute; 
+    top: 100%;
+    left: 0;
+    width: auto;
+    min-width: 220px;
+    max-height: 350px;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--black_10);
+    border-radius: 4px;
     opacity: 0;
     display: none;
-    transition: 0.2s;
-    z-index: 9999999;
+    transition: var(--transition-1);
+    z-index: 10000;
+    margin-top: 10px;
+    animation: fadeIn 0.2s ease-out;
 }
 
 .newmenu li {
-    padding: 0.7em 0.5em;
-    /*margin: 0.3em 0;*/
-    border-radius: 0.5em;
+    padding: 10px 20px;
     cursor: pointer;
-    display:flex;
-    gap:3px;
-    align-items:center;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    transition: var(--transition-1);
+    font-family: var(--ff-roboto);
+    font-size: 1.2rem;
+    color: var(--black);
 }
 
-.newmenu li:hover{
-    background: #2a2d35;
+.newmenu li:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--tan-crayola);
 }
 
-.active{
-    background:hsl(231, 63.60%, 97.80%) 247, 253);
-}
-
-
-.menu-open{
-    display: block;
-    opacity: 1;
-    z-index:999
+.newmenu li.active {
+    background-color: rgba(0, 0, 0, 0.02);
+    font-weight: 600;
 }
 
 .separator {
-  height: 16px; /* Adjust the height as needed */
-  border-left: 1px solid rgb(0, 0, 0); /* Adjust the border thickness and color */
+  height: 16px;
+  border-left: 1px solid var(--black_10);
 }
 
 .custom-select {
@@ -710,8 +755,22 @@
 
   @media screen and (max-width: 875px){
     #currency-language-container  {
-      display: block;
+      display: flex;
+      padding: 0 15px;
+      margin-top: 20px;
+      justify-content: flex-start;
     }
+  }
+
+  .currency-custom-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .menu-open {
+    display: block !important;
+    opacity: 1 !important;
   }
 
 
