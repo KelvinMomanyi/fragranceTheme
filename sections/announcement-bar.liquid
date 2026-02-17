@@ -164,7 +164,7 @@
     position: absolute;
     left: 50%; /* Start from the middle of the screen horizontally */
     top: 50%; /* Optionally, center vertically as well */
-    transform: translateX(-50%) translateY(-40%); /* Adjust for horizontal and vertical centering */
+    transform: translateX(-50%) translateY(-50%); /* Adjust for horizontal and vertical centering */
     opacity: 0; /* Start invisible */
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
     white-space: nowrap;
@@ -185,7 +185,7 @@
 
   .slider-wrapper{
    position:relative;
-   height:18px;
+   height: 24px; /* Increased height to match icon/select baseline better */
    width:100%;
    overflow: hidden;
   }
@@ -203,11 +203,14 @@
   }
 
   /* Language and Currency Container */
-#language-currency-container {
+#language-currency-container, #language-currency-container form {
   display: flex;
-  gap: 10px; /* Space between selectors */
+  gap: 10px;
   align-items: center;
-  
+  margin: 0; /* Remove default margins */
+}
+#language-currency-container {
+  gap: 15px;
 }
 
 /* Phone Container */
@@ -215,8 +218,13 @@
   display: flex;
   align-items: center; /* Align icon and number vertically */
   gap: 10px; /* Space between icon and number */
-  width:30%;
-  margin-left: 10px;
+  width: auto; /* Changed from 30% to auto for better spacing */
+  margin: 0;
+}
+
+#phone-container ul {
+  margin: 0;
+  padding: 0;
 }
 
 /* Phone Icon */
