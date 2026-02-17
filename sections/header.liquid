@@ -146,23 +146,45 @@
 
       <ul class="social-list">
 
-        <li>
-          <a href="#" class="social-link" aria-label="Facebook">
-            {% render 'icon-fragrance', icon: 'facebook' %}
-          </a>
-        </li>
+        {%- if settings.social_facebook != blank -%}
+          <li>
+            <a href="{{ settings.social_facebook }}" class="social-link" aria-label="Facebook">
+              {% render 'icon-fragrance', icon: 'facebook' %}
+            </a>
+          </li>
+        {%- endif -%}
 
-        <li>
-          <a href="#" class="social-link" aria-label="Instagram">
-            {% render 'icon-fragrance', icon: 'instagram' %}
-          </a>
-        </li>
+        {%- if settings.social_instagram != blank -%}
+          <li>
+            <a href="{{ settings.social_instagram }}" class="social-link" aria-label="Instagram">
+              {% render 'icon-fragrance', icon: 'instagram' %}
+            </a>
+          </li>
+        {%- endif -%}
 
-        <li>
-          <a href="#" class="social-link" aria-label="Tumblr">
-            {% render 'icon-fragrance', icon: 'tumblr' %}
-          </a>
-        </li>
+        {%- if settings.social_tiktok != blank -%}
+          <li>
+            <a href="{{ settings.social_tiktok }}" class="social-link" aria-label="TikTok">
+              {% render 'icon-fragrance', icon: 'tiktok' %}
+            </a>
+          </li>
+        {%- endif -%}
+
+        {%- if settings.social_tumblr != blank -%}
+          <li>
+            <a href="{{ settings.social_tumblr }}" class="social-link" aria-label="Tumblr">
+              {% render 'icon-fragrance', icon: 'tumblr' %}
+            </a>
+          </li>
+        {%- endif -%}
+
+        {%- if settings.social_twitter != blank -%}
+          <li>
+            <a href="{{ settings.social_twitter }}" class="social-link" aria-label="Twitter">
+              {% render 'icon-fragrance', icon: 'twitter' %}
+            </a>
+          </li>
+        {%- endif -%}
 
       </ul>
 

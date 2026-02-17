@@ -3,19 +3,46 @@
     <div class="alert">
         <div class="flexBox">
           <div id="phone-container">
-            <!-- Phone Icon -->
+            <div class="phone-wrapper" style="display: flex; align-items: center; gap: 5px;">
+              {% render 'icon-fragrance', icon: 'call' %}
+              <a href="tel:{{ section.settings.phone_number }}" id="phone-number" style="color: {{ section.settings.text_color }};">
+                {{ section.settings.phone_number }}
+              </a>
+            </div>
 
-                {% if section.settings.show_facebook_icon %}{% render 'icon-fragrance', icon: 'facebook', style: 'color: {{ section.settings.text_color }};' %}{% endif %}
- 
-                {% if section.settings.show_instagram_icon %}{% render 'icon-fragrance', icon: 'instagram', style: 'color: {{ section.settings.text_color }};' %}{% endif %}
+            <ul class="social-list" style="margin-left: 20px; gap: 15px;">
+              {% if section.settings.show_facebook_icon %}
+                <li>
+                  <a href="{{ settings.social_facebook }}" class="social-link" aria-label="Facebook">
+                    {% render 'icon-fragrance', icon: 'facebook', size: 'small' %}
+                  </a>
+                </li>
+              {% endif %}
 
-                {% if section.settings.show_tiktok_icon %}{% render 'icon-fragrance', icon: 'tiktok', style: 'color: {{ section.settings.text_color }};' %}{% endif %}
+              {% if section.settings.show_instagram_icon %}
+                <li>
+                  <a href="{{ settings.social_instagram }}" class="social-link" aria-label="Instagram">
+                    {% render 'icon-fragrance', icon: 'instagram', size: 'small' %}
+                  </a>
+                </li>
+              {% endif %}
 
-                {% if section.settings.show_tumblr_icon %}{% render 'icon-fragrance', icon: 'tumblr', style: 'color: {{ section.settings.text_color }};' %}{% endif %}
+              {% if section.settings.show_tiktok_icon %}
+                <li>
+                  <a href="{{ settings.social_tiktok }}" class="social-link" aria-label="TikTok">
+                    {% render 'icon-fragrance', icon: 'tiktok', size: 'small' %}
+                  </a>
+                </li>
+              {% endif %}
 
-            {% comment %} {% render 'icon-fragrance', icon: 'call' %} {% endcomment %}
-            <!-- Phone Number -->
-            <span id="phone-number" style="color: {{section.settings.text_color }};">{{section.settings.phone_number}}</span> {% endcomment %}
+              {% if section.settings.show_tumblr_icon %}
+                <li>
+                  <a href="{{ settings.social_tumblr }}" class="social-link" aria-label="Tumblr">
+                    {% render 'icon-fragrance', icon: 'tumblr', size: 'small' %}
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
           </div>
           <div class="slider-wrapper" style="color: {{ section.settings.text_color }};">
             <p class="alert-text" id="text1">{{ section.settings.text1 }}</p>
