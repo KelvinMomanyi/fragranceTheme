@@ -1,0 +1,59 @@
+.list-social {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-social__item {
+    display: flex;
+    align-items: center;
+}
+
+.list-social__link {
+    align-items: center;
+    display: flex;
+    padding: 1rem;
+    color: inherit;
+    /* Use inherited color */
+    text-decoration: none;
+}
+
+.list-social__link:hover .icon {
+    transform: scale(1.1);
+}
+
+.list-social .icon {
+    height: 2rem;
+    width: 2rem;
+    fill: currentColor;
+}
+
+/* Specific adjustments for announcement bar */
+.alert-social-icons {
+    justify-content: flex-start;
+}
+
+.alert-social-icons .list-social__link {
+    padding: 0.5rem;
+}
+
+.alert-social-icons .icon {
+    height: 1.6rem;
+    width: 1.6rem;
+}
+
+/* Specific adjustments for footer if needed */
+.footer__list-social {
+    justify-content: flex-start;
+    /* Or center depending on design */
+    gap: 1rem;
+}
+
+@media only screen and (max-width: 749px) {
+    .list-social {
+        justify-content: center;
+    }
+}

@@ -3,28 +3,8 @@
     <div class="alert">
         <div class="flexBox">
           <div id="phone-container">
-            {%- if section.settings.show_facebook_icon and settings.social_facebook != blank -%}
-              <a href="{{ settings.social_facebook }}" class="alert-social-link" target="_blank" rel="noopener" aria-label="Facebook" style="color: {{ section.settings.text_color }}; text-decoration: none;">
-                {% render 'icon-fragrance', icon: 'facebook', style: 'color: {{ section.settings.text_color }};' %}
-              </a>
-            {%- endif -%}
-
-            {%- if section.settings.show_instagram_icon and settings.social_instagram != blank -%}
-              <a href="{{ settings.social_instagram }}" class="alert-social-link" target="_blank" rel="noopener" aria-label="Instagram" style="color: {{ section.settings.text_color }}; text-decoration: none;">
-                {% render 'icon-fragrance', icon: 'instagram', style: 'color: {{ section.settings.text_color }};' %}
-              </a>
-            {%- endif -%}
-
-            {%- if section.settings.show_tiktok_icon and settings.social_tiktok != blank -%}
-              <a href="{{ settings.social_tiktok }}" class="alert-social-link" target="_blank" rel="noopener" aria-label="TikTok" style="color: {{ section.settings.text_color }}; text-decoration: none;">
-                {% render 'icon-fragrance', icon: 'tiktok', style: 'color: {{ section.settings.text_color }};' %}
-              </a>
-            {%- endif -%}
-
-            {%- if section.settings.show_tumblr_icon and settings.social_tumblr != blank -%}
-              <a href="{{ settings.social_tumblr }}" class="alert-social-link" target="_blank" rel="noopener" aria-label="Tumblr" style="color: {{ section.settings.text_color }}; text-decoration: none;">
-                {% render 'icon-fragrance', icon: 'tumblr', style: 'color: {{ section.settings.text_color }};' %}
-              </a>
+            {%- if section.settings.show_facebook_icon or section.settings.show_instagram_icon or section.settings.show_tiktok_icon or section.settings.show_tumblr_icon -%}
+               {% render 'social-icons', class: 'alert-social-icons' %}
             {%- endif -%}
 
             {%- if section.settings.phone_number != blank -%}
