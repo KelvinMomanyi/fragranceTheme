@@ -3,15 +3,35 @@
     <div class="alert">
         <div class="flexBox">
           <div id="phone-container">
-            {%- if section.settings.show_facebook_icon or section.settings.show_instagram_icon or section.settings.show_tiktok_icon or section.settings.show_tumblr_icon -%}
-               {% render 'social-icons', class: 'alert-social-icons' %}
-            {%- endif -%}
+            <!-- Phone Icon -->
 
-            {%- if section.settings.phone_number != blank -%}
-              <a href="tel:{{ section.settings.phone_number }}" id="phone-number" style="color: {{ section.settings.text_color }}; text-decoration: none; margin-left:10px;">
-                {{ section.settings.phone_number }}
-              </a>
-            {%- endif -%}
+                {%- if settings.social_facebook != blank and section.settings.show_facebook_icon -%}
+                  <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
+                    {% render 'icon-fragrance', icon: 'facebook' %}
+                  </a>
+                {%- endif -%}
+ 
+                {%- if settings.social_instagram != blank and section.settings.show_instagram_icon -%}
+                  <a href="{{ settings.social_instagram }}" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
+                    {% render 'icon-fragrance', icon: 'instagram' %}
+                  </a>
+                {%- endif -%}
+
+                {%- if settings.social_tiktok != blank and section.settings.show_tiktok_icon -%}
+                  <a href="{{ settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener" aria-label="TikTok">
+                    {% render 'icon-fragrance', icon: 'tiktok' %}
+                  </a>
+                {%- endif -%}
+
+                {%- if settings.social_tumblr != blank and section.settings.show_tumblr_icon -%}
+                  <a href="{{ settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener" aria-label="Tumblr">
+                    {% render 'icon-fragrance', icon: 'tumblr' %}
+                  </a>
+                {%- endif -%}
+
+            {% comment %} {% render 'icon-fragrance', icon: 'call' %} {% endcomment %}
+            <!-- Phone Number -->
+            <span id="phone-number" style="color: {{section.settings.text_color }};">{{section.settings.phone_number}}</span> {% endcomment %}
           </div>
           <div class="slider-wrapper" style="color: {{ section.settings.text_color }};">
             <p class="alert-text" id="text1">{{ section.settings.text1 }}</p>
@@ -204,9 +224,22 @@
 /* Phone Number */
 #phone-number {
   font-size: 12px; /* Adjust the font size */
-  color: white; /* Change the color if needed */
+  color: inherit; /* Change the color if needed */
   text-decoration: underline;
   text-underline-offset:5px;
+}
+
+.social-link {
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.social-link svg {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 
@@ -500,23 +533,6 @@
     }
   }
 
-  /* Social Icons Overrides for Announcement Bar */
-  .social-list.alert-social-icons {
-    gap: 10px; /* Override default 30px gap */
-    margin: 0;
-    padding: 0;
-  }
-  
-  .alert-social-icons .social-link {
-    display: flex;
-    align-items: center;
-    color: inherit;
-  }
-
-  .alert-social-icons .social-link .icon {
-    width: 16px;
-    height: 16px;
-  }
 </style> 
 
 <script>
