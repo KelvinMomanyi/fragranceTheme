@@ -6,7 +6,7 @@
             <ul class="social-list" style="gap: 15px;">
               {% if section.settings.show_facebook_icon %}
                 <li>
-                  <a href="{{ settings.social_facebook }}" class="social-link" aria-label="Facebook">
+                  <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
                     {% render 'icon-fragrance', icon: 'facebook', size: 'small' %}
                   </a>
                 </li>
@@ -14,7 +14,7 @@
 
               {% if section.settings.show_instagram_icon %}
                 <li>
-                  <a href="{{ settings.social_instagram }}" class="social-link" aria-label="Instagram">
+                  <a href="{{ settings.social_instagram }}" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
                     {% render 'icon-fragrance', icon: 'instagram', size: 'small' %}
                   </a>
                 </li>
@@ -22,7 +22,7 @@
 
               {% if section.settings.show_tiktok_icon %}
                 <li>
-                  <a href="{{ settings.social_tiktok }}" class="social-link" aria-label="TikTok">
+                  <a href="{{ settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener" aria-label="TikTok">
                     {% render 'icon-fragrance', icon: 'tiktok', size: 'small' %}
                   </a>
                 </li>
@@ -30,7 +30,7 @@
 
               {% if section.settings.show_tumblr_icon %}
                 <li>
-                  <a href="{{ settings.social_tumblr }}" class="social-link" aria-label="Tumblr">
+                  <a href="{{ settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener" aria-label="Tumblr">
                     {% render 'icon-fragrance', icon: 'tumblr', size: 'small' %}
                   </a>
                 </li>

@@ -10,87 +10,81 @@ FOOTER
 
         <a href="#" class="logo">{{ section.settings.logo_text | default: 'Fragrance' }}</a>
 
-        <ul>
+        {%- if section.settings.show_social -%}
+          <ul class="social-list">
+            {%- if settings.social_facebook != blank -%}
+              <li>
+                <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
+                  {% render 'icon-fragrance', icon: 'facebook', size: 'small' %}
+                </a>
+              </li>
+            {%- endif -%}
 
-          {%- if section.settings.show_social -%}
-          <li>
-            <ul class="social-list">
+            {%- if settings.social_instagram != blank -%}
+              <li>
+                <a href="{{ settings.social_instagram }}" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
+                  {% render 'icon-fragrance', icon: 'instagram', size: 'small' %}
+                </a>
+              </li>
+            {%- endif -%}
 
-          {%- if settings.social_facebook != blank -%}
-          <li>
-            <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
-              {% render 'icon-fragrance', icon: 'facebook' %}
-            </a>
-          </li>
-          {%- endif -%}
+            {%- if settings.social_tiktok != blank -%}
+              <li>
+                <a href="{{ settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener" aria-label="TikTok">
+                  {% render 'icon-fragrance', icon: 'tiktok', size: 'small' %}
+                </a>
+              </li>
+            {%- endif -%}
 
-          {%- if settings.social_instagram != blank -%}
-          <li>
-            <a href="{{ settings.social_instagram }}" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
-              {% render 'icon-fragrance', icon: 'instagram' %}
-            </a>
-          </li>
-          {%- endif -%}
+            {%- if settings.social_tumblr != blank -%}
+              <li>
+                <a href="{{ settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener" aria-label="Tumblr">
+                  {% render 'icon-fragrance', icon: 'tumblr', size: 'small' %}
+                </a>
+              </li>
+            {%- endif -%}
 
-          {%- if settings.social_tiktok != blank -%}
-          <li>
-            <a href="{{ settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener" aria-label="TikTok">
-              {% render 'icon-fragrance', icon: 'tiktok' %}
-            </a>
-          </li>
-          {%- endif -%}
+            {%- if settings.social_twitter != blank -%}
+              <li>
+                <a href="{{ settings.social_twitter }}" class="social-link" target="_blank" rel="noopener" aria-label="Twitter">
+                  {% render 'icon-fragrance', icon: 'twitter', size: 'small' %}
+                </a>
+              </li>
+            {%- endif -%}
 
-          {%- if settings.social_tumblr != blank -%}
-          <li>
-            <a href="{{ settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener" aria-label="Tumblr">
-              {% render 'icon-fragrance', icon: 'tumblr' %}
-            </a>
-          </li>
-          {%- endif -%}
+            {%- if settings.social_pinterest != blank -%}
+              <li>
+                <a href="{{ settings.social_pinterest }}" class="social-link" target="_blank" rel="noopener" aria-label="Pinterest">
+                  {% render 'icon-fragrance', icon: 'pinterest', size: 'small' %}
+                </a>
+              </li>
+            {%- endif -%}
 
-          {%- if settings.social_twitter != blank -%}
-          <li>
-            <a href="{{ settings.social_twitter }}" class="social-link" target="_blank" rel="noopener" aria-label="Twitter">
-              {% render 'icon-fragrance', icon: 'twitter' %}
-            </a>
-          </li>
-          {%- endif -%}
+            {%- if settings.social_snapchat != blank -%}
+              <li>
+                <a href="{{ settings.social_snapchat }}" class="social-link" target="_blank" rel="noopener" aria-label="Snapchat">
+                  {% render 'icon-fragrance', icon: 'snapchat', size: 'small' %}
+                </a>
+              </li>
+            {%- endif -%}
 
-          {%- if settings.social_pinterest != blank -%}
-          <li>
-            <a href="{{ settings.social_pinterest }}" class="social-link" target="_blank" rel="noopener" aria-label="Pinterest">
-              {% render 'icon-fragrance', icon: 'pinterest' %}
-            </a>
-          </li>
-          {%- endif -%}
-
-          {%- if settings.social_snapchat != blank -%}
-          <li>
-            <a href="{{ settings.social_snapchat }}" class="social-link" target="_blank" rel="noopener" aria-label="Snapchat">
-              {% render 'icon-fragrance', icon: 'snapchat' %}
-            </a>
-          </li>
-          {%- endif -%}
-
-          {%- if settings.social_youtube != blank -%}
-          <li>
-            <a href="{{ settings.social_youtube }}" class="social-link" target="_blank" rel="noopener" aria-label="YouTube">
-              {% render 'icon-fragrance', icon: 'youtube' %}
-            </a>
-          </li>
-          {%- endif -%}
-          
-          {%- if settings.social_vimeo != blank -%}
-          <li>
-            <a href="{{ settings.social_vimeo }}" class="social-link" target="_blank" rel="noopener" aria-label="Vimeo">
-              {% render 'icon-fragrance', icon: 'vimeo' %}
-            </a>
-          </li>
-          {%- endif -%}
-
-            </ul>
-          </li>
-          {%- endif -%}
+            {%- if settings.social_youtube != blank -%}
+              <li>
+                <a href="{{ settings.social_youtube }}" class="social-link" target="_blank" rel="noopener" aria-label="YouTube">
+                  {% render 'icon-fragrance', icon: 'youtube', size: 'small' %}
+                </a>
+              </li>
+            {%- endif -%}
+            
+            {%- if settings.social_vimeo != blank -%}
+              <li>
+                <a href="{{ settings.social_vimeo }}" class="social-link" target="_blank" rel="noopener" aria-label="Vimeo">
+                  {% render 'icon-fragrance', icon: 'vimeo', size: 'small' %}
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
 
           {%- if section.settings.show_follow_on_shop -%}
           <li class="footer-list-item">
