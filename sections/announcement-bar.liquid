@@ -56,20 +56,25 @@
             
             <div class='separator' style="color: {{section.settings.text_color }};"></div>
 
-            <div style="display:flex; gap:5px; align-items:center;">
-              <div class="select" id="currency-selector" style="color: {{section.settings.text_color }};">
-                <span class="selected">
-                  <div class="flag-icon" style="background-image: url('{{ localization.country | image_url: width: 32 }}');" aria-label="{{ localization.country.name }} flag"></div>
-                </span>
+            <div class="currency-custom-container">
+              <div class="dropdown" id="currency-dropdown-announcement">
+                <div class="select" style="color: {{section.settings.text_color }};">
+                  <span class="selected">
+                    <div class="flag-icon" style="background-image: url('{{ localization.country | image_url: width: 32 }}');" aria-label="{{ localization.country.name }} flag"></div>
+                    <span>{{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }}</span>
+                  </span>
+                  <div class="caret" style="border-top-color: {{ section.settings.text_color }};"></div>
+                </div>
+                <ul class="newmenu" style="background: white; color: black; border: 1px solid #eee;">
+                  {% for country in localization.available_countries %}
+                    <li data-value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}class="active"{% endif %}>
+                      <div class="flag-icon" style="background-image: url('{{ country | image_url: width: 32 }}');"></div>
+                      <span>{{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})</span>
+                    </li>
+                  {% endfor %}
+                </ul>
               </div>
-              
-              <select name="country_code" class="currency-selector" style="color: {{section.settings.text_color }};" id="currencySelect" onchange="this.form.submit()">
-                {% for country in localization.available_countries %}
-                  <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
-                    {{ country.currency.iso_code }} {{ country.currency.symbol }}
-                  </option>
-                {% endfor %}
-              </select>
+              <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
             </div>
           {%- endform -%}
         </div>
@@ -356,8 +361,21 @@
 .selected{
   display:flex;
   align-items:center;
-  gap:5px;
+  gap:8px;
   border: none;
+}
+
+.caret {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid white;
+  transition: 0.3s;
+}
+
+.caret-rotate {
+  transform: rotate(180deg);
 }
 
 
@@ -365,11 +383,15 @@
     list-style-type: none;
     padding: 0.1em 0.2em;
     color:#9fa5b5;
-    position:fixed; 
-    top: 3em;
+    position:absolute; 
+    top: 100%;
     right: 0;
-    width:8%;
-    transform: translateX(-50%);
+    width: auto;
+    min-width: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: none;
     opacity: 0;
     display: none;
     transition: 0.2s;
@@ -441,9 +463,14 @@
       left: 50%; /* Move to the visible position */
 
     }
-     #text1, #text2, #text3 {
-      height:100%;
+     height:100%;
     }
+  }
+
+  .currency-custom-container {
+    position: relative;
+    display: flex;
+    align-items: center;
   }
 
   @media screen and (max-width: 875px){
@@ -497,6 +524,35 @@
 
 
   // No additional JS needed for localization form as it uses onchange submit.
+  
+  const dropdown = document.querySelector('#currency-dropdown-announcement');
+  if (dropdown) {
+    const select = dropdown.querySelector('.select');
+    const caret = dropdown.querySelector('.caret');
+    const menu = dropdown.querySelector('.newmenu');
+    const options = dropdown.querySelectorAll('.newmenu li');
+    const form = dropdown.closest('form');
+    const hiddenInput = form.querySelector('input[name="country_code"]');
+
+    select.addEventListener('click', (e) => {
+        e.stopPropagation();
+        caret.classList.toggle('caret-rotate');
+        menu.classList.toggle('menu-open');
+    });
+
+    options.forEach(option => {
+        option.addEventListener('click', ()=> {
+            const value = option.getAttribute('data-value');
+            hiddenInput.value = value;
+            form.submit();
+        });
+    });
+
+    document.addEventListener('click', () => {
+        caret.classList.remove('caret-rotate');
+        menu.classList.remove('menu-open');
+    });
+  }
 })();
 </script>
 
