@@ -3,19 +3,35 @@
     <div class="alert">
         <div class="flexBox">
           <div id="phone-container">
-            <!-- Phone Icon -->
+            {%- if section.settings.show_facebook_icon and settings.social_facebook != blank -%}
+              <a href="{{ settings.social_facebook }}" class="alert-social-link" target="_blank" rel="noopener" aria-label="Facebook" style="color: {{ section.settings.text_color }}; text-decoration: none;">
+                {% render 'icon-fragrance', icon: 'facebook', style: 'color: {{ section.settings.text_color }};' %}
+              </a>
+            {%- endif -%}
 
-                {% if section.settings.show_facebook_icon %}{% render 'icon-fragrance', icon: 'facebook', style: 'color: {{ section.settings.text_color }};' %}{% endif %}
- 
-                {% if section.settings.show_instagram_icon %}{% render 'icon-fragrance', icon: 'instagram', style: 'color: {{ section.settings.text_color }};' %}{% endif %}
+            {%- if section.settings.show_instagram_icon and settings.social_instagram != blank -%}
+              <a href="{{ settings.social_instagram }}" class="alert-social-link" target="_blank" rel="noopener" aria-label="Instagram" style="color: {{ section.settings.text_color }}; text-decoration: none;">
+                {% render 'icon-fragrance', icon: 'instagram', style: 'color: {{ section.settings.text_color }};' %}
+              </a>
+            {%- endif -%}
 
-                {% if section.settings.show_tiktok_icon %}{% render 'icon-fragrance', icon: 'tiktok', style: 'color: {{ section.settings.text_color }};' %}{% endif %}
+            {%- if section.settings.show_tiktok_icon and settings.social_tiktok != blank -%}
+              <a href="{{ settings.social_tiktok }}" class="alert-social-link" target="_blank" rel="noopener" aria-label="TikTok" style="color: {{ section.settings.text_color }}; text-decoration: none;">
+                {% render 'icon-fragrance', icon: 'tiktok', style: 'color: {{ section.settings.text_color }};' %}
+              </a>
+            {%- endif -%}
 
-                {% if section.settings.show_tumblr_icon %}{% render 'icon-fragrance', icon: 'tumblr', style: 'color: {{ section.settings.text_color }};' %}{% endif %}
+            {%- if section.settings.show_tumblr_icon and settings.social_tumblr != blank -%}
+              <a href="{{ settings.social_tumblr }}" class="alert-social-link" target="_blank" rel="noopener" aria-label="Tumblr" style="color: {{ section.settings.text_color }}; text-decoration: none;">
+                {% render 'icon-fragrance', icon: 'tumblr', style: 'color: {{ section.settings.text_color }};' %}
+              </a>
+            {%- endif -%}
 
-            {% comment %} {% render 'icon-fragrance', icon: 'call' %} {% endcomment %}
-            <!-- Phone Number -->
-            <span id="phone-number" style="color: {{section.settings.text_color }};">{{section.settings.phone_number}}</span> {% endcomment %}
+            {%- if section.settings.phone_number != blank -%}
+              <a href="tel:{{ section.settings.phone_number }}" id="phone-number" style="color: {{ section.settings.text_color }}; text-decoration: none; margin-left:10px;">
+                {{ section.settings.phone_number }}
+              </a>
+            {%- endif -%}
           </div>
           <div class="slider-wrapper" style="color: {{ section.settings.text_color }};">
             <p class="alert-text" id="text1">{{ section.settings.text1 }}</p>
