@@ -45,103 +45,34 @@
           
           <!-- Language and Currency Selectors Container -->
         <div id="language-currency-container">
-          <select name="locale_code" class="locale-selector" style="color:{{ section.settings.text_color }};">
-            {% for language in localization.available_languages %}
-              {% if language.iso_code == localization.language.iso_code %}
-                <option value="{{ language.iso_code }}" selected="selected">{{ language.name }}</option>
-              {% else %}
-                <option value="{{ language.iso_code }}">{{ language.name }}</option>
-              {% endif %}
-            {% endfor %}
-          </select>
-          
-        
-          <div class='separator' style="color: {{section.settings.text_color }};"></div>
-
-          {% form 'currency' %}
-            <div style="display:flex; gap:5px; align-items:center;">
-              <div class="dropdown">
-                {% for currency in shop.enabled_currencies %}
-                  {% assign country_code = '' %}
-                  {% assign country_name = '' %}
-                {% case currency.iso_code %}
-                    {% when 'USD' %} {% assign country_code = 'us' %} {% assign country_name = 'United States' %}
-                    {% when 'CAD' %} {% assign country_code = 'ca' %} {% assign country_name = 'Canada' %}
-                    {% when 'EUR' %} {% assign country_code = 'eu' %} {% assign country_name = 'Eurozone' %}
-                    {% when 'GBP' %} {% assign country_code = 'gb' %} {% assign country_name = 'United Kingdom' %}
-                    {% when 'AUD' %} {% assign country_code = 'au' %} {% assign country_name = 'Australia' %}
-                    {% when 'JPY' %} {% assign country_code = 'jp' %} {% assign country_name = 'Japan' %}
-                    {% when 'INR' %} {% assign country_code = 'in' %} {% assign country_name = 'India' %}
-                    {% when 'KES' %} {% assign country_code = 'ke' %} {% assign country_name = 'Kenya' %}
-                    {% when 'CHF' %} {% assign country_code = 'ch' %} {% assign country_name = 'Switzerland' %}
-                    {% when 'CNY' %} {% assign country_code = 'cn' %} {% assign country_name = 'China' %}
-                    {% when 'SEK' %} {% assign country_code = 'se' %} {% assign country_name = 'Sweden' %}
-                    {% when 'NZD' %} {% assign country_code = 'nz' %} {% assign country_name = 'New Zealand' %}
-                    {% when 'MXN' %} {% assign country_code = 'mx' %} {% assign country_name = 'Mexico' %}
-                    {% when 'SGD' %} {% assign country_code = 'sg' %} {% assign country_name = 'Singapore' %}
-                    {% when 'HKD' %} {% assign country_code = 'hk' %} {% assign country_name = 'Hong Kong' %}
-                    {% when 'NOK' %} {% assign country_code = 'no' %} {% assign country_name = 'Norway' %}
-                    {% when 'ZAR' %} {% assign country_code = 'za' %} {% assign country_name = 'South Africa' %}
-                    {% when 'BRL' %} {% assign country_code = 'br' %} {% assign country_name = 'Brazil' %}
-                    {% when 'RUB' %} {% assign country_code = 'ru' %} {% assign country_name = 'Russia' %}
-                    {% when 'KRW' %} {% assign country_code = 'kr' %} {% assign country_name = 'South Korea' %}
-                    {% when 'TRY' %} {% assign country_code = 'tr' %} {% assign country_name = 'Turkey' %}
-                    {% when 'SAR' %} {% assign country_code = 'sa' %} {% assign country_name = 'Saudi Arabia' %}
-                    {% when 'AED' %} {% assign country_code = 'ae' %} {% assign country_name = 'United Arab Emirates' %}
-                    {% when 'THB' %} {% assign country_code = 'th' %} {% assign country_name = 'Thailand' %}
-                    {% when 'IDR' %} {% assign country_code = 'id' %} {% assign country_name = 'Indonesia' %}
-                    {% when 'PLN' %} {% assign country_code = 'pl' %} {% assign country_name = 'Poland' %}
-                    {% when 'MYR' %} {% assign country_code = 'my' %} {% assign country_name = 'Malaysia' %}
-                    {% when 'DKK' %} {% assign country_code = 'dk' %} {% assign country_name = 'Denmark' %}
-                    {% when 'PHP' %} {% assign country_code = 'ph' %} {% assign country_name = 'Philippines' %}
-                    {% when 'HUF' %} {% assign country_code = 'hu' %} {% assign country_name = 'Hungary' %}
-                    {% when 'CZK' %} {% assign country_code = 'cz' %} {% assign country_name = 'Czech Republic' %}
-                    {% when 'ILS' %} {% assign country_code = 'il' %} {% assign country_name = 'Israel' %}
-                    {% when 'CLP' %} {% assign country_code = 'cl' %} {% assign country_name = 'Chile' %}
-                    {% when 'PKR' %} {% assign country_code = 'pk' %} {% assign country_name = 'Pakistan' %}
-                    {% when 'VND' %} {% assign country_code = 'vn' %} {% assign country_name = 'Vietnam' %}
-                    {% when 'EGP' %} {% assign country_code = 'eg' %} {% assign country_name = 'Egypt' %}
-                    {% when 'NGN' %} {% assign country_code = 'ng' %} {% assign country_name = 'Nigeria' %}
-                    {% when 'BDT' %} {% assign country_code = 'bd' %} {% assign country_name = 'Bangladesh' %}
-                    {% when 'COP' %} {% assign country_code = 'co' %} {% assign country_name = 'Colombia' %}
-                    {% when 'PEN' %} {% assign country_code = 'pe' %} {% assign country_name = 'Peru' %}
-                    {% when 'LKR' %} {% assign country_code = 'lk' %} {% assign country_name = 'Sri Lanka' %}  
-              {% endcase %}
-              
-                {% if currency == cart.currency %}
-                <div class="select" id="currency-selector" style="color: {{section.settings.text_color }};">
-                  <span class="selected">
-                    <div class="flag-icon" style="background-image: url('https://flagcdn.com/16x12/{{ country_code }}.png');" aria-label="{{ currency }} flag"></div>
-                  </span>
-                </div>
-                {% else %}
-                <ul class="newmenu" style="color: {{section.settings.text_color }};">
-                 
-                </ul>
-                {% endif %}
+          {%- form 'localization', id: 'AnnouncementLocalizationForm', class: 'localization-form' -%}
+            <select name="language_code" class="locale-selector" style="color:{{ section.settings.text_color }};" onchange="this.form.submit()">
+              {% for language in localization.available_languages %}
+                <option value="{{ language.iso_code }}" {% if language.iso_code == localization.language.iso_code %}selected{% endif %}>
+                  {{ language.endonym_name | capitalize }}
+                </option>
               {% endfor %}
-              </div>
-
+            </select>
             
-          
-             <select name="currency" class="currency-selector" style="color: {{section.settings.text_color }};" id="currencySelect">
-              {% for currency in shop.enabled_currencies %}
-                {% assign country_name = currency.iso_code %}
-                {% assign country_code = currency.iso_code | slice: 0, 2 | downcase %}
-                {% if currency == cart.currency %}
-                  <option selected="true" value="{{ currency.iso_code }}">
-                    {{ currency.symbol }}&nbsp;{{ currency.name }}
+            <div class='separator' style="color: {{section.settings.text_color }};"></div>
+
+            <div style="display:flex; gap:5px; align-items:center;">
+              <div class="select" id="currency-selector" style="color: {{section.settings.text_color }};">
+                <span class="selected">
+                  <div class="flag-icon" style="background-image: url('{{ localization.country | image_url: width: 32 }}');" aria-label="{{ localization.country.name }} flag"></div>
+                </span>
+              </div>
+              
+              <select name="country_code" class="currency-selector" style="color: {{section.settings.text_color }};" id="currencySelect" onchange="this.form.submit()">
+                {% for country in localization.available_countries %}
+                  <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+                    {{ country.currency.iso_code }} {{ country.currency.symbol }}
                   </option>
-                {% else %}
-                  <option value="{{ currency.iso_code }}">
-                    {{ currency.symbol }}&nbsp;{{ currency.name }}
-                  </option>
-                {% endif %}
-              {% endfor %}
-             </select> 
-             
-            </div> 
-          {% endform %}
+                {% endfor %}
+              </select>
+            </div>
+          {%- endform -%}
+        </div>
            {% comment %} {% render 'icon-fragrance', icon: 'close' %} {% endcomment %}
         </div>
       </div>
@@ -565,83 +496,7 @@
 
 
 
-//Currency  Selector
-function currencyFormSubmit(event) {
-    event.target.form.submit();
-  }
-
-  document.querySelectorAll('.shopify-currency-form select').forEach(function(element) {
-    element.addEventListener('change', currencyFormSubmit);
-  }); 
-  
-
-
-const dropdowns = document.querySelectorAll('.dropdown');
-
-document.addEventListener('DOMContentLoaded', function() {
-  // Get all currency list items
-  var currencyItems = document.querySelectorAll('.newmenu li');
-
-  currencyItems.forEach(function(item) {
-    item.addEventListener('click', function() {
-      // Get the selected currency data
-      var selectedCurrency = this.getAttribute('data-currency');
-      var selectedSymbol = this.getAttribute('data-symbol');
-      var countryCode = this.getAttribute('data-country-code');
-
-      // Update the displayed selected currency
-      document.getElementById('selected-currency').innerText = selectedCurrency;
-      document.getElementById('selected-symbol').innerText = selectedSymbol;
-      document.querySelector('.select .flag-icon').style.backgroundImage = `url('https://flagcdn.com/16x12/${countryCode}.png')`;
-
-      // Update currency using Shopify's JS method
-      Currency.convertAll(shop.currency, selectedCurrency);
-
-      // Store the new currency in local storage or cookies if needed
-      localStorage.setItem('currency', selectedCurrency);
-
-      // Optionally, update the URL to include the selected currency
-      window.location.search = '?currency=' + selectedCurrency;
-    });
-  });
-});
-
-
-//loop through the elements
-dropdowns.forEach(dropdown => {
-    //get inner elements from each dropdown
-    const select = dropdown.querySelector('.select');
-    const caret = dropdown.querySelector('.caret');
-    const menu = dropdown.querySelector('.newmenu');
-    const options = dropdown.querySelectorAll('.newmenu li');
-    const selected = dropdown.querySelector('.selected');
-
-    select.addEventListener('click', () => {
-        select.classList.toggle('select-clicked');
-
-        caret.classList.toggle('caret-rotate');
-
-        menu.classList.toggle('menu-open')
-    });
-
-    options.forEach(option => {
-        option.addEventListener('click', ()=> {
-            selected.innerText = option.innerText;
-            //Add the clicked select style to the select element
-            selected.classList.remove('select-clicked');
-            //Add the rotate styles to the caret element
-            caret.classList.remove('caret-rotate');
-            //Add the open styles to the menu element
-            menu.classList.remove('menu-open');
-            //Remove active class from all option elements 
-            options.forEach(option => {
-                option.classList.remove('active')
-            })
-            //Add active class to clicked option element
-            option.classList.add("active")
-        })
-    })
-})
+  // No additional JS needed for localization form as it uses onchange submit.
 })();
 </script>
 
