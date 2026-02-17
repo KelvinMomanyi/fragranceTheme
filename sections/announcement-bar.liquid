@@ -63,9 +63,11 @@
                     <div class="flag-icon" style="background-image: url('{{ localization.country | image_url: width: 32 }}');" aria-label="{{ localization.country.name }} flag"></div>
                     <span>{{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }}</span>
                   </span>
-                  <div class="caret" style="border-top-color: {{ section.settings.text_color }};"></div>
+                  <div class="caret-icon-wrapper" style="color: {{ section.settings.text_color }};">
+                    {% render 'icon-fragrance', icon: 'chevron-down', size: 'small' %}
+                  </div>
                 </div>
-                <ul class="newmenu" style="background: white; color: black; border: 1px solid #eee;">
+                <ul class="newmenu">
                   {% for country in localization.available_countries %}
                     <li data-value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}class="active"{% endif %}>
                       <div class="flag-icon" style="background-image: url('{{ country | image_url: width: 32 }}');"></div>
@@ -365,51 +367,59 @@
   border: none;
 }
 
-.caret {
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid white;
-  transition: 0.3s;
+.caret-icon-wrapper {
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
 }
 
 .caret-rotate {
   transform: rotate(180deg);
 }
 
-
-.newmenu{
+.newmenu {
     list-style-type: none;
-    padding: 0.1em 0.2em;
-    color:#9fa5b5;
-    position:absolute; 
+    padding: 8px 0;
+    background-color: var(--white);
+    color: var(--black);
+    position: absolute; 
     top: 100%;
     right: 0;
     width: auto;
-    min-width: 200px;
-    max-height: 300px;
+    min-width: 220px;
+    max-height: 350px;
     overflow-y: auto;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transform: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--black_10);
+    border-radius: 4px;
     opacity: 0;
     display: none;
-    transition: 0.2s;
-    z-index: 9999999;
+    transition: var(--transition-1);
+    z-index: 10000;
+    margin-top: 10px;
+    animation: fadeIn 0.2s ease-out;
 }
 
 .newmenu li {
-    padding: 0.7em 0.5em;
-    /*margin: 0.3em 0;*/
-    border-radius: 0.5em;
+    padding: 10px 20px;
     cursor: pointer;
-    display:flex;
-    gap:3px;
-    align-items:center;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    transition: var(--transition-1);
+    font-family: var(--ff-roboto);
+    font-size: 1.2rem;
+    color: var(--black);
 }
 
-.newmenu li:hover{
-    background: #2a2d35;
+.newmenu li:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--tan-crayola);
+}
+
+.newmenu li.active {
+    background-color: rgba(0, 0, 0, 0.02);
+    font-weight: 600;
 }
 
 /*.active{
@@ -528,7 +538,7 @@
   const dropdown = document.querySelector('#currency-dropdown-announcement');
   if (dropdown) {
     const select = dropdown.querySelector('.select');
-    const caret = dropdown.querySelector('.caret');
+    const caretWrapper = dropdown.querySelector('.caret-icon-wrapper');
     const menu = dropdown.querySelector('.newmenu');
     const options = dropdown.querySelectorAll('.newmenu li');
     const form = dropdown.closest('form');
@@ -536,7 +546,7 @@
 
     select.addEventListener('click', (e) => {
         e.stopPropagation();
-        caret.classList.toggle('caret-rotate');
+        caretWrapper.classList.toggle('caret-rotate');
         menu.classList.toggle('menu-open');
     });
 
@@ -549,7 +559,7 @@
     });
 
     document.addEventListener('click', () => {
-        caret.classList.remove('caret-rotate');
+        if (caretWrapper) caretWrapper.classList.remove('caret-rotate');
         menu.classList.remove('menu-open');
     });
   }
