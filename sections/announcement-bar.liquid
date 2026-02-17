@@ -2,8 +2,8 @@
  <header class="color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}"> 
     <div class="alert">
         <div class="flexBox">
-          <div id="phone-container">
-            <ul class="social-list" style="gap: 15px;">
+          <div id="social-container">
+            <ul class="social-list" style="display: flex; align-items: center; gap: 15px; margin: 0; padding: 0; list-style: none;">
               {% if section.settings.show_facebook_icon %}
                 <li>
                   <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
@@ -215,11 +215,10 @@
   align-items: center;
 }
 
-/* Phone Container */
-#phone-container {
+/* Social Container (formerly phone-container) */
+#social-container {
   display: flex;
-  align-items: center; /* Align icon and number vertically */
-  gap: 10px; /* Space between icon and number */
+  align-items: center; /* Align icons vertically */
   width: 25%;
   margin-left: 0;
 }
