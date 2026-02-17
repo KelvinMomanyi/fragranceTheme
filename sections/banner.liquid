@@ -19,7 +19,9 @@
                       <div class="has-bg-image" style="background-image: url('{{ section.settings.image2 | image_url}}');">
                       </div>   
                      {% else %}
-                      {{ 'collection-1' | placeholder_svg_tag: 'img-cover' }}
+                      <div class="banner-placeholder">
+                        {{ 'lifestyle-1' | placeholder_svg_tag: 'banner-placeholder-svg' }}
+                      </div>
                     {% endif %}
                 </div>
             </li>
@@ -37,7 +39,9 @@
                    <div class="has-bg-image" style="background-image: url('{{ section.settings.image1 | image_url}}');">
                    </div>   
                   {% else %}
-                   {{ 'collection-2' | placeholder_svg_tag: 'img-cover' }}
+                   <div class="banner-placeholder">
+                     {{ 'lifestyle-2' | placeholder_svg_tag: 'banner-placeholder-svg' }}
+                   </div>
                  {% endif %}
                 </div>
             </li>
@@ -48,6 +52,23 @@
 <style>
   
  img {height: auto;}
+
+  .banner-placeholder {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    overflow: hidden;
+    background-color: #d4d4d4;
+  }
+
+  .banner-placeholder .placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
  
   
   .has-bg-image{
