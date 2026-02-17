@@ -3,14 +3,7 @@
     <div class="alert">
         <div class="flexBox">
           <div id="phone-container">
-            <div class="phone-wrapper" style="display: flex; align-items: center; gap: 5px;">
-              {% render 'icon-fragrance', icon: 'call' %}
-              <a href="tel:{{ section.settings.phone_number }}" id="phone-number" style="color: {{ section.settings.text_color }};">
-                {{ section.settings.phone_number }}
-              </a>
-            </div>
-
-            <ul class="social-list" style="margin-left: 20px; gap: 15px;">
+            <ul class="social-list" style="gap: 15px;">
               {% if section.settings.show_facebook_icon %}
                 <li>
                   <a href="{{ settings.social_facebook }}" class="social-link" aria-label="Facebook">
