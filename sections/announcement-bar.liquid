@@ -253,8 +253,7 @@
   
   #language-selector, #currency-selector {
     padding: 0; /* Add padding for a better look */
-    border: 1px solid #ddd; /* Optional: Add a border */
-    border-radius: 4px; /* Optional: Rounded corners */
+    border: none; /* Removed border */
     font-size: 14px; /* Adjust the font size */
   }
    .currency-selector {
@@ -359,7 +358,7 @@
   
   .dropdown-toggle {
     padding: 8px;
-    border: 1px solid #ccc;
+    border: none;
     background-color: #fff;
     display: flex;
     align-items: center;
@@ -395,15 +394,12 @@
 
 
   .flag-icon {
-    width: 16px;
-    height: 12px;
-    display: block;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 2px; /* Classy rounded borders */
-    overflow: hidden; /* Ensures image follows rounded corners */
-    box-shadow: 0 0 1px rgba(0,0,0,0.1); /* Subtle definition */
+    width: 16px;  /* Same width as the original image */
+    height: 12px; /* Same height as the original image */
+    display: block; /* Works better with flex centering */
+    background-size: cover; /* Ensures the image covers the entire div */
+    background-position: center; /* Centers the image within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
   }
 
   .dropdown{
