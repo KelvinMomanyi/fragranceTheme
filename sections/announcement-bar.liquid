@@ -2,8 +2,8 @@
  <header class="color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}"> 
     <div class="alert">
         <div class="flexBox">
-          <div id="social-container">
-            <ul class="social-list" style="display: flex; align-items: center; gap: 15px; margin: 0; padding: 0; list-style: none;">
+          <div id="phone-container">
+            <ul class="social-list" style="gap: 15px;">
               {% if section.settings.show_facebook_icon %}
                 <li>
                   <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
@@ -215,10 +215,11 @@
   align-items: center;
 }
 
-/* Social Container (formerly phone-container) */
-#social-container {
+/* Phone Container */
+#phone-container {
   display: flex;
-  align-items: center; /* Align icons vertically */
+  align-items: center; /* Align icon and number vertically */
+  gap: 10px; /* Space between icon and number */
   width: 25%;
   margin-left: 0;
 }
@@ -394,12 +395,15 @@
 
 
   .flag-icon {
-    width: 16px;  /* Same width as the original image */
-    height: 12px; /* Same height as the original image */
-    display: block; /* Works better with flex centering */
-    background-size: cover; /* Ensures the image covers the entire div */
-    background-position: center; /* Centers the image within the div */
-    background-repeat: no-repeat; /* Prevents the image from repeating */
+    width: 16px;
+    height: 12px;
+    display: block;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 2px; /* Classy rounded borders */
+    overflow: hidden; /* Ensures image follows rounded corners */
+    box-shadow: 0 0 1px rgba(0,0,0,0.1); /* Subtle definition */
   }
 
   .dropdown{
