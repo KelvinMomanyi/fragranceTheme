@@ -178,15 +178,15 @@
   }
   
   .alert-text.exit {
-    transform: translateX(150%) translateY(-40%); /* Slide out to the right */
+    transform: translateX(150%) translateY(-50%); /* Slide out to the right */
     opacity: 0;
     overflow:hidden;
   }
 
   .slider-wrapper{
    position:relative;
-   height: 24px; /* Increased height to match icon/select baseline better */
-   width:100%;
+   height:18px;
+   flex: 1;
    overflow: hidden;
   }
   #text1, #text2, #text3 {
@@ -203,14 +203,16 @@
   }
 
   /* Language and Currency Container */
-#language-currency-container, #language-currency-container form {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin: 0; /* Remove default margins */
-}
 #language-currency-container {
-  gap: 15px;
+  display: flex;
+  gap: 10px; /* Space between selectors */
+  align-items: center;
+}
+
+.alert form {
+  margin: 0;
+  display: flex;
+  align-items: center;
 }
 
 /* Phone Container */
@@ -218,13 +220,8 @@
   display: flex;
   align-items: center; /* Align icon and number vertically */
   gap: 10px; /* Space between icon and number */
-  width: auto; /* Changed from 30% to auto for better spacing */
-  margin: 0;
-}
-
-#phone-container ul {
-  margin: 0;
-  padding: 0;
+  width: 25%;
+  margin-left: 0;
 }
 
 /* Phone Icon */
@@ -246,7 +243,8 @@
     display: flex;
     gap: 10px; /* Adjust the gap between the selectors */
     align-items: center; /* Aligns the selectors vertically */
-
+    width: 25%;
+    justify-content: flex-end;
   }
 
   .locale-selector{
