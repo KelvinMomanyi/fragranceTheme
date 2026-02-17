@@ -14,7 +14,7 @@
            <img src="{{ section.settings.image1 | image_url }}" alt="offer products" width="305" height="405" class="w-100" loading="lazy">    
         {% else %}
            <div class="offer-placeholder">
-             {{ 'product-1' | placeholder_svg_tag: 'offer-placeholder-svg' }}
+             {{ 'lifestyle-2' | placeholder_svg_tag: 'offer-placeholder-svg' }}
            </div>
         {% endif %} 
       </figure>
@@ -59,28 +59,18 @@
     </div>          
 </section>
 
+</section>
+
 <style>
   .offer-placeholder {
     width: 100%;
     height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #f0f0f0;
+    background-color: #d4d4d4;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    /* Ensure it sits behind if necessary, or matches img behavior */
-    z-index: 0; 
-  }
-  
-  /* Ensure offer-banner has positioning context */
-  .offer-banner {
-    position: relative; 
+    position: relative;
     overflow: hidden;
   }
 
-  /* Make the SVG fill the container */
   .offer-placeholder svg {
     width: 100%;
     height: 100%;
@@ -88,13 +78,6 @@
     position: absolute;
     top: 0;
     left: 0;
-  }
-  
-  /* Ensure images also fill the banner if they don't already */
-  .offer-banner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
   }
 </style>
 
