@@ -12,24 +12,6 @@ FOOTER
 
         <ul>
 
-          {%- if section.settings.show_address -%}
-          <li class="footer-list-item">
-            {% render 'icon-fragrance', icon: 'location' %}
-
-            <address class="address">
-              {{ section.settings.address_text }}
-            </address>
-          </li>
-          {%- endif -%}
-
-          {%- if section.settings.show_phone -%}
-          <li class="footer-list-item">
-            {% render 'icon-fragrance', icon: 'call' %}
-
-            <a href="tel:{{ section.settings.phone_number }}" class="footer-link">{{ section.settings.phone_display }}</a>
-          </li>
-          {%- endif -%}
-
           {%- if section.settings.show_social -%}
           <li>
             <ul class="social-list">
