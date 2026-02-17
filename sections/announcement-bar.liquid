@@ -59,7 +59,7 @@
           <div class='separator' style="color: {{section.settings.text_color }};"></div>
 
           {% form 'currency' %}
-            <div style="display:flex; gap:5px;">
+            <div style="display:flex; gap:5px; align-items:center;">
               <div class="dropdown">
                 {% for currency in shop.enabled_currencies %}
                   {% assign country_code = '' %}
@@ -397,11 +397,10 @@
   .flag-icon {
     width: 16px;  /* Same width as the original image */
     height: 12px; /* Same height as the original image */
-    display: inline-block; /* Allows it to be treated like text/image */
+    display: block; /* Works better with flex centering */
     background-size: cover; /* Ensures the image covers the entire div */
     background-position: center; /* Centers the image within the div */
     background-repeat: no-repeat; /* Prevents the image from repeating */
-    vertical-align: middle; /* Aligns with text if placed next to text */
   }
 
   .dropdown{
