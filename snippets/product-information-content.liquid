@@ -120,7 +120,7 @@
   /* Base grid layout */
   .product-information__grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: subgrid;
     grid-column: 1 / -1;
   }
 
@@ -131,14 +131,23 @@
 
   .product-information__media {
     order: 0;
+    width: 0;
+    min-width: 100%;
+  }
+
+  .product-information__media .product-media-gallery__placeholder-image {
     width: 100%;
+    height: 100%;
   }
 
   /* Mobile styles */
   @media screen and (max-width: 749px) {
-    .product-information__media,
-    .product-details {
+    .product-information__media {
       grid-column: 1 / -1;
+    }
+
+    .product-details {
+      grid-column: 2 / 3;
     }
   }
 
