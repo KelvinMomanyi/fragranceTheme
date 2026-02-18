@@ -1,0 +1,105 @@
+/* Dawn Compatibility Layer */
+:root {
+    /* Map Dawn variables to Fragrance Theme variables where possible */
+    --color-foreground: var(--color-text);
+    --color-background: var(--color-body);
+    --gradient-background: var(--color-body);
+    --color-button: var(--color-btn-primary);
+    --color-button-text: var(--white);
+    --color-secondary-button: var(--white);
+    --color-secondary-button-text: var(--color-text);
+    --color-link: var(--color-text);
+    --color-badge-foreground: var(--white);
+    --color-badge-background: var(--color-btn-primary);
+    --color-badge-border: var(--color-btn-primary);
+    --payment-terms-background-color: var(--color-body);
+
+    /* Font mappings */
+    --font-body-family: var(--ff-roboto);
+    --font-body-style: normal;
+    --font-body-weight: 400;
+    --font-body-weight-bold: 700;
+
+    --font-heading-family: var(--ff-mr_de_haviland);
+    --font-heading-style: normal;
+    --font-heading-weight: 400;
+
+    /* Spacing and Layout */
+    --page-width: 1200px;
+    --page-width-margin: auto;
+    --grid-desktop-vertical-spacing: 20px;
+    --grid-desktop-horizontal-spacing: 20px;
+    --grid-mobile-vertical-spacing: 10px;
+    --grid-mobile-horizontal-spacing: 10px;
+
+    /* Button Styles */
+    --buttons-radius: 0px;
+    --buttons-border-width: 1px;
+    --buttons-border-opacity: 1;
+    --buttons-shadow-opacity: 0;
+    --buttons-shadow-visible: 0;
+    --buttons-shadow-horizontal-offset: 0px;
+    --buttons-shadow-vertical-offset: 0px;
+    --buttons-shadow-blur-radius: 0px;
+    --buttons-border-offset: 0px;
+
+    /* Inputs */
+    --inputs-radius: 0px;
+    --inputs-border-width: 1px;
+    --inputs-border-opacity: 1;
+    --inputs-shadow-opacity: 0;
+    --inputs-shadow-horizontal-offset: 0px;
+    --inputs-shadow-margin: 0px;
+    --inputs-shadow-vertical-offset: 0px;
+    --inputs-shadow-blur-radius: 0px;
+    --inputs-radius-outset: 0px;
+    --inputs-border-offset: 0px;
+    --inputs-margin-offset: 0px;
+
+    /* Product Card */
+    --product-card-image-padding: 0px;
+    --product-card-corner-radius: 0px;
+    --product-card-text-alignment: left;
+    --product-card-border-width: 0px;
+    --product-card-border-opacity: 0.1;
+    --product-card-shadow-opacity: 0;
+    --product-card-shadow-visible: 0;
+    --product-card-shadow-horizontal-offset: 0px;
+    --product-card-shadow-vertical-offset: 0px;
+    --product-card-shadow-blur-radius: 0px;
+
+    /* Media */
+    --media-padding: 0px;
+    --media-border-opacity: 0.05;
+    --media-border-width: 1px;
+    --media-radius: 0px;
+    --media-shadow-opacity: 0;
+    --media-shadow-horizontal-offset: 0px;
+    --media-shadow-vertical-offset: 0px;
+    --media-shadow-blur-radius: 0px;
+    --media-shadow-visible: 0;
+
+    /* Popups/Drawers */
+    --popup-border-width: 1px;
+    --popup-border-opacity: 0.1;
+    --popup-corner-radius: 0px;
+    --popup-shadow-opacity: 0.05;
+    --popup-shadow-horizontal-offset: 0px;
+    --popup-shadow-vertical-offset: 4px;
+    --popup-shadow-blur-radius: 5px;
+
+    /* Drawer */
+    --drawer-border-width: 1px;
+    --drawer-border-opacity: 0.1;
+    --drawer-shadow-opacity: 0;
+    --drawer-shadow-horizontal-offset: 0px;
+    --drawer-shadow-vertical-offset: 0px;
+    --drawer-shadow-blur-radius: 0px;
+
+    /* Badges */
+    --badge-corner-radius: 0px;
+
+    /* Icons */
+    --icon-weight: 2px;
+    /* fallback */
+}
