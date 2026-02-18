@@ -1,4 +1,4 @@
-{% if template == 'product' %}
+﻿{% if template == 'product' %}
   <script type="application/ld+json">
     {
       "@context": "https://schema.org/",
@@ -72,7 +72,7 @@
                 </div>
               </div>
               <div class="quantity-selector1">
-                <button type="button" class="qty-btn1 minus1">−</button>
+                <button type="button" class="qty-btn1 minus1">ΓêÆ</button>
                 <input
                   type="number"
                   name="quantity"
@@ -85,25 +85,20 @@
                
               <div class="addBuyButtons">
                
-                  <form action="{{ routes.cart_add_url }}" method="post" style='margin-top:1em;' enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
+                  <form action="/cart/add" method="post" style='margin-top:1em;' enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
                     <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                     <button type="submit" class="action-btn btn btn-primary" aria-label="add to cart">
                     
                       Add to Cart
                     </button>
                   </form>
-                  <form action="{{ routes.cart_add_url }}" method="post" style="margin-top:1em;" enctype="multipart/form-data">
+                  <form action="/cart/add" method="post" style="margin-top:1em;" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                    <input type="hidden" name="return_to" value="{{ routes.checkout_url }}">
+                    <input type="hidden" name="return_to" value="/checkout">
                     <button type="submit" class="action-btn btn btn-secondary" aria-label="buy now">
                       Buy It Now
                    </button>
                  </form>
-
-                 {%- comment -%} Accelerated Checkout Buttons (Required - Must be enabled by default) {%- endcomment -%}
-                 <div class="product-form__payment-buttons" style="margin-top: 1em;">
-                   {{ form | payment_button }}
-                 </div>
 
               </div>
           </div>
@@ -765,7 +760,7 @@ let shoe =1
   
       if (!isOpen) {
         content.style.display = 'block';
-        btn.textContent = '−';
+        btn.textContent = 'ΓêÆ';
       }
     });
   });
@@ -778,28 +773,12 @@ let shoe =1
 
 {% schema %}
 {
-  "name": "Product",
+  "name": "main-product",
   "settings": [],
-  "blocks": [
-    {
-      "type": "@app"
-    },
-    {
-      "type": "custom_liquid",
-      "name": "Custom liquid",
-      "settings": [
-        {
-          "type": "liquid",
-          "id": "custom_liquid",
-          "label": "Custom Liquid",
-          "info": "Add custom Liquid code"
-        }
-      ]
-    }
-  ],
+  "blocks": [],
   "presets": [
     {
-      "name": "Product"
+      "name": "main-product"
     }
   ]
 }
