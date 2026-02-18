@@ -637,6 +637,76 @@
 {% endif %}
 
 {% stylesheet %}
+  media-gallery {
+    display: block;
+    width: 100%;
+  }
+
+  :where(media-gallery, .product-grid__item) {
+    .media-gallery__grid {
+      grid-template-columns: 1fr;
+      gap: var(--image-gap);
+    }
+  }
+
+  :not(.dialog-zoomed-gallery) > .product-media-container {
+    --slide-width: 100%;
+
+    display: flex;
+    aspect-ratio: var(--gallery-aspect-ratio, var(--media-preview-ratio));
+    max-height: var(--constrained-height);
+    width: var(--slide-width, 100%);
+
+    /* Relative position needed for video and 3d models */
+    position: relative;
+    overflow: hidden;
+
+    &:where(.constrain-height) {
+      /* arbitrary offset value based on average theme spacing and header height */
+      --viewport-offset: 400px;
+      --constrained-min-height: 300px;
+      --constrained-height: max(var(--constrained-min-height), calc(100vh - var(--viewport-offset)));
+
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    @supports (--test: round(up, 100%, 1px)) {
+      /* width and overflow forces children to shrink to parent width */
+      --slide-width: round(up, 100%, 1px);
+    }
+  }
+
+  media-gallery:where(.media-gallery--grid) .media-gallery__grid {
+    display: none;
+  }
+
+  media-gallery.media-gallery--grid .media-gallery__grid .product-media-container {
+    /* Needed for safari to stretch to full grid height */
+    height: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .media-gallery--two-column .media-gallery__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .media-gallery--large-first-image .product-media-container:first-child,
+    .media-gallery--two-column .product-media-container:only-child {
+      /* First child spans 2 columns */
+      grid-column: span 2;
+    }
+
+    /* Display grid view as a carousel on mobile, grid on desktop */
+    media-gallery:is(.media-gallery--grid) slideshow-component {
+      display: none;
+    }
+
+    media-gallery:where(.media-gallery--grid) .media-gallery__grid {
+      display: grid;
+    }
+  }
+
   .dialog-zoomed-gallery__dialog {
     background-color: var(--color-background);
   }
