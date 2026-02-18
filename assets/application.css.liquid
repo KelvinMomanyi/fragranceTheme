@@ -416,9 +416,41 @@ label {
 }
 
 .section {
+  /* Port Dawn section grid so product layout matches */
+  --page-margin: 16px;
+  --page-content-width: 1200px;
+  --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+  --full-page-grid-central-column-width: min(
+    var(--page-width) - var(--page-margin) * 2,
+    calc(100% - var(--page-margin) * 2)
+  );
+  --full-page-grid-margin: minmax(var(--page-margin), 1fr);
+  --full-page-grid-with-margins: var(--full-page-grid-margin) var(--full-page-grid-central-column-width)
+    var(--full-page-grid-margin);
+
   padding-block: var(--section-padding);
   content-visibility: auto;
   contain-intrinsic-size: 100px 800px;
+
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--full-page-grid-with-margins);
+}
+
+/* Place all direct children in the center column by default */
+.section > * {
+  grid-column: 2;
+}
+
+/* For page-width sections, all content goes in the center column */
+.section--page-width > * {
+  grid-column: 2;
+}
+
+/* For full-width sections, content spans all columns */
+.section--full-width > * {
+  grid-column: 1 / -1;
 }
 
 .img-holder {
