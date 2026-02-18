@@ -1,4 +1,4 @@
-import { debounce, throttle, prefersReducedMotion } from '@theme/utilities';
+import { debounce, throttle, prefersReducedMotion } from './utilities.js';
 
 /**
  * Timeout duration (in milliseconds) after which scroll is considered to have ended.
@@ -342,25 +342,25 @@ export function scrollIntoView(element, { ancestor, behavior = 'smooth', block =
   const scrollTop =
     ancestor.scrollHeight > ancestor.clientHeight
       ? calculateScrollOffset(
-          block,
-          ancestorRect.top,
-          ancestor.clientHeight,
-          elemRect.top,
-          elemRect.height,
-          ancestor.scrollTop
-        )
+        block,
+        ancestorRect.top,
+        ancestor.clientHeight,
+        elemRect.top,
+        elemRect.height,
+        ancestor.scrollTop
+      )
       : ancestor.scrollTop;
 
   const scrollLeft =
     ancestor.scrollWidth > ancestor.clientWidth
       ? calculateScrollOffset(
-          inline,
-          ancestorRect.left,
-          ancestor.clientWidth,
-          elemRect.left,
-          elemRect.width,
-          ancestor.scrollLeft
-        )
+        inline,
+        ancestorRect.left,
+        ancestor.clientWidth,
+        elemRect.left,
+        elemRect.width,
+        ancestor.scrollLeft
+      )
       : ancestor.scrollLeft;
 
   ancestor.scrollTo({ top: scrollTop, left: scrollLeft, behavior });

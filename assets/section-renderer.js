@@ -1,4 +1,4 @@
-import { morph, MORPH_OPTIONS } from '@theme/morph';
+import { morph, MORPH_OPTIONS } from './morph.js';
 
 /**
  * A class to re-render sections using the Section Rendering API

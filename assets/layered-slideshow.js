@@ -1,5 +1,7 @@
-import { Component } from '@theme/component';
-import { isMobileBreakpoint, mediaQueryLarge } from '@theme/utilities';
+import { Component } from './component.js';
+import { morph } from './morph.js';
+import { ThemeEvents, VariantUpdateEvent } from './events.js';
+import { isMobileBreakpoint, mediaQueryLarge } from './utilities.js';
 
 /**
  * @typedef {Object} LayeredSlideshowRefs
@@ -213,7 +215,7 @@ export class LayeredSlideshowComponent extends Component {
   #getFocusableElements(panel) {
     return Array.from(panel.querySelectorAll(FOCUSABLE_SELECTOR))
       .filter((el) => !el.closest('[inert]'))
-      .map((el) => /** @type {HTMLElement} */ (el));
+      .map((el) => /** @type {HTMLElement} */(el));
   }
 
   #preventClickDuringDrag(/** @type {MouseEvent} */ e) {
@@ -340,7 +342,7 @@ export class LayeredSlideshowComponent extends Component {
     const eventTarget = /** @type {HTMLElement} */ (event.target);
     const tab = eventTarget.closest('[role="tab"]');
     if (tab) {
-      const i = tabs.indexOf(/** @type {HTMLElement} */ (tab));
+      const i = tabs.indexOf(/** @type {HTMLElement} */(tab));
       if (i === this.#active) return;
       const target = i > this.#active ? i + 1 : i;
       if (target >= tabs.length) return;

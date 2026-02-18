@@ -1,6 +1,7 @@
-import { Component } from '@theme/component';
-import { ThemeEvents, MediaStartedPlayingEvent } from '@theme/events';
-import { DialogCloseEvent } from '@theme/dialog';
+import { Component } from './component.js';
+import { morph, MORPH_OPTIONS } from './morph.js';
+import { debounce, throttle, prefersReducedMotion } from './utilities.js';
+import { DialogCloseEvent } from './dialog.js';
 
 /**
  * A deferred media element

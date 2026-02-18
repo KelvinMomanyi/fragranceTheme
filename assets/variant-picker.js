@@ -1,7 +1,7 @@
-import { Component } from '@theme/component';
-import { VariantSelectedEvent, VariantUpdateEvent } from '@theme/events';
-import { morph, MORPH_OPTIONS } from '@theme/morph';
-import { yieldToMainThread, getViewParameterValue, ResizeNotifier } from '@theme/utilities';
+import { Component } from './component.js';
+import { VariantSelectedEvent, VariantUpdateEvent } from './events.js';
+import { morph, MORPH_OPTIONS } from './morph.js';
+import { yieldToMainThread, getViewParameterValue, ResizeNotifier } from './utilities.js';
 
 /**
  * @typedef {object} VariantPickerRefs
@@ -11,7 +11,7 @@ import { yieldToMainThread, getViewParameterValue, ResizeNotifier } from '@theme
 /**
  * A custom element that manages a variant picker.
  *
- * @template {import('@theme/component').Refs} [TRefs=VariantPickerRefs]
+ * @template {import('./component.js').Refs} [TRefs=VariantPickerRefs]
  * @extends Component<TRefs>
  */
 export default class VariantPicker extends Component {
@@ -82,8 +82,8 @@ export default class VariantPicker extends Component {
     const morphElementSelector = loadsNewProduct
       ? 'main'
       : isOnFeaturedProductSection
-      ? 'featured-product-information'
-      : undefined;
+        ? 'featured-product-information'
+        : undefined;
 
     this.fetchUpdatedSection(this.buildRequestUrl(selectedOption), morphElementSelector);
 

@@ -1,4 +1,4 @@
-import { requestIdleCallback } from '@theme/utilities';
+import { requestIdleCallback } from './utilities.js';
 
 /*
  * Declarative shadow DOM is only initialized on the initial render of the page.
@@ -115,7 +115,7 @@ export class Component extends DeclarativeShadowElement {
       }
 
       return acc;
-    }, /** @type {Set<Element>} */ (new Set()));
+    }, /** @type {Set<Element>} */(new Set()));
 
     for (const ref of elements) {
       const refName = ref.getAttribute('ref') ?? '';
@@ -230,18 +230,18 @@ function registerEventListeners() {
         const proxiedEvent =
           event.target !== element
             ? new Proxy(event, {
-                get(target, property) {
-                  if (property === 'target') return element;
+              get(target, property) {
+                if (property === 'target') return element;
 
-                  const value = Reflect.get(target, property);
+                const value = Reflect.get(target, property);
 
-                  if (typeof value === 'function') {
-                    return value.bind(target);
-                  }
+                if (typeof value === 'function') {
+                  return value.bind(target);
+                }
 
-                  return value;
-                },
-              })
+                return value;
+              },
+            })
             : event;
 
         const value = element.getAttribute(attribute) ?? '';
@@ -309,8 +309,8 @@ function parseData(str) {
 
   return delimiter === '?'
     ? Object.fromEntries(
-        Array.from(new URLSearchParams(data).entries()).map(([key, value]) => [key, parseValue(value)])
-      )
+      Array.from(new URLSearchParams(data).entries()).map(([key, value]) => [key, parseValue(value)])
+    )
     : parseValue(data);
 }
 

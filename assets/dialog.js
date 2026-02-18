@@ -1,5 +1,6 @@
-import { Component } from '@theme/component';
-import { debounce, isClickedOutside, onAnimationEnd } from '@theme/utilities';
+import { morph, MORPH_OPTIONS } from './morph.js';
+import { Component } from './component.js';
+import { debounce, isClickedOutside, onAnimationEnd } from './utilities.js';
 
 /**
  * A custom element that manages a dialog.

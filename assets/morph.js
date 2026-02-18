@@ -1,4 +1,5 @@
-import { Component } from '@theme/component';
+import { Component } from './component.js';
+import { isMobileBreakpoint, mediaQueryLarge } from './utilities.js';
 
 /**
  * @typedef {Object} Options

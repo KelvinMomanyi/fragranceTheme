@@ -1,4 +1,4 @@
-import { Component } from '@theme/component';
+import { Component } from './component.js';
 import {
   center,
   closest,
@@ -8,9 +8,9 @@ import {
   preventDefault,
   viewTransition,
   scheduler,
-} from '@theme/utilities';
-import { Scroller, scrollIntoView } from '@theme/scrolling';
-import { SlideshowSelectEvent } from '@theme/events';
+} from './utilities.js';
+import { Scroller, scrollIntoView } from './scrolling.js';
+import { SlideshowSelectEvent } from './events.js';
 
 // The threshold for determining visibility of slides.
 const SLIDE_VISIBLITY_THRESHOLD = 0.7;

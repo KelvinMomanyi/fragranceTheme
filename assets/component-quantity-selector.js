@@ -1,6 +1,8 @@
-import { Component } from '@theme/component';
-import { QuantitySelectorUpdateEvent } from '@theme/events';
-import { parseIntOrDefault } from '@theme/utilities';
+import { Component } from './component.js';
+import { fetchConfig, preloadImage, onAnimationEnd, yieldToMainThread } from './utilities.js';
+import { ThemeEvents, CartAddEvent, CartErrorEvent, CartUpdateEvent, VariantUpdateEvent } from './events.js';
+import { cartPerformance } from './performance.js';
+import { morph } from './morph.js';
 
 /**
  * A custom element that allows the user to select a quantity.

@@ -1,8 +1,8 @@
-import { Component } from '@theme/component';
-import { fetchConfig, preloadImage, onAnimationEnd, yieldToMainThread } from '@theme/utilities';
-import { ThemeEvents, CartAddEvent, CartErrorEvent, CartUpdateEvent, VariantUpdateEvent } from '@theme/events';
-import { cartPerformance } from '@theme/performance';
-import { morph } from '@theme/morph';
+import { Component } from './component.js';
+import { fetchConfig, preloadImage, onAnimationEnd, yieldToMainThread } from './utilities.js';
+import { ThemeEvents, CartAddEvent, CartErrorEvent, CartUpdateEvent, VariantUpdateEvent } from './events.js';
+import { cartPerformance } from './performance.js';
+import { morph } from './morph.js';
 
 // Error message display duration - gives users time to read the message
 const ERROR_MESSAGE_DISPLAY_DURATION = 10000;
@@ -44,7 +44,7 @@ export class AddToCartComponent extends Component {
     super.disconnectedCallback();
 
     if (this.#resetTimeouts) {
-      this.#resetTimeouts.forEach(/** @param {number} timeoutId */ (timeoutId) => clearTimeout(timeoutId));
+      this.#resetTimeouts.forEach(/** @param {number} timeoutId */(timeoutId) => clearTimeout(timeoutId));
     }
     this.removeEventListener('pointerenter', this.#preloadImage);
   }
@@ -136,7 +136,7 @@ export class AddToCartComponent extends Component {
     }
 
     // Clear all existing timeouts
-    this.#resetTimeouts.forEach(/** @param {number} timeoutId */ (timeoutId) => clearTimeout(timeoutId));
+    this.#resetTimeouts.forEach(/** @param {number} timeoutId */(timeoutId) => clearTimeout(timeoutId));
     this.#resetTimeouts = [];
 
     if (addToCartButton.dataset.added !== 'true') {
@@ -492,7 +492,7 @@ class ProductFormComponent extends Component {
     } else if (currentElement && !newElement) {
       currentElement.remove();
     } else if (!currentElement && newElement && insertReferenceElement) {
-      insertReferenceElement.insertAdjacentElement('beforebegin', /** @type {Element} */ (newElement.cloneNode(true)));
+      insertReferenceElement.insertAdjacentElement('beforebegin', /** @type {Element} */(newElement.cloneNode(true)));
     }
   }
 
