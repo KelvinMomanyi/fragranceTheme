@@ -39,6 +39,16 @@
 
   {{ content_for_header }} <!-- Header hook for plugins -->
   
+  <!-- Module import map - must come before any ES module scripts -->
+  <script type="importmap">
+  {
+    "imports": {
+      "@theme/utilities": "{{ 'utilities.js' | asset_url }}",
+      "@theme/component": "{{ 'component.js' | asset_url }}"
+    }
+  }
+  </script>
+  
   <!-- Critical CSS - Load immediately -->
   {{ 'application.css' | asset_url | stylesheet_tag }} 
   

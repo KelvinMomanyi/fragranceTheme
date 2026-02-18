@@ -1175,7 +1175,9 @@ class ProductRecommendations extends HTMLElement {
   }
 }
 
-customElements.define('product-recommendations', ProductRecommendations);
+if (!customElements.get('product-recommendations')) {
+  customElements.define('product-recommendations', ProductRecommendations);
+}
 
 class AccountIcon extends HTMLElement {
   constructor() {
