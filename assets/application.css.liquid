@@ -250,6 +250,37 @@ img {
   height: auto;
 }
 
+/* Product media sizing & layout (ported from Dawn) */
+.product-media-container {
+  --slide-width: 100%;
+  display: flex;
+  aspect-ratio: var(--gallery-aspect-ratio, var(--media-preview-ratio));
+  max-height: var(--constrained-height);
+  width: var(--slide-width, 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+@supports (--test: round(up, 100%, 1px)) {
+  .product-media-container {
+    --slide-width: round(up, 100%, 1px);
+  }
+}
+
+.product-media-container img {
+  aspect-ratio: inherit;
+  object-fit: contain;
+}
+
+.product-media-container.media-fit-contain img {
+  object-position: center center;
+}
+
+.product-media {
+  display: flex;
+  flex: 1;
+}
+
 input,
 button {
   background: none;
