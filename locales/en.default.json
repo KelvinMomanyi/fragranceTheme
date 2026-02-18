@@ -18,7 +18,8 @@
   "accessibility": {
     "close": "Close",
     "vendor": "Vendor",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "skip_to_product_info": "Skip to product information"
   },
   "templates": {
     "search": {
