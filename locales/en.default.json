@@ -125,5 +125,26 @@
       "to": "To",
       "clear_filter": "Remove filter"
     }
+  },
+  "actions": {
+    "open_image_in_full_screen": "Open image in full screen"
+  },
+  "names": {
+    "details": "Product details",
+    "product_buy_buttons": "Buy buttons",
+    "product_information": "Product information"
+  },
+  "content": {
+    "layout": "Layout",
+    "padding": "Padding",
+    "size": "Size"
+  },
+  "settings": {
+    "color_scheme": "Color scheme",
+    "gap": "Gap",
+    "top": "Top",
+    "bottom": "Bottom",
+    "left": "Left",
+    "right": "Right"
   }
 }
