@@ -85,11 +85,11 @@
         {% if product.images.size > 1 %}
           <div class="product-thumbnails" aria-label="Product media thumbnails">
             <div class="product-thumbnails__controls">
-              <button type="button" class="thumb-nav thumb-nav--prev" aria-label="Scroll thumbnails left" data-thumb-prev>
-                <ion-icon name="chevron-back"></ion-icon>
+              <button type="button" class="thumb-nav thumb-nav--prev" aria-label="Scroll thumbnails up" data-thumb-prev>
+                <ion-icon name="chevron-up"></ion-icon>
               </button>
-              <button type="button" class="thumb-nav thumb-nav--next" aria-label="Scroll thumbnails right" data-thumb-next>
-                <ion-icon name="chevron-forward"></ion-icon>
+              <button type="button" class="thumb-nav thumb-nav--next" aria-label="Scroll thumbnails down" data-thumb-next>
+                <ion-icon name="chevron-down"></ion-icon>
               </button>
             </div>
 
@@ -497,6 +497,22 @@
     min-width: 0;
   }
 
+  /* Thumbnails beside main image (desktop), below (mobile) */
+  @media (min-width: 992px) {
+    .product-media {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 1.8rem;
+      align-items: start;
+    }
+
+    .product-thumbnails {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+  }
+
   .product-media-main {
     position: relative;
     overflow: hidden;
@@ -543,27 +559,28 @@
   .product-thumbnails::after {
     content: "";
     position: absolute;
-    top: 1rem;
-    bottom: 0;
-    width: 44px;
+    left: 0;
+    right: 0;
+    height: 44px;
     pointer-events: none;
     z-index: 1;
   }
 
   .product-thumbnails::before {
-    left: 0;
-    background: linear-gradient(to right, var(--color-background) 0%, transparent 100%);
+    top: 0;
+    background: linear-gradient(to bottom, var(--color-background) 0%, transparent 100%);
   }
 
   .product-thumbnails::after {
-    right: 0;
-    background: linear-gradient(to left, var(--color-background) 0%, transparent 100%);
+    bottom: 0;
+    background: linear-gradient(to top, var(--color-background) 0%, transparent 100%);
   }
 
   .product-thumbnails__controls {
     position: absolute;
-    inset: 1rem 0 auto 0;
+    inset: 0 0 0 0;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     pointer-events: none;
     z-index: 2;
@@ -585,6 +602,7 @@
     border: 1px solid var(--black_10);
     color: var(--smokey-black);
     transition: transform var(--transition-1), opacity var(--transition-1), color var(--transition-1), background var(--transition-1);
+    margin-inline: auto;
   }
 
   .thumb-nav:disabled {
@@ -600,18 +618,21 @@
 
   .product-thumbnails__rail {
     display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 72px;
+    grid-auto-flow: row;
+    grid-auto-rows: 72px;
     gap: 1rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 0.4rem 44px 0.4rem 44px;
-    scroll-snap-type: x mandatory;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 44px 0.4rem;
+    scroll-snap-type: y mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     scroll-behavior: smooth;
     position: relative;
     z-index: 0;
+
+    /* Prevent the column from getting comically tall */
+    max-height: clamp(320px, 65vh, 680px);
   }
 
   .product-thumbnails__rail::-webkit-scrollbar {
@@ -639,6 +660,44 @@
     filter: grayscale(0.35);
     opacity: 0.85;
     transition: filter var(--transition-1), opacity var(--transition-1), transform var(--transition-1);
+  }
+
+  /* On small screens, revert thumbnails to horizontal strip below image */
+  @media (max-width: 991px) {
+    .product-thumbnails::before,
+    .product-thumbnails::after {
+      left: 0;
+      right: auto;
+      top: 1rem;
+      bottom: 0;
+      width: 44px;
+      height: auto;
+    }
+
+    .product-thumbnails::before {
+      background: linear-gradient(to right, var(--color-background) 0%, transparent 100%);
+    }
+
+    .product-thumbnails::after {
+      left: auto;
+      right: 0;
+      background: linear-gradient(to left, var(--color-background) 0%, transparent 100%);
+    }
+
+    .product-thumbnails__controls {
+      inset: 1rem 0 auto 0;
+      flex-direction: row;
+    }
+
+    .product-thumbnails__rail {
+      grid-auto-flow: column;
+      grid-auto-columns: 72px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0.4rem 44px;
+      scroll-snap-type: x mandatory;
+      max-height: none;
+    }
   }
 
   .thumbnail-btn.active {
@@ -1088,15 +1147,19 @@ document.addEventListener('DOMContentLoaded', function() {
         mainImage.src = imageUrl;
       }
       setActiveThumb(this);
-      this.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      this.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
     });
   });
 
   function updateThumbNav() {
     if (!thumbRail || !thumbPrev || !thumbNext) return;
-    const maxScrollLeft = thumbRail.scrollWidth - thumbRail.clientWidth;
-    const atStart = thumbRail.scrollLeft <= 2;
-    const atEnd = thumbRail.scrollLeft >= maxScrollLeft - 2;
+    const isHorizontal = thumbRail.scrollWidth > thumbRail.clientWidth + 2;
+    const maxScroll = isHorizontal
+      ? (thumbRail.scrollWidth - thumbRail.clientWidth)
+      : (thumbRail.scrollHeight - thumbRail.clientHeight);
+    const pos = isHorizontal ? thumbRail.scrollLeft : thumbRail.scrollTop;
+    const atStart = pos <= 2;
+    const atEnd = pos >= maxScroll - 2;
     thumbPrev.disabled = atStart;
     thumbNext.disabled = atEnd;
   }
@@ -1104,16 +1167,27 @@ document.addEventListener('DOMContentLoaded', function() {
   if (thumbRail && thumbPrev && thumbNext) {
     const step = () => {
       const first = thumbRail.querySelector('.thumbnail-btn');
-      const gap = parseFloat(getComputedStyle(thumbRail).columnGap || getComputedStyle(thumbRail).gap || '0') || 0;
-      return first ? (first.offsetWidth + gap) : 80;
+      const styles = getComputedStyle(thumbRail);
+      const gap = parseFloat(styles.rowGap || styles.gap || '0') || 0;
+      return first ? (first.offsetHeight + gap) : 80;
     };
 
     thumbPrev.addEventListener('click', () => {
-      thumbRail.scrollBy({ left: -step() * 3, behavior: 'smooth' });
+      const isHorizontal = thumbRail.scrollWidth > thumbRail.clientWidth + 2;
+      if (isHorizontal) {
+        thumbRail.scrollBy({ left: -(step() * 3), behavior: 'smooth' });
+      } else {
+        thumbRail.scrollBy({ top: -(step() * 3), behavior: 'smooth' });
+      }
     });
 
     thumbNext.addEventListener('click', () => {
-      thumbRail.scrollBy({ left: step() * 3, behavior: 'smooth' });
+      const isHorizontal = thumbRail.scrollWidth > thumbRail.clientWidth + 2;
+      if (isHorizontal) {
+        thumbRail.scrollBy({ left: (step() * 3), behavior: 'smooth' });
+      } else {
+        thumbRail.scrollBy({ top: (step() * 3), behavior: 'smooth' });
+      }
     });
 
     thumbRail.addEventListener('scroll', updateThumbNav, { passive: true });
