@@ -416,16 +416,26 @@ label {
   color: var(--tan-crayola);
 }
 
+/* =====================================================
+   CHANGE 1: .section restored to simple padding-only
+   (matches reference theme — no Dawn grid here)
+   ===================================================== */
 .section {
-  /* Port Dawn section grid so product layout matches */
+  padding-block: var(--section-padding);
+}
+
+/* Dawn-style 3-column page grid — only applied where explicitly needed.
+   Add class="section--dawn-grid" to product page section elements that
+   require the Dawn layout (e.g. _product-details.liquid,
+   product-information-content.liquid). */
+.section--dawn-grid {
   --page-margin: 16px;
   --page-content-width: 1200px;
-  --page-width: calc(var(--page-content-width) +(var(--page-margin) * 2));
+  --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
   --full-page-grid-central-column-width: min(var(--page-width) - var(--page-margin) * 2, calc(100% - var(--page-margin) * 2));
   --full-page-grid-margin: minmax(var(--page-margin), 1fr);
   --full-page-grid-with-margins: var(--full-page-grid-margin) var(--full-page-grid-central-column-width) var(--full-page-grid-margin);
 
-  padding-block: var(--section-padding);
   content-visibility: auto;
   contain-intrinsic-size: 100px 800px;
 
@@ -436,17 +446,17 @@ label {
 }
 
 /* Place all direct children in the center column by default */
-.section > * {
+.section--dawn-grid > * {
   grid-column: 2;
 }
 
 /* For page-width sections, all content goes in the center column */
-.section--page-width > * {
+.section--dawn-grid.section--page-width > * {
   grid-column: 2;
 }
 
 /* For full-width sections, content spans all columns */
-.section--full-width > * {
+.section--dawn-grid.section--full-width > * {
   grid-column: 1 / -1;
 }
 
@@ -1332,12 +1342,15 @@ a.card-meta-text:is(:hover, :focus) {
    \*----------------------------------- 
 */
 
+/* =====================================================
+   CHANGE 2: .footer-top reverted to reference theme.
+   Removed: grid-template-columns, padding-block (top),
+   align-items. Kept: display grid, gap, padding-block-end.
+   ===================================================== */
 .footer-top {
   display: grid;
   gap: 30px;
-  grid-template-columns: 1fr;
-  padding-block: var(--section-padding, 40px) 40px;
-  align-items: start;
+  padding-block-end: 40px;
 }
 
 .footer-list-item {
@@ -1778,22 +1791,14 @@ a.card-meta-text:is(:hover, :focus) {
 
   /**
    * FOOTER
+   * CHANGE 3: Removed .footer-brand and .footer-list flex rules that
+   * don't exist in the reference theme. Only keeping .footer-top
+   * 4-column grid and .footer-bottom layout.
    */
 
   .footer-top {
     grid-template-columns: 1fr 0.75fr 0.6fr 1fr;
     padding-block-end: 60px;
-  }
-
-  .footer-brand {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .footer-list {
-    display: flex;
-    flex-direction: column;
   }
 
   .footer-bottom {

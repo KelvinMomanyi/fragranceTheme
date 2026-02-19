@@ -4,7 +4,10 @@ FOOTER
 <footer class="footer color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}">
   <div class="container">
 
-    <div class="footer-top">
+    {{- '<!-- CHANGE 4: Restored section class on footer-top div.
+         Safe now that .section is padding-only (not a grid).
+         This gives the footer top the correct section padding. -->' -}}
+    <div class="footer-top section">
 
       <div class="footer-brand">
 
