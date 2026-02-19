@@ -487,9 +487,14 @@
 
   @media (min-width: 992px) {
     .product-wrapper {
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 5rem;
+      /* Make the gallery the hero: big media, slimmer details column */
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+      gap: 6rem;
     }
+  }
+
+  .product-media {
+    min-width: 0;
   }
 
   .product-media-main {
@@ -502,6 +507,13 @@
 
   .product-media-main .img-holder {
     aspect-ratio: 1;
+  }
+
+  @media (min-width: 992px) {
+    .product-media-main .img-holder {
+      /* Keeps a premium, larger-feeling hero image */
+      aspect-ratio: 4 / 5;
+    }
   }
 
   .product-media-main img {
@@ -555,6 +567,12 @@
     justify-content: space-between;
     pointer-events: none;
     z-index: 2;
+    opacity: 0;
+    transition: opacity var(--transition-1);
+  }
+
+  .product-thumbnails:is(:hover, :focus-within) .product-thumbnails__controls {
+    opacity: 1;
   }
 
   .thumb-nav {
@@ -659,7 +677,7 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    padding: 2.6rem;
+    padding: 2.2rem;
     border: 1px solid var(--black_10);
     background: var(--color-background);
     box-shadow: none;
