@@ -507,6 +507,17 @@
       align-items: start;
     }
 
+    /* Ensure thumbnails are the small column, main image is the large column */
+    .product-thumbnails {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .product-media-main {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
     .product-thumbnails {
       margin-top: 0;
       padding-top: 0;
