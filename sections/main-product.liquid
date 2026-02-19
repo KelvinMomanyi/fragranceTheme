@@ -501,7 +501,8 @@
   @media (min-width: 992px) {
     .product-media {
       display: grid;
-      grid-template-columns: 88px minmax(0, 1fr);
+      /* ~15% thumbs / ~85% hero image */
+      grid-template-columns: minmax(64px, 15%) minmax(0, 1fr);
       gap: 1.8rem;
       align-items: start;
     }
@@ -633,6 +634,22 @@
 
     /* Prevent the column from getting comically tall */
     max-height: clamp(320px, 65vh, 680px);
+  }
+
+  @media (min-width: 992px) {
+    .product-thumbnails {
+      width: 100%;
+    }
+
+    .thumbnail-btn {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+    }
+
+    .product-thumbnails__rail {
+      grid-auto-rows: auto;
+    }
   }
 
   .product-thumbnails__rail::-webkit-scrollbar {
