@@ -87,12 +87,10 @@ FOOTER
         {%- endif -%}
 
           {%- if section.settings.show_follow_on_shop -%}
-          <li class="footer-list-item">
+          <div class="footer-list-item">
             {% render 'follow-on-shop', button_size: section.settings.follow_button_size %}
-          </li>
+          </div>
           {%- endif -%}
-
-        </ul>
 
       </div>
 
