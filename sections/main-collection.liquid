@@ -36,7 +36,7 @@
       {% endunless %}
     </div>
 
-    {%- comment -{ current_collection.description {%- endcomment -%}
+    {%- comment -%} Collection Description {%- endcomment -%}
     {% if current_collection.description != blank %}
       <div class="collection-description rte">
         {{ current_collection.description }}
@@ -84,7 +84,7 @@
                 <div class="loading-overlay gradient"></div>
                 
                 {%- comment -%} Product Count for Mobile {%- endcomment -%}
-                <div class="product-count light" role="status">
+                <div class="product-count light small-hide" role="status">
                   <h2 class="product-count__text text-body">
                     <span id="ProductCount">
                       {%- if current_collection.results_count -%}
@@ -99,6 +99,22 @@
                           'products.facets.product_count'
                           | t: product_count: current_collection.products_count, count: current_collection.all_products_count
                         }}
+                      {%- endif -%}
+                    </span>
+                  </h2>
+                  {%- render 'loading-spinner' -%}
+                </div>
+
+                {%- comment -%} Product Count for Desktop {%- endcomment -%}
+                <div class="product-count product-count--desktop light medium-hide large-up-hide" role="status">
+                  <h2 class="product-count__text text-body">
+                    <span id="ProductCountDesktop">
+                      {%- if current_collection.results_count -%}
+                        {{ 'templates.search.results_with_count' | t: terms: current_collection.terms, count: current_collection.results_count }}
+                      {%- elsif current_collection.products_count == current_collection.all_products_count -%}
+                        {{ 'products.facets.product_count_simple' | t: count: current_collection.products_count }}
+                      {%- else -%}
+                        {{ 'products.facets.product_count' | t: product_count: current_collection.products_count, count: current_collection.all_products_count }}
                       {%- endif -%}
                     </span>
                   </h2>
