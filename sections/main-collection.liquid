@@ -9,9 +9,10 @@
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 {{ 'component-facets.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'menu-drawer.js' | asset_url }}" defer="defer"></script>
 
 <div class="container color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %} padding-top:25px;">
-  {%- comment -%} Collection Hero with Image (Required) {%- endcomment -%}
+  {%- comment -%} Collection Hero with Image {%- endcomment -%}
   {% if current_collection.image %}
     <div class="collection-hero">
       <img
@@ -35,7 +36,7 @@
       {% endunless %}
     </div>
 
-    {%- comment -%} Collection Description (Required) {%- endcomment -%}
+    {%- comment -{ current_collection.description {%- endcomment -%}
     {% if current_collection.description != blank %}
       <div class="collection-description rte">
         {{ current_collection.description }}
@@ -44,70 +45,12 @@
 
     <div class="section-{{ section.id }}-padding">
       {% paginate current_collection.products by 24 %}
-        {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
-         {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
-          <facet-filters-form class="facets facets-vertical-sort page-width small-hide">
-            <form class="facets-vertical-form" id="FacetSortForm">
-              <div class="facet-filters sorting caption">
-                <div class="facet-filters__field">
-                  <h2 class="facet-filters__label caption-large text-body">
-                    <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
-                  </h2>
-                  <div class="select">
-                    {%- assign sort_by = current_collection.sort_by | default: current_collection.default_sort_by -%}
-                    <select
-                      name="sort_by"
-                      class="facet-filters__sort select__select caption-large"
-                      id="SortBy"
-                      aria-describedby="a11y-refresh-page-message"
-                    >
-                      {%- for option in current_collection.sort_options -%}
-                        <option
-                          value="{{ option.value | escape }}"
-                          {% if option.value == sort_by %}
-                            selected="selected"
-                          {% endif %}
-                        >
-                          {{ option.name | escape }}
-                        </option>
-                      {%- endfor -%}
-                    </select>
-                    <span class="svg-wrapper">
-                       {% render 'icon-fragrance', icon: 'chevron-down' %}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="product-count-vertical light" role="status">
-                <h2 class="product-count__text text-body">
-                  <span id="ProductCountDesktop">
-                    {%- if current_collection.results_count -%}
-                      {{
-                        'templates.search.results_with_count'
-                        | t: terms: current_collection.terms, count: current_collection.results_count
-                      }}
-                    {%- elsif current_collection.products_count == current_collection.all_products_count -%}
-                      {{ 'products.facets.product_count_simple' | t: count: current_collection.products_count }}
-                    {%- else -%}
-                      {{
-                        'products.facets.product_count'
-                        | t: product_count: current_collection.products_count, count: current_collection.all_products_count
-                      }}
-                    {%- endif -%}
-                  </span>
-                </h2>
-                {%- render 'loading-spinner' -%}
-              </div>
-            </form>
-          </facet-filters-form>
-        {%- endif -%}
-
-        <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
+        
+        <div class="{% if section.settings.filter_type == 'vertical' %}facets-vertical{% endif %}">
           {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
             <aside
               aria-labelledby="verticalTitle"
-              class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+              class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}"
               id="main-collection-filters"
               data-id="{{ section.id }}"
             >
@@ -121,12 +64,9 @@
             </aside>
           {%- endif -%}
 
-          <div
-            class="product-grid-container"
-            id="ProductGridContainer"
-          >
+          <div class="product-grid-container" id="ProductGridContainer">
             {%- if current_collection.products.size == 0 -%}
-              <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
+              <div class="collection collection--empty" id="product-grid" data-id="{{ section.id }}">
                 <div class="loading-overlay gradient"></div>
                 <div class="title-wrapper center">
                   <h2 class="title title--primary">
@@ -140,23 +80,39 @@
                 </div>
               </div>
             {%- else -%}
-              <div
-                class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
-              >
+              <div class="collection">
                 <div class="loading-overlay gradient"></div>
+                
+                {%- comment -%} Product Count for Mobile {%- endcomment -%}
+                <div class="product-count light" role="status">
+                  <h2 class="product-count__text text-body">
+                    <span id="ProductCount">
+                      {%- if current_collection.results_count -%}
+                        {{
+                          'templates.search.results_with_count'
+                          | t: terms: current_collection.terms, count: current_collection.results_count
+                        }}
+                      {%- elsif current_collection.products_count == current_collection.all_products_count -%}
+                        {{ 'products.facets.product_count_simple' | t: count: current_collection.products_count }}
+                      {%- else -%}
+                        {{
+                          'products.facets.product_count'
+                          | t: product_count: current_collection.products_count, count: current_collection.all_products_count
+                        }}
+                      {%- endif -%}
+                    </span>
+                  </h2>
+                  {%- render 'loading-spinner' -%}
+                </div>
+
                 <ul
                   id="product-grid"
                   data-id="{{ section.id }}"
-                  class="
-                    collection-grid
-                  "
+                  class="collection-grid"
                   style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; list-style: none; padding: 0;"
                 >
                   {%- for product in current_collection.products -%}
-                    <li
-                      class="grid__item decoration"
-                    >
-                       {% comment %} Start Fragrance Card {% endcomment %}
+                    <li class="grid__item decoration">
                        <div class="product-card">
                         <a
                           href="{{ product.url }}"
@@ -173,14 +129,7 @@
                               loading="lazy"
                             >
                           {% else %}
-                            <img
-                              src="default-image.jpg"
-                              alt="No image available"
-                              class="img-cover"
-                              width="300"
-                              height="300"
-                              loading="lazy"
-                            >
+                            {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
                           {% endif %}
                           <ul class="card-action-list">
                             <li>
@@ -189,7 +138,7 @@
                               </button>
                             </li>
                             <li>
-                               <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
+                               <form action="/cart/add" method="post" enctype="multipart/form-data" class="add-to-cart-form">
                                   <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                                   <button type="submit" class="card-action-btn" aria-label="add to cart">
                                     {% render 'icon-fragrance', icon: 'bag-handle' %}
@@ -208,7 +157,7 @@
                                 <div class="badge orange">Sale</div>
                               </li>
                               <li>
-                                <div class="badge cyan">10%</div>
+                                <div class="badge cyan">{%- assign savings = product.compare_at_price | minus: product.price -%}{%- assign savings_percent = savings | times: 100 | divided_by: product.compare_at_price -%}{{ savings_percent }}%</div>
                               </li>
                             </ul>
                           {% endif %}
@@ -234,7 +183,6 @@
                              {% endif %}
                         </div>
                       </div>
-                      {% comment %} End Fragrance Card {% endcomment %}
                     </li>
                   {%- endfor -%}
                 </ul>
@@ -251,9 +199,7 @@
   </section>
 </div>
 
-{% comment %} Styles {% endcomment %}
 <style>
-  /* Collection Hero Styles */
   .collection-hero {
     position: relative;
     width: 100%;
@@ -292,7 +238,6 @@
     color: #555;
   }
 
-  /* Empty Collection */
   .collection-empty {
     text-align: center;
     padding: 60px 20px;
@@ -369,25 +314,63 @@
           align-items: flex-start;
       }
   }
+
+  .product-count {
+    margin-bottom: 1rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .facets-vertical {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .facets-vertical .facets-wrapper {
+      flex: 0 0 280px;
+      max-width: 280px;
+    }
+
+    .facets-vertical .product-grid-container {
+      flex: 1;
+      min-width: 0;
+    }
+  }
 </style>
 
 <script>
-(function() {
-    function fetchCart() {
-      fetch('/cart.js')
-        .then(response => response.json())
-        .then(cart => {
-          updateCartUI(cart);
-        })
-        .catch(error => console.error('Error-fetching cart:', error));
-    }
-     // ... (Rest of the cart script - keeping it as is)
-     const currencySymbol = "{{ shop.currency | escape }}";
-    function updateCartUI(cart) {
-      // ... (Same content as previous)
-    }
-     // For brevity, I am effectively keeping the existing JS logic here.
-})();
+document.addEventListener('DOMContentLoaded', function() {
+  const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+  
+  addToCartForms.forEach(form => {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        fetch('/cart.js')
+          .then(response => response.json())
+          .then(cart => {
+            const cartCountElements = document.querySelectorAll('.cart-count-bubble, [data-cart-count]');
+            cartCountElements.forEach(el => {
+              el.textContent = cart.item_count;
+            });
+            
+            const cartEvent = new CustomEvent('cart:updated', { detail: cart });
+            document.dispatchEvent(cartEvent);
+          });
+      })
+      .catch(error => {
+        console.error('Error adding to cart:', error);
+      });
+    });
+  });
+});
 </script>
 
  {% schema %}
