@@ -1,0 +1,662 @@
+{%- doc -%}
+  Renders a list or swatch filter.
+
+  @param {object} filter - The filter to render
+  @param {string} filter_style - The filter style ('horizontal' | 'vertical')
+  @param {number} active_value_count - The number of active values
+  @param {number} sectionId - The section ID
+  @param {boolean} [should_render_clear] - Whether to render the clear button
+  @param {boolean} [show_swatch_label] - Whether to show the swatch label
+  @param {boolean} [in_drawer] - Whether the filter is in a drawer
+{%- enddoc -%}
+
+{% liquid
+  assign is_swatch = false
+  assign swatch_index = filter.values | find_index: 'swatch'
+
+  if swatch_index != null
+    assign is_swatch = true
+  endif
+
+  assign is_image = false
+  if filter.presentation == 'image'
+    assign is_image = true
+  endif
+%}
+
+<div
+  class="facets__item"
+  data-filter-param-name="{{ filter.param_name | escape | replace: '.', '-' }}"
+>
+  <details
+    id="Facet-Details-{{ sectionId }}-{{ filter.param_name | escape | replace: '.', '-' }}"
+    class="facets__panel"
+    {% if filter_style == 'vertical' %}
+      open
+    {% endif %}
+  >
+    <summary class="facets__summary">
+      <span class="facets__label">{{ filter.label }}</span>
+
+      <div class="facets__status-wrapper">
+        {% if is_swatch %}
+          <facet-status-component
+            class="facets__status facets__status--swatches"
+            facet-type="swatches"
+          >
+            <span
+              class="facets__swatch-wrapper{% if active_value_count > 3 %} bubble facets__bubble{% endif %}"
+              ref="facetStatus"
+            >
+              {%- liquid
+                if active_value_count > 3
+                  echo active_value_count
+                elsif active_value_count > 0 and active_value_count <= 3
+                  for value in filter.active_values
+                    render 'swatch', swatch: value.swatch, mode: 'filter'
+                  endfor
+                endif
+              -%}
+            </span>
+          </facet-status-component>
+        {% else %}
+          <facet-status-component
+            class="facets__status"
+            facet-type="list"
+            data-filter-style="{{ filter_style }}"
+          >
+            <span
+              class="
+                {%- if filter_style == 'horizontal' -%}
+                  {%- if active_value_count > 1 -%}
+                    bubble facets__bubble
+                  {%- endif -%}
+                {%- else -%}
+                  {%- if active_value_count > 0 -%}
+                    bubble facets__bubble
+                  {%- endif -%}
+                {%- endif %}
+                hide-when-empty
+              "
+              ref="facetStatus"
+            >
+              {%- liquid
+                if filter_style == 'horizontal' and active_value_count == 1
+                  echo filter.active_values[0].label
+                elsif active_value_count > 0
+                  echo active_value_count
+                endif
+              -%}
+            </span>
+          </facet-status-component>
+        {% endif %}
+        <span class="svg-wrapper icon-caret icon-animated">
+          {% render 'icon-fragrance', icon: 'chevron-down' %}
+        </span>
+      </div>
+    </summary>
+    <div
+      class="facets__inputs facets__panel-content details-content"
+      id="facet-inputs-{{ filter.param_name | escape | replace: '.', '-' }}"
+    >
+      <facet-inputs-component
+        on:change="/updateFilters"
+        id="facet-inputs-component-{{ filter.param_name | escape | replace: '.', '-' }}"
+      >
+        {% liquid
+          assign has_active_values = false
+          assign inital_visible_values = 10
+          if is_swatch
+            assign inital_visible_values = 22
+          endif
+          if is_image
+            assign inital_visible_values = 6
+          endif
+          assign max_visible_values = inital_visible_values | plus: 1
+          assign render_show_more = false
+          assign should_render_for_swatch = is_swatch
+          if is_swatch and show_swatch_label
+            assign should_render_for_swatch = false
+          endif
+          if filter.values.size > max_visible_values and should_render_for_swatch == false
+            assign render_show_more = true
+          endif
+        %}
+        {% liquid
+          if render_show_more
+            echo '<show-more-component class="show-more" data-expanded="false" data-skip-node-update="true">'
+          endif
+          assign should_use_pills = true
+
+          for value in filter.values
+            if value.label.size > 3
+              assign should_use_pills = false
+              break
+            endif
+          endfor
+
+          if filter.type == 'boolean'
+            assign should_use_pills = false
+          endif
+        %}
+
+        <div
+          class="facets__inputs-wrapper{% if is_swatch or is_image or should_use_pills %} facets__inputs-wrapper--row{% endif %}"
+          ref="showMoreContent"
+        >
+          {% liquid
+            if is_swatch
+              assign swatch_columns = filter.values.size
+
+              if swatch_columns > 4
+                assign swatch_columns = 4
+
+                assign mod4 = filter.values.size | modulo: 4
+                assign mod3 = filter.values.size | modulo: 3
+                if mod4 != 0 and mod4 != 3
+                  if mod3 == 0 or mod3 == 2
+                    assign swatch_columns = 3
+                  endif
+                endif
+              endif
+            endif
+
+            if is_image
+              assign image_columns = 3
+              if filter.values.size < 3
+                assign image_columns = filter.values.size
+              endif
+            endif
+          %}
+          <ul
+            id="filters-list-{{ sectionId }}-{{ filter.param_name | escape | replace: '.', '-' }}"
+            class="facets__inputs-list{% if should_use_pills %} facets__inputs-list--grid{% endif %} list-unstyled{% if is_swatch %} facets__inputs-list--swatches{% if show_swatch_label %} facets__inputs-list--swatches-grid{% endif %}{% endif %}{% if is_image %} facets__inputs-list--images{% endif %}"
+            {% if is_swatch %}
+              style="--swatch-columns: {{ swatch_columns }};"
+            {% endif %}
+            {% if is_image %}
+              style="--image-columns: {{ image_columns }};"
+            {% endif %}
+            name="{{ filter.label }}"
+          >
+            {%- for value in filter.values -%}
+              {% liquid
+                assign input_id = 'Filter-' | append: filter.param_name | escape | append: '-' | append: forloop.index | replace: '.', '-' | append: '-' | append: filter_style | append: '-' | append: in_drawer
+                assign is_disabled = false
+                if value.count == 0 and value.active == false
+                  assign is_disabled = true
+                endif
+                assign hidden_class = null
+                if forloop.index > inital_visible_values and render_show_more
+                  assign hidden_class = 'hidden'
+                endif
+              %}
+              <li
+                data-skip-node-update="true"
+                class="
+                  facets__inputs-list-item
+                  {% if hidden_class %} {{ hidden_class }}{% endif %}
+                  {% if is_disabled %} facets__inputs-list-item--disabled{% endif %}
+                "
+                {% if hidden_class %}
+                  ref="showMoreItems[]"
+                {% endif %}
+              >
+                {% if value.active %}
+                  {% assign has_active_values = true %}
+                {% endif %}
+                {% if is_image %}
+                  <fieldset
+                    class="variant-option variant-option--buttons variant-option--images"
+                    aria-label="{{ value.label }}"
+                    on:keydown="#facet-inputs-component-{{ filter.param_name | escape | replace: '.', '-' }}/handleKeyDown"
+                  >
+                    <div class="facets__image-wrapper">
+                      {% if value.image %}
+                        {{ value.image | image_url: width: 300 | image_tag: alt: value.alt }}
+                      {% endif %}
+                      {% if is_disabled %}
+                        <svg
+                          aria-hidden="true"
+                          width="100%"
+                          height="100%"
+                          viewBox="0 0 100 100"
+                          preserveAspectRatio="none"
+                        >
+                          <line x1="100" y1="0" x2="0" y2="100" vector-effect="non-scaling-stroke" />
+                        </svg>
+                      {% endif %}
+                    </div>
+                    <input
+                      tabindex="0"
+                      type="checkbox"
+                      name="{{ value.param_name }}"
+                      value="{{ value.value }}"
+                      aria-label="{{ value.label }}"
+                      id="{{ input_id }}"
+                      {% if value.active %}
+                        checked
+                      {% endif %}
+                      {% if is_disabled %}
+                        disabled
+                      {% endif %}
+                      ref="facetInputs[]"
+                    >
+                    <label
+                      class="facets__image-label"
+                      for="{{ input_id }}"
+                      tabindex="-1"
+                    >
+                      {{- value.label }}
+                    </label>
+                  </fieldset>
+                {% elsif is_swatch %}
+                  <fieldset
+                    class="variant-option variant-option--buttons variant-option--swatches {% if is_disabled %}variant-option--swatches-disabled{% endif %}"
+                    aria-label="{{ value.label }}"
+                    on:keydown="#facet-inputs-component-{{ filter.param_name | escape | replace: '.', '-' }}/handleKeyDown"
+                  >
+                    <label
+                      class="variant-option__button-label variant-option__button-label--has-swatch"
+                      on:pointerenter="/prefetchPage"
+                      on:pointerleave="/cancelPrefetchPage"
+                    >
+                      <div
+                        class="variant-option__swatch-wrapper"
+                      >
+                        <input
+                          tabindex="0"
+                          type="checkbox"
+                          name="{{ value.param_name }}"
+                          value="{{ value.value }}"
+                          aria-label="{{ value.label }}"
+                          id="{{ input_id }}"
+                          {% if value.active %}
+                            checked
+                          {% endif %}
+                          {% if is_disabled %}
+                            disabled
+                          {% endif %}
+                          ref="facetInputs[]"
+                        >
+                        {% render 'swatch', swatch: value.swatch, mode: 'filter' %}
+                        {% if is_disabled %}
+                          <svg
+                            aria-hidden="true"
+                            width="100%"
+                            height="100%"
+                            viewBox="0 0 100 100"
+                            preserveAspectRatio="none"
+                          >
+                            <line x1="100" y1="0" x2="0" y2="100" vector-effect="non-scaling-stroke" />
+                          </svg>
+                        {% endif %}
+                      </div>
+                      <label
+                        class="{% if show_swatch_label %}facets__swatch-label{% else %}hidden{% endif %}"
+                        for="{{ input_id }}"
+                        tabindex="-1"
+                      >
+                        {{- value.label }}
+                      </label>
+                    </label>
+                  </fieldset>
+                {% else %}
+                  {% if should_use_pills %}
+                    <div
+                      class="facets__pill-wrapper"
+                      on:keydown="#facet-inputs-component-{{ filter.param_name | escape | replace: '.', '-' }}/handleKeyDown"
+                    >
+                      <input
+                        type="checkbox"
+                        name="{{ value.param_name }}"
+                        value="{{ value.value }}"
+                        id="{{ input_id }}"
+                        class="facets__pill-input"
+                        data-label="{{ value.label }}"
+                        {% if value.active %}
+                          checked
+                        {% endif %}
+                        {% if is_disabled %}
+                          disabled
+                        {% endif %}
+                        ref="facetInputs[]"
+                        tabindex="-1"
+                      >
+                      <label
+                        class="facets__pill-label"
+                        for="{{ input_id }}"
+                        tabindex="0"
+                      >
+                        {{- value.label }}
+                        {% if is_disabled %}
+                          <svg
+                            aria-hidden="true"
+                            width="100%"
+                            height="100%"
+                            viewBox="0 0 100 100"
+                            preserveAspectRatio="none"
+                          >
+                            <line x1="100" y1="0" x2="0" y2="100" vector-effect="non-scaling-stroke" />
+                          </svg>
+                        {% endif %}
+                      </label>
+                    </div>
+                  {% else %}
+                    <label
+                      for="{{ input_id }}"
+                      class="facets__label facet-checkbox{% if is_disabled %} disabled{% endif %}{% if value.active %} active{% endif %}"
+                      on:pointerenter="/prefetchPage"
+                      on:pointerleave="/cancelPrefetchPage"
+                    >
+                      <input
+                        type="checkbox"
+                        name="{{ value.param_name }}"
+                        value="{{ value.value }}"
+                        id="{{ input_id }}"
+                        {% if value.active %}
+                          checked
+                        {% endif %}
+                        {% if is_disabled %}
+                          disabled
+                        {% endif %}
+                        ref="facetInputs[]"
+                      >
+                      <svg width="16px" height="16px" viewBox="0 0 16 16">
+                        <rect width="16" height="16" fill="none" stroke="currentColor"/>
+                      </svg>
+                      <div class="svg-wrapper">
+                        {% render 'icon-fragrance', icon: 'checkmark' %}
+                      </div>
+                      <span class="facet-checkbox__text" aria-hidden="true">
+                        <span class="facet-checkbox__text-label">{{- value.label | escape }}</span> ({{- value.count -}})
+                      </span>
+                      <span class="visually-hidden">
+                        {{- value.label | escape }} ({{ value.count }})
+                      </span>
+                    </label>
+                  {% endif %}
+                {% endif %}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+        {% if render_show_more %}
+          <button
+            class="show-more__button button-unstyled button-unstyled--with-icon"
+            ref="showMoreButton"
+            on:click="/toggle"
+            aria-expanded="false"
+            aria-controls="filters-list-{{ sectionId }}-{{ filter.param_name | escape | replace: '.', '-' }}"
+          >
+            <span class="svg-wrapper icon-plus">
+              {% render 'icon-fragrance', icon: 'plus' %}
+            </span>
+            <span class="show-more__label show-more__label--more">
+              {{- 'products.facets.show_more' | t -}}
+            </span>
+            <span class="show-more__label show-more__label--less hidden">
+              {{- 'products.facets.show_less' | t -}}
+            </span>
+          </button>
+          {% echo '</show-more-component>' %}
+        {% endif %}
+
+        {% if should_render_clear %}
+          <facet-clear-component>
+            <div
+              class="facets__clear {% if has_active_values %}facets__clear--active{% endif %}"
+              ref="clearButton"
+            >
+              <button
+                type="button"
+                on:click="/clearFilter"
+                on:keydown="/clearFilter"
+                class="clear-filter button button-secondary"
+              >
+                {{- 'products.facets.clear' | t -}}
+              </button>
+            </div>
+          </facet-clear-component>
+        {% endif %}
+      </facet-inputs-component>
+    </div>
+  </details>
+</div>
+
+{% stylesheet %}
+  .facets input:checked + label {
+    font-weight: 500;
+  }
+
+  .facets__item {
+    border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, 0.1));
+  }
+
+  .facets__panel {
+    padding: 0 var(--drawer-padding, 20px);
+  }
+
+  .facets__summary {
+    font-size: var(--font-h5--size, 1rem);
+    display: flex;
+    justify-content: space-between;
+    padding: var(--padding-sm, 8px) 0;
+    cursor: pointer;
+  }
+
+  .facets__label {
+    color: var(--color-foreground);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .facets__status-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs, 4px);
+  }
+
+  .facets__status {
+    font-weight: 500;
+    color: var(--color-foreground);
+  }
+
+  .facets__bubble {
+    display: inline-flex;
+    font-family: var(--font-paragraph--family);
+    font-weight: var(--font-paragraph--weight);
+    aspect-ratio: 1 / 1;
+    padding: 2px 6px;
+    border-radius: 50%;
+    background-color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.1);
+    font-size: 12px;
+  }
+
+  .icon-animated {
+    transition: transform var(--animation-speed, 200ms) var(--animation-easing, ease);
+  }
+
+  details[open] .icon-animated {
+    transform: rotate(180deg);
+  }
+
+  .facets__inputs {
+    padding-block: var(--padding-xs, 8px);
+  }
+
+  .facets__inputs-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm, 8px);
+  }
+
+  .facets__inputs-wrapper--row {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .facets__inputs-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm, 8px);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .facets__inputs-list--grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: var(--gap-sm, 8px);
+  }
+
+  .facets__inputs-list--swatches {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .facets__inputs-list--swatches-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--swatch-columns, 4), 1fr);
+  }
+
+  .facets__inputs-list--images {
+    display: grid;
+    grid-template-columns: repeat(var(--image-columns, 3), 125px);
+    gap: var(--gap-sm, 8px);
+  }
+
+  .facets__inputs-list-item {
+    min-width: 0;
+  }
+
+  .facets__inputs-list-item--disabled {
+    opacity: var(--disabled-opacity, 0.5);
+    pointer-events: none;
+  }
+
+  .facet-checkbox {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs, 8px);
+    cursor: pointer;
+  }
+
+  .facet-checkbox input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .facet-checkbox svg {
+    flex-shrink: 0;
+  }
+
+  .facet-checkbox input:checked + svg + .svg-wrapper svg {
+    display: block;
+  }
+
+  .facet-checkbox__text {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-2xs, 4px);
+  }
+
+  .facets__pill-label {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 0 1px rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.1);
+    border-radius: var(--style-border-radius-md, 8px);
+    height: var(--button-size-md, 40px);
+    padding: 0 var(--padding-xs, 12px);
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .facets__pill-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .facets__pill-input:checked + .facets__pill-label {
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  .facets__pill-input:disabled + .facets__pill-label {
+    opacity: var(--disabled-opacity, 0.5);
+    cursor: not-allowed;
+  }
+
+  .facets__swatch-wrapper {
+    display: flex;
+    gap: 2px;
+  }
+
+  .variant-option__swatch-wrapper {
+    position: relative;
+    overflow: visible;
+  }
+
+  .variant-option--swatches-disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  .facets__clear {
+    display: none;
+    padding-top: var(--padding-sm, 8px);
+  }
+
+  .facets__clear--active {
+    display: block;
+  }
+
+  .clear-filter {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--color-link, inherit);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .show-more__button {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs, 8px);
+    padding-top: var(--padding-sm, 8px);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-link, inherit);
+  }
+
+  .show-more__label--less {
+    display: none;
+  }
+
+  show-more-component[data-expanded="true"] .show-more__label--more {
+    display: none;
+  }
+
+  show-more-component[data-expanded="true"] .show-more__label--less {
+    display: inline;
+  }
+
+  @media screen and (min-width: 750px) {
+    .facets__panel {
+      padding: 0;
+    }
+
+    .facets__inputs-list--images {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+{% endstylesheet %}

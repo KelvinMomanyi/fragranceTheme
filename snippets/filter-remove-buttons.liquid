@@ -1,0 +1,178 @@
+{%- doc -%}
+  Renders filter remove buttons.
+
+  Accepts:
+
+  @param {object} filters - The filters to render
+  @param {boolean} show_filter_label - Whether to show the filter label
+  @param {string} results_url - The results URL
+  @param {boolean} should_show_clear_all - Whether to show the clear all button
+{%- enddoc -%}
+
+<div class="facets-remove facets-remove--mobile-and-vertical">
+  {%- for filter in filters -%}
+    {% if filter.type == 'price_range' and filter.min_value.value != null or filter.max_value.value != null %}
+      {%- liquid
+        assign is_active = true
+      -%}
+      <facet-remove-component
+        class="facets-remove__pill"
+        data-url="{{ filter.url_to_remove }}"
+        tabindex="0"
+        role="button"
+        on:click="/removeFilter?form="
+        on:keydown="/removeFilter?form="
+      >
+        {%- if filter.min_value.value != null and filter.max_value.value != null %}
+          {{- filter.min_value.value | money -}}
+          –
+          {{- filter.max_value.value | money -}}
+        {%- elsif filter.min_value.value != null -%}
+          {{ filter.min_value.value | money }}–{{ filter.range_max | money }}
+        {%- elsif filter.max_value.value != null -%}
+          {{- 0 | money -}}
+          –
+          {{- filter.max_value.value | money -}}
+        {%- endif -%}
+        <span class="svg-wrapper svg-wrapper--smaller">
+          {% render 'icon-fragrance', icon: 'close' %}
+        </span>
+        <span class="visually-hidden">{{ 'products.facets.clear_filter' | t | default: 'Clear filter' }}</span>
+      </facet-remove-component>
+    {% else %}
+      {%- for value in filter.active_values -%}
+        {%- liquid
+          assign is_active = true
+        -%}
+        <facet-remove-component
+          class="facets-remove__pill{% if value.swatch %} facets-remove__pill--swatch{% endif %}"
+          data-url="{{ value.url_to_remove }}"
+          tabindex="0"
+          role="button"
+          on:click="/removeFilter?form="
+          on:keydown="/removeFilter?form="
+        >
+          {% if value.swatch %}
+            {% render 'swatch', swatch: value.swatch, mode: 'pill' %}
+          {% endif %}
+
+          {% if filter.type == 'boolean' or show_filter_label %}
+            {{ filter.label | escape }}: {{ value.label | escape }}
+          {% else %}
+            {{ value.label | escape }}
+          {% endif %}
+
+          <span class="svg-wrapper svg-wrapper--smaller">
+            {% render 'icon-fragrance', icon: 'close' %}
+          </span>
+          <span class="visually-hidden">{{ 'products.facets.clear_filter' | t | default: 'Clear filter' }}</span>
+        </facet-remove-component>
+      {%- endfor -%}
+    {% endif %}
+  {%- endfor -%}
+  {% if should_show_clear_all and is_active %}
+    <facet-remove-component
+      data-url="{{ results_url }}"
+    >
+      <button
+        type="button"
+        class="button-unstyled facets__clear-all-link"
+        ref="clearButton"
+        on:click="/removeFilter?form="
+        on:keydown="/removeFilter?form="
+      >
+        {{- 'products.facets.clear_all' | t | default: 'Clear all' -}}
+      </button>
+    </facet-remove-component>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .facets-remove {
+    display: none;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--gap-xs, 8px);
+    padding: 0 var(--drawer-padding, 20px);
+    margin: 0;
+  }
+
+  .facets-remove:has(facet-remove-component) {
+    display: flex;
+    margin-block-start: var(--margin-2xs, 4px);
+    margin-block-end: var(--margin-md, 16px);
+  }
+
+  .facets:not(.facets--drawer) .facets-remove--mobile-and-vertical {
+    padding: 0;
+  }
+
+  .facets--horizontal .facets-remove--mobile-and-vertical {
+    display: none;
+  }
+
+  .facets-remove__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gap-2xs, 4px);
+    padding: var(--padding-2xs, 4px) var(--padding-xs, 8px);
+    border: 1px solid var(--color-border, rgba(0, 0, 0, 0.1));
+    border-radius: var(--style-border-radius-pill, 20px);
+    font-size: var(--font-size--sm, 0.875rem);
+    cursor: pointer;
+    background-color: var(--color-background);
+    transition: background-color 0.2s ease;
+  }
+
+  .facets-remove__pill:hover {
+    background-color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.05);
+  }
+
+  .facets-remove__pill .svg-wrapper {
+    flex-shrink: 0;
+  }
+
+  .facets-remove__pill .swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .facets__clear-all-link {
+    display: none;
+    cursor: pointer;
+    padding: var(--padding-xs, 8px);
+    color: var(--color-link, inherit);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color var(--animation-speed, 200ms) var(--animation-easing, ease);
+    background: none;
+    border: none;
+    font-size: inherit;
+  }
+
+  .facets__clear-all-link:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .facets__clear-all-link--active {
+    display: block;
+  }
+
+  .svg-wrapper--smaller {
+    width: 12px;
+    height: 12px;
+  }
+
+  .svg-wrapper--smaller svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .facets--horizontal .facets-remove {
+      display: none;
+    }
+  }
+{% endstylesheet %}

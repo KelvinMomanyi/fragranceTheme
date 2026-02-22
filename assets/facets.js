@@ -1,413 +1,671 @@
-/**
- * Fallback for debounce and onKeyUpEscape in case global.js is not loaded yet
- */
-if (typeof debounce !== 'function') {
-    window.debounce = (fn, wait) => {
-        let t;
-        return (...args) => {
-            clearTimeout(t);
-            t = setTimeout(() => fn.apply(this, args), wait);
-        };
-    };
+import { sectionRenderer } from './section-renderer.js';
+import { Component } from './component.js';
+import { FilterUpdateEvent, ThemeEvents } from './events.js';
+import { debounce, startViewTransition } from './utilities.js';
+
+const SEARCH_QUERY = 'q';
+
+class FacetsFormComponent extends Component {
+  requiredRefs = ['facetsForm'];
+
+  createURLParameters(formData = new FormData(this.refs.facetsForm)) {
+    let newParameters = new URLSearchParams(/** @type any */ (formData));
+
+    if (newParameters.get('filter.v.price.gte') === '') newParameters.delete('filter.v.price.gte');
+    if (newParameters.get('filter.v.price.lte') === '') newParameters.delete('filter.v.price.lte');
+
+    newParameters.delete('page');
+
+    const searchQuery = this.#getSearchQuery();
+    if (searchQuery) newParameters.set(SEARCH_QUERY, searchQuery);
+
+    return newParameters;
+  }
+
+  #getSearchQuery() {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(SEARCH_QUERY) ?? '';
+  }
+
+  get sectionId() {
+    const id = this.getAttribute('section-id');
+    if (!id) throw new Error('Section ID is required');
+    return id;
+  }
+
+  #updateURLHash() {
+    const url = new URL(window.location.href);
+    const urlParameters = this.createURLParameters();
+
+    url.search = '';
+    for (const [param, value] of urlParameters.entries()) {
+      url.searchParams.append(param, value);
+    }
+
+    history.pushState({ urlParameters: urlParameters.toString() }, '', url.toString());
+  }
+
+  updateFilters = () => {
+    this.#updateURLHash();
+    this.dispatchEvent(new FilterUpdateEvent(this.createURLParameters()));
+    this.#updateSection();
+  };
+
+  #updateSection() {
+    const viewTransition = !this.closest('dialog');
+
+    if (viewTransition) {
+      startViewTransition(() => sectionRenderer.renderSection(this.sectionId), ['product-grid']);
+    } else {
+      sectionRenderer.renderSection(this.sectionId);
+    }
+  }
+
+  updateFiltersByURL(url) {
+    history.pushState('', '', url);
+    this.dispatchEvent(new FilterUpdateEvent(this.createURLParameters()));
+    this.#updateSection();
+  }
 }
 
-if (typeof onKeyUpEscape !== 'function') {
-    window.onKeyUpEscape = (event) => {
-        if (event.code.toUpperCase() !== 'ESCAPE') return;
-        const openDetailsElement = event.target.closest('details[open]');
-        if (!openDetailsElement) return;
-        const summaryElement = openDetailsElement.querySelector('summary');
-        openDetailsElement.removeAttribute('open');
-        summaryElement.setAttribute('aria-expanded', false);
-        summaryElement.focus();
-    };
+if (!customElements.get('facets-form-component')) {
+  customElements.define('facets-form-component', FacetsFormComponent);
 }
 
-class FacetFiltersForm extends HTMLElement {
-    constructor() {
-        super();
-        this.onActiveFilterClick = this.onActiveFilterClick.bind(this);
+class FacetInputsComponent extends Component {
+  get sectionId() {
+    const id = this.closest('.shopify-section')?.id;
+    if (!id) throw new Error('FacetInputs component must be a child of a section');
+    return id;
+  }
 
-        this.debouncedOnSubmit = debounce((event) => {
-            this.onSubmitHandler(event);
-        }, 800);
+  updateFilters() {
+    const facetsForm = this.closest('facets-form-component');
 
-        const facetForm = this.querySelector('form');
-        facetForm.addEventListener('input', this.debouncedOnSubmit.bind(this));
+    if (!(facetsForm instanceof FacetsFormComponent)) return;
 
-        const facetWrapper = this.querySelector('#FacetsWrapperDesktop');
-        if (facetWrapper) facetWrapper.addEventListener('keyup', onKeyUpEscape);
+    facetsForm.updateFilters();
+    this.#updateSelectedFacetSummary();
+  }
+
+  handleKeyDown(event) {
+    if (!(event.target instanceof HTMLElement)) return;
+    const closestInput = event.target.querySelector('input');
+
+    if (!(closestInput instanceof HTMLInputElement)) return;
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      closestInput.checked = !closestInput.checked;
+      this.updateFilters();
+    }
+  }
+
+  prefetchPage = debounce((event) => {
+    if (!(event.target instanceof HTMLElement)) return;
+
+    const form = this.closest('form');
+    if (!form) return;
+
+    const formData = new FormData(form);
+    const inputElement = event.target.querySelector('input');
+
+    if (!(inputElement instanceof HTMLInputElement)) return;
+
+    if (!inputElement.checked) formData.append(inputElement.name, inputElement.value);
+
+    const facetsForm = this.closest('facets-form-component');
+    if (!(facetsForm instanceof FacetsFormComponent)) return;
+
+    const urlParameters = facetsForm.createURLParameters(formData);
+
+    const url = new URL(window.location.pathname, window.location.origin);
+
+    for (const [key, value] of urlParameters) url.searchParams.append(key, value);
+
+    if (inputElement.checked) url.searchParams.delete(inputElement.name, inputElement.value);
+
+    sectionRenderer.getSectionHTML(this.sectionId, true, url);
+  }, 200);
+
+  cancelPrefetchPage = () => this.prefetchPage.cancel();
+
+  #updateSelectedFacetSummary() {
+    if (!this.refs.facetInputs) return;
+
+    const checkedInputElements = this.refs.facetInputs.filter((input) => input.checked);
+    const details = this.closest('details');
+    const statusComponent = details?.querySelector('facet-status-component');
+
+    if (!(statusComponent instanceof FacetStatusComponent)) return;
+
+    statusComponent.updateListSummary(checkedInputElements);
+  }
+}
+
+if (!customElements.get('facet-inputs-component')) {
+  customElements.define('facet-inputs-component', FacetInputsComponent);
+}
+
+class PriceFacetComponent extends Component {
+  currency;
+  moneyFormat;
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('keydown', this.#onKeyDown);
+    this.currency = this.dataset.currency ?? 'USD';
+    this.moneyFormat = this.#extractMoneyPlaceholder(this.dataset.moneyFormat ?? '{{amount}}');
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('keydown', this.#onKeyDown);
+  }
+
+  #extractMoneyPlaceholder(format) {
+    const match = format.match(/{{\s*\w+\s*}}/);
+    return match ? match[0] : '{{amount}}';
+  }
+
+  #onKeyDown = (event) => {
+    if (event.metaKey) return;
+
+    const pattern = /[0-9]|\.|,|'| |Tab|Backspace|Enter|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Delete|Escape/;
+    if (!event.key.match(pattern)) event.preventDefault();
+  };
+
+  updatePriceFilterAndResults() {
+    const { minInput, maxInput } = this.refs;
+
+    this.#adjustToValidValues(minInput);
+    this.#adjustToValidValues(maxInput);
+
+    const facetsForm = this.closest('facets-form-component');
+    if (!(facetsForm instanceof FacetsFormComponent)) return;
+
+    facetsForm.updateFilters();
+    this.#setMinAndMaxValues();
+    this.#updateSummary();
+  }
+
+  #parseDisplayValue(displayValue, currency) {
+    return convertMoneyToMinorUnits(displayValue, currency) ?? 0;
+  }
+
+  #adjustToValidValues(input) {
+    if (input.value.trim() === '') return;
+
+    const { currency, moneyFormat } = this;
+    const value = this.#parseDisplayValue(input.value, currency);
+
+    const min = this.#parseDisplayValue(input.getAttribute('data-min') ?? '0', currency);
+    const max = this.#parseDisplayValue(input.getAttribute('data-max') ?? '0', currency);
+
+    if (value < min) {
+      input.value = formatMoney(min, moneyFormat, currency);
+    } else if (value > max) {
+      input.value = formatMoney(max, moneyFormat, currency);
+    }
+  }
+
+  #setMinAndMaxValues() {
+    const { minInput, maxInput } = this.refs;
+
+    if (maxInput.value) minInput.setAttribute('data-max', maxInput.value);
+    if (minInput.value) maxInput.setAttribute('data-min', minInput.value);
+    if (minInput.value === '') maxInput.setAttribute('data-min', '0');
+    if (maxInput.value === '') minInput.setAttribute('data-max', maxInput.getAttribute('data-max') ?? '');
+  }
+
+  #updateSummary() {
+    const { minInput, maxInput } = this.refs;
+    const details = this.closest('details');
+    const statusComponent = details?.querySelector('facet-status-component');
+
+    if (!(statusComponent instanceof FacetStatusComponent)) return;
+
+    statusComponent?.updatePriceSummary(minInput, maxInput);
+  }
+}
+
+if (!customElements.get('price-facet-component')) {
+  customElements.define('price-facet-component', PriceFacetComponent);
+}
+
+class FacetClearComponent extends Component {
+  requiredRefs = ['clearButton'];
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('keyup', this.#handleKeyUp);
+    document.addEventListener(ThemeEvents.FilterUpdate, this.#handleFilterUpdate);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener(ThemeEvents.FilterUpdate, this.#handleFilterUpdate);
+  }
+
+  clearFilter(event) {
+    if (!(event.target instanceof HTMLElement)) return;
+
+    if (event instanceof KeyboardEvent) {
+      if (event.key !== 'Enter' && event.key !== ' ') {
+        return;
+      }
+      event.preventDefault();
     }
 
-    static setListeners() {
-        const onHistoryChange = (event) => {
-            const searchParams = event.state ? event.state.searchParams : FacetFiltersForm.searchParamsInitial;
-            if (searchParams === FacetFiltersForm.searchParamsPrev) return;
-            FacetFiltersForm.renderPage(searchParams, null, false);
-        };
-        window.addEventListener('popstate', onHistoryChange);
+    const container = event.target.closest('facet-inputs-component, price-facet-component');
+    container?.querySelectorAll('[type="checkbox"]:checked, input').forEach((input) => {
+      if (input instanceof HTMLInputElement) {
+        input.checked = false;
+        input.value = '';
+      }
+    });
+
+    const details = event.target.closest('details');
+    const statusComponent = details?.querySelector('facet-status-component');
+
+    if (!(statusComponent instanceof FacetStatusComponent)) return;
+
+    statusComponent.clearSummary();
+
+    const facetsForm = this.closest('facets-form-component');
+    if (!(facetsForm instanceof FacetsFormComponent)) return;
+
+    facetsForm.updateFilters();
+  }
+
+  #handleKeyUp = (event) => {
+    if (event.metaKey) return;
+    if (event.key === 'Enter') this.clearFilter(event);
+  };
+
+  #handleFilterUpdate = (event) => {
+    const { clearButton } = this.refs;
+    if (clearButton instanceof Element) {
+      clearButton.classList.toggle('facets__clear--active', event.shouldShowClearAll());
+    }
+  };
+}
+
+if (!customElements.get('facet-clear-component')) {
+  customElements.define('facet-clear-component', FacetClearComponent);
+}
+
+class FacetRemoveComponent extends Component {
+  connectedCallback() {
+    super.connectedCallback();
+    document.addEventListener(ThemeEvents.FilterUpdate, this.#handleFilterUpdate);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener(ThemeEvents.FilterUpdate, this.#handleFilterUpdate);
+  }
+
+  removeFilter({ form }, event) {
+    if (event instanceof KeyboardEvent) {
+      if (event.key !== 'Enter' && event.key !== ' ') {
+        return;
+      }
+      event.preventDefault();
     }
 
-    static toggleActiveFacets(disable = true) {
-        document.querySelectorAll('.js-facet-remove').forEach((element) => {
-            element.classList.toggle('disabled', disable);
-        });
+    const url = this.dataset.url;
+    if (!url) return;
+
+    const facetsForm = form ? document.getElementById(form) : this.closest('facets-form-component');
+
+    if (!(facetsForm instanceof FacetsFormComponent)) return;
+
+    facetsForm.updateFiltersByURL(url);
+  }
+
+  #handleFilterUpdate = (event) => {
+    const { clearButton } = this.refs;
+    if (clearButton instanceof Element) {
+      const activeClass = this.getAttribute('active-class') || 'active';
+      clearButton.classList.toggle(activeClass, event.shouldShowClearAll());
     }
+  };
+}
 
-    static renderPage(searchParams, event, updateURLHash = true) {
-        FacetFiltersForm.searchParamsPrev = searchParams;
-        const sections = FacetFiltersForm.getSections();
-        const countContainer = document.getElementById('ProductCount');
-        const countContainerDesktop = document.getElementById('ProductCountDesktop');
-        const loadingSpinners = document.querySelectorAll(
-            '.facets-container .loading__spinner, facet-filters-form .loading__spinner'
-        );
-        loadingSpinners.forEach((spinner) => spinner.classList.remove('hidden'));
-        document.getElementById('ProductGridContainer').querySelector('.collection').classList.add('loading');
-        if (countContainer) {
-            countContainer.classList.add('loading');
-        }
-        if (countContainerDesktop) {
-            countContainerDesktop.classList.add('loading');
-        }
+if (!customElements.get('facet-remove-component')) {
+  customElements.define('facet-remove-component', FacetRemoveComponent);
+}
 
-        sections.forEach((section) => {
-            const url = `${window.location.pathname}?section_id=${section.section}&${searchParams}`;
-            const filterDataUrl = (element) => element.url === url;
+class SortingFilterComponent extends Component {
+  requiredRefs = ['details', 'summary', 'listbox'];
 
-            FacetFiltersForm.filterData.some(filterDataUrl)
-                ? FacetFiltersForm.renderSectionFromCache(filterDataUrl, event)
-                : FacetFiltersForm.renderSectionFromFetch(url, event);
-        });
+  handleKeyDown = (event) => {
+    const { listbox } = this.refs;
+    if (!(listbox instanceof Element)) return;
 
-        if (updateURLHash) FacetFiltersForm.updateURLHash(searchParams);
-    }
+    const options = Array.from(listbox.querySelectorAll('[role="option"]'));
+    const currentFocused = options.find((option) => option instanceof HTMLElement && option.tabIndex === 0);
+    let newFocusIndex = currentFocused ? options.indexOf(currentFocused) : 0;
 
-    static renderSectionFromFetch(url, event) {
-        fetch(url)
-            .then((response) => response.text())
-            .then((responseText) => {
-                const html = responseText;
-                FacetFiltersForm.filterData = [...FacetFiltersForm.filterData, { html, url }];
-                FacetFiltersForm.renderFilters(html, event);
-                FacetFiltersForm.renderProductGridContainer(html);
-                FacetFiltersForm.renderProductCount(html);
-                if (typeof initializeScrollAnimationTrigger === 'function') initializeScrollAnimationTrigger(html.innerHTML);
-            });
-    }
-
-    static renderSectionFromCache(filterDataUrl, event) {
-        const html = FacetFiltersForm.filterData.find(filterDataUrl).html;
-        FacetFiltersForm.renderFilters(html, event);
-        FacetFiltersForm.renderProductGridContainer(html);
-        FacetFiltersForm.renderProductCount(html);
-        if (typeof initializeScrollAnimationTrigger === 'function') initializeScrollAnimationTrigger(html.innerHTML);
-    }
-
-    static renderProductGridContainer(html) {
-        document.getElementById('ProductGridContainer').innerHTML = new DOMParser()
-            .parseFromString(html, 'text/html')
-            .getElementById('ProductGridContainer').innerHTML;
-
-        document
-            .getElementById('ProductGridContainer')
-            .querySelectorAll('.scroll-trigger')
-            .forEach((element) => {
-                element.classList.add('scroll-trigger--cancel');
-            });
-    }
-
-    static renderProductCount(html) {
-        const parsedDoc = new DOMParser().parseFromString(html, 'text/html');
-        const countElement = parsedDoc.getElementById('ProductCount');
-        
-        if (!countElement) return;
-        
-        const count = countElement.innerHTML;
-        const container = document.getElementById('ProductCount');
-        const containerDesktop = document.getElementById('ProductCountDesktop');
-        
-        if (container) {
-            container.innerHTML = count;
-            container.classList.remove('loading');
-        }
-        if (containerDesktop) {
-            containerDesktop.innerHTML = count;
-            containerDesktop.classList.remove('loading');
-        }
-        const loadingSpinners = document.querySelectorAll(
-            '.facets-container .loading__spinner, facet-filters-form .loading__spinner'
-        );
-        loadingSpinners.forEach((spinner) => spinner.classList.add('hidden'));
-    }
-
-    static renderFilters(html, event) {
-        const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
-        const facetDetailsElementsFromFetch = parsedHTML.querySelectorAll(
-            '#FacetFiltersForm .js-filter, #FacetFiltersFormMobile .js-filter, #FacetFiltersPillsForm .js-filter'
-        );
-        const facetDetailsElementsFromDom = document.querySelectorAll(
-            '#FacetFiltersForm .js-filter, #FacetFiltersFormMobile .js-filter, #FacetFiltersPillsForm .js-filter'
-        );
-
-        // Remove facets that are no longer returned from the server
-        Array.from(facetDetailsElementsFromDom).forEach((currentElement) => {
-            if (!Array.from(facetDetailsElementsFromFetch).some(({ id }) => currentElement.id === id)) {
-                currentElement.remove();
-            }
-        });
-
-        const matchesId = (element) => {
-            const jsFilter = event ? event.target.closest('.js-filter') : undefined;
-            return jsFilter ? element.id === jsFilter.id : false;
-        };
-
-        const facetsToRender = Array.from(facetDetailsElementsFromFetch).filter((element) => !matchesId(element));
-        const countsToRender = Array.from(facetDetailsElementsFromFetch).find(matchesId);
-
-        facetsToRender.forEach((elementToRender, index) => {
-            const currentElement = document.getElementById(elementToRender.id);
-            // Element already rendered in the DOM so just update the innerHTML
-            if (currentElement) {
-                document.getElementById(elementToRender.id).innerHTML = elementToRender.innerHTML;
-            } else {
-                if (index > 0) {
-                    const { className: previousElementClassName, id: previousElementId } = facetsToRender[index - 1];
-                    // Same facet type (eg horizontal/vertical or drawer/mobile)
-                    if (elementToRender.className === previousElementClassName) {
-                        document.getElementById(previousElementId).after(elementToRender);
-                        return;
-                    }
-                }
-
-                if (elementToRender.parentElement) {
-                    document.querySelector(`#${elementToRender.parentElement.id} .js-filter`).before(elementToRender);
-                }
-            }
-        });
-
-        FacetFiltersForm.renderActiveFacets(parsedHTML);
-        FacetFiltersForm.renderAdditionalElements(parsedHTML);
-
-        if (countsToRender && event && event.target) {
-            const jsFilterElement = event.target.closest('.js-filter');
-            if (!jsFilterElement) return;
-            
-            const closestJSFilterID = jsFilterElement.id;
-
-            if (closestJSFilterID) {
-                FacetFiltersForm.renderCounts(countsToRender, jsFilterElement);
-                FacetFiltersForm.renderMobileCounts(countsToRender, document.getElementById(closestJSFilterID));
-
-                const newFacetDetailsElement = document.getElementById(closestJSFilterID);
-                if (!newFacetDetailsElement) return;
-                
-                const newElementSelector = newFacetDetailsElement.classList.contains('mobile-facets__details')
-                    ? `.mobile-facets__close-button`
-                    : `.facets__summary`;
-                const newElementToActivate = newFacetDetailsElement.querySelector(newElementSelector);
-
-                const isTextInput = event.target.getAttribute('type') === 'text';
-
-                if (newElementToActivate && !isTextInput) newElementToActivate.focus();
-            }
-        }
-    }
-
-    static renderActiveFacets(html) {
-        const activeFacetElementSelectors = ['.active-facets-mobile', '.active-facets-desktop'];
-
-        activeFacetElementSelectors.forEach((selector) => {
-            const activeFacetsElement = html.querySelector(selector);
-            const targetElement = document.querySelector(selector);
-            if (!activeFacetsElement || !targetElement) return;
-            targetElement.innerHTML = activeFacetsElement.innerHTML;
-        });
-
-        FacetFiltersForm.toggleActiveFacets(false);
-    }
-
-    static renderAdditionalElements(html) {
-        const mobileElementSelectors = ['.mobile-facets__open', '.mobile-facets__count', '.sorting'];
-
-        mobileElementSelectors.forEach((selector) => {
-            const sourceElement = html.querySelector(selector);
-            const targetElement = document.querySelector(selector);
-            if (sourceElement && targetElement) {
-                targetElement.innerHTML = sourceElement.innerHTML;
-            }
-        });
-
-        const mobileForm = document.getElementById('FacetFiltersFormMobile');
-        if (mobileForm) {
-            const menuDrawer = mobileForm.closest('menu-drawer');
-            if (menuDrawer && typeof menuDrawer.bindEvents === 'function') {
-                menuDrawer.bindEvents();
-            }
-        }
-    }
-
-    static renderCounts(source, target) {
-        const targetSummary = target.querySelector('.facets__summary');
-        const sourceSummary = source.querySelector('.facets__summary');
-
-        if (sourceSummary && targetSummary) {
-            targetSummary.outerHTML = sourceSummary.outerHTML;
-        }
-
-        const targetHeaderElement = target.querySelector('.facets__header');
-        const sourceHeaderElement = source.querySelector('.facets__header');
-
-        if (sourceHeaderElement && targetHeaderElement) {
-            targetHeaderElement.outerHTML = sourceHeaderElement.outerHTML;
-        }
-
-        const targetWrapElement = target.querySelector('.facets-wrap');
-        const sourceWrapElement = source.querySelector('.facets-wrap');
-
-        if (sourceWrapElement && targetWrapElement) {
-            const isShowingMore = Boolean(target.querySelector('show-more-button .label-show-more.hidden'));
-            if (isShowingMore) {
-                sourceWrapElement
-                    .querySelectorAll('.facets__item.hidden')
-                    .forEach((hiddenItem) => hiddenItem.classList.replace('hidden', 'show-more-item'));
-            }
-
-            targetWrapElement.outerHTML = sourceWrapElement.outerHTML;
-        }
-    }
-
-    static renderMobileCounts(source, target) {
-        const targetFacetsList = target.querySelector('.mobile-facets__list');
-        const sourceFacetsList = source.querySelector('.mobile-facets__list');
-
-        if (sourceFacetsList && targetFacetsList) {
-            targetFacetsList.outerHTML = sourceFacetsList.outerHTML;
-        }
-    }
-
-    static updateURLHash(searchParams) {
-        history.pushState({ searchParams }, '', `${window.location.pathname}${searchParams && '?'.concat(searchParams)}`);
-    }
-
-    static getSections() {
-        return [
-            {
-                section: document.getElementById('product-grid').dataset.id,
-            },
-        ];
-    }
-
-    createSearchParams(form) {
-        const formData = new FormData(form);
-        return new URLSearchParams(formData).toString();
-    }
-
-    onSubmitForm(searchParams, event) {
-        FacetFiltersForm.renderPage(searchParams, event);
-    }
-
-    onSubmitHandler(event) {
+    switch (event.key) {
+      case 'ArrowDown':
         event.preventDefault();
-        const sortFilterForms = document.querySelectorAll('facet-filters-form form');
-        if (event.srcElement.className == 'mobile-facets__checkbox') {
-            const searchParams = this.createSearchParams(event.target.closest('form'));
-            this.onSubmitForm(searchParams, event);
-        } else {
-            const forms = [];
-            const isMobile = event.target.closest('form').id === 'FacetFiltersFormMobile';
+        newFocusIndex = Math.min(newFocusIndex + 1, options.length - 1);
+        this.#moveFocus(options, newFocusIndex);
+        break;
 
-            sortFilterForms.forEach((form) => {
-                if (!isMobile) {
-                    if (form.id === 'FacetSortForm' || form.id === 'FacetFiltersForm' || form.id === 'FacetSortDrawerForm') {
-                        forms.push(this.createSearchParams(form));
-                    }
-                } else if (form.id === 'FacetFiltersFormMobile') {
-                    forms.push(this.createSearchParams(form));
-                }
-            });
-            this.onSubmitForm(forms.join('&'), event);
-        }
-    }
-
-    onActiveFilterClick(event) {
+      case 'ArrowUp':
         event.preventDefault();
-        FacetFiltersForm.toggleActiveFacets();
-        const url =
-            event.currentTarget.href.indexOf('?') == -1
-                ? ''
-                : event.currentTarget.href.slice(event.currentTarget.href.indexOf('?') + 1);
-        FacetFiltersForm.renderPage(url);
-    }
-}
+        newFocusIndex = Math.max(newFocusIndex - 1, 0);
+        this.#moveFocus(options, newFocusIndex);
+        break;
 
-FacetFiltersForm.filterData = [];
-FacetFiltersForm.searchParamsInitial = window.location.search.slice(1);
-FacetFiltersForm.searchParamsPrev = window.location.search.slice(1);
-customElements.define('facet-filters-form', FacetFiltersForm);
-FacetFiltersForm.setListeners();
-
-class PriceRange extends HTMLElement {
-    constructor() {
-        super();
-        this.querySelectorAll('input').forEach((element) => {
-            element.addEventListener('change', this.onRangeChange.bind(this));
-            element.addEventListener('keydown', this.onKeyDown.bind(this));
-        });
-        this.setMinAndMaxValues();
-    }
-
-    onRangeChange(event) {
-        this.adjustToValidValues(event.currentTarget);
-        this.setMinAndMaxValues();
-    }
-
-    onKeyDown(event) {
-        if (event.metaKey) return;
-
-        const pattern = /[0-9]|\.|,|'| |Tab|Backspace|Enter|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Delete|Escape/;
-        if (!event.key.match(pattern)) event.preventDefault();
-    }
-
-    setMinAndMaxValues() {
-        const inputs = this.querySelectorAll('input');
-        const minInput = inputs[0];
-        const maxInput = inputs[1];
-        if (maxInput.value) minInput.setAttribute('data-max', maxInput.value);
-        if (minInput.value) maxInput.setAttribute('data-min', minInput.value);
-        if (minInput.value === '') maxInput.setAttribute('data-min', 0);
-        if (maxInput.value === '') minInput.setAttribute('data-max', maxInput.getAttribute('data-max'));
-    }
-
-    adjustToValidValues(input) {
-        const value = Number(input.value);
-        const min = Number(input.getAttribute('data-min'));
-        const max = Number(input.getAttribute('data-max'));
-
-        if (value < min) input.value = min;
-        if (value > max) input.value = max;
-    }
-}
-
-customElements.define('price-range', PriceRange);
-
-class FacetRemove extends HTMLElement {
-    constructor() {
-        super();
-        const facetLink = this.querySelector('a');
-        facetLink.setAttribute('role', 'button');
-        facetLink.addEventListener('click', this.closeFilter.bind(this));
-        facetLink.addEventListener('keyup', (event) => {
+      case 'Enter':
+      case ' ':
+        if (event.target instanceof Element) {
+          const targetOption = event.target.closest('[role="option"]');
+          if (targetOption) {
             event.preventDefault();
-            if (event.code.toUpperCase() === 'SPACE') this.closeFilter(event);
+            this.#selectOption(targetOption);
+          }
+        }
+        break;
+
+      case 'Escape':
+        event.preventDefault();
+        this.#closeDropdown();
+        break;
+    }
+  };
+
+  handleToggle = () => {
+    const { details, summary, listbox } = this.refs;
+    if (!(details instanceof HTMLDetailsElement) || !(summary instanceof HTMLElement)) return;
+
+    const isOpen = details.open;
+    summary.setAttribute('aria-expanded', isOpen.toString());
+
+    if (isOpen && listbox instanceof Element) {
+      const selectedOption = listbox.querySelector('[aria-selected="true"]');
+      if (selectedOption instanceof HTMLElement) {
+        selectedOption.focus();
+      }
+    }
+  };
+
+  #moveFocus(options, newIndex) {
+    options.forEach((option) => {
+      if (option instanceof HTMLElement) {
+        option.tabIndex = -1;
+      }
+    });
+
+    const targetOption = options[newIndex];
+    if (targetOption instanceof HTMLElement) {
+      targetOption.tabIndex = 0;
+      targetOption.focus();
+    }
+  }
+
+  #selectOption(option) {
+    const input = option.querySelector('input[type="radio"]');
+    if (input instanceof HTMLInputElement && option instanceof HTMLElement) {
+      this.querySelectorAll('[role="option"]').forEach((opt) => {
+        opt.setAttribute('aria-selected', 'false');
+      });
+      option.setAttribute('aria-selected', 'true');
+
+      input.click();
+
+      this.#closeDropdown();
+    }
+  }
+
+  #closeDropdown() {
+    const { details, summary } = this.refs;
+    if (details instanceof HTMLDetailsElement) {
+      const options = this.querySelectorAll('[role="option"]');
+      const selectedOption = this.querySelector('[aria-selected="true"]');
+
+      options.forEach((opt) => {
+        if (opt instanceof HTMLElement) {
+          opt.tabIndex = -1;
+        }
+      });
+
+      if (selectedOption instanceof HTMLElement) {
+        selectedOption.tabIndex = 0;
+      }
+
+      details.open = false;
+      if (summary instanceof HTMLElement) {
+        summary.focus();
+      }
+    }
+  }
+
+  updateFilterAndSorting(event) {
+    const facetsForm =
+      this.closest('facets-form-component') || this.closest('.shopify-section')?.querySelector('facets-form-component');
+
+    if (!(facetsForm instanceof FacetsFormComponent)) return;
+    const isMobile = window.innerWidth < 750;
+
+    const shouldDisable = this.dataset.shouldUseSelectOnMobile === 'true';
+
+    if (shouldDisable) {
+      if (isMobile) {
+        const inputs = this.querySelectorAll('input[name="sort_by"]');
+        inputs.forEach((input) => {
+          if (!(input instanceof HTMLInputElement)) return;
+          input.disabled = true;
         });
+      } else {
+        const selectElement = this.querySelector('select[name="sort_by"]');
+        if (!(selectElement instanceof HTMLSelectElement)) return;
+        selectElement.disabled = true;
+      }
     }
 
-    closeFilter(event) {
-        event.preventDefault();
-        const form = this.closest('facet-filters-form') || document.querySelector('facet-filters-form');
-        form.onActiveFilterClick(event);
+    facetsForm.updateFilters();
+    this.updateFacetStatus(event);
+
+    if (shouldDisable) {
+      if (isMobile) {
+        const inputs = this.querySelectorAll('input[name="sort_by"]');
+        inputs.forEach((input) => {
+          if (!(input instanceof HTMLInputElement)) return;
+          input.disabled = false;
+        });
+      } else {
+        const selectElement = this.querySelector('select[name="sort_by"]');
+        if (!(selectElement instanceof HTMLSelectElement)) return;
+        selectElement.disabled = false;
+      }
     }
+
+    const { details } = this.refs;
+    if (!(details instanceof HTMLDetailsElement)) return;
+    details.open = false;
+  }
+
+  updateFacetStatus(event) {
+    if (!(event.target instanceof HTMLSelectElement)) return;
+
+    const details = this.querySelector('details');
+    if (!details) return;
+
+    const facetStatus = details.querySelector('facet-status-component');
+    if (!(facetStatus instanceof FacetStatusComponent)) return;
+
+    facetStatus.textContent =
+      event.target.value !== details.dataset.defaultSortBy ? event.target.dataset.optionName ?? '' : '';
+  }
 }
 
-customElements.define('facet-remove', FacetRemove);
+if (!customElements.get('sorting-filter-component')) {
+  customElements.define('sorting-filter-component', SortingFilterComponent);
+}
+
+class FacetStatusComponent extends Component {
+  updateListSummary(checkedInputElements) {
+    const checkedInputElementsCount = checkedInputElements.length;
+
+    this.getAttribute('facet-type') === 'swatches'
+      ? this.#updateSwatchSummary(checkedInputElements, checkedInputElementsCount)
+      : this.#updateBubbleSummary(checkedInputElements, checkedInputElementsCount);
+  }
+
+  #updateSwatchSummary(checkedInputElements, checkedInputElementsCount) {
+    const { facetStatus } = this.refs;
+    facetStatus.classList.remove('bubble', 'facets__bubble');
+
+    if (checkedInputElementsCount === 0) {
+      facetStatus.innerHTML = '';
+      return;
+    }
+
+    if (checkedInputElementsCount > 3) {
+      facetStatus.innerHTML = checkedInputElementsCount.toString();
+      facetStatus.classList.add('bubble', 'facets__bubble');
+      return;
+    }
+
+    facetStatus.innerHTML = Array.from(checkedInputElements)
+      .map((inputElement) => {
+        const swatch = inputElement.parentElement?.querySelector('span.swatch');
+        return swatch?.outerHTML ?? '';
+      })
+      .join('');
+  }
+
+  #updateBubbleSummary(checkedInputElements, checkedInputElementsCount) {
+    const { facetStatus } = this.refs;
+    const filterStyle = this.dataset.filterStyle;
+
+    facetStatus.classList.remove('bubble', 'facets__bubble');
+
+    if (checkedInputElementsCount === 0) {
+      facetStatus.innerHTML = '';
+      return;
+    }
+
+    if (filterStyle === 'horizontal' && checkedInputElementsCount === 1) {
+      facetStatus.innerHTML = checkedInputElements[0]?.dataset.label ?? '';
+      return;
+    }
+
+    facetStatus.innerHTML = checkedInputElementsCount.toString();
+    facetStatus.classList.add('bubble', 'facets__bubble');
+  }
+
+  updatePriceSummary(minInput, maxInput) {
+    const minInputValue = minInput.value;
+    const maxInputValue = maxInput.value;
+    const { facetStatus } = this.refs;
+
+    if (!minInputValue && !maxInputValue) {
+      facetStatus.innerHTML = '';
+      return;
+    }
+
+    const currency = facetStatus.dataset.currency || '';
+    const minInputNum = this.#parseCents(minInputValue, '0', currency);
+    const maxInputNum = this.#parseCents(maxInputValue, facetStatus.dataset.rangeMax, currency);
+    facetStatus.innerHTML = `${this.#formatMoney(minInputNum)}–${this.#formatMoney(maxInputNum)}`;
+  }
+
+  #parseCents(value, fallback = '0', currency = '') {
+    const result = convertMoneyToMinorUnits(value, currency);
+    if (result !== null) return result;
+
+    const fallbackResult = convertMoneyToMinorUnits(fallback, currency);
+    if (fallbackResult !== null) return fallbackResult;
+
+    const cleanFallback = fallback.replace(/[^\d]/g, '');
+    return parseInt(cleanFallback, 10) || 0;
+  }
+
+  #formatMoney(moneyValue) {
+    if (!(this.refs.moneyFormat instanceof HTMLTemplateElement)) return '';
+
+    const format = this.refs.moneyFormat.content.textContent || '{{amount}}';
+    const currency = this.refs.facetStatus.dataset.currency || '';
+
+    return formatMoney(moneyValue, format, currency);
+  }
+
+  clearSummary() {
+    this.refs.facetStatus.innerHTML = '';
+  }
+}
+
+if (!customElements.get('facet-status-component')) {
+  customElements.define('facet-status-component', FacetStatusComponent);
+}
+
+function convertMoneyToMinorUnits(value, currency) {
+  if (!value || value === '') return null;
+  
+  const cleanValue = String(value).replace(/[^\d.,']/g, '');
+  if (!cleanValue) return null;
+  
+  const decimalPlaces = getDecimalPlaces(currency);
+  
+  let parsed;
+  if (cleanValue.includes('.') && cleanValue.includes(',')) {
+    const lastDot = cleanValue.lastIndexOf('.');
+    const lastComma = cleanValue.lastIndexOf(',');
+    
+    if (lastComma > lastDot) {
+      parsed = parseFloat(cleanValue.replace(/\./g, '').replace(',', '.'));
+    } else {
+      parsed = parseFloat(cleanValue.replace(/,/g, ''));
+    }
+  } else if (cleanValue.includes(',')) {
+    parsed = parseFloat(cleanValue.replace(',', '.'));
+  } else {
+    parsed = parseFloat(cleanValue);
+  }
+  
+  if (isNaN(parsed)) return null;
+  
+  return Math.round(parsed * Math.pow(10, decimalPlaces));
+}
+
+function getDecimalPlaces(currency) {
+  const zeroDecimalCurrencies = ['JPY', 'KRW', 'VND', 'KHR', 'LAK', 'IDR'];
+  const threeDecimalCurrencies = ['BHD', 'JOD', 'KWD', 'OMR', 'TND'];
+  
+  if (zeroDecimalCurrencies.includes(currency)) return 0;
+  if (threeDecimalCurrencies.includes(currency)) return 3;
+  return 2;
+}
+
+function formatMoney(cents, format, currency) {
+  if (typeof cents === 'string') {
+    cents = parseInt(cents.replace(/[^\d]/g, ''), 10);
+  }
+  
+  if (isNaN(cents)) return '';
+  
+  const decimalPlaces = getDecimalPlaces(currency);
+  const amount = cents / Math.pow(10, decimalPlaces);
+  
+  let formatted;
+  if (decimalPlaces === 0) {
+    formatted = amount.toLocaleString();
+  } else {
+    formatted = amount.toLocaleString(undefined, {
+      minimumFractionDigits: decimalPlaces,
+      maximumFractionDigits: decimalPlaces
+    });
+  }
+  
+  if (format) {
+    return format.replace(/{{\s*amount\s*}}/i, formatted);
+  }
+  
+  return formatted;
+}

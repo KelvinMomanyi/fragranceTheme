@@ -1,0 +1,236 @@
+{%- doc -%}
+  Renders a price filter.
+
+  @param {object} filter - The filter object to render.
+  @param {string} filter_style - The filter style, can be 'horizontal' or 'vertical'.
+  @param {boolean} [should_render_clear] - Whether to render the clear button.
+
+  @example
+  {% render 'price-filter', filter: filter, filter_style: 'vertical' %}
+{%- enddoc -%}
+
+<div class="facets__item">
+  <details
+    class="facets__panel"
+    {% if filter_style == 'vertical' %}
+      open
+    {% endif %}
+  >
+    <summary
+      class="facets__summary"
+      data-testid="price-filter"
+    >
+      <span class="facets__label">{{ filter.label | default: 'Price' }}</span>
+      <facet-status-component class="facets__status">
+        <template ref="moneyFormat">{{ shop.money_format }}</template>
+
+        <span
+          class="hide-when-empty"
+          ref="facetStatus"
+          data-currency="{{ localization.country.currency.iso_code }}"
+          data-range-max="{{ filter.range_max | money_without_currency }}"
+        >
+          {%- if filter.min_value.value != null or filter.max_value.value != null %}
+            {%- if filter.min_value.value != null and filter.max_value.value != null %}
+              {{- filter.min_value.value | money | strip_html -}}
+              –
+              {{- filter.max_value.value | money | strip_html -}}
+            {%- elsif filter.min_value.value != null -%}
+              {{ filter.min_value.value | money | strip_html }}–{{ filter.range_max | money | strip_html }}
+
+            {%- elsif filter.max_value.value != null -%}
+              {{- 0 | money | strip_html -}}
+              –
+              {{- filter.max_value.value | money | strip_html -}}
+            {%- endif -%}
+          {%- endif -%}
+        </span>
+      </facet-status-component>
+      <span class="svg-wrapper icon-caret icon-animated">
+        {% render 'icon-fragrance', icon: 'chevron-down' %}
+      </span>
+    </summary>
+    <div class="facets__panel-content details-content">
+      {% assign min_input_max_value = filter.max_value.value | default: filter.range_max %}
+      {% assign max_input_min_value = filter.min_value.value | default: 0 %}
+
+      <price-facet-component
+        class="price-facet{% if filter_style == 'horizontal' %} price-facet--horizontal{% endif %}"
+        id="facet-inputs-{{ filter.param_name | escape | replace: '.', '-' }}"
+        data-money-format="{{ shop.money_format | strip_html }}"
+        data-currency="{{ localization.country.currency.iso_code }}"
+        on:change="/updatePriceFilterAndResults"
+      >
+        <div class="facets__inputs-wrapper facets__inputs-wrapper--row">
+          <div class="price-facet__inputs-wrapper">
+            <div class="field price-facet__field">
+              <input
+                class="field__input price-facet__input"
+                name="{{ filter.min_value.param_name }}"
+                id="{{ filter.label | escape }}-GTE"
+                {%- if filter.min_value.value -%}
+                  value="{{ filter.min_value.value | money_without_currency }}"
+                {%- endif -%}
+                type="text"
+                inputmode="decimal"
+                placeholder="0"
+                data-min="0"
+                data-max="{{ min_input_max_value | money_without_currency }}"
+                ref="minInput"
+                autocomplete="off"
+              >
+
+              <label
+                class="field__label price-facet__label"
+                for="{{ filter.label | escape }}-GTE"
+              >
+                {{ cart.currency.symbol }}
+              </label>
+            </div>
+
+            <div class="price-facet__separator">{{ 'products.facets.to' | t | default: 'to' }}</div>
+
+            <div class="field price-facet__field">
+              <input
+                class="field__input price-facet__input"
+                name="{{ filter.max_value.param_name }}"
+                id="{{ filter.label | escape }}-LTE"
+                {%- if filter.max_value.value -%}
+                  value="{{ filter.max_value.value | money_without_currency }}"
+                {%- endif -%}
+                type="text"
+                inputmode="decimal"
+                placeholder="{{ filter.range_max | money_without_currency }}"
+                data-min="{{ max_input_min_value | money_without_currency }}"
+                data-max="{{ filter.range_max | money_without_currency }}"
+                ref="maxInput"
+                autocomplete="off"
+              >
+              <label
+                class="field__label price-facet__label"
+                for="{{ filter.label | escape }}-LTE"
+              >
+                {{ cart.currency.symbol }}
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="price-facet__highest-price{% if filter_style == 'horizontal' %} price-facet__highest-price--horizontal{% endif %}">
+          {%- assign formatted_highest_price = filter.range_max | money -%}
+          {{ 'products.facets.max_price' | t: price: formatted_highest_price | default: 'Highest price is' }} {{ formatted_highest_price }}
+        </div>
+
+        {% if filter.min_value.value != null or filter.max_value.value != null %}
+          {% assign has_active_values = true %}
+        {% endif %}
+
+        {% if should_render_clear %}
+          <facet-clear-component
+            class="clear-filter"
+            tabindex="{% if has_active_values %}0{% else %}-1{% endif %}"
+            on:click="/clearFilter"
+            on:keydown="/clearFilter"
+          >
+            <div
+              class="facets__clear {% if has_active_values %}facets__clear--active{% endif %}"
+              ref="clearButton"
+            >
+              {{- 'products.facets.clear' | t | default: 'Clear' -}}
+            </div>
+          </facet-clear-component>
+        {% endif %}
+      </price-facet-component>
+    </div>
+  </details>
+</div>
+
+{% stylesheet %}
+  .price-facet {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .price-facet--horizontal {
+    min-width: 280px;
+  }
+
+  .price-facet__inputs-wrapper {
+    display: flex;
+    flex-direction: row;
+    padding: var(--style-border-width-inputs, 1px);
+    gap: calc(var(--gap-sm, 8px) + (var(--style-border-width-inputs, 1px) * 2));
+  }
+
+  @container (max-width: 199px) {
+    .price-facet__inputs-wrapper {
+      flex-wrap: wrap;
+    }
+  }
+
+  .price-facet__field {
+    position: relative;
+    flex: 1;
+  }
+
+  .price-facet__input {
+    width: 100%;
+    text-align: right;
+    padding-left: calc(2.5 * var(--input-padding-x, 12px));
+    padding: var(--input-padding-y, 8px) var(--input-padding-x, 12px);
+    border: var(--style-border-width, 1px) solid var(--color-border-input, rgba(0, 0, 0, 0.1));
+    border-radius: var(--style-border-radius-input, 4px);
+    font-size: inherit;
+  }
+
+  .price-facet__input::placeholder {
+    color: var(--facets-input-label-color, rgba(0, 0, 0, 0.5));
+  }
+
+  .price-facet__input:focus {
+    outline: var(--focus-outline-width, 2px) solid currentcolor;
+    outline-offset: var(--focus-outline-offset, 2px);
+  }
+
+  .price-facet__separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-paragraph--size, 1rem);
+    color: var(--color-foreground-muted);
+  }
+
+  .price-facet__highest-price {
+    padding: var(--padding-xs, 8px) 0 var(--padding-sm, 12px);
+    font-size: var(--font-size--sm, 0.875rem);
+    color: var(--color-foreground-muted);
+  }
+
+  .price-facet__highest-price--horizontal {
+    padding: 0 var(--padding-md, 16px) var(--padding-xs, 8px);
+  }
+
+  .price-facet__label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    color: var(--facets-input-label-color, rgba(0, 0, 0, 0.5));
+    padding: var(--input-padding-y, 8px) var(--input-padding-x, 12px);
+    pointer-events: none;
+  }
+
+  .facets__clear {
+    display: none;
+    padding-top: var(--padding-sm, 8px);
+  }
+
+  .facets__clear--active {
+    display: block;
+  }
+
+  .hide-when-empty:empty {
+    display: none;
+  }
+{% endstylesheet %}

@@ -3,11 +3,13 @@
   Accepts:
   - swatch: {Object} a swatch object
   - shape: {String} swatch shape. Accepts 'square', defaults to circle.
+  - mode: {String} swatch display mode. Accepts 'filter', 'pill', defaults to standard.
 
   Usage:
   {% render 'swatch',
-    swatch: value.swatch
-    shape: 'square'
+    swatch: value.swatch,
+    shape: 'square',
+    mode: 'filter'
   %}
 {% endcomment %}
 
@@ -20,13 +22,59 @@
   elsif swatch.color
     assign swatch_value = 'rgb(' | append: swatch.color.rgb | append: ')'
   endif
+
+  assign size_class = ''
+  if mode == 'filter'
+    assign size_class = ' swatch--filter'
+  elsif mode == 'pill'
+    assign size_class = ' swatch--pill'
+  endif
 -%}
 
 <span
   {% if swatch_value %}
-    class="swatch{% if shape == 'square' %} swatch--square{% endif %}"
+    class="swatch{% if shape == 'square' %} swatch--square{% endif %}{{ size_class }}"
     style="--swatch--background: {{ swatch_value }};{% if swatch_focal_point %} --swatch-focal-point: {{ swatch_focal_point }};{% endif %}"
   {% else %}
-    class="swatch swatch--unavailable{% if shape == 'square' %} swatch--square{% endif %}"
+    class="swatch swatch--unavailable{% if shape == 'square' %} swatch--square{% endif %}{{ size_class }}"
   {% endif %}
 ></span>
+
+{% stylesheet %}
+  .swatch {
+    --swatch-size: 20px;
+    --swatch-radius: 50%;
+    
+    display: inline-block;
+    width: var(--swatch-size);
+    height: var(--swatch-size);
+    border-radius: var(--swatch-radius);
+    background: var(--swatch--background, var(--color-swatch-placeholder, #e0e0e0));
+    background-size: cover;
+    background-position: var(--swatch-focal-point, center);
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  .swatch--square {
+    --swatch-radius: 4px;
+  }
+
+  .swatch--unavailable {
+    background: repeating-linear-gradient(
+      45deg,
+      var(--color-swatch-placeholder, #e0e0e0),
+      var(--color-swatch-placeholder, #e0e0e0) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+  }
+
+  .swatch--filter {
+    --swatch-size: 18px;
+  }
+
+  .swatch--pill {
+    --swatch-size: 16px;
+  }
+{% endstylesheet %}
