@@ -669,3 +669,31 @@ function formatMoney(cents, format, currency) {
   
   return formatted;
 }
+
+// Global click listener to close filter dropdowns when clicking outside
+document.addEventListener('click', (event) => {
+  if (!(event.target instanceof Element)) return;
+  const isInsideDetails = event.target.closest('details.facets__panel');
+
+  if (!isInsideDetails) {
+    document.querySelectorAll('details.facets__panel[open]').forEach((details) => {
+      details.open = false;
+    });
+  } else {
+    // Close other open details if clicking inside a different details element
+    document.querySelectorAll('details.facets__panel[open]').forEach((details) => {
+      if (details !== isInsideDetails) {
+        details.open = false;
+      }
+    });
+  }
+});
+
+// Also close on Escape key for all dropdowns
+document.addEventListener('keyup', (event) => {
+  if (event.key === 'Escape') {
+    document.querySelectorAll('details.facets__panel[open]').forEach((details) => {
+      details.open = false;
+    });
+  }
+});
