@@ -554,6 +554,14 @@
     flex-shrink: 0;
   }
 
+  .facet-checkbox .svg-wrapper {
+    display: none;
+  }
+
+  .facet-checkbox input:checked + svg + .svg-wrapper {
+    display: block;
+  }
+
   .facet-checkbox input:checked + svg + .svg-wrapper svg {
     display: block;
   }
@@ -586,7 +594,7 @@
 
   .facets__pill-input:checked + .facets__pill-label {
     background-color: var(--color-foreground);
-    color: var(--color-background);
+    color: var(--color-background, #fff);
   }
 
   .facets__pill-input:disabled + .facets__pill-label {

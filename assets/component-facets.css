@@ -34,6 +34,7 @@
 }
 
 @media screen and (min-width: 750px) {
+
   /* Desktop horizontal filters: clean pills + real dropdown panels */
   #main-collection-filters .facets--horizontal .facets__item {
     border-bottom: 0;
@@ -62,8 +63,8 @@
     border-color: var(--facets-border-strong);
   }
 
-  #main-collection-filters .facets--horizontal details[open] > summary.facets__summary {
-    background: var(--color-background);
+  #main-collection-filters .facets--horizontal details[open]>summary.facets__summary {
+    background: var(--color-background, #fff);
     border-color: var(--facets-border-strong);
     box-shadow: 0 0 0 3px rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.12);
   }
@@ -97,13 +98,13 @@
     padding: 14px;
     border-radius: var(--facets-radius);
     border: 1px solid var(--facets-border);
-    background: var(--color-background);
+    background: var(--color-background, #fff);
     box-shadow: var(--facets-shadow);
     z-index: 120;
   }
 
   /* Price panel needs a bit more room */
-  #main-collection-filters .facets--horizontal [data-testid="price-filter"] + .facets__panel-content {
+  #main-collection-filters .facets--horizontal [data-testid="price-filter"]+.facets__panel-content {
     min-width: min(360px, 92vw);
   }
 
@@ -139,13 +140,13 @@
   color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.9);
 }
 
-#main-collection-filters label.facet-checkbox input:checked + svg {
+#main-collection-filters label.facet-checkbox input:checked+svg {
   color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.9);
 }
 
 /* Price inputs: align with theme fields */
 #main-collection-filters .price-facet__input {
-  background: var(--color-background);
+  background: var(--color-background, #fff);
 }
 
 /* Sorting dropdown: ensure it sits above grid + matches border/shadow */
