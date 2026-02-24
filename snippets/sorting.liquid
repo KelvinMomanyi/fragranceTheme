@@ -136,28 +136,49 @@
 </sorting-filter-component>
 
 {% stylesheet %}
-  /* ---- Sorting (complements component-facets.css) ---- */
-
   .sorting-filter__container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0;
+    padding-inline: var(--drawer-padding, 20px) 0;
+    padding-block: var(--padding-sm, 8px);
+    margin-inline-end: var(--margin-md, 16px);
     position: relative;
   }
 
   .sorting-filter__container .facets__label {
-    font-size: 15px;
-    font-weight: 500;
+    font-size: var(--font-h4--size, 1.25rem);
+  }
+
+  .sorting-filter__select-wrapper {
+    display: flex;
+    position: relative;
+    border-radius: var(--variant-picker-button-radius, 8px);
+    align-items: center;
+    overflow: clip;
+    padding: var(--padding-2xs, 4px) var(--padding-xs, 8px);
+  }
+
+  .sorting-filter__select-wrapper:has(:focus-visible) {
+    outline: var(--focus-outline-width, 2px) solid currentcolor;
+    outline-offset: var(--focus-outline-offset, 2px);
+  }
+
+  .sorting-filter__container .sorting-filter__select {
+    appearance: none;
+    border: 0;
+    margin: 0;
+    cursor: pointer;
+    width: 100%;
+    padding-inline-end: var(--icon-size-2xs, 12px);
+    text-align: right;
+    text-align-last: right;
+    background: transparent;
+    font-size: inherit;
   }
 
   .sorting-filter {
-    z-index: 100;
-    position: relative;
-  }
-
-  .sorting-filter__horizontal {
-    margin-left: auto;
+    z-index: var(--facets-upper-z-index, 100);
   }
 
   .sorting-filter__options {
@@ -165,18 +186,19 @@
     grid-template-rows: 0fr;
     opacity: 0;
     position: absolute;
-    top: calc(100% + 8px);
+    top: 100%;
     right: 0;
-    color: var(--color-text, #333);
-    z-index: 1002;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    background: var(--color-background, #fff);
-    border-radius: 12px;
+    color: var(--color-foreground);
+    z-index: var(--facets-upper-z-index, 100);
+    box-shadow: var(--shadow-popover, 0 4px 12px rgba(0, 0, 0, 0.15));
+    border: var(--style-border-popover, 1px solid rgba(0, 0, 0, 0.1));
+    background-color: var(--color-background);
+    border-radius: var(--style-border-radius-popover, 8px);
     width: max-content;
-    min-width: 200px;
+    min-width: var(--facets-panel-min-width, 120px);
     min-height: 0;
-    transition: grid-template-rows 0.25s ease, opacity 0.25s ease;
+    transition: grid-template-rows var(--animation-speed-slow, 300ms) var(--animation-easing, ease),
+      opacity var(--animation-speed-slow, 300ms) var(--animation-easing, ease);
   }
 
   details[open] .sorting-filter__options {
@@ -188,9 +210,9 @@
     display: flex;
     flex-direction: column;
     grid-row: 1 / span 2;
-    gap: 2px;
-    padding: 8px;
-    color: var(--color-text, #333);
+    gap: var(--gap-sm, 8px);
+    padding: calc(var(--drawer-padding, 20px) / 2);
+    color: var(--color-foreground);
     overflow: clip;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -198,6 +220,47 @@
 
   .sorting-filter__options-inner::-webkit-scrollbar {
     display: none;
+  }
+
+  .sorting-filter__option {
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: var(--icon-size-sm, 16px) 1fr;
+    gap: var(--margin-2xs, 4px);
+    align-items: center;
+    min-width: 180px;
+    max-width: 16em;
+    padding: var(--padding-2xs, 4px) calc(var(--drawer-padding, 20px) / 2) var(--padding-2xs, 4px) var(--padding-2xs, 4px);
+  }
+
+  .sorting-filter__option:hover {
+    border-radius: calc(var(--style-border-radius-popover, 8px) / 2);
+    background-color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.08);
+  }
+
+  .sorting-filter__option:focus {
+    border-radius: calc(var(--style-border-radius-popover, 8px) / 2);
+  }
+
+  .sorting-filter__input {
+    display: none;
+  }
+
+  .sorting-filter__input:checked + .sorting-filter__checkmark + .sorting-filter__label {
+    font-weight: 500;
+  }
+
+  .sorting-filter__checkmark {
+    visibility: hidden;
+  }
+
+  *:checked ~ .sorting-filter__checkmark {
+    visibility: visible;
+  }
+
+  .sorting-filter__label {
+    cursor: pointer;
+    pointer-events: none;
   }
 
   .facets-toggle--no-filters .sorting-filter__select-wrapper {
@@ -214,9 +277,9 @@
   }
 
   .facets-mobile-wrapper .sorting-filter .facets__label {
-    margin-inline-end: 4px;
-    font-size: 14px;
-    color: var(--color-text, #333);
+    margin-inline-end: var(--margin-2xs, 4px);
+    font-size: var(--font-paragraph--size, 1rem);
+    color: var(--color-foreground-muted);
   }
 
   .facets-toggle .sorting-filter__container {

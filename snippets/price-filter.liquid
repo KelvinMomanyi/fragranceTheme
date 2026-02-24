@@ -146,8 +146,6 @@
 </div>
 
 {% stylesheet %}
-  /* ---- Price Filter (complements component-facets.css) ---- */
-
   .price-facet {
     container-type: inline-size;
     display: flex;
@@ -155,15 +153,14 @@
   }
 
   .price-facet--horizontal {
-    min-width: 260px;
+    min-width: 280px;
   }
 
   .price-facet__inputs-wrapper {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    padding: 2px;
+    padding: var(--style-border-width-inputs, 1px);
+    gap: calc(var(--gap-sm, 8px) + (var(--style-border-width-inputs, 1px) * 2));
   }
 
   @container (max-width: 199px) {
@@ -180,60 +177,53 @@
   .price-facet__input {
     width: 100%;
     text-align: right;
-    padding: 10px 14px 10px 32px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: 8px;
-    font-size: 14px;
-    background: var(--color-background, #fff);
-    color: var(--color-text, #333);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    outline: none;
+    padding-left: calc(2.5 * var(--input-padding-x, 12px));
+    padding: var(--input-padding-y, 8px) var(--input-padding-x, 12px);
+    border: var(--style-border-width, 1px) solid var(--color-border-input, rgba(0, 0, 0, 0.1));
+    border-radius: var(--style-border-radius-input, 4px);
+    font-size: inherit;
   }
 
   .price-facet__input::placeholder {
-    color: rgba(0, 0, 0, 0.35);
+    color: var(--facets-input-label-color, rgba(0, 0, 0, 0.5));
   }
 
   .price-facet__input:focus {
-    border-color: var(--tan-crayola, #d4a373);
-    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.15);
+    outline: var(--focus-outline-width, 2px) solid currentcolor;
+    outline-offset: var(--focus-outline-offset, 2px);
   }
 
   .price-facet__separator {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
-    color: rgba(0, 0, 0, 0.4);
-    font-weight: 500;
-    padding: 0 2px;
-    flex-shrink: 0;
+    font-size: var(--font-paragraph--size, 1rem);
+    color: var(--color-foreground-muted);
   }
 
   .price-facet__highest-price {
-    padding: 8px 0 4px;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.4);
-    font-style: italic;
+    padding: var(--padding-xs, 8px) 0 var(--padding-sm, 12px);
+    font-size: var(--font-size--sm, 0.875rem);
+    color: var(--color-foreground-muted);
   }
 
   .price-facet__highest-price--horizontal {
-    padding: 0 4px 8px;
+    padding: 0 var(--padding-md, 16px) var(--padding-xs, 8px);
   }
 
   .price-facet__label {
     position: absolute;
     top: 50%;
-    left: 12px;
+    left: 0;
     transform: translateY(-50%);
-    color: rgba(0, 0, 0, 0.4);
-    font-size: 14px;
+    color: var(--facets-input-label-color, rgba(0, 0, 0, 0.5));
+    padding: var(--input-padding-y, 8px) var(--input-padding-x, 12px);
     pointer-events: none;
   }
 
   .facets__clear {
     display: none;
-    padding-top: 8px;
+    padding-top: var(--padding-sm, 8px);
   }
 
   .facets__clear--active {

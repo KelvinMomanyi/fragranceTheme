@@ -1,825 +1,169 @@
-/* ============================================================
-   FRAGRANCE THEME — Facets & Filter Dropdown Styles
-   Premium, theme-consistent styling for collection filters,
-   sorting, and price range dropdowns.
-   ============================================================ */
+/* Facets (collection filters + sorting)
+   This theme uses Dawn-like facets markup (details/summary).
+   Keep styles scoped so they don't leak into other pages.
+*/
 
-/* ------- Horizontal Filter Bar ------- */
-.facets--horizontal .facets__form {
-  gap: 12px;
+#main-collection-filters {
+  --facets-border: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.16);
+  --facets-border-strong: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.22);
+  --facets-surface: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.03);
+  --facets-surface-hover: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.06);
+  --facets-shadow: 0 18px 45px rgb(0 0 0 / 0.14);
+  --facets-radius: 14px;
+  --facets-pill-radius: 999px;
+  --facets-panel-min: 320px;
+  --facets-panel-max: 460px;
+  --facets-gap: 12px;
+  font-family: var(--ff-roboto, system-ui, -apple-system, Segoe UI, Roboto, sans-serif);
 }
 
-.facets--horizontal .facets__filters-wrapper {
-  gap: 10px;
+#main-collection-filters .facets-block-wrapper {
+  margin-bottom: 18px;
 }
 
-/* ------- Shared: Summary / Trigger Buttons ------- */
-.facets__summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 10px 16px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  color: var(--color-text, #121212);
-  background: var(--color-background, #fff);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 10px;
-  transition: all 0.25s ease;
+#main-collection-filters summary.facets__summary {
   list-style: none;
-  user-select: none;
-  white-space: nowrap;
 }
 
-.facets__summary::-webkit-details-marker {
+#main-collection-filters summary.facets__summary::-webkit-details-marker {
   display: none;
 }
 
-.facets__summary::marker {
-  content: '';
+#main-collection-filters .facets__filters-wrapper {
+  gap: var(--facets-gap);
 }
 
-.facets__summary:hover {
-  border-color: var(--tan-crayola, #d4a373);
-  color: var(--tan-crayola, #d4a373);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+@media screen and (min-width: 750px) {
+  /* Desktop horizontal filters: clean pills + real dropdown panels */
+  #main-collection-filters .facets--horizontal .facets__item {
+    border-bottom: 0;
+    position: relative;
+  }
+
+  #main-collection-filters .facets--horizontal details.facets__panel {
+    padding: 0;
+    position: relative;
+  }
+
+  #main-collection-filters .facets--horizontal summary.facets__summary {
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    min-height: 44px;
+    border-radius: var(--facets-pill-radius);
+    border: 1px solid var(--facets-border);
+    background: var(--facets-surface);
+    transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    user-select: none;
+  }
+
+  #main-collection-filters .facets--horizontal summary.facets__summary:hover {
+    background: var(--facets-surface-hover);
+    border-color: var(--facets-border-strong);
+  }
+
+  #main-collection-filters .facets--horizontal details[open] > summary.facets__summary {
+    background: var(--color-background);
+    border-color: var(--facets-border-strong);
+    box-shadow: 0 0 0 3px rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.12);
+  }
+
+  #main-collection-filters .facets--horizontal summary.facets__summary:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.18);
+  }
+
+  #main-collection-filters .facets--horizontal .facets__label {
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-foreground, var(--color-text));
+  }
+
+  #main-collection-filters .facets--horizontal .facets__status,
+  #main-collection-filters .facets--horizontal .facets__status-wrapper {
+    color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.82);
+  }
+
+  #main-collection-filters .facets--horizontal .facets__panel-content {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: max-content;
+    min-width: min(var(--facets-panel-min), 92vw);
+    max-width: min(var(--facets-panel-max), 92vw);
+    max-height: min(420px, 70vh);
+    overflow: auto;
+    padding: 14px;
+    border-radius: var(--facets-radius);
+    border: 1px solid var(--facets-border);
+    background: var(--color-background);
+    box-shadow: var(--facets-shadow);
+    z-index: 120;
+  }
+
+  /* Price panel needs a bit more room */
+  #main-collection-filters .facets--horizontal [data-testid="price-filter"] + .facets__panel-content {
+    min-width: min(360px, 92vw);
+  }
+
+  #main-collection-filters .facets--horizontal .facets__clear,
+  #main-collection-filters .facets--horizontal .show-more__button {
+    padding-top: 10px;
+  }
 }
 
-details[open]>.facets__summary {
-  border-color: var(--tan-crayola, #d4a373);
-  color: var(--tan-crayola, #d4a373);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-}
-
-/* ------- Caret Icon Animation ------- */
-.icon-caret {
-  display: inline-flex;
-  align-items: center;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.icon-caret svg {
-  width: 14px;
-  height: 14px;
-}
-
-details[open]>.facets__summary .icon-caret,
-details[open] .icon-animated {
-  transform: rotate(180deg);
-}
-
-/* ------- Shared: Dropdown Panel ------- */
-.facets__panel-content,
-.details-content,
-.sorting-filter__options {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  min-width: 220px;
-  max-width: 360px;
-  max-height: 340px;
-  overflow-y: auto;
-  background: var(--color-background, #fff);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
-  z-index: 1002;
-  padding: 12px 8px;
-  opacity: 0;
-  transform: translateY(-6px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-
-/* Scrollbar styling for dropdown */
-.facets__panel-content::-webkit-scrollbar,
-.details-content::-webkit-scrollbar {
-  width: 4px;
-}
-
-.facets__panel-content::-webkit-scrollbar-track,
-.details-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.facets__panel-content::-webkit-scrollbar-thumb,
-.details-content::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
-}
-
-details[open]>.facets__panel-content,
-details[open]>.details-content,
-details[open] .facets__panel-content,
-details[open] .sorting-filter__options {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-/* ------- Panel Positioning for Horizontal Mode ------- */
-.facets--horizontal .facets__panel {
-  position: relative;
-}
-
-.facets--horizontal .facets__panel-content,
-.facets--horizontal .details-content {
-  left: 0;
-  right: auto;
-  min-width: 240px;
-}
-
-/* ------- Custom Checkbox Styling ------- */
-.facet-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  color: var(--color-text, #333);
-  transition: background-color 0.2s ease;
-}
-
-.facet-checkbox:hover {
-  background-color: rgba(0, 0, 0, 0.03);
-}
-
-.facet-checkbox input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* Checkbox box via SVG */
-.facet-checkbox svg {
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.facet-checkbox svg rect {
-  stroke: rgba(0, 0, 0, 0.25);
-  transition: all 0.2s ease;
-}
-
-.facet-checkbox input:checked+svg rect {
-  fill: var(--tan-crayola, #d4a373);
-  stroke: var(--tan-crayola, #d4a373);
-}
-
-/* Checkmark icon */
-.facet-checkbox .svg-wrapper {
-  display: none;
-  color: #fff;
-  width: 14px;
-  height: 14px;
-  margin-left: -24px;
-}
-
-.facet-checkbox .svg-wrapper svg {
-  width: 14px;
-  height: 14px;
-}
-
-.facet-checkbox input:checked+svg+.svg-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.facet-checkbox input:checked+svg+.svg-wrapper svg {
-  display: block;
-  color: #fff;
-}
-
-.facet-checkbox__text {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.facet-checkbox__text-label {
-  font-weight: 400;
-}
-
-/* Disabled state */
-.facet-checkbox.disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.facet-checkbox.active .facet-checkbox__text-label {
-  font-weight: 600;
-  color: var(--tan-crayola, #d4a373);
-}
-
-/* ------- Pill Checkbox Variant ------- */
-.facets__pill-label {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 16px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: var(--color-text, #333);
-  background: var(--color-background, #fff);
-}
-
-.facets__pill-label:hover {
-  border-color: var(--tan-crayola, #d4a373);
-  color: var(--tan-crayola, #d4a373);
-}
-
-.facets__pill-input:checked+.facets__pill-label {
-  background: var(--tan-crayola, #d4a373);
-  color: #fff;
-  border-color: var(--tan-crayola, #d4a373);
-}
-
-/* ------- Price Filter Inputs ------- */
-.price-facet__field {
-  position: relative;
-  flex: 1;
-}
-
-.price-facet__input {
-  width: 100%;
-  padding: 10px 14px 10px 32px;
-  font-size: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 8px;
-  background: var(--color-background, #fff);
-  color: var(--color-text, #333);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  outline: none;
-}
-
-.price-facet__input::placeholder {
-  color: rgba(0, 0, 0, 0.35);
-}
-
-.price-facet__input:focus {
-  border-color: var(--tan-crayola, #d4a373);
-  box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.15);
-}
-
-.price-facet__label {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  color: rgba(0, 0, 0, 0.4);
-  font-size: 14px;
-  pointer-events: none;
-}
-
-.price-facet__separator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  color: rgba(0, 0, 0, 0.4);
-  padding: 0 4px;
-  font-weight: 500;
-}
-
-.price-facet__highest-price {
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.4);
-  padding: 8px 0 4px;
-}
-
-.price-facet__inputs-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* ------- Filter Status Bubbles ------- */
-.facets__bubble {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  border-radius: 10px;
-  background: var(--tan-crayola, #d4a373);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1;
-}
-
-.facets__status {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--tan-crayola, #d4a373);
-}
-
-.facets__status-wrapper {
-  display: flex;
-  align-items: center;
+/* Dropdown list row styling (availability, etc.) */
+#main-collection-filters .facets__inputs-list {
   gap: 6px;
 }
 
-/* ------- Filter Remove Pills ------- */
-.facets-remove__pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  background: rgba(212, 163, 115, 0.1);
-  border: 1px solid rgba(212, 163, 115, 0.3);
-  border-radius: 20px;
-  font-size: 13px;
-  cursor: pointer;
-  color: var(--color-text, #333);
-  transition: all 0.2s ease;
+#main-collection-filters label.facet-checkbox {
+  padding: 10px;
+  border-radius: 10px;
+  transition: background-color 140ms ease;
 }
 
-.facets-remove__pill:hover {
-  background: rgba(212, 163, 115, 0.2);
-  border-color: var(--tan-crayola, #d4a373);
+#main-collection-filters label.facet-checkbox:hover {
+  background: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.06);
 }
 
-/* ------- Clear All / Clear Filter ------- */
-.facets__clear-all-link {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--tan-crayola, #d4a373);
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 6px 0;
-  text-decoration: none;
-  transition: opacity 0.2s ease;
+#main-collection-filters label.facet-checkbox svg {
+  color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.45);
 }
 
-.facets__clear-all-link:hover {
-  opacity: 0.7;
-  text-decoration: underline;
-}
-
-.clear-filter {
-  font-size: 13px;
-  color: var(--tan-crayola, #d4a373);
-  background: none;
-  border: none;
-  padding: 4px 0;
-  cursor: pointer;
-  text-decoration: underline;
-  transition: opacity 0.2s ease;
-}
-
-.clear-filter:hover {
-  opacity: 0.7;
-}
-
-/* ------- Sorting Dropdown ------- */
-.sorting-filter__option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 14px;
-  cursor: pointer;
-  border-radius: 8px;
-  font-size: 14px;
-  color: var(--color-text, #333);
-  transition: background-color 0.18s ease;
-}
-
-.sorting-filter__option:hover {
-  background: rgba(0, 0, 0, 0.04);
-}
-
-.sorting-filter__option[aria-selected="true"] {
-  color: var(--tan-crayola, #d4a373);
-  font-weight: 600;
-}
-
-.sorting-filter__checkmark {
-  visibility: hidden;
+#main-collection-filters label.facet-checkbox .svg-wrapper {
   width: 16px;
   height: 16px;
-  color: var(--tan-crayola, #d4a373);
+  margin-left: -22px;
+  color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.9);
 }
 
-*:checked~.sorting-filter__checkmark {
-  visibility: visible;
+#main-collection-filters label.facet-checkbox input:checked + svg {
+  color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.9);
 }
 
-.sorting-filter__label {
-  cursor: pointer;
-  pointer-events: none;
-  font-size: 14px;
+/* Price inputs: align with theme fields */
+#main-collection-filters .price-facet__input {
+  background: var(--color-background);
 }
 
-.sorting-filter__input {
-  display: none;
+/* Sorting dropdown: ensure it sits above grid + matches border/shadow */
+#main-collection-filters .sorting-filter__options {
+  border-color: var(--facets-border);
+  box-shadow: var(--facets-shadow);
 }
 
-.sorting-filter__input:checked+.sorting-filter__checkmark+.sorting-filter__label {
-  font-weight: 600;
-  color: var(--tan-crayola, #d4a373);
-}
-
-/* ------- Sorting Select (Mobile) ------- */
-.sorting-filter__select {
-  appearance: none;
-  -webkit-appearance: none;
-  background: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 8px;
-  padding: 8px 32px 8px 14px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-text, #333);
-  cursor: pointer;
-  min-width: 140px;
-  transition: border-color 0.2s ease;
-}
-
-.sorting-filter__select:focus {
-  border-color: var(--tan-crayola, #d4a373);
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.15);
-}
-
-.sorting-filter__select-wrapper {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
-
-.sorting-filter__select-wrapper .icon-caret {
-  position: absolute;
-  right: 10px;
-  pointer-events: none;
-}
-
-/* ------- Mobile Filter Toggle Button ------- */
-.facets-toggle__button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-text, #333);
-  background: var(--color-background, #fff);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: none;
-}
-
-.facets-toggle__button:hover {
-  border-color: var(--tan-crayola, #d4a373);
-  color: var(--tan-crayola, #d4a373);
-}
-
-.facets-toggle__button .svg-wrapper svg {
-  width: 18px;
-  height: 18px;
-}
-
-/* ------- Filter Count Bubble (Mobile) ------- */
-.filter-count-bubble {
-  position: relative;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  display: grid;
-  place-content: center;
-  background: var(--tan-crayola, #d4a373);
-  color: #fff;
-}
-
-.filter-count-bubble__background {
-  display: none;
-}
-
-.filter-count-bubble__text {
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1;
-}
-
-/* ------- Drawer Styles ------- */
-.facets-drawer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  max-width: 400px;
-  height: 100%;
-  max-height: 100%;
-  padding: 0;
-  border: none;
-  border-radius: 16px 0 0 16px;
-  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.12);
-  background: var(--color-background, #fff);
-  z-index: 1000;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.facets-drawer::backdrop {
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(2px);
-}
-
-.facets__title-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  background: var(--color-background, #fff);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.facets-drawer__title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--color-text, #333);
-}
-
-.facets-drawer__close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  color: var(--color-text, #333);
-  border-radius: 8px;
-  transition: background 0.2s ease;
-}
-
-.facets-drawer__close:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.facets-drawer__filters {
-  flex: 1;
-  overflow-y: auto;
-  padding: 8px 20px;
-}
-
-.facets__drawer-actions {
-  display: flex;
-  gap: 12px;
-  padding: 16px 24px;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  background: var(--color-background, #fff);
-  position: sticky;
-  bottom: 0;
-}
-
-.facets__clear-all {
-  display: none;
-  flex: 1;
-  padding: 12px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  background: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 10px;
-  cursor: pointer;
-  color: var(--color-text, #333);
-  transition: all 0.2s ease;
-}
-
-.facets__clear-all:hover {
-  border-color: var(--tan-crayola, #d4a373);
-  color: var(--tan-crayola, #d4a373);
-}
-
-.facets__clear-all--active {
-  display: block;
-}
-
-.facets__see-results {
-  flex: 2;
-  padding: 12px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  background: var(--color-text, #121212);
-  color: var(--color-background, #fff);
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.facets__see-results:hover {
-  opacity: 0.9;
-}
-
-/* ------- Products Count ------- */
-.products-count-wrapper {
-  display: none;
-}
-
-@media screen and (min-width: 750px) {
-
-  .facets--horizontal .products-count-wrapper,
-  .facets-controls-wrapper .products-count-wrapper {
-    display: flex;
-    align-items: center;
-    font-size: 13px;
-    color: rgba(0, 0, 0, 0.5);
-    font-weight: 400;
-    white-space: nowrap;
-    padding: 0 4px;
-  }
-}
-
-/* ------- Facets Item (vertical) ------- */
-.facets__item {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-/* In vertical mode, dropdowns should not be absolute */
-.facets--vertical .facets__panel-content,
-.facets--vertical .details-content {
-  position: relative;
-  top: auto;
-  left: auto;
-  box-shadow: none;
-  border: none;
-  border-radius: 0;
-  max-width: none;
-  max-height: none;
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-  padding: 4px 0 12px;
-}
-
-/* In drawer, dropdowns should not be absolute */
-.facets-drawer .facets__panel-content,
-.facets-drawer .details-content {
-  position: relative;
-  top: auto;
-  left: auto;
-  box-shadow: none;
-  border: none;
-  border-radius: 0;
-  max-width: none;
-  max-height: none;
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-  padding: 4px 0 12px;
-}
-
-.facets-drawer .facets__summary {
-  border: none;
-  border-radius: 0;
-  padding: 14px 0;
-  font-size: 15px;
-}
-
-.facets-drawer .facets__summary:hover {
-  box-shadow: none;
-}
-
-.facets-drawer .facet-checkbox {
-  padding: 8px 4px;
-}
-
-/* ------- Vertical Filter Title ------- */
-.facets--filters-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--color-text, #333);
-  margin-bottom: 12px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-/* ------- Facets Controls Wrapper ------- */
-.facets-controls-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-bottom: 8px;
-}
-
-/* ------- Mobile Facets ------- */
-.facets-toggle {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  margin-bottom: 12px;
-}
-
-@media screen and (min-width: 750px) {
-  .facets-toggle {
-    display: none;
-  }
-}
-
-.facets-mobile-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* ------- Horizontal mode: hidden on mobile ------- */
-.facets--horizontal {
-  display: none;
-}
-
-@media screen and (min-width: 750px) {
-  .facets--horizontal {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 0;
-    position: relative;
-    z-index: 100;
-  }
-}
-
-/* ------- Responsive ------- */
-@media (max-width: 749px) {
-  .facets__summary {
-    font-size: 14px;
-    padding: 10px 14px;
+/* Mobile drawer polish (keeps everything contained) */
+@media screen and (max-width: 749px) {
+  #main-collection-filters .facets-toggle {
+    border: 1px solid var(--facets-border);
+    border-radius: var(--facets-radius);
+    background: var(--facets-surface);
   }
 
-  .facets__panel-content,
-  .details-content {
-    min-width: 100%;
-    max-width: 100%;
-    border-radius: 10px;
+  #main-collection-filters .facets-toggle__button {
+    background: transparent;
+    border-color: transparent;
   }
-}
-
-/* ------- Utility ------- */
-.button-unstyled {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
-  color: inherit;
-}
-
-.button-unstyled--with-icon {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.hide-when-empty:empty {
-  display: none;
-}
-
-.visually-hidden {
-  position: absolute !important;
-  overflow: hidden;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-  clip: rect(0 0 0 0);
-  word-wrap: normal !important;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.list-unstyled {
-  list-style: none;
-  padding: 0;
-  margin: 0;
 }
