@@ -9,7 +9,7 @@ class FacetsFormComponent extends Component {
   requiredRefs = ['facetsForm'];
 
   createURLParameters(formData = new FormData(this.refs.facetsForm)) {
-    let newParameters = new URLSearchParams(/** @type any */ (formData));
+    let newParameters = new URLSearchParams(/** @type any */(formData));
 
     if (newParameters.get('filter.v.price.gte') === '') newParameters.delete('filter.v.price.gte');
     if (newParameters.get('filter.v.price.lte') === '') newParameters.delete('filter.v.price.lte');
@@ -607,17 +607,17 @@ if (!customElements.get('facet-status-component')) {
 
 function convertMoneyToMinorUnits(value, currency) {
   if (!value || value === '') return null;
-  
+
   const cleanValue = String(value).replace(/[^\d.,']/g, '');
   if (!cleanValue) return null;
-  
+
   const decimalPlaces = getDecimalPlaces(currency);
-  
+
   let parsed;
   if (cleanValue.includes('.') && cleanValue.includes(',')) {
     const lastDot = cleanValue.lastIndexOf('.');
     const lastComma = cleanValue.lastIndexOf(',');
-    
+
     if (lastComma > lastDot) {
       parsed = parseFloat(cleanValue.replace(/\./g, '').replace(',', '.'));
     } else {
@@ -628,16 +628,16 @@ function convertMoneyToMinorUnits(value, currency) {
   } else {
     parsed = parseFloat(cleanValue);
   }
-  
+
   if (isNaN(parsed)) return null;
-  
+
   return Math.round(parsed * Math.pow(10, decimalPlaces));
 }
 
 function getDecimalPlaces(currency) {
   const zeroDecimalCurrencies = ['JPY', 'KRW', 'VND', 'KHR', 'LAK', 'IDR'];
   const threeDecimalCurrencies = ['BHD', 'JOD', 'KWD', 'OMR', 'TND'];
-  
+
   if (zeroDecimalCurrencies.includes(currency)) return 0;
   if (threeDecimalCurrencies.includes(currency)) return 3;
   return 2;
@@ -647,12 +647,12 @@ function formatMoney(cents, format, currency) {
   if (typeof cents === 'string') {
     cents = parseInt(cents.replace(/[^\d]/g, ''), 10);
   }
-  
+
   if (isNaN(cents)) return '';
-  
+
   const decimalPlaces = getDecimalPlaces(currency);
   const amount = cents / Math.pow(10, decimalPlaces);
-  
+
   let formatted;
   if (decimalPlaces === 0) {
     formatted = amount.toLocaleString();
@@ -662,38 +662,10 @@ function formatMoney(cents, format, currency) {
       maximumFractionDigits: decimalPlaces
     });
   }
-  
+
   if (format) {
     return format.replace(/{{\s*amount\s*}}/i, formatted);
   }
-  
+
   return formatted;
 }
-
-// Global click listener to close filter dropdowns when clicking outside
-document.addEventListener('click', (event) => {
-  if (!(event.target instanceof Element)) return;
-  const isInsideDetails = event.target.closest('details.facets__panel');
-
-  if (!isInsideDetails) {
-    document.querySelectorAll('details.facets__panel[open]').forEach((details) => {
-      details.open = false;
-    });
-  } else {
-    // Close other open details if clicking inside a different details element
-    document.querySelectorAll('details.facets__panel[open]').forEach((details) => {
-      if (details !== isInsideDetails) {
-        details.open = false;
-      }
-    });
-  }
-});
-
-// Also close on Escape key for all dropdowns
-document.addEventListener('keyup', (event) => {
-  if (event.key === 'Escape') {
-    document.querySelectorAll('details.facets__panel[open]').forEach((details) => {
-      details.open = false;
-    });
-  }
-});

@@ -1,293 +1,161 @@
 /* ---- UI POLISH FOR FILTER DROPDOWN, CHECKBOXES, AND PRICE OVERLAY ---- */
 
-/* Container resets for horizontal facets */
-.facets--horizontal .facets__item {
+/* Ensure tick/check is always inside box */
+.facets__checkbox,
+.facet-filter__input[type="checkbox"],
+.sorting-filter__input[type="checkbox"] {
   position: relative;
-}
-
-.facets--horizontal .facets__panel-content {
-  position: absolute;
-  top: calc(100% + 10px);
-  left: 0;
-  min-width: 280px;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  border: 1px solid #eaeaea;
-  z-index: 1001;
-  padding: 24px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(5px);
-  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
-}
-
-.facets--horizontal details[open] .facets__panel-content {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-/* Base button styling for summaries */
-.facets__summary {
-  padding: 12px 20px !important;
-  background: #ffffff;
-  border-radius: 6px;
-  border: 1px solid #e2e2e2;
-  font-size: 15px;
-  font-weight: 500;
-  color: #111;
-  transition: all 0.2s ease;
-  display: flex !important;
-  align-items: center;
-  gap: 10px;
-}
-
-.facets__summary:hover,
-details[open]>.facets__summary {
-  background: #fdfdfd;
-  border-color: #111;
-}
-
-/* Remove default triangle */
-.facets__summary::-webkit-details-marker {
-  display: none;
-}
-
-.facets__summary {
-  list-style: none;
-  /* for Firefox/others */
-}
-
-/* Custom Checkboxes logic mapping to Dawn structure */
-.facet-checkbox {
-  position: relative;
-  padding: 8px 0;
-  transition: color 0.15s;
-  display: flex;
-  align-items: center;
-  gap: 12px !important;
-}
-
-.facet-checkbox:hover {
-  color: #111;
-}
-
-/* Override the SVG square from liquid snippet */
-.facet-checkbox>svg {
-  width: 20px !important;
-  height: 20px !important;
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+  vertical-align: middle;
   border-radius: 4px;
   border: 1px solid #ccc;
-  fill: #fff;
-  transition: all 0.2s;
-  box-sizing: border-box;
-}
-
-.facet-checkbox>svg rect {
-  display: none;
-  /* Hide default rect stroke */
-}
-
-.facet-checkbox input:hover+svg {
-  border-color: #111;
-}
-
-.facet-checkbox input:checked+svg {
-  background: #111;
-  border-color: #111;
-}
-
-/* The actual checkmark SVG inside .svg-wrapper */
-.facet-checkbox .svg-wrapper {
-  position: absolute;
-  left: 2px;
-  top: 50%;
-  margin-top: -8px;
-  color: #fff;
-  opacity: 0;
-  transform: scale(0.5);
-  transition: all 0.2s;
-  pointer-events: none;
-}
-
-.facet-checkbox .svg-wrapper svg {
-  width: 16px;
-  height: 16px;
-  stroke: #fff;
-  stroke-width: 1px;
-}
-
-.facet-checkbox input:checked+svg+.svg-wrapper {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.facet-checkbox__text {
-  font-size: 15px;
-}
-
-/* Pill / Button facets */
-.facets__pill-label {
-  border-radius: 6px !important;
-  font-size: 14px;
-  box-shadow: inset 0 0 0 1px #e2e2e2 !important;
-}
-
-.facets__pill-label:hover {
-  background: #f8f8f8;
-}
-
-.facets__pill-input:checked+.facets__pill-label {
-  background-color: #111 !important;
-  color: #fff !important;
-  box-shadow: inset 0 0 0 1px #111 !important;
-}
-
-/* Price Filter inputs styling */
-.price-facet {
-  display: flex;
-  flex-direction: column;
-}
-
-.price-facet__inputs-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.price-facet__field {
-  position: relative;
-  flex: 1;
-}
-
-.price-facet__input {
-  width: 100%;
-  border-radius: 6px !important;
-  border: 1px solid #e2e2e2 !important;
-  padding: 12px !important;
-  padding-left: 24px !important;
-  transition: border-color 0.2s;
-  font-size: 15px !important;
-}
-
-.price-facet__input:focus {
-  border-color: #111 !important;
-  outline: none !important;
-}
-
-.price-facet__label {
-  position: absolute !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  left: 10px !important;
-  padding: 0 !important;
-  font-size: 15px;
-  color: #666;
-  pointer-events: none;
-}
-
-.price-facet__separator {
-  color: #666;
-  font-size: 14px;
-}
-
-.price-facet__highest-price {
-  font-size: 13px;
-  color: #888;
-  margin-top: 10px;
-}
-
-.hide-when-empty:empty {
-  display: none;
-}
-
-/* Buttons */
-.clear-filter.button.button-secondary,
-.facets__clear-all {
-  border-radius: 6px !important;
-  border: 1px solid #e2e2e2 !important;
   background: #fff;
-  color: #111;
-  text-decoration: none !important;
-  transition: all 0.2s;
-  font-size: 14px;
+  display: inline-block;
+}
+
+.facets__checkbox input[type="checkbox"],
+.facet-filter__input[type="checkbox"],
+.sorting-filter__input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid #bbb;
+  background: #fff;
+  outline: none;
   cursor: pointer;
+  margin: 0;
+  position: relative;
 }
 
-.clear-filter.button.button-secondary:hover,
-.facets__clear-all:hover {
-  background: #f8f8f8;
-  border-color: #111 !important;
+.facets__checkbox input[type="checkbox"]:checked,
+.facet-filter__input[type="checkbox"]:checked,
+.sorting-filter__input[type="checkbox"]:checked {
+  background: #3373f6;
+  border-color: #3373f6;
 }
 
-/* Active Filter count bubble */
-.facets__bubble {
-  background-color: #111 !important;
-  color: #fff;
-  border-radius: 50% !important;
-  min-width: 20px;
-  min-height: 20px;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 0 !important;
+.facets__checkbox input[type="checkbox"]:checked::after,
+.facet-filter__input[type="checkbox"]:checked::after,
+.sorting-filter__input[type="checkbox"]:checked::after {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  transform: rotate(45deg);
 }
 
-/* Mobile Fixes */
-@media (max-width: 749px) {
-  .facets-drawer__filters .facets__panel-content {
-    position: static;
-    box-shadow: none;
-    border: none;
-    padding: 10px 0;
+/* Polished dropdown overlays for filters */
+.facet-filter__dropdown,
+.sorting-filter__dropdown,
+.price-filter__dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 200px;
+  background: #fff;
+  border: 1px solid #e9e9e9;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+  z-index: 1001;
+  padding: 16px 0;
+}
+
+.facet-filter.open .facet-filter__dropdown,
+.sorting-filter.open .sorting-filter__dropdown,
+.price-filter.open .price-filter__dropdown {
+  display: block;
+  animation: fadeInDropdown 0.2s ease;
+}
+
+@keyframes fadeInDropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
     opacity: 1;
-    visibility: visible;
-    transform: none;
+    transform: translateY(0);
   }
 }
 
-/* Overriding styling inside sorting dropdown */
-.sorting-filter__options {
+.facet-filter__dropdown li,
+.sorting-filter__dropdown li,
+.price-filter__dropdown li {
+  padding: 12px 24px;
+  cursor: pointer;
+  color: #222;
+  font-size: 15px;
+  transition: background 0.18s;
+}
+
+.facet-filter__dropdown li:hover,
+.sorting-filter__dropdown li:hover,
+.price-filter__dropdown li:hover {
+  background: #f6f7fb;
+  color: #3373f6;
+}
+
+/* Price filter overlay with min/max inputs */
+.price-filter__dropdown label {
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.price-filter__dropdown input[type="number"] {
+  width: 80px;
+  padding: 4px 8px;
+  margin-right: 8px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.price-filter__dropdown .price-filter__separator {
+  margin: 0 4px;
+  color: #666;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+@media (max-width: 750px) {
+
+  .facets--horizontal,
+  .facets__filters-wrapper {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .facet-filter__label,
+  .sorting-filter__label {
+    width: 100%;
+    font-size: 15px;
+    border-radius: 4px;
+  }
+
+  .facet-filter__dropdown,
+  .sorting-filter__dropdown,
+  .price-filter__dropdown {
+    left: 0;
+    min-width: 100%;
+    margin-top: 6px;
+  }
+}
+
+/* Facets availability fix - background */
+.facet-filter__dropdown {
+  background: #fff !important;
   border-radius: 8px !important;
-  border: 1px solid #eaeaea !important;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08) !important;
-}
-
-.sorting-filter__option {
-  padding: 10px 16px !important;
-  border-radius: 6px !important;
-}
-
-.sorting-filter__option:hover {
-  background: #f8f8f8 !important;
-}
-
-.sorting-filter__input:checked+.sorting-filter__checkmark {
-  visibility: visible;
-  color: #111;
-}
-
-/* To ensure long lists are scrollable */
-.facets__inputs-wrapper {
-  max-height: 300px;
-  overflow-y: auto;
-  padding-right: 8px;
-  /* For scrollbar */
-}
-
-/* Scrollbar styling for filters */
-.facets__inputs-wrapper::-webkit-scrollbar {
-  width: 6px;
-}
-
-.facets__inputs-wrapper::-webkit-scrollbar-thumb {
-  background: #ddd;
-  border-radius: 3px;
-}
-
-.facets__inputs-wrapper::-webkit-scrollbar-thumb:hover {
-  background: #bbb;
+  box-shadow: 0 4px 16px rgba(150, 150, 150, 0.08);
 }
