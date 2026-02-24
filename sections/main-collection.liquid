@@ -84,10 +84,10 @@
               <div class="collection">
                 <div class="loading-overlay gradient"></div>
                 
-                {%- comment -%} Product Count for Mobile {%- endcomment -%}
-                <div class="product-count light small-hide" role="status">
+                <!-- Strategic product count location (shows once) -->
+                <div class="product-count strategic-product-count" role="status">
                   <h2 class="product-count__text text-body">
-                    <span id="ProductCount">
+                    <span>
                       {%- if current_collection.results_count -%}
                         {{
                           'templates.search.results_with_count'
@@ -103,23 +103,6 @@
                       {%- endif -%}
                     </span>
                   </h2>
-                  {%- render 'loading-spinner' -%}
-                </div>
-
-                {%- comment -%} Product Count for Desktop {%- endcomment -%}
-                <div class="product-count product-count--desktop light medium-hide large-up-hide" role="status">
-                  <h2 class="product-count__text text-body">
-                    <span id="ProductCountDesktop">
-                      {%- if current_collection.results_count -%}
-                        {{ 'templates.search.results_with_count' | t: terms: current_collection.terms, count: current_collection.results_count }}
-                      {%- elsif current_collection.products_count == current_collection.all_products_count -%}
-                        {{ 'products.facets.product_count_simple' | t: count: current_collection.products_count }}
-                      {%- else -%}
-                        {{ 'products.facets.product_count' | t: product_count: current_collection.products_count, count: current_collection.all_products_count }}
-                      {%- endif -%}
-                    </span>
-                  </h2>
-                  {%- render 'loading-spinner' -%}
                 </div>
 
                 <ul
@@ -332,9 +315,11 @@
       }
   }
 
-  .product-count {
-    margin-bottom: 1rem;
-  }
+.strategic-product-count {
+  margin: 24px 0 16px 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
 
   @media screen and (min-width: 750px) {
     .facets-vertical {
