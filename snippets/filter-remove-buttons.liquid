@@ -88,19 +88,21 @@
 </div>
 
 {% stylesheet %}
+  /* ---- Filter Remove Pills (complements component-facets.css) ---- */
+
   .facets-remove {
     display: none;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--gap-xs, 8px);
-    padding: 0 var(--drawer-padding, 20px);
+    gap: 8px;
+    padding: 0;
     margin: 0;
   }
 
   .facets-remove:has(facet-remove-component) {
     display: flex;
-    margin-block-start: var(--margin-2xs, 4px);
-    margin-block-end: var(--margin-md, 16px);
+    margin-block-start: 4px;
+    margin-block-end: 16px;
   }
 
   .facets:not(.facets--drawer) .facets-remove--mobile-and-vertical {
@@ -111,53 +113,11 @@
     display: none;
   }
 
-  .facets-remove__pill {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--gap-2xs, 4px);
-    padding: var(--padding-2xs, 4px) var(--padding-xs, 8px);
-    border: 1px solid var(--color-border, rgba(0, 0, 0, 0.1));
-    border-radius: var(--style-border-radius-pill, 20px);
-    font-size: var(--font-size--sm, 0.875rem);
-    cursor: pointer;
-    background-color: var(--color-background);
-    transition: background-color 0.2s ease;
-  }
-
-  .facets-remove__pill:hover {
-    background-color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.05);
-  }
-
-  .facets-remove__pill .svg-wrapper {
-    flex-shrink: 0;
-  }
-
   .facets-remove__pill .swatch {
     width: 16px;
     height: 16px;
     border-radius: 50%;
     flex-shrink: 0;
-  }
-
-  .facets__clear-all-link {
-    display: none;
-    cursor: pointer;
-    padding: var(--padding-xs, 8px);
-    color: var(--color-link, inherit);
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    transition: text-decoration-color var(--animation-speed, 200ms) var(--animation-easing, ease);
-    background: none;
-    border: none;
-    font-size: inherit;
-  }
-
-  .facets__clear-all-link:hover {
-    text-decoration-color: currentColor;
-  }
-
-  .facets__clear-all-link--active {
-    display: block;
   }
 
   .svg-wrapper--smaller {

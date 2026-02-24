@@ -1,161 +1,825 @@
-/* ---- UI POLISH FOR FILTER DROPDOWN, CHECKBOXES, AND PRICE OVERLAY ---- */
+/* ============================================================
+   FRAGRANCE THEME — Facets & Filter Dropdown Styles
+   Premium, theme-consistent styling for collection filters,
+   sorting, and price range dropdowns.
+   ============================================================ */
 
-/* Ensure tick/check is always inside box */
-.facets__checkbox,
-.facet-filter__input[type="checkbox"],
-.sorting-filter__input[type="checkbox"] {
-  position: relative;
-  width: 18px;
-  height: 18px;
-  margin-right: 12px;
-  vertical-align: middle;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  background: #fff;
-  display: inline-block;
+/* ------- Horizontal Filter Bar ------- */
+.facets--horizontal .facets__form {
+  gap: 12px;
 }
 
-.facets__checkbox input[type="checkbox"],
-.facet-filter__input[type="checkbox"],
-.sorting-filter__input[type="checkbox"] {
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  border: 1px solid #bbb;
-  background: #fff;
-  outline: none;
+.facets--horizontal .facets__filters-wrapper {
+  gap: 10px;
+}
+
+/* ------- Shared: Summary / Trigger Buttons ------- */
+.facets__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 16px;
   cursor: pointer;
-  margin: 0;
-  position: relative;
-}
-
-.facets__checkbox input[type="checkbox"]:checked,
-.facet-filter__input[type="checkbox"]:checked,
-.sorting-filter__input[type="checkbox"]:checked {
-  background: #3373f6;
-  border-color: #3373f6;
-}
-
-.facets__checkbox input[type="checkbox"]:checked::after,
-.facet-filter__input[type="checkbox"]:checked::after,
-.sorting-filter__input[type="checkbox"]:checked::after {
-  content: "";
-  display: block;
-  width: 8px;
-  height: 8px;
-  border-bottom: 2px solid #fff;
-  border-right: 2px solid #fff;
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  transform: rotate(45deg);
-}
-
-/* Polished dropdown overlays for filters */
-.facet-filter__dropdown,
-.sorting-filter__dropdown,
-.price-filter__dropdown {
-  display: none;
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  min-width: 200px;
-  background: #fff;
-  border: 1px solid #e9e9e9;
-  border-radius: 6px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
-  z-index: 1001;
-  padding: 16px 0;
-}
-
-.facet-filter.open .facet-filter__dropdown,
-.sorting-filter.open .sorting-filter__dropdown,
-.price-filter.open .price-filter__dropdown {
-  display: block;
-  animation: fadeInDropdown 0.2s ease;
-}
-
-@keyframes fadeInDropdown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.facet-filter__dropdown li,
-.sorting-filter__dropdown li,
-.price-filter__dropdown li {
-  padding: 12px 24px;
-  cursor: pointer;
-  color: #222;
-  font-size: 15px;
-  transition: background 0.18s;
-}
-
-.facet-filter__dropdown li:hover,
-.sorting-filter__dropdown li:hover,
-.price-filter__dropdown li:hover {
-  background: #f6f7fb;
-  color: #3373f6;
-}
-
-/* Price filter overlay with min/max inputs */
-.price-filter__dropdown label {
-  margin-bottom: 8px;
-  font-size: 15px;
-  font-weight: 500;
-}
-
-.price-filter__dropdown input[type="number"] {
-  width: 80px;
-  padding: 4px 8px;
-  margin-right: 8px;
-  font-size: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.price-filter__dropdown .price-filter__separator {
-  margin: 0 4px;
-  color: #666;
   font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--color-text, #121212);
+  background: var(--color-background, #fff);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  list-style: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.facets__summary::-webkit-details-marker {
+  display: none;
+}
+
+.facets__summary::marker {
+  content: '';
+}
+
+.facets__summary:hover {
+  border-color: var(--tan-crayola, #d4a373);
+  color: var(--tan-crayola, #d4a373);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+details[open]>.facets__summary {
+  border-color: var(--tan-crayola, #d4a373);
+  color: var(--tan-crayola, #d4a373);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ------- Caret Icon Animation ------- */
+.icon-caret {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.icon-caret svg {
+  width: 14px;
+  height: 14px;
+}
+
+details[open]>.facets__summary .icon-caret,
+details[open] .icon-animated {
+  transform: rotate(180deg);
+}
+
+/* ------- Shared: Dropdown Panel ------- */
+.facets__panel-content,
+.details-content,
+.sorting-filter__options {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 220px;
+  max-width: 360px;
+  max-height: 340px;
+  overflow-y: auto;
+  background: var(--color-background, #fff);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  z-index: 1002;
+  padding: 12px 8px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+/* Scrollbar styling for dropdown */
+.facets__panel-content::-webkit-scrollbar,
+.details-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.facets__panel-content::-webkit-scrollbar-track,
+.details-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.facets__panel-content::-webkit-scrollbar-thumb,
+.details-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}
+
+details[open]>.facets__panel-content,
+details[open]>.details-content,
+details[open] .facets__panel-content,
+details[open] .sorting-filter__options {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ------- Panel Positioning for Horizontal Mode ------- */
+.facets--horizontal .facets__panel {
+  position: relative;
+}
+
+.facets--horizontal .facets__panel-content,
+.facets--horizontal .details-content {
+  left: 0;
+  right: auto;
+  min-width: 240px;
+}
+
+/* ------- Custom Checkbox Styling ------- */
+.facet-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text, #333);
+  transition: background-color 0.2s ease;
+}
+
+.facet-checkbox:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.facet-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Checkbox box via SVG */
+.facet-checkbox svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.facet-checkbox svg rect {
+  stroke: rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.facet-checkbox input:checked+svg rect {
+  fill: var(--tan-crayola, #d4a373);
+  stroke: var(--tan-crayola, #d4a373);
+}
+
+/* Checkmark icon */
+.facet-checkbox .svg-wrapper {
+  display: none;
+  color: #fff;
+  width: 14px;
+  height: 14px;
+  margin-left: -24px;
+}
+
+.facet-checkbox .svg-wrapper svg {
+  width: 14px;
+  height: 14px;
+}
+
+.facet-checkbox input:checked+svg+.svg-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.facet-checkbox input:checked+svg+.svg-wrapper svg {
+  display: block;
+  color: #fff;
+}
+
+.facet-checkbox__text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.facet-checkbox__text-label {
   font-weight: 400;
 }
 
-@media (max-width: 750px) {
+/* Disabled state */
+.facet-checkbox.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 
-  .facets--horizontal,
-  .facets__filters-wrapper {
-    flex-direction: column;
-    gap: 10px;
-    align-items: stretch;
-  }
+.facet-checkbox.active .facet-checkbox__text-label {
+  font-weight: 600;
+  color: var(--tan-crayola, #d4a373);
+}
 
-  .facet-filter__label,
-  .sorting-filter__label {
-    width: 100%;
-    font-size: 15px;
-    border-radius: 4px;
-  }
+/* ------- Pill Checkbox Variant ------- */
+.facets__pill-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-text, #333);
+  background: var(--color-background, #fff);
+}
 
-  .facet-filter__dropdown,
-  .sorting-filter__dropdown,
-  .price-filter__dropdown {
-    left: 0;
-    min-width: 100%;
-    margin-top: 6px;
+.facets__pill-label:hover {
+  border-color: var(--tan-crayola, #d4a373);
+  color: var(--tan-crayola, #d4a373);
+}
+
+.facets__pill-input:checked+.facets__pill-label {
+  background: var(--tan-crayola, #d4a373);
+  color: #fff;
+  border-color: var(--tan-crayola, #d4a373);
+}
+
+/* ------- Price Filter Inputs ------- */
+.price-facet__field {
+  position: relative;
+  flex: 1;
+}
+
+.price-facet__input {
+  width: 100%;
+  padding: 10px 14px 10px 32px;
+  font-size: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  background: var(--color-background, #fff);
+  color: var(--color-text, #333);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.price-facet__input::placeholder {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.price-facet__input:focus {
+  border-color: var(--tan-crayola, #d4a373);
+  box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.15);
+}
+
+.price-facet__label {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.price-facet__separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.4);
+  padding: 0 4px;
+  font-weight: 500;
+}
+
+.price-facet__highest-price {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.4);
+  padding: 8px 0 4px;
+}
+
+.price-facet__inputs-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ------- Filter Status Bubbles ------- */
+.facets__bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: var(--tan-crayola, #d4a373);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.facets__status {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tan-crayola, #d4a373);
+}
+
+.facets__status-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ------- Filter Remove Pills ------- */
+.facets-remove__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(212, 163, 115, 0.1);
+  border: 1px solid rgba(212, 163, 115, 0.3);
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--color-text, #333);
+  transition: all 0.2s ease;
+}
+
+.facets-remove__pill:hover {
+  background: rgba(212, 163, 115, 0.2);
+  border-color: var(--tan-crayola, #d4a373);
+}
+
+/* ------- Clear All / Clear Filter ------- */
+.facets__clear-all-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tan-crayola, #d4a373);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 6px 0;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.facets__clear-all-link:hover {
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+.clear-filter {
+  font-size: 13px;
+  color: var(--tan-crayola, #d4a373);
+  background: none;
+  border: none;
+  padding: 4px 0;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+
+.clear-filter:hover {
+  opacity: 0.7;
+}
+
+/* ------- Sorting Dropdown ------- */
+.sorting-filter__option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--color-text, #333);
+  transition: background-color 0.18s ease;
+}
+
+.sorting-filter__option:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.sorting-filter__option[aria-selected="true"] {
+  color: var(--tan-crayola, #d4a373);
+  font-weight: 600;
+}
+
+.sorting-filter__checkmark {
+  visibility: hidden;
+  width: 16px;
+  height: 16px;
+  color: var(--tan-crayola, #d4a373);
+}
+
+*:checked~.sorting-filter__checkmark {
+  visibility: visible;
+}
+
+.sorting-filter__label {
+  cursor: pointer;
+  pointer-events: none;
+  font-size: 14px;
+}
+
+.sorting-filter__input {
+  display: none;
+}
+
+.sorting-filter__input:checked+.sorting-filter__checkmark+.sorting-filter__label {
+  font-weight: 600;
+  color: var(--tan-crayola, #d4a373);
+}
+
+/* ------- Sorting Select (Mobile) ------- */
+.sorting-filter__select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 8px 32px 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text, #333);
+  cursor: pointer;
+  min-width: 140px;
+  transition: border-color 0.2s ease;
+}
+
+.sorting-filter__select:focus {
+  border-color: var(--tan-crayola, #d4a373);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.15);
+}
+
+.sorting-filter__select-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.sorting-filter__select-wrapper .icon-caret {
+  position: absolute;
+  right: 10px;
+  pointer-events: none;
+}
+
+/* ------- Mobile Filter Toggle Button ------- */
+.facets-toggle__button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text, #333);
+  background: var(--color-background, #fff);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: none;
+}
+
+.facets-toggle__button:hover {
+  border-color: var(--tan-crayola, #d4a373);
+  color: var(--tan-crayola, #d4a373);
+}
+
+.facets-toggle__button .svg-wrapper svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ------- Filter Count Bubble (Mobile) ------- */
+.filter-count-bubble {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  background: var(--tan-crayola, #d4a373);
+  color: #fff;
+}
+
+.filter-count-bubble__background {
+  display: none;
+}
+
+.filter-count-bubble__text {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ------- Drawer Styles ------- */
+.facets-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+  max-height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 16px 0 0 16px;
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.12);
+  background: var(--color-background, #fff);
+  z-index: 1000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.facets-drawer::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.facets__title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--color-background, #fff);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.facets-drawer__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text, #333);
+}
+
+.facets-drawer__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--color-text, #333);
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.facets-drawer__close:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.facets-drawer__filters {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 20px;
+}
+
+.facets__drawer-actions {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--color-background, #fff);
+  position: sticky;
+  bottom: 0;
+}
+
+.facets__clear-all {
+  display: none;
+  flex: 1;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--color-text, #333);
+  transition: all 0.2s ease;
+}
+
+.facets__clear-all:hover {
+  border-color: var(--tan-crayola, #d4a373);
+  color: var(--tan-crayola, #d4a373);
+}
+
+.facets__clear-all--active {
+  display: block;
+}
+
+.facets__see-results {
+  flex: 2;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--color-text, #121212);
+  color: var(--color-background, #fff);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.facets__see-results:hover {
+  opacity: 0.9;
+}
+
+/* ------- Products Count ------- */
+.products-count-wrapper {
+  display: none;
+}
+
+@media screen and (min-width: 750px) {
+
+  .facets--horizontal .products-count-wrapper,
+  .facets-controls-wrapper .products-count-wrapper {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 400;
+    white-space: nowrap;
+    padding: 0 4px;
   }
 }
 
-/* Facets availability fix - background */
-.facet-filter__dropdown {
-  background: #fff !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 16px rgba(150, 150, 150, 0.08);
+/* ------- Facets Item (vertical) ------- */
+.facets__item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* In vertical mode, dropdowns should not be absolute */
+.facets--vertical .facets__panel-content,
+.facets--vertical .details-content {
+  position: relative;
+  top: auto;
+  left: auto;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  max-width: none;
+  max-height: none;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  padding: 4px 0 12px;
+}
+
+/* In drawer, dropdowns should not be absolute */
+.facets-drawer .facets__panel-content,
+.facets-drawer .details-content {
+  position: relative;
+  top: auto;
+  left: auto;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  max-width: none;
+  max-height: none;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  padding: 4px 0 12px;
+}
+
+.facets-drawer .facets__summary {
+  border: none;
+  border-radius: 0;
+  padding: 14px 0;
+  font-size: 15px;
+}
+
+.facets-drawer .facets__summary:hover {
+  box-shadow: none;
+}
+
+.facets-drawer .facet-checkbox {
+  padding: 8px 4px;
+}
+
+/* ------- Vertical Filter Title ------- */
+.facets--filters-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text, #333);
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* ------- Facets Controls Wrapper ------- */
+.facets-controls-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+}
+
+/* ------- Mobile Facets ------- */
+.facets-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  margin-bottom: 12px;
+}
+
+@media screen and (min-width: 750px) {
+  .facets-toggle {
+    display: none;
+  }
+}
+
+.facets-mobile-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ------- Horizontal mode: hidden on mobile ------- */
+.facets--horizontal {
+  display: none;
+}
+
+@media screen and (min-width: 750px) {
+  .facets--horizontal {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    position: relative;
+    z-index: 100;
+  }
+}
+
+/* ------- Responsive ------- */
+@media (max-width: 749px) {
+  .facets__summary {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+
+  .facets__panel-content,
+  .details-content {
+    min-width: 100%;
+    max-width: 100%;
+    border-radius: 10px;
+  }
+}
+
+/* ------- Utility ------- */
+.button-unstyled {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.button-unstyled--with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hide-when-empty:empty {
+  display: none;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  word-wrap: normal !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.list-unstyled {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
