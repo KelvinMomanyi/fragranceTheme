@@ -145,7 +145,24 @@ details[open]>.facets__summary {
 }
 
 /* Price Filter inputs styling */
+.price-facet {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-facet__inputs-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.price-facet__field {
+  position: relative;
+  flex: 1;
+}
+
 .price-facet__input {
+  width: 100%;
   border-radius: 6px !important;
   border: 1px solid #e2e2e2 !important;
   padding: 12px !important;
@@ -160,9 +177,29 @@ details[open]>.facets__summary {
 }
 
 .price-facet__label {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
   left: 10px !important;
   padding: 0 !important;
   font-size: 15px;
+  color: #666;
+  pointer-events: none;
+}
+
+.price-facet__separator {
+  color: #666;
+  font-size: 14px;
+}
+
+.price-facet__highest-price {
+  font-size: 13px;
+  color: #888;
+  margin-top: 10px;
+}
+
+.hide-when-empty:empty {
+  display: none;
 }
 
 /* Buttons */
