@@ -22,9 +22,9 @@
 
 /*
 
-   -----------------------------------*\ 
-   #style.css.liquid - Dynamic Color Schemes (Dawn-Style) 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #style.css.liquid - Dynamic Color Schemes (Dawn-Style)
+   \*-----------------------------------
 */
 
 :root {
@@ -207,9 +207,9 @@
 
 /*
 
-   -----------------------------------*\ 
-   #RESET 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #RESET
+   \*-----------------------------------
 */
 
 *,
@@ -389,9 +389,9 @@ label {
 
 /*
 
-   -----------------------------------*\ 
-   #REUSED STYLE 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #REUSED STYLE
+   \*-----------------------------------
 */
 
 .container {
@@ -416,22 +416,28 @@ label {
   color: var(--tan-crayola);
 }
 
-/* =====================================================
+
+/*
+   =====================================================
    CHANGE 1: .section restored to simple padding-only
    (matches reference theme — no Dawn grid here)
-   ===================================================== */
+   =====================================================
+*/
 .section {
   padding-block: var(--section-padding);
 }
 
-/* Dawn-style 3-column page grid — only applied where explicitly needed.
+
+/*
+   Dawn-style 3-column page grid — only applied where explicitly needed.
    Add class="section--dawn-grid" to product page section elements that
    require the Dawn layout (e.g. _product-details.liquid,
-   product-information-content.liquid). */
+   product-information-content.liquid).
+*/
 .section--dawn-grid {
   --page-margin: 16px;
   --page-content-width: 1200px;
-  --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+  --page-width: calc(var(--page-content-width) +(var(--page-margin) * 2));
   --full-page-grid-central-column-width: min(var(--page-width) - var(--page-margin) * 2, calc(100% - var(--page-margin) * 2));
   --full-page-grid-margin: minmax(var(--page-margin), 1fr);
   --full-page-grid-with-margins: var(--full-page-grid-margin) var(--full-page-grid-central-column-width) var(--full-page-grid-margin);
@@ -593,9 +599,9 @@ h6,
 
 /*
 
-   -----------------------------------*\ 
-   #HEADER 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #HEADER
+   \*-----------------------------------
 */
 
 .header-action .input-wrapper {
@@ -693,8 +699,8 @@ h6,
 
   /*
 
-   background-color: var(--black); 
-   color:var(--white); 
+   background-color: var(--black);
+   color:var(--white);
 */
   font-size: var(--fs-9);
   font-weight: var(--fw-400);
@@ -707,9 +713,9 @@ h6,
 
 /*
 
-   -----------------------------------*\ 
-   #SIDEBAR 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #SIDEBAR
+   \*-----------------------------------
 */
 
 .sidebar {
@@ -719,7 +725,7 @@ h6,
   max-width: 420px;
   width: 100%;
   height: 100%;
-  background-color: var(--white);
+  background-color: var(--color-background);
   padding: 40px;
   padding-block-end: 100px;
   overflow-y: auto;
@@ -755,7 +761,7 @@ h6,
 .sidebar-list-title,
 .contact-list-title,
 .social-list-title {
-  color: var(--smokey-black);
+  color: var(--color-text);
   font-weight: var(--fw-500);
 }
 
@@ -764,7 +770,8 @@ h6,
 }
 
 .sidebar-link {
-  color: var(--spanish-gray);
+  color: var(--color-text);
+  opacity: 0.8;
   margin-block-start: 6px;
   transition: var(--transition-1);
 }
@@ -788,7 +795,8 @@ h6,
 
 .navbar-link:is(:hover, :focus),
 .sidebar:is(.address, .contact-item) {
-  color: var(--granite-gray);
+  color: var(--color-text);
+  opacity: 0.8;
 }
 
 .sidebar .address {
@@ -817,9 +825,9 @@ h6,
 
 /*
 
-   -----------------------------------*\ 
-   #HERO 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #HERO
+   \*-----------------------------------
 */
 
 /*.hero { padding-block-start: calc(var(--section-padding) + 60px); } */.hero-list {
@@ -843,12 +851,12 @@ h6,
 
 /*
 
-   .hero-card .card-content { 
-   position: absolute; 
-   top:30%; 
-   left: 30px; 
-   right: 30px; 
-   } 
+   .hero-card .card-content {
+   position: absolute;
+   top:30%;
+   left: 30px;
+   right: 30px;
+   }
 */
 
 
@@ -889,9 +897,9 @@ h6,
 
 /*
 
-   -----------------------------------*\ 
-   #ABOUT 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #ABOUT
+   \*-----------------------------------
 */
 
 .about {
@@ -939,9 +947,9 @@ h6,
 
 /*
 
-   -----------------------------------*\ 
-   #PRODUCT 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #PRODUCT
+   \*-----------------------------------
 */
 
 .product .section-title {
@@ -1120,9 +1128,9 @@ h6,
 
 /*
 
-   -----------------------------------*\ 
-   #OFFER 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #OFFER
+   \*-----------------------------------
 */
 .offer-banner {
   display: grid;
@@ -1185,9 +1193,9 @@ h6,
 
 /*
 
-   -----------------------------------*\ 
-   #BLOG 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #BLOG
+   \*-----------------------------------
 */
 
 .blog .title-wrapper {
@@ -1283,9 +1291,9 @@ a.card-meta-text:is(:hover, :focus) {
 
 /*
 
-   -----------------------------------*\ 
-   #NEWSLATTER 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #NEWSLATTER
+   \*-----------------------------------
 */
 
 .newsletter {
@@ -1337,17 +1345,19 @@ a.card-meta-text:is(:hover, :focus) {
 
 /*
 
-   -----------------------------------*\ 
-   #FOOTER 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #FOOTER
+   \*-----------------------------------
 */
 
-/* =====================================================
+
+/*
+   =====================================================
    CHANGE 2: .footer-top reverted to reference theme.
    Removed: grid-template-columns, padding-block (top),
    align-items. Kept: display grid, gap, padding-block-end.
-   ===================================================== */
-.footer-top {
+   =====================================================
+*/.footer-top {
   display: grid;
   gap: 30px;
   padding-block-end: 40px;
@@ -1444,9 +1454,9 @@ a.card-meta-text:is(:hover, :focus) {
 
 /*
 
-   -----------------------------------*\ 
-   #BACK TO TOP 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #BACK TO TOP
+   \*-----------------------------------
 */
 
 .back-top-btn {
@@ -1473,9 +1483,9 @@ a.card-meta-text:is(:hover, :focus) {
 
 /*
 
-   -----------------------------------*\ 
-   #MEDIA QUERIES 
-   \*----------------------------------- 
+   -----------------------------------*\
+   #MEDIA QUERIES
+   \*-----------------------------------
 */
 
 
@@ -1594,12 +1604,12 @@ a.card-meta-text:is(:hover, :focus) {
 
 /*
 
-   .footer-bottom{ 
-   display: flex; 
-   flex-direction: column; 
-   width:100%; 
+   .footer-bottom{
+   display: flex;
+   flex-direction: column;
+   width:100%;
 
-   } 
+   }
 */
 
 
@@ -1918,9 +1928,9 @@ body.template-collection main > .shopify-section:nth-child(2) {
 
 /*
 
-   RTE (Rich Text Editor) Styles 
-   Standardized styling for user-generated content across all templates. 
-   ------------------------------------------------------------------- 
+   RTE (Rich Text Editor) Styles
+   Standardized styling for user-generated content across all templates.
+   -------------------------------------------------------------------
 */
 .rte {
   word-break: break-word;
@@ -2023,9 +2033,9 @@ body.template-collection main > .shopify-section:nth-child(2) {
 
 /*
 
-   ========================================= 
-   SEARCH & LOGIN MODAL STYLES (DAWN ALIGNED) 
-   ========================================= 
+   =========================================
+   SEARCH & LOGIN MODAL STYLES (DAWN ALIGNED)
+   =========================================
 */
 .modal {
   display: none;
