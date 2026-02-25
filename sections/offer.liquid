@@ -46,12 +46,7 @@
          </p>
         {% endif %}
 
-          <div class="countdown">
-            <span class="time" aria-label="days">00</span> 
-            <span class="time" aria-label="hours">00</span> 
-            <span class="time" aria-label="minutes">00</span> 
-           <span class="time" aria-label="seconds">00</span> 
-          </div>
+
         <div ></div>
         <a href="#" class="btn btn-primary"> Get Only {{ section.settings.offer_price }}</a>
       </div>
@@ -81,52 +76,7 @@
   }
 </style>
 
-<script>
-(function() {
-  function startCountdown(duration) {
-      let endTime = Date.now() + duration;
 
-      function updateTimer() {
-          let now = Date.now();
-          let timeRemaining = endTime - now;
-
-          if (timeRemaining <= 0) {
-              document.querySelector('.countdown').innerHTML = "Time's up!";
-              return;
-          }
-
-          // Convert milliseconds to days, hours, minutes, and seconds
-          let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-          let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          let minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-          let seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-          // Format the time
-          days = String(days).padStart(2, '0');
-          hours = String(hours).padStart(2, '0');
-          minutes = String(minutes).padStart(2, '0');
-          seconds = String(seconds).padStart(2, '0');
-
-          // Update the HTML elements
-          document.querySelector('.countdown [aria-label="days"]').textContent = days;
-          document.querySelector('.countdown [aria-label="hours"]').textContent = hours;
-          document.querySelector('.countdown [aria-label="minutes"]').textContent = minutes;
-          document.querySelector('.countdown [aria-label="seconds"]').textContent = seconds;
-
-          // Update every second
-          setTimeout(updateTimer, 1000);
-      }
-
-      updateTimer();
-  }
-
-  // Get the duration from the settings (in hours)
-  const countdownHours = {{ section.settings.countdown_duration | default: 72 }};
-  const countdownMilliseconds = countdownHours * 60 * 60 * 1000; // convert hours to milliseconds
-
-  startCountdown(countdownMilliseconds);
-})();
-</script>
 
 
 {% schema %}
@@ -168,12 +118,6 @@
       "id":"offer_price",
       "label":"Offer price",
       "default":"$39"
-    },
-    {
-      "type": "number",
-      "id": "countdown_duration",
-      "label": "Countdown Duration (in hours)",
-      "default": 72 
     }
   ],
   "blocks": [],
