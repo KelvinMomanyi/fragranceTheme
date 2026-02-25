@@ -36,8 +36,12 @@
           <div class="blog-card">
 
             <figure class="card-banner img-holder" style="--width: 300; --height: 360;">
-              <img src="{{ article.image | image_url: width: 400 }}" width="300" height="400" loading="lazy"
-                alt="{{ article.title | escape }}" class="img-cover">
+                  <img src="{{ article.image | image_url: width: 600 }}" 
+                    srcset="{{ article.image | image_url: width: 300 }} 300w,
+                            {{ article.image | image_url: width: 600 }} 600w"
+                    sizes="(max-width: 480px) 100vw, 300px"
+                    width="300" height="360" loading="lazy"
+                    alt="{{ article.title | escape }}" class="img-cover">
             </figure>
 
             <div class="card-content">

@@ -146,6 +146,10 @@
                       <img
                         class="predictive-search__image"
                         src="{{ product.featured_media | image_url: width: 150 }}"
+                        srcset="{{ product.featured_media | image_url: width: 50 }} 50w,
+                                {{ product.featured_media | image_url: width: 100 }} 100w,
+                                {{ product.featured_media | image_url: width: 150 }} 150w"
+                        sizes="50px"
                         alt="{{ product.featured_media.alt | escape }}"
                         width="50"
                         height="{{ 50 | divided_by: product.featured_media.preview_image.aspect_ratio }}"

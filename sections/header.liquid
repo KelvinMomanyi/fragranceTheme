@@ -20,7 +20,9 @@
         {% assign scaled_height = default_height | times: section.settings.logo_scale %}
           {% if section.settings.logo_image != blank %}
             <img 
-              src="{{ section.settings.logo_image | image_url  }}"  
+              src="{{ section.settings.logo_image | image_url: width: scaled_width }}"  
+              srcset="{{ section.settings.logo_image | image_url: width: scaled_width }} 1x,
+                      {{ section.settings.logo_image | image_url: width: scaled_width | times: 2 }} 2x"
               alt="{{ shop.name }}"
               width="{{ scaled_width }}" 
               height="{{ scaled_height }}" 

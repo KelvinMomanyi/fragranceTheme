@@ -58,7 +58,11 @@
             {%- if product.media.size > 0 -%}
               {%- for media in product.media -%}
                 <div class="product-media-item {% if media.id == current_variant.featured_media.id or media.id == product.featured_media.id or forloop.first and current_variant.featured_media == nil and product.featured_media == nil %}active{% endif %}" data-media-id="{{ media.id }}" style="display: {% if media.id == current_variant.featured_media.id or media.id == product.featured_media.id or forloop.first and current_variant.featured_media == nil and product.featured_media == nil %}block{% else %}none{% endif %}; width: 100%; height: 100%;">
-                  {% render 'product-media', media: media, is_main_product_media: true %}
+                  {% render 'product-media', 
+                    media: media, 
+                    is_main_product_media: true,
+                    sizes: '(min-width: 990px) calc(50vw - 100px), 100vw'
+                  %}
                 </div>
               {%- endfor -%}
             {%- else -%}
@@ -1429,7 +1433,8 @@ document.addEventListener('DOMContentLoaded', function() {
   ],
   "blocks": [
     {
-      "type": "@app"
+      "type": "@app",
+      "name": "App"
     },
     {
       "type": "title",

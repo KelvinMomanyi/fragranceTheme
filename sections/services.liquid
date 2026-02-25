@@ -14,7 +14,10 @@
           <div class="service-card container">
   
             {% if section.settings[image_key] != blank %}
-              <img src="{{ section.settings[image_key] | image_url: width: 340 }}" 
+              <img src="{{ section.settings[image_key] | image_url: width: 680 }}" 
+                   srcset="{{ section.settings[image_key] | image_url: width: 340 }} 340w,
+                           {{ section.settings[image_key] | image_url: width: 680 }} 680w"
+                   sizes="(max-width: 991px) 1px, 340px"
                    width="340" 
                    height="380" 
                    loading="lazy" 

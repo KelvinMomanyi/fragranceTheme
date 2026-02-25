@@ -13,18 +13,24 @@
               <a href="{{ collection.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300; border-radius: 8px; overflow: hidden; display: block; position: relative;">
                 {% if collection.image %}
                   <img src="{{ collection.image | image_url: width: 600 }}" 
-                    alt="{{ collection.image.alt | escape }}" 
-                    class="img-cover" 
-                    width="300" 
-                    height="300" 
+                    srcset="{{ collection.image | image_url: width: 300 }} 300w,
+                            {{ collection.image | image_url: width: 600 }} 600w"
+                    sizes="(max-width: 480px) 100vw, 300px"
+                    alt="{{ collection.title | escape }}"
+                    class="img-cover"
+                    width="300"
+                    height="300"
                     style="width: 100%; height: 100%; object-fit: cover;"
                     loading="lazy">
                 {% elsif collection.products.first and collection.products.first.featured_image %}
                   <img src="{{ collection.products.first.featured_image | image_url: width: 600 }}" 
-                    alt="{{ collection.title | escape }}" 
-                    class="img-cover" 
-                    width="300" 
-                    height="300" 
+                    srcset="{{ collection.products.first.featured_image | image_url: width: 300 }} 300w,
+                            {{ collection.products.first.featured_image | image_url: width: 600 }} 600w"
+                    sizes="(max-width: 480px) 100vw, 300px"
+                    alt="{{ collection.title | escape }}"
+                    class="img-cover"
+                    width="300"
+                    height="300"
                     style="width: 100%; height: 100%; object-fit: cover;"
                     loading="lazy">
                 {% else %}

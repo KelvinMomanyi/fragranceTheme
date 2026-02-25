@@ -26,6 +26,10 @@
                   {% when 'image' %}
                     <img 
                       src="{{ media | image_url: width: 800 }}" 
+                      srcset="{{ media | image_url: width: 400 }} 400w,
+                              {{ media | image_url: width: 800 }} 800w,
+                              {{ media | image_url: width: 1200 }} 1200w"
+                      sizes="(max-width: 768px) 100vw, 800px"
                       alt="{{ media.alt | escape | default: product.title }}" 
                       class="img-cover"
                       loading="lazy"
@@ -181,7 +185,8 @@
   ],
   "blocks": [
     {
-      "type": "@app"
+      "type": "@app",
+      "name": "App"
     },
     {
       "type": "title",

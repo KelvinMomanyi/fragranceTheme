@@ -18,9 +18,14 @@
         </div>
         <div class="card-image">
           {% if section.settings.image1 != blank %}
-            <img src="{{ section.settings.image1 | image_url}}" alt="Newsletter Image" loading="lazy"> 
+            <img src="{{ section.settings.image1 | image_url: width: 800 }}" 
+                 srcset="{{ section.settings.image1 | image_url: width: 400 }} 400w,
+                         {{ section.settings.image1 | image_url: width: 800 }} 800w"
+                 sizes="(max-width: 600px) 100vw, 400px"
+                 alt="Newsletter Image" loading="lazy"> 
            {% else %}
-            <img src="{{'about-banner.jpg' | asset_url}}" alt="Newsletter Image" loading="lazy">   
+            <img src="{{'about-banner.jpg' | asset_url}}" 
+                 alt="Newsletter Image" loading="lazy">   
           {% endif %}
         </div>
       </div>

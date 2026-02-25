@@ -177,7 +177,10 @@
                   {% assign image = section.settings[image_key] %}
                   
                   {% if image != blank %}
-                    <img src="{{ image | image_url: width: 450 }}" 
+                    <img src="{{ image | image_url: width: 900 }}" 
+                        srcset="{{ image | image_url: width: 450 }} 450w,
+                                {{ image | image_url: width: 900 }} 900w"
+                        sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 25vw"
                         width="450" 
                         height="625" 
                         loading="lazy" 

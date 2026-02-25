@@ -14,7 +14,10 @@
             <a href="{{ product.url }}" class="product-card__link">
               {% if product.featured_image %}
                 <img
-                  src="{{ product.featured_image | image_url: width: 400 }}"
+                  src="{{ product.featured_image | image_url: width: 800 }}"
+                  srcset="{{ product.featured_image | image_url: width: 400 }} 400w,
+                          {{ product.featured_image | image_url: width: 800 }} 800w"
+                  sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 25vw"
                   alt="{{ product.featured_image.alt | escape }}"
                   class="product-card__image"
                   loading="lazy"

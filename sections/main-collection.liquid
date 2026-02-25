@@ -17,6 +17,12 @@
     <div class="collection-hero">
       <img
         src="{{ current_collection.image | image_url: width: 1600 }}"
+        srcset="{{ current_collection.image | image_url: width: 750 }} 750w,
+                {{ current_collection.image | image_url: width: 1100 }} 1100w,
+                {{ current_collection.image | image_url: width: 1500 }} 1500w,
+                {{ current_collection.image | image_url: width: 1780 }} 1780w,
+                {{ current_collection.image | image_url: width: 2000 }} 2000w"
+        sizes="100vw"
         alt="{{ current_collection.image.alt | escape | default: current_collection.title }}"
         class="collection-hero-image"
         loading="eager"
@@ -122,6 +128,10 @@
                           {% if product.featured_image %}
                             <img
                               src="{{ product.featured_image | image_url: width: 600 }}"
+                              srcset="{{ product.featured_image | image_url: width: 300 }} 300w,
+                                      {{ product.featured_image | image_url: width: 450 }} 450w,
+                                      {{ product.featured_image | image_url: width: 600 }} 600w"
+                              sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
                               alt="{{ product.featured_image.alt | escape }}"
                               class="img-cover"
                               width="300"

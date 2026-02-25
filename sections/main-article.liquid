@@ -33,7 +33,13 @@
   <!-- Hero Section -->
   <div class="article-hero">
     <div class="hero-overlay"></div>
-    <img src="{{ article.image | image_url: width: 2000 }}" alt="{{ article.title }}" class="hero-background">
+    <img src="{{ article.image | image_url: width: 2000 }}" 
+      srcset="{{ article.image | image_url: width: 1000 }} 1000w,
+              {{ article.image | image_url: width: 1500 }} 1500w,
+              {{ article.image | image_url: width: 2000 }} 2000w"
+      sizes="100vw"
+      alt="{{ article.title }}" class="hero-background"
+      loading="eager">
     <div class="hero-content container">
       {% if article.tags.size > 0 %}
       <div class="hero-tags">
@@ -214,7 +220,12 @@
             <article class="related-card">
               <a href="{{ related_article.url }}" class="related-link">
                 <div class="related-image">
-                  <img src="{{ related_article.image | image_url: width: 600 }}" alt="{{ related_article.title }}">
+                  <img src="{{ related_article.image | image_url: width: 600 }}" 
+                    srcset="{{ related_article.image | image_url: width: 300 }} 300w,
+                            {{ related_article.image | image_url: width: 600 }} 600w"
+                    sizes="(max-width: 480px) 100vw, 300px"
+                    alt="{{ related_article.title }}"
+                    loading="lazy">
                   <div class="related-overlay"></div>
                 </div>
                 <div class="related-content">

@@ -58,9 +58,17 @@
                       <a href="{{ item.url }}" class="search-item-link">
                         <div class="search-item-image">
                           {%- if item.image -%}
-                            <img src="{{ item.image | image_url: width: 400 }}" alt="{{ item.image.alt | escape }}" loading="lazy">
+                            <img src="{{ item.image | image_url: width: 400 }}" 
+                              srcset="{{ item.image | image_url: width: 200 }} 200w,
+                                      {{ item.image | image_url: width: 400 }} 400w"
+                              sizes="(max-width: 480px) 100vw, 400px"
+                              alt="{{ item.image.alt | escape }}" loading="lazy">
                           {%- elsif item.object_type == 'article' and item.image -%}
-                             <img src="{{ item.image | image_url: width: 400 }}" alt="{{ item.image.alt | escape }}" loading="lazy">
+                             <img src="{{ item.image | image_url: width: 400 }}" 
+                               srcset="{{ item.image | image_url: width: 200 }} 200w,
+                                       {{ item.image | image_url: width: 400 }} 400w"
+                               sizes="(max-width: 480px) 100vw, 400px"
+                               alt="{{ item.image.alt | escape }}" loading="lazy">
                           {%- else -%}
                             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                           {%- endif -%}
