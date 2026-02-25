@@ -13,6 +13,10 @@
       "page": "Page {{ number }}",
       "next": "Next page",
       "previous": "Previous page"
+    },
+    "password_page": {
+      "login_form_heading": "Enter store using password",
+      "admin_link_html": "Are you the store owner? <a href=\"/admin\">Log in here</a>"
     }
   },
   "accessibility": {
