@@ -1,5 +1,5 @@
 <section class="section section-404" aria-labelledby="error-title">
-  <div class="error-container">
+  <div class="container">
     <div class="content-wrapper">
       <h1 class="error-title" id="error-title">404</h1>
       <h2 class="error-subtitle">{{ 'general.404.title' | t | default: 'Page not found' }}</h2>
@@ -59,46 +59,38 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f8f9fa;
-    padding: 60px 20px;
-  }
-  
-  .error-container {
-    max-width: 600px;
-    width: 100%;
+    background-color: var(--white);
+    padding: var(--section-padding) 15px;
   }
   
   .content-wrapper {
-    background: white;
-    border-radius: 16px;
+    background: var(--white);
+    border-radius: var(--radius-3, 0);
     padding: 60px 40px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow);
     text-align: center;
   }
   
   .error-title {
-    font-size: 6rem;
-    font-weight: 800;
-    color: #111;
+    font-size: var(--fs-1);
+    font-weight: var(--fw-700);
+    color: var(--smokey-black);
     margin: 0;
     line-height: 1;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-family: var(--ff-mr_de_haviland);
   }
   
   .error-subtitle {
-    font-size: 1.75rem;
-    font-weight: 600;
+    font-size: var(--fs-3);
+    font-weight: var(--fw-500);
     margin: 15px 0;
-    color: #333;
+    color: var(--smokey-black);
   }
   
   .error-message {
-    font-size: 1.1rem;
+    font-size: var(--fs-5);
     line-height: 1.6;
-    color: #666;
+    color: var(--spanish-gray);
     margin-bottom: 30px;
   }
   
@@ -110,46 +102,49 @@
     display: flex;
     max-width: 400px;
     margin: 0 auto;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
+    border: 1px solid var(--black_25);
+    border-radius: var(--radius-3, 0);
     overflow: hidden;
-    transition: border-color 0.3s;
+    transition: var(--transition-1);
   }
   
   .search-form-404:focus-within {
-    border-color: #667eea;
+    border-color: var(--tan-crayola);
   }
   
   .search-input-404 {
     flex: 1;
     padding: 14px 18px;
     border: none;
-    font-size: 1rem;
+    font-size: var(--fs-6);
     outline: none;
+    color: var(--black);
+    background: var(--white);
   }
   
   .search-input-404::placeholder {
-    color: #999;
+    color: var(--spanish-gray);
   }
   
   .search-btn-404 {
     padding: 14px 18px;
-    background: #f5f5f5;
+    background: var(--white);
     border: none;
+    border-left: 1px solid var(--black_25);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.3s;
+    transition: var(--transition-1);
   }
   
   .search-btn-404:hover {
-    background: #e0e0e0;
+    background: var(--cultured);
   }
   
   .search-btn-404 .icon {
-    font-size: 1.2rem;
-    color: #333;
+    font-size: 2rem;
+    color: var(--black);
   }
   
   .error-links {
@@ -161,46 +156,21 @@
   }
   
   .error-links .btn {
-    padding: 14px 28px;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 8px;
     text-decoration: none;
-    transition: all 0.3s;
-  }
-  
-  .error-links .btn-primary {
-    background: #111;
-    color: white;
-  }
-  
-  .error-links .btn-primary:hover {
-    background: #333;
-    transform: translateY(-2px);
-  }
-  
-  .error-links .btn-secondary {
-    background: white;
-    color: #111;
-    border: 2px solid #111;
-  }
-  
-  .error-links .btn-secondary:hover {
-    background: #f5f5f5;
-    transform: translateY(-2px);
   }
   
   .popular-links {
     padding-top: 25px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--black_10);
   }
   
   .popular-links-title {
-    font-size: 0.85rem;
+    font-size: var(--fs-6);
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #666;
+    color: var(--granite-gray);
     margin-bottom: 15px;
+    font-weight: var(--fw-500);
   }
   
   .popular-links-list {
@@ -214,40 +184,29 @@
   }
   
   .popular-links-list a {
-    color: #667eea;
+    color: var(--spanish-gray);
     text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
+    font-weight: var(--fw-500);
+    transition: var(--transition-1);
   }
   
   .popular-links-list a:hover {
-    color: #764ba2;
+    color: var(--tan-crayola);
     text-decoration: underline;
-  }
-  
-  .visually-hidden {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    padding: 0 !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important;
-    border: 0 !important;
   }
   
   @media (max-width: 480px) {
     .content-wrapper {
       padding: 40px 25px;
+      box-shadow: none;
     }
     
     .error-title {
-      font-size: 4rem;
+      font-size: 5rem;
     }
     
     .error-subtitle {
-      font-size: 1.4rem;
+      font-size: var(--fs-4);
     }
     
     .error-links {
