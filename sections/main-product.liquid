@@ -54,30 +54,18 @@
       {%- comment -%} Product Media Gallery {%- endcomment -%}
       <div class="product-media">
         <div class="product-media-main">
-          <div class="card-banner img-holder" id="main-product-image">
-            {% if current_variant.featured_media %}
-              <img 
-                src="{{ current_variant.featured_media | image_url: width: 800 }}" 
-                alt="{{ current_variant.featured_media.alt | escape | default: product.title }}" 
-                class="img-cover product-featured-image"
-                loading="eager"
-                width="800"
-                height="800"
-                id="product-image-main"
-              >
-            {% elsif product.featured_image %}
-              <img 
-                src="{{ product.featured_image | image_url: width: 800 }}" 
-                alt="{{ product.featured_image.alt | escape | default: product.title }}" 
-                class="img-cover product-featured-image"
-                loading="eager"
-                width="800"
-                height="800"
-                id="product-image-main"
-              >
-            {% else %}
-              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            {% endif %}
+          <div class="main-media-container" id="main-product-media-container">
+            {%- if product.media.size > 0 -%}
+              {%- for media in product.media -%}
+                <div class="product-media-item {% if media.id == current_variant.featured_media.id or media.id == product.featured_media.id or forloop.first and current_variant.featured_media == nil and product.featured_media == nil %}active{% endif %}" data-media-id="{{ media.id }}" style="display: {% if media.id == current_variant.featured_media.id or media.id == product.featured_media.id or forloop.first and current_variant.featured_media == nil and product.featured_media == nil %}block{% else %}none{% endif %}; width: 100%; height: 100%;">
+                  {% render 'product-media', media: media, is_main_product_media: true %}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <div class="card-banner img-holder" id="main-product-image">
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {%- endif -%}
           </div>
         </div>
         
@@ -289,6 +277,64 @@
                 <product-form class="product-form">
                   {%- form 'product', product, id: 'product-form', class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
                     <input type="hidden" name="id" value="{{ current_variant.id }}" id="product-variant-id">
+                    
+                    {%- if product.gift_card? -%}
+                      <div class="recipient-form" style="margin-bottom: 2rem;">
+                        <input type="hidden" name="properties[__shopify_send_gift_card_to_recipient]" value="if_present">
+                        <div class="recipient-fields">
+                          <details class="accordion-item recipient-accordion">
+                            <summary class="accordion-header">
+                              <span class="accordion-title">{{ 'recipient.form.checkbox' | t | default: 'I want to send this as a gift' }}</span>
+                              <span class="accordion-toggle">+</span>
+                            </summary>
+                            <div class="accordion-content">
+                              <div class="product-option" style="margin-top: 1rem;">
+                                <label for="Recipient-email-{{ section.id }}" class="product-option-label">{{ 'recipient.form.email' | t | default: 'Recipient email' }}</label>
+                                <input type="email"
+                                  id="Recipient-email-{{ section.id }}"
+                                  name="properties[Recipient email]"
+                                  value="{{ form.email }}"
+                                  class="qty-input"
+                                  style="width: 100%; text-align: left;"
+                                  placeholder="{{ 'recipient.form.email' | t | default: 'Recipient email' }}"
+                                >
+                              </div>
+                              <div class="product-option" style="margin-top: 1rem;">
+                                <label for="Recipient-name-{{ section.id }}" class="product-option-label">{{ 'recipient.form.name' | t | default: 'Recipient name (optional)' }}</label>
+                                <input type="text"
+                                  id="Recipient-name-{{ section.id }}"
+                                  name="properties[Recipient name]"
+                                  value="{{ form.name }}"
+                                  class="qty-input"
+                                  style="width: 100%; text-align: left;"
+                                  placeholder="{{ 'recipient.form.name' | t | default: 'Recipient name (optional)' }}"
+                                >
+                              </div>
+                              <div class="product-option" style="margin-top: 1rem;">
+                                <label for="Recipient-message-{{ section.id }}" class="product-option-label">{{ 'recipient.form.message' | t | default: 'Message (optional)' }}</label>
+                                <textarea
+                                  id="Recipient-message-{{ section.id }}"
+                                  name="properties[Message]"
+                                  class="qty-input"
+                                  style="width: 100%; text-align: left; min-height: 80px; padding: 10px;"
+                                  placeholder="{{ 'recipient.form.message' | t | default: 'Message (optional)' }}"
+                                >{{ form.message }}</textarea>
+                              </div>
+                              <div class="product-option" style="margin-top: 1rem;">
+                                <label for="Recipient-send-on-{{ section.id }}" class="product-option-label">{{ 'recipient.form.send_on' | t | default: 'Send on (optional)' }}</label>
+                                <input type="date"
+                                  id="Recipient-send-on-{{ section.id }}"
+                                  name="properties[Send on]"
+                                  value="{{ form.send_on }}"
+                                  class="qty-input"
+                                  style="width: 100%; text-align: left;"
+                                >
+                              </div>
+                            </div>
+                          </details>
+                        </div>
+                      </div>
+                    {%- endif -%}
                     
                     <div class="product-form-buttons">
                       <button
@@ -1169,9 +1215,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
   thumbnails.forEach(thumb => {
     thumb.addEventListener('click', function() {
-      const imageUrl = this.dataset.imageUrl;
-      if (mainImage && imageUrl) {
-        mainImage.src = imageUrl;
+      const mediaId = this.dataset.mediaId;
+      const mediaItems = sectionEl.querySelectorAll('.product-media-item');
+      if (mediaItems.length > 0 && mediaId) {
+        mediaItems.forEach(item => {
+          if (item.dataset.mediaId === mediaId) {
+            item.style.display = 'block';
+            item.classList.add('active');
+          } else {
+            item.style.display = 'none';
+            item.classList.remove('active');
+          }
+        });
+      } else {
+        const imageUrl = this.dataset.imageUrl;
+        if (mainImage && imageUrl) {
+          mainImage.src = imageUrl;
+        }
       }
       setActiveThumb(this);
       this.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
@@ -1297,9 +1357,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Update main image if variant has featured media
-        if (variant.featured_media && mainImage) {
-          const newImageUrl = variant.featured_media.preview_image.src.replace(/\.(jpg|png|gif|jpeg)/, '_800x.$1');
-          mainImage.src = newImageUrl;
+        if (variant.featured_media) {
+          const mediaId = variant.featured_media.id.toString();
+          const mediaItems = sectionEl.querySelectorAll('.product-media-item');
+          if (mediaItems.length > 0) {
+            mediaItems.forEach(item => {
+              if (item.dataset.mediaId === mediaId) {
+                item.style.display = 'block';
+                item.classList.add('active');
+              } else {
+                item.style.display = 'none';
+                item.classList.remove('active');
+              }
+            });
+            // Update active thumbnail
+            thumbnails.forEach(t => {
+              if (t.dataset.mediaId === mediaId) {
+                setActiveThumb(t);
+                t.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+              }
+            });
+          } else if (mainImage) {
+            const newImageUrl = variant.featured_media.preview_image.src.replace(/\.(jpg|png|gif|jpeg)/, '_800x.$1');
+            mainImage.src = newImageUrl;
+          }
         }
         
         // Update SKU

@@ -1,185 +1,53 @@
 <section class="section product color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="product" aria-label="product">
     <div class="container">
 
-      <div class="title-wrapper">
-        <h2 class="h2 section-title">Popular Fragrances</h2>
-
-        <ul class="filter-btn-list">
-
-          <li class="filter-btn-item">
-            <button class="filter-btn" data-filter-btn="all">Men</button>
-          </li>
-
-          <li class="filter-btn-item">
-            <button class="filter-btn" data-filter-btn="accessory">Women</button>
-          </li>
-
-        </ul>
+      <div class="title-wrapper" style="text-align: center; margin-bottom: 40px;">
+        <h1 class="h2 section-title" style="font-size: 3rem;">{{ 'templates.list_collections.title' | t | default: 'Collections' }}</h1>
       </div>
 
-      <ul class="grid-list product-list" data-filter="all">
-        {% comment %} {% for product in collection.products %}
-          <li class="decoration">
-            <div class="product-card">
-
-              <a href="#" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
-                {% comment %} <img src="./assets/images/product-1.jpg" width="300" height="300" loading="lazy"
-                  alt="Animi Dolor Pariatur" class="img-cover"> {% endcomment %}
-                  <img src="{{ product.featured_image.src | image_url: width: 300 }}" alt="{{ product.featured_image.alt | escape }}" class="img-cover" width="300" height="300"loading="lazy">
-                <ul class="card-action-list">
-
-                  <li>
-                    <button class="card-action-btn" aria-label="add to cart" title="add to cart">
-                      {% render 'icon-fragrance', icon: 'add' %}
-                    </button>
-                  </li>
-
-                  <li>
-                    <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
-                      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                      <button type="submit" class="card-action-btn" aria-label="add to cart">
-                        {% render 'icon-fragrance', icon: 'bag-handle' %}
-                      </button>
-                    </form>
-                  </li>
-
-                  <li>
-                    <button class="card-action-btn" aria-label="add to whishlist" title="add to whishlist">
-                      {% render 'icon-fragrance', icon: 'heart' %}
-                    </button>
-                  </li>
-
-                </ul>
-                
-                <ul class="badge-list">
-
-                  <li>
-                    <div class="badge orange">Sale</div>
-                  </li>
-
-                  <li>
-                    <div class="badge cyan">-10%</div>
-                  </li>
-
-                </ul>
-              </a>
-
-              <div class="card-content">
-                <h3 class="h3">
-                  <a href="#" class="card-title">Animi Dolor Pariatur</a>
-                </h3>
-
-                <div class="card-price">
-                  <del class="del">$19.00</del>
-
-                  <data class="price" value="10">$10.00</data>
-                </div>
-              </div>
-
-            </div>
-          </li>
-      {% endfor %} {% endcomment %}
-    
-      
-
-       {% assign collection_handle = 'all' %}
-      {% for product in collections[collection_handle].products %}
-         <li class="decoration">
-           <div class="product-card">
-             <a href="{{ product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
-               {% if product.featured_image %}
-                 <img src="{{ product.featured_image | image_url: width: 600 }}" 
-                   alt="{{ product.featured_image.alt | escape }}" 
-                   class="img-cover" 
-                   width="300" 
-                   height="300" 
-                   loading="lazy">
-               {% else %}
-                <img src="default-image.jpg" 
-                   alt="No image available" 
-                   class="img-cover" 
+      {% paginate collections by 12 %}
+      <ul class="grid-list collection-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
+        {% for collection in collections %}
+          <li class="decoration" style="list-style: none;">
+            <div class="collection-card" style="text-align: center;">
+              <a href="{{ collection.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300; border-radius: 8px; overflow: hidden; display: block; position: relative;">
+                {% if collection.image %}
+                  <img src="{{ collection.image | image_url: width: 600 }}" 
+                    alt="{{ collection.image.alt | escape }}" 
+                    class="img-cover" 
                     width="300" 
                     height="300" 
+                    style="width: 100%; height: 100%; object-fit: cover;"
                     loading="lazy">
-               {% endif %}
-            <ul class="card-action-list">
-             <li>
-              <button class="card-action-btn" aria-label="add to cart" title="add to cart">
-                {% render 'icon-fragrance', icon: 'add' %}
-              </button>
-            </li>
-            <li>
-              <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
-                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                <button type="submit" class="card-action-btn" aria-label="add to cart">
-                  {% render 'icon-fragrance', icon: 'bag-handle' %}
-                </button>
-              </form>
-            {% comment %} <button class="card-action-btn" aria-label="view cart" title="view cart">
-            {% render 'icon-fragrance', icon: 'bag-handle' %}
-        </button> {% endcomment %}
-      </li>
-      <li>
-        <button class="card-action-btn" aria-label="add to wishlist" title="add to wishlist">
-          {% render 'icon-fragrance', icon: 'heart' %}
-        </button>
-      </li>
-    </ul>
-    {% comment %} {% if product.compare_at_price > product.price %} {% endcomment %}
-    {% comment %} <ul class="badge-list">
-      <li>
-        <div class="badge orange">Sale</div>
-      </li>
-      <li>
-        <div class="badge cyan">
-          10%
-        </div>
-      </li>
-    </ul> {% endcomment %}
-
-    <ul class="badge-list">
-  {% if product.available %}
-    {% if product.compare_at_price > product.price %}
-      <li>
-        <div class="badge orange">Sale</div>
-      </li>
-    {% endif %}
-    {% assign discount = 100 | times: product.compare_at_price | minus: product.price | divided_by: product.compare_at_price | round %}
-    {% if discount > 0 %}
-      <li>
-        <div class="badge cyan">{{ discount }}%</div>
-      </li>
-    {% endif %}
-  {% else %}
-    <li>
-      <div class="badge1 gray">Out of Stock</div>
-    </li>
-  {% endif %}
-</ul>
-
-    {% comment %} {% endif %} {% endcomment %}
-  </a>
-       <div class="card-content">
-          <h3 class="h3">
-            <a href="{{ product.url }}" class="card-title">{{ product.title }}</a>
-          </h3>
-           <div class="card-price">
-            {% if product.compare_at_price > product.price %}
-              <del class="del">{{ product.compare_at_price | money }}</del>
-           {% endif %}
-              <data class="price" value="{{ product.price }}">{{ product.price | money }}</data>
+                {% elsif collection.products.first and collection.products.first.featured_image %}
+                  <img src="{{ collection.products.first.featured_image | image_url: width: 600 }}" 
+                    alt="{{ collection.title | escape }}" 
+                    class="img-cover" 
+                    width="300" 
+                    height="300" 
+                    style="width: 100%; height: 100%; object-fit: cover;"
+                    loading="lazy">
+                {% else %}
+                  {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+              </a>
+              <div class="card-content" style="padding-top: 15px;">
+                <h3 class="h3" style="font-size: 1.5rem; margin-bottom: 5px;">
+                  <a href="{{ collection.url }}" class="card-title" style="color: inherit; text-decoration: none;">{{ collection.title }}</a>
+                </h3>
+                <p style="color: var(--granite-gray, #666);">{{ collection.all_products_count }} {{ 'sections.collection_list.products' | t | default: 'products' }}</p>
+              </div>
             </div>
-           </div>
-          </div>
-         </li>
-       {% endfor %}
-
-      
-      
-
+          </li>
+        {% endfor %}
       </ul>
-
-    </div>
+      
+      {% if paginate.pages > 1 %}
+        <div style="margin-top: 40px; display: flex; justify-content: center;">
+          {% render 'pagination', paginate: paginate %}
+        </div>
+      {% endif %}
+      {% endpaginate %}
   </section>
    
 
