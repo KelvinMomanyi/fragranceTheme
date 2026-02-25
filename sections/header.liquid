@@ -80,7 +80,7 @@
     - #SIDEBAR
   -->
 
-  <div class="sidebar" data-navbar>
+  <div class="sidebar color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" data-navbar>
     <div class="navClose">
        <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
         {% render 'icon-fragrance', icon: 'close' %}
@@ -192,8 +192,8 @@
 
 
     <!-- Language and Currency Selectors Container -->
-    <div id="currency-language-container ">
-      <select name="locale_code" class="locale-selector" style="color:{{ section.settings.text_color }};" aria-label="Language">
+    <div id="currency-language-container">
+      <select name="locale_code" class="locale-selector" aria-label="Language">
         {% for language in localization.available_languages %}
           {% if language.iso_code == localization.language.iso_code %}
             <option value="{{ language.iso_code }}" selected="selected">{{ language.name }}</option>
@@ -426,7 +426,7 @@
   }
    .currency-selector {
     background-color: transparent; /* No background color */
-    color: {{section.settings.text_color}}; /* White text */
+    color: inherit;
     border: none; /* Remove the default border */
     {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
     padding-left: 15px; /* Adjust padding as needed */
@@ -450,15 +450,15 @@
   
   /* Optional: Add custom styles for options */
   .currency-selector option {
-    color: rgb(255, 255, 255); /* Change option text color if needed */
-    background-color: rgb(0, 0, 0); /* Change option background if needed */
+    color: var(--color-text);
+    background-color: var(--color-background);
   }
 
 
 
   .language-selector {
     background-color: transparent; /* No background color */
-    color: {{section.settings.text_color}}; /* White text */
+    color: inherit;
     border: none; /* Remove the default border */
     {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
     padding: 0; /* Adjust padding as needed */
@@ -475,14 +475,13 @@
   
   /* Optional: Add custom styles for options */
   .language-selector option {
-    color: black; /* Change option text color if needed */
-    background-color: white; /* Change option background if needed */
+    color: var(--color-text);
+    background-color: var(--color-background);
   }
   
   .locale-selector {
     background-color: transparent; /* No background color */
-    color:{{section.settings.text_color}};
-    /*color: white;*/ /* White text */
+    color: inherit;
     border: none; /* Remove the default border */
     {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
     padding: 0; /* Adjust padding as needed */
@@ -494,15 +493,15 @@
     .localization-selector {
         background: transparent;
         border: 1px solid rgba(255,255,255,0.2);
-        color: {{ section.settings.text_color }};
+        color: inherit;
         padding: 5px 10px;
         border-radius: 4px;
         cursor: pointer;
     }
     
     .localization-selector option {
-        color: #000;
-        background: #fff;
+        color: var(--color-text);
+        background: var(--color-background);
     }
 
     .dropdown-list {
@@ -544,8 +543,8 @@
   }
   
   .locale-selector option {
-    color: black; /* Change option text color if needed */
-    background-color: white; /* Change option background if needed */
+    color: var(--color-text);
+    background-color: var(--color-background);
   }
   
 
