@@ -1,7 +1,7 @@
 {
   "current": {
-    "font_heading": "pinyon_script_n4",
-    "font_body": "cormorant_garamond_n4",
+    "font_heading": "serif",
+    "font_body": "sans-serif",
     "color_schemes": {
       "scheme-1": {
         "settings": {
@@ -64,8 +64,8 @@
   },
   "presets": {
     "Velour": {
-      "font_heading": "pinyon_script_n4",
-      "font_body": "cormorant_garamond_n4",
+      "font_heading": "serif",
+      "font_body": "sans-serif",
       "color_schemes": {
         "scheme-1": {
           "settings": {

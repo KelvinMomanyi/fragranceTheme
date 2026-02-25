@@ -13,7 +13,6 @@
       {
         "type": "color_scheme_group",
         "id": "color_schemes",
-        "label": "Color schemes",
         "definition": [
           {
             "type": "color",
@@ -87,14 +86,14 @@
         "type": "font_picker",
         "id": "font_heading",
         "label": "Heading font",
-        "default": "pinyon_script_n4",
+        "default": "serif",
         "info": "Font used for headings throughout the theme"
       },
       {
         "type": "font_picker",
         "id": "font_body",
         "label": "Body font",
-        "default": "cormorant_garamond_n4",
+        "default": "sans-serif",
         "info": "Font used for body text throughout the theme"
       }
     ]

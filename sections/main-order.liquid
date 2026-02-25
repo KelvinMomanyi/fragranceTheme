@@ -90,7 +90,7 @@
 
                   {%- if line_item.fulfillment -%}
                     <div class="fulfillment">
-                      {%- assigncreated_at = line_item.fulfillment.created_at | time_tag: format: 'date' -%}
+                      {%- assign created_at = line_item.fulfillment.created_at | time_tag: format: 'date' -%}
                       <span>{{ 'customer.order.fulfilled_at_html' | t: date: created_at | default: 'Fulfilled ' | append: created_at }}</span>
 
                         {%- if line_item.fulfillment.tracking_url -%}
@@ -299,9 +299,36 @@
   }
 </style>
 
+
 {% schema %}
 {
   "name": "Order Page",
-  "settings": []
+  "settings": [
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ]
 }
 {% endschema %}
+
