@@ -91,20 +91,29 @@
         {% assign nav_links = linklists[section.settings.main_menu_linklist].links %}
         {% for link in nav_links %}
           <li class="navbar-item {% if link.links != blank %}has-dropdown{% endif %}">
-            <a href="{{ link.url }}" class="navbar-link" data-nav-link>
-              {{ link.title }}
-              {% if link.links != blank %}
-                {% render 'icon-fragrance', icon: 'chevron-down', size: 'small' %}
-              {% endif %}
-            </a>
             {% if link.links != blank %}
-              <ul class="dropdown-list">
+              <a
+                href="{{ link.url }}"
+                class="navbar-link"
+                data-nav-link
+                aria-expanded="false"
+                aria-controls="NavDropdown-{{ forloop.index }}"
+                aria-current="{% if link.active %}page{% else %}false{% endif %}"
+              >
+                {{ link.title }}
+                {% render 'icon-fragrance', icon: 'chevron-down', size: 'small' %}
+              </a>
+              <ul class="dropdown-list" id="NavDropdown-{{ forloop.index }}" role="list">
                 {% for child_link in link.links %}
                   <li class="dropdown-item">
-                    <a href="{{ child_link.url }}" class="dropdown-link">{{ child_link.title }}</a>
+                    <a href="{{ child_link.url }}" class="dropdown-link" aria-current="{% if child_link.active %}page{% else %}false{% endif %}">{{ child_link.title }}</a>
                   </li>
                 {% endfor %}
               </ul>
+            {% else %}
+              <a href="{{ link.url }}" class="navbar-link" data-nav-link aria-current="{% if link.active %}page{% else %}false{% endif %}">
+                {{ link.title }}
+              </a>
             {% endif %}
           </li>
         {% endfor %}
@@ -717,7 +726,7 @@
 
 {% schema %}
 {
-  "name": "header",
+  "name": "Header",
   "settings": [
     {
       "type": "color_scheme","id": "color_scheme","label": "Color scheme","default": "scheme-1"
@@ -731,18 +740,18 @@
      {
       "type": "color",
       "id": "text_color",
-      "label": "Text Color",
+      "label": "Text color",
       "default": "#000000"
      },
      {
       "type": "image_picker",
       "id": "logo_image",
-      "label": "Logo Image"
+      "label": "Logo image"
     },
     {
       "type": "range",
       "id": "logo_scale",
-      "label": "Logo Scale",
+      "label": "Logo scale",
       "min": 0.5,
       "max": 2,
       "step": 0.1,
@@ -769,7 +778,7 @@
   "blocks": [],
   "presets": [
     {
-      "name": "header"
+      "name": "Header"
     }
   ]
 }

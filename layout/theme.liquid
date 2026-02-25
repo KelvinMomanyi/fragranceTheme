@@ -114,8 +114,11 @@
 
 </head>
 <body id="top">
+  <a class="skip-to-content-link visually-hidden" href="#MainContent">
+    {{ 'accessibility.skip_to_text' | t }}
+  </a>
   {% sections 'header-group' %}
-  <main role="main">
+  <main id="MainContent" role="main" tabindex="-1">
     {{ content_for_layout }}
   </main>
   {% sections 'backToTop-group' %}

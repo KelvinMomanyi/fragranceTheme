@@ -130,12 +130,15 @@
             {%- comment -%} Price Block {%- endcomment -%}
             {% when 'price' %}
               <div class="product-block product-block--price" {{ block.shopify_attributes }}>
-                <div class="product-price-wrapper" id="product-price">
+                <div class="product-price-wrapper" id="product-price" aria-live="polite" aria-atomic="true">
                   {%- if current_variant.compare_at_price > current_variant.price -%}
+                    <span class="visually-hidden">{{ 'products.product.price.regular_price' | t | default: 'Regular price' }}</span>
                     <del class="product-compare-price">{{ current_variant.compare_at_price | money }}</del>
+                    <span class="visually-hidden">{{ 'products.product.price.sale_price' | t | default: 'Sale price' }}</span>
                     <span class="product-price product-price--sale">{{ current_variant.price | money }}</span>
                     <span class="product-badge badge--sale">{{ 'products.product.on_sale' | t | default: 'Sale' }}</span>
                   {%- else -%}
+                    <span class="visually-hidden">{{ 'products.product.price.regular_price' | t | default: 'Price' }}</span>
                     <span class="product-price">{{ current_variant.price | money }}</span>
                   {%- endif -%}
                   
