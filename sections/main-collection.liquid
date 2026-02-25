@@ -144,14 +144,14 @@
                           <ul class="card-action-list">
                             <li>
                               <button class="card-action-btn" aria-label="add to cart" title="add to cart">
-                                {% render 'icon-fragrance', icon: 'add' %}
+                                {% render 'icon-velour', icon: 'add' %}
                               </button>
                             </li>
                             <li>
                                <form action="/cart/add" method="post" enctype="multipart/form-data" class="add-to-cart-form">
                                   <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                                   <button type="submit" class="card-action-btn" aria-label="add to cart">
-                                    {% render 'icon-fragrance', icon: 'bag-handle' %}
+                                    {% render 'icon-velour', icon: 'bag-handle' %}
                                   </button>
                                 </form>
                             </li>

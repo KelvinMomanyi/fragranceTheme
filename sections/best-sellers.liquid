@@ -81,11 +81,11 @@
   </ul>
 
   <button class="slider-btn prev" aria-label="slide to previous" data-prev-btn>
-    {% render 'icon-fragrance', icon: 'chevron-back' %}
+    {% render 'icon-velour', icon: 'chevron-back' %}
   </button>
 
   <button class="slider-btn next" aria-label="slide to next" data-next-btn>
-    {% render 'icon-fragrance', icon: 'chevron-forward' %}
+    {% render 'icon-velour', icon: 'chevron-forward' %}
   </button>
 </section>
 
@@ -130,14 +130,14 @@
                <ul class="card-action-list">
                 <li>
                  <button class="card-action-btn" aria-label="add to cart" title="add to cart">
-                   {% render 'icon-fragrance', icon: 'add' %}
+                   {% render 'icon-velour', icon: 'add' %}
                  </button>
                </li>
                <li>
                  <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                    <button type="submit" class="card-action-btn" aria-label="view cart" title="view cart">
-                     {% render 'icon-fragrance', icon: 'bag-handle' %}
+                     {% render 'icon-velour', icon: 'bag-handle' %}
                    </button>
                  </form>
                </li>
@@ -184,33 +184,33 @@
     <!-- Why Shop With Us -->
     <div class="info-card features-card">
       <h3 class="info-card-title">
-        {% render 'icon-fragrance', icon: 'star', class: 'title-icon' %}
+        {% render 'icon-velour', icon: 'star', class: 'title-icon' %}
         Why Our Best Sellers?
       </h3>
       <ul class="features-list">
         <li class="feature-item">
-          {% render 'icon-fragrance', icon: 'checkmark-circle', class: 'feature-icon' %}
+          {% render 'icon-velour', icon: 'checkmark-circle', class: 'feature-icon' %}
           <div class="feature-content">
             <h4>Verified Quality</h4>
             <p>Hand-picked products with verified customer reviews</p>
           </div>
         </li>
         <li class="feature-item">
-          {% render 'icon-fragrance', icon: 'shield-checkmark', class: 'feature-icon' %}
+          {% render 'icon-velour', icon: 'shield-checkmark', class: 'feature-icon' %}
           <div class="feature-content">
             <h4>100% Authentic</h4>
             <p>Guaranteed genuine products from trusted brands</p>
           </div>
         </li>
         <li class="feature-item">
-          {% render 'icon-fragrance', icon: 'flash', class: 'feature-icon' %}
+          {% render 'icon-velour', icon: 'flash', class: 'feature-icon' %}
           <div class="feature-content">
             <h4>Fast Shipping</h4>
             <p>Express delivery on all best-selling items</p>
           </div>
         </li>
         <li class="feature-item">
-          {% render 'icon-fragrance', icon: 'refresh', class: 'feature-icon' %}
+          {% render 'icon-velour', icon: 'refresh', class: 'feature-icon' %}
           <div class="feature-content">
             <h4>Easy Returns</h4>
             <p>30-day hassle-free return policy</p>
@@ -222,7 +222,7 @@
     <!-- Customer Reviews Summary -->
     <div class="info-card reviews-card">
       <h3 class="info-card-title">
-        {% render 'icon-fragrance', icon: 'people', class: 'title-icon' %}
+        {% render 'icon-velour', icon: 'people', class: 'title-icon' %}
         Customer Love
       </h3>
       <div class="reviews-summary">

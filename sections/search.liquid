@@ -112,7 +112,7 @@
   const suggestionsSection = document.querySelector('.suggestions-section');
 
   // Popular search suggestions
-  const popularSearches = {{ section.settings.popular_searches | default: "Luxury Perfumes, Fresh & Floral, Evening Elegance, Exclusive Collections, Men's Fragrances, Women's Fragrances" | split: ',' | json }};
+  const popularSearches = {{ section.settings.popular_searches | default: "Luxury Collections, Fresh & Floral, Evening Elegance, Exclusive Collections, Men's Velour, Women's Velour" | split: ',' | json }};
 
   function debounce(func, delay) {
     let timeout;
@@ -712,7 +712,7 @@
       "type": "text",
       "id": "popular_searches",
       "label": "Popular searches (comma-separated)",
-      "default": "Luxury Perfumes,  Evening Elegance, Exclusive Collections, Men's Fragrances, Women's Fragrances",
+      "default": "Luxury Collections, Evening Elegance, Exclusive Collections, Men's Velour, Women's Velour",
       "info": "Enter popular search terms separated by commas"
     }
   ],

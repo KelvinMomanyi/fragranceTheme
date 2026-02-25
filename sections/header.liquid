@@ -8,7 +8,7 @@
       
       <div class="header-start">
         <button class="header-action-btn" aria-label="Open menu" data-nav-toggler>
-          {% render 'icon-fragrance', icon: 'menu' %}
+          {% render 'icon-velour', icon: 'menu' %}
         </button> 
       </div>
       
@@ -39,25 +39,25 @@
       {% comment %} <div class="input-wrapper">
         <input type="search" name="search" placeholder="Search Anything..." class="input-field">
 
-        {% render 'icon-fragrance', icon: 'search' %}
+        {% render 'icon-velour', icon: 'search' %}
       </div> {% endcomment %}
       <div class="header-action" id="headerActions">
         <button class="header-action-btn" aria-label="Search" onclick="openSearchModal()">
-          {% render 'icon-fragrance', icon: 'search' %}
+          {% render 'icon-velour', icon: 'search' %}
         </button> 
         {% if shop.customer_accounts_enabled %}
           {% if customer %}
             <a href="{{ routes.account_url }}" class="header-action-btn" aria-label="Account">
-              {% render 'icon-fragrance', icon: 'person' %}
+              {% render 'icon-velour', icon: 'person' %}
             </a>
           {% else %}
             <button class="header-action-btn" aria-label="Login" onclick="openLoginModal()">
-              {% render 'icon-fragrance', icon: 'person' %}
+              {% render 'icon-velour', icon: 'person' %}
             </button>
           {% endif %}
         {% endif %}
         <button class="header-action-btn" aria-label="Cart" onclick="openCart()">
-          {% render 'icon-fragrance', icon: 'bag-handle' %}
+          {% render 'icon-velour', icon: 'bag-handle' %}
           <span class="btn-badge">0</span>
         </button>
 
@@ -85,7 +85,7 @@
   <div class="sidebar color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" data-navbar>
     <div class="navClose">
        <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
-        {% render 'icon-fragrance', icon: 'close' %}
+        {% render 'icon-velour', icon: 'close' %}
       </button>
     </div>
     <nav class="navbar">
@@ -103,7 +103,7 @@
                 aria-current="{% if link.active %}page{% else %}false{% endif %}"
               >
                 {{ link.title }}
-                {% render 'icon-fragrance', icon: 'chevron-down', size: 'small' %}
+                {% render 'icon-velour', icon: 'chevron-down', size: 'small' %}
               </a>
               <ul class="dropdown-list" id="NavDropdown-{{ forloop.index }}" role="list">
                 {% for child_link in link.links %}
@@ -160,7 +160,7 @@
         {%- if settings.social_facebook != blank -%}
           <li>
             <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
-              {% render 'icon-fragrance', icon: 'facebook' %}
+              {% render 'icon-velour', icon: 'facebook' %}
             </a>
           </li>
         {%- endif -%}
@@ -168,7 +168,7 @@
         {%- if settings.social_instagram != blank -%}
           <li>
             <a href="{{ settings.social_instagram }}" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
-              {% render 'icon-fragrance', icon: 'instagram' %}
+              {% render 'icon-velour', icon: 'instagram' %}
             </a>
           </li>
         {%- endif -%}
@@ -176,7 +176,7 @@
         {%- if settings.social_tiktok != blank -%}
           <li>
             <a href="{{ settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener" aria-label="TikTok">
-              {% render 'icon-fragrance', icon: 'tiktok' %}
+              {% render 'icon-velour', icon: 'tiktok' %}
             </a>
           </li>
         {%- endif -%}
@@ -184,7 +184,7 @@
         {%- if settings.social_tumblr != blank -%}
           <li>
             <a href="{{ settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener" aria-label="Tumblr">
-              {% render 'icon-fragrance', icon: 'tumblr' %}
+              {% render 'icon-velour', icon: 'tumblr' %}
             </a>
           </li>
         {%- endif -%}
@@ -192,7 +192,7 @@
         {%- if settings.social_twitter != blank -%}
           <li>
             <a href="{{ settings.social_twitter }}" class="social-link" target="_blank" rel="noopener" aria-label="Twitter">
-              {% render 'icon-fragrance', icon: 'twitter' %}
+              {% render 'icon-velour', icon: 'twitter' %}
             </a>
           </li>
         {%- endif -%}
@@ -231,13 +231,13 @@
           </div>
       {% endform %}
         </div>
-       {% comment %} {% render 'icon-fragrance', icon: 'close' %} {% endcomment %}
+       {% comment %} {% render 'icon-velour', icon: 'close' %} {% endcomment %}
     </div>
 
 
     <div class="header-action" style="display:flex; justify-content:flex-start; padding-top:10px;">
      <a href="/account" class="header-action-btn" aria-label="User account">
-        {% render 'icon-fragrance', icon: 'person' %}
+        {% render 'icon-velour', icon: 'person' %}
       </a>
     </div>
 

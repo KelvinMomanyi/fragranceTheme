@@ -1,5 +1,5 @@
 /**
- * Fragrance Theme - Application JavaScript
+ * Velour Theme - Application JavaScript
  * All code wrapped in IIFE to prevent global namespace collisions.
  */
 (function () {

@@ -11,14 +11,14 @@ FOOTER
 
       <div class="footer-brand">
 
-        <a href="#" class="logo">{{ section.settings.logo_text | default: 'Fragrance' }}</a>
+        <a href="#" class="logo">{{ section.settings.logo_text | default: 'Velour' }}</a>
 
         {%- if section.settings.show_social -%}
           <ul class="social-list">
             {%- if settings.social_facebook != blank -%}
               <li>
                 <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
-                  {% render 'icon-fragrance', icon: 'facebook', size: 'small' %}
+                  {% render 'icon-velour', icon: 'facebook', size: 'small' %}
                 </a>
               </li>
             {%- endif -%}
@@ -26,7 +26,7 @@ FOOTER
             {%- if settings.social_instagram != blank -%}
               <li>
                 <a href="{{ settings.social_instagram }}" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
-                  {% render 'icon-fragrance', icon: 'instagram', size: 'small' %}
+                  {% render 'icon-velour', icon: 'instagram', size: 'small' %}
                 </a>
               </li>
             {%- endif -%}
@@ -34,7 +34,7 @@ FOOTER
             {%- if settings.social_tiktok != blank -%}
               <li>
                 <a href="{{ settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener" aria-label="TikTok">
-                  {% render 'icon-fragrance', icon: 'tiktok', size: 'small' %}
+                  {% render 'icon-velour', icon: 'tiktok', size: 'small' %}
                 </a>
               </li>
             {%- endif -%}
@@ -42,7 +42,7 @@ FOOTER
             {%- if settings.social_tumblr != blank -%}
               <li>
                 <a href="{{ settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener" aria-label="Tumblr">
-                  {% render 'icon-fragrance', icon: 'tumblr', size: 'small' %}
+                  {% render 'icon-velour', icon: 'tumblr', size: 'small' %}
                 </a>
               </li>
             {%- endif -%}
@@ -50,7 +50,7 @@ FOOTER
             {%- if settings.social_twitter != blank -%}
               <li>
                 <a href="{{ settings.social_twitter }}" class="social-link" target="_blank" rel="noopener" aria-label="Twitter">
-                  {% render 'icon-fragrance', icon: 'twitter', size: 'small' %}
+                  {% render 'icon-velour', icon: 'twitter', size: 'small' %}
                 </a>
               </li>
             {%- endif -%}
@@ -58,7 +58,7 @@ FOOTER
             {%- if settings.social_pinterest != blank -%}
               <li>
                 <a href="{{ settings.social_pinterest }}" class="social-link" target="_blank" rel="noopener" aria-label="Pinterest">
-                  {% render 'icon-fragrance', icon: 'pinterest', size: 'small' %}
+                  {% render 'icon-velour', icon: 'pinterest', size: 'small' %}
                 </a>
               </li>
             {%- endif -%}
@@ -66,7 +66,7 @@ FOOTER
             {%- if settings.social_snapchat != blank -%}
               <li>
                 <a href="{{ settings.social_snapchat }}" class="social-link" target="_blank" rel="noopener" aria-label="Snapchat">
-                  {% render 'icon-fragrance', icon: 'snapchat', size: 'small' %}
+                  {% render 'icon-velour', icon: 'snapchat', size: 'small' %}
                 </a>
               </li>
             {%- endif -%}
@@ -74,7 +74,7 @@ FOOTER
             {%- if settings.social_youtube != blank -%}
               <li>
                 <a href="{{ settings.social_youtube }}" class="social-link" target="_blank" rel="noopener" aria-label="YouTube">
-                  {% render 'icon-fragrance', icon: 'youtube', size: 'small' %}
+                  {% render 'icon-velour', icon: 'youtube', size: 'small' %}
                 </a>
               </li>
             {%- endif -%}
@@ -82,7 +82,7 @@ FOOTER
             {%- if settings.social_vimeo != blank -%}
               <li>
                 <a href="{{ settings.social_vimeo }}" class="social-link" target="_blank" rel="noopener" aria-label="Vimeo">
-                  {% render 'icon-fragrance', icon: 'vimeo', size: 'small' %}
+                  {% render 'icon-velour', icon: 'vimeo', size: 'small' %}
                 </a>
               </li>
             {%- endif -%}
@@ -170,7 +170,7 @@ FOOTER
             aria-label="Email address">
 
           <button type="submit" class="footer-form-btn" aria-label="Subscribe">
-            {% render 'icon-fragrance', icon: 'arrow-forward' %}
+            {% render 'icon-velour', icon: 'arrow-forward' %}
           </button>
         </form>
 
@@ -201,7 +201,7 @@ FOOTER
 
       <p class="copyright">
         &copy;
-        <a href="#" class="copyright-link">{{ section.settings.copyright_text | default: 'Fragrance' }}</a>.
+        <a href="#" class="copyright-link">{{ section.settings.copyright_text | default: 'Velour' }}</a>.
         <span id="year"></span>
         {%- if section.settings.show_powered_by -%}
         {{ powered_by_link }}
@@ -253,7 +253,7 @@ FOOTER
         "type": "text",
         "id": "logo_text",
         "label": "Logo text",
-        "default": "Fragrance"
+        "default": "Velour"
       },
       {
         "type": "header",
@@ -451,7 +451,7 @@ FOOTER
         "type": "text",
         "id": "copyright_text",
         "label": "Copyright text",
-        "default": "Fragrance"
+        "default": "Velour"
       },
       {
         "type": "checkbox",

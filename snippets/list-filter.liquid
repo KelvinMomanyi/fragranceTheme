@@ -91,7 +91,7 @@
           </facet-status-component>
         {% endif %}
         <span class="svg-wrapper icon-caret icon-animated">
-          {% render 'icon-fragrance', icon: 'chevron-down' %}
+          {% render 'icon-velour', icon: 'chevron-down' %}
         </span>
       </div>
     </summary>
@@ -366,7 +366,7 @@
                         <rect width="16" height="16" fill="none" stroke="currentColor"/>
                       </svg>
                       <div class="svg-wrapper">
-                        {% render 'icon-fragrance', icon: 'checkmark' %}
+                        {% render 'icon-velour', icon: 'checkmark' %}
                       </div>
                       <span class="facet-checkbox__text" aria-hidden="true">
                         <span class="facet-checkbox__text-label">{{- value.label | escape }}</span> ({{- value.count -}})
@@ -390,7 +390,7 @@
             aria-controls="filters-list-{{ sectionId }}-{{ filter.param_name | escape | replace: '.', '-' }}"
           >
             <span class="svg-wrapper icon-plus">
-              {% render 'icon-fragrance', icon: 'plus' %}
+              {% render 'icon-velour', icon: 'plus' %}
             </span>
             <span class="show-more__label show-more__label--more">
               {{- 'products.facets.show_more' | t -}}

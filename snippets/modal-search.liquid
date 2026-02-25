@@ -3,7 +3,7 @@
     <div class="search-modal__header">
       <h2 class="visually-hidden">Search</h2>
       <button type="button" class="close-modal-btn" onclick="closeSearchModal()" aria-label="Close search">
-        {% render 'icon-fragrance', icon: 'close' %}
+        {% render 'icon-velour', icon: 'close' %}
       </button>
     </div>
     
@@ -12,7 +12,7 @@
         <form action="{{ routes.search_url }}" method="get" role="search" class="predictive-search-form">
           <div class="predictive-search__field">
             <span class="predictive-search__icon">
-              {% render 'icon-fragrance', icon: 'search' %}
+              {% render 'icon-velour', icon: 'search' %}
             </span>
             <input
               class="search__input field__input"
@@ -33,7 +33,7 @@
               spellcheck="false"
             >
             <button type="reset" class="predictive-search__reset-button hidden" aria-label="Clear search">
-              {% render 'icon-fragrance', icon: 'close' %}
+              {% render 'icon-velour', icon: 'close' %}
             </button>
             <input name="options[prefix]" type="hidden" value="last">
           </div>
