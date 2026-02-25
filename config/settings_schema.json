@@ -1,7 +1,7 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Fragrance",
+    "theme_name": "Velour",
     "theme_version": "1.1.0",
     "theme_author": "Fragrance Theme Development",
     "theme_documentation_url": "https://help.shopify.com",
@@ -13,6 +13,7 @@
       {
         "type": "color_scheme_group",
         "id": "color_schemes",
+        "label": "Color schemes",
         "definition": [
           {
             "type": "color",

@@ -63,7 +63,7 @@
     "content_for_index": []
   },
   "presets": {
-    "Default": {
+    "Velour": {
       "font_heading": "pinyon_script_n4",
       "font_body": "cormorant_garamond_n4",
       "color_schemes": {
