@@ -113,7 +113,7 @@
   display: flex;
   align-items: center;
   padding: 8px 12px;
-  border-radius: 0;
+  border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s ease;
   font-size: 1.4rem;
@@ -127,7 +127,7 @@
   width: 18px;
   height: 18px;
   border: 1px solid var(--facets-border-strong);
-  border-radius: 0;
+  border-radius: 4px;
   margin-right: 12px;
   cursor: pointer;
   appearance: none;
@@ -163,7 +163,7 @@
 /* Price Inputs */
 #main-collection-filters .price-facet__input {
   border: 1px solid var(--facets-border-strong);
-  border-radius: 0;
+  border-radius: 6px;
   padding: 10px;
   font-size: 1.4rem;
   width: 100%;
@@ -179,7 +179,7 @@
 @media screen and (max-width: 749px) {
   #main-collection-filters .facets-toggle {
     border: 1px solid var(--facets-border-strong);
-    border-radius: 0;
+    border-radius: 10px;
     background: #fff;
     padding: 12px 20px;
     height: auto;
