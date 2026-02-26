@@ -94,6 +94,8 @@
     --color-text: {{ section.settings.text_color }};
     --color-foreground: {{ section.settings.text_color }};
     --color-background: {{ section.settings.background }};
+    overflow: visible;
+    position: relative;
   }
   .alert-text.visible {
     left: 44%; /* Move to the visible position */
@@ -384,20 +386,18 @@
     background-color: var(--white);
     color: var(--black);
     position: absolute; 
-    top: 100%;
+    bottom: calc(100% + 10px);
     right: 0;
     width: auto;
     min-width: 220px;
     max-height: 350px;
     overflow-y: auto;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
     border: 1px solid var(--black_10);
-    border-radius: 4px;
     opacity: 0;
     display: none;
     transition: var(--transition-1);
     z-index: 10000;
-    margin-top: 10px;
     animation: fadeIn 0.2s ease-out;
 }
 
