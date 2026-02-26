@@ -94,7 +94,6 @@
     --color-text: {{ section.settings.text_color }};
     --color-foreground: {{ section.settings.text_color }};
     --color-background: {{ section.settings.background }};
-    overflow: hidden;
   }
   .alert-text.visible {
     left: 44%; /* Move to the visible position */
@@ -520,23 +519,16 @@
   }
 
   function slideText() {
-    resetPosition(texts[currentIndex]); // Hide the current text
+    resetPosition(texts[currentIndex]);
     currentIndex = (currentIndex + 1) % texts.length;
-    texts[currentIndex].classList.remove('exit'); // Reset exit state
-    slideToMiddle(texts[currentIndex]); // Show the next text
+    texts[currentIndex].classList.remove('exit');
+    slideToMiddle(texts[currentIndex]);
   }
 
-  // Initially, display the first element in the middle
   slideToMiddle(texts[currentIndex]);
-
-  // Change text every 3 seconds
   setInterval(slideText, 3000);
-});
 
-
-
-  // No additional JS needed for localization form as it uses onchange submit.
-  
+  /* ------- Currency dropdown (inside DOMContentLoaded so DOM is ready) ------- */
   const dropdown = document.querySelector('#currency-dropdown-announcement');
   if (dropdown) {
     const select = dropdown.querySelector('.select');
@@ -544,27 +536,30 @@
     const menu = dropdown.querySelector('.newmenu');
     const options = dropdown.querySelectorAll('.newmenu li');
     const form = dropdown.closest('form');
-    const hiddenInput = form.querySelector('input[name="country_code"]');
+    const hiddenInput = form ? form.querySelector('input[name="country_code"]') : null;
 
-    select.addEventListener('click', (e) => {
+    if (select && menu) {
+      select.addEventListener('click', function(e) {
         e.stopPropagation();
-        caretWrapper.classList.toggle('caret-rotate');
+        if (caretWrapper) caretWrapper.classList.toggle('caret-rotate');
         menu.classList.toggle('menu-open');
-    });
+      });
 
-    options.forEach(option => {
-        option.addEventListener('click', ()=> {
-            const value = option.getAttribute('data-value');
-            hiddenInput.value = value;
-            form.submit();
+      options.forEach(function(option) {
+        option.addEventListener('click', function() {
+          const value = option.getAttribute('data-value');
+          if (hiddenInput) hiddenInput.value = value;
+          if (form) form.submit();
         });
-    });
+      });
 
-    document.addEventListener('click', () => {
+      document.addEventListener('click', function() {
         if (caretWrapper) caretWrapper.classList.remove('caret-rotate');
         menu.classList.remove('menu-open');
-    });
+      });
+    }
   }
+ });
 })();
 </script>
 
