@@ -1881,6 +1881,15 @@ a.card-meta-text:is(:hover, :focus) {
 
 }
 
+/* === Drawer/Sidebar Background Robustness Fix === */
+menu-drawer, menu-drawer details[open],
+details.menu-opening, details[open],
+menu-drawer[open] {
+  background-color: var(--color-background, #fff) !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+}
+
 /*COLLECTION PAGE SIDEBAR LAYOUT===================================*/
 
 /* Collection page wrapper for sidebar + products */
