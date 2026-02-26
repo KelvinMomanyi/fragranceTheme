@@ -204,34 +204,44 @@
 
     <!-- Language and Currency Selectors Container -->
     <div id="currency-language-container">
-      <select name="locale_code" class="locale-selector" aria-label="Language">
-        {% for language in localization.available_languages %}
-          {% if language.iso_code == localization.language.iso_code %}
-            <option value="{{ language.iso_code }}" selected="selected">{{ language.name }}</option>
-          {% else %}
-            <option value="{{ language.iso_code }}">{{ language.name }}</option>
-          {% endif %}
-        {% endfor %}
-      </select>
-      
-    
-    
-      {% form 'localization', id: 'localization_form', class: 'localization-form' %}
-          <div class="localization-wrapper" style="display: flex; gap: 10px;">
+      {%- form 'localization', id: 'HeaderLocalizationForm', class: 'localization-form' -%}
+        <div class="localization-wrapper" style="display: flex; gap: 10px; align-items: center;">
+          
+          <select name="locale_code" class="locale-selector" aria-label="Language" onchange="this.form.submit()">
+            {% for language in localization.available_languages %}
+              <option value="{{ language.iso_code }}" {% if language.iso_code == localization.language.iso_code %}selected="selected"{% endif %}>
+                {{ language.endonym_name | capitalize }}
+              </option>
+            {% endfor %}
+          </select>
+          
+          <div class="separator" style="color: var(--color-text);"></div>
+
+          <div class="currency-custom-container">
+            <div class="dropdown" id="currency-dropdown-header">
+              <div class="select" style="color: var(--color-text);">
+                <span class="selected">
+                  <div class="flag-icon" style="background-image: url('{{ localization.country | image_url: width: 32 }}');" aria-label="{{ localization.country.name }} flag"></div>
+                  <span>{{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }}</span>
+                </span>
+                <div class="caret-icon-wrapper" style="color: var(--color-text);">
+                  {% render 'icon-velour', icon: 'chevron-down', size: 'small' %}
+                </div>
+              </div>
+              <ul class="newmenu">
+                {% for country in localization.available_countries %}
+                  <li data-value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}class="active"{% endif %}>
+                    <div class="flag-icon" style="background-image: url('{{ country | image_url: width: 32 }}');"></div>
+                    <span>{{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})</span>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
             <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
-            <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
-            
-            <select name="country_code" class="localization-selector" aria-label="Country">
-              {% for country in localization.available_countries %}
-                <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
-                  {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
-                </option>
-              {% endfor %}
-            </select>
           </div>
-      {% endform %}
+          
         </div>
-       {% comment %} {% render 'icon-velour', icon: 'close' %} {% endcomment %}
+      {%- endform -%}
     </div>
 
 
@@ -337,6 +347,36 @@
     document.querySelectorAll('.localization-form select').forEach(function(element) {
         element.addEventListener('change', function(e) { e.target.form.submit(); });
     }); 
+
+    /* Header Currency Dropdown Logic */
+    const headerDropdown = document.querySelector('#currency-dropdown-header');
+    if (headerDropdown) {
+      const select = headerDropdown.querySelector('.select');
+      const caretWrapper = headerDropdown.querySelector('.caret-icon-wrapper');
+      const menu = headerDropdown.querySelector('.newmenu');
+      const options = headerDropdown.querySelectorAll('.newmenu li');
+      const form = headerDropdown.closest('form');
+      const hiddenInput = form.querySelector('input[name="country_code"]');
+
+      select.addEventListener('click', (e) => {
+          e.stopPropagation();
+          caretWrapper.classList.toggle('caret-rotate');
+          menu.classList.toggle('menu-open');
+      });
+
+      options.forEach(option => {
+          option.addEventListener('click', ()=> {
+              const value = option.getAttribute('data-value');
+              hiddenInput.value = value;
+              form.submit();
+          });
+      });
+
+      document.addEventListener('click', () => {
+          if (caretWrapper) caretWrapper.classList.remove('caret-rotate');
+          menu.classList.remove('menu-open');
+      });
+    }
 
   })();
   </script> 
