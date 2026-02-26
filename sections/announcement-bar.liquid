@@ -89,9 +89,11 @@
 
 <style>
   .alert{
-   background-color:{{section.settings.background}}; 
-    {% comment %} background-color:black; {% endcomment %}
-    color:{{section.settings.text_color}};
+    background-color: {{section.settings.background}}; 
+    color: {{section.settings.text_color}};
+    --color-text: {{ section.settings.text_color }};
+    --color-foreground: {{ section.settings.text_color }};
+    --color-background: {{ section.settings.background }};
     overflow: hidden;
   }
   .alert-text.visible {
