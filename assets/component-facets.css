@@ -1,28 +1,25 @@
-/* Facets (collection filters + sorting)
-   This theme uses Dawn-like facets markup (details/summary).
-   Keep styles scoped so they don't leak into other pages.
-*/
-
 #main-collection-filters {
-  --facets-border: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.16);
-  --facets-border-strong: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.22);
-  --facets-surface: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.03);
-  --facets-surface-hover: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.06);
-  --facets-shadow: 0 18px 45px rgb(0 0 0 / 0.14);
-  --facets-radius: 14px;
-  --facets-pill-radius: 999px;
-  --facets-panel-min: 320px;
-  --facets-panel-max: 460px;
-  --facets-gap: 12px;
-  font-family: var(--ff-roboto, system-ui, -apple-system, Segoe UI, Roboto, sans-serif);
+  --facets-border: rgba(0, 0, 0, 0.08);
+  --facets-border-strong: rgba(0, 0, 0, 0.15);
+  --facets-surface: rgba(0, 0, 0, 0.02);
+  --facets-surface-hover: rgba(0, 0, 0, 0.04);
+  --facets-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --facets-radius: 12px;
+  --facets-pill-radius: 50px;
+  --facets-panel-min: 300px;
+  --facets-panel-max: 450px;
+  --facets-gap: 16px;
+  font-family: inherit;
 }
 
 #main-collection-filters .facets-block-wrapper {
-  margin-bottom: 18px;
+  margin-bottom: 24px;
 }
 
 #main-collection-filters summary.facets__summary {
   list-style: none;
+  font-family: var(--ff-roboto);
+  /* Use body font for labels */
 }
 
 #main-collection-filters summary.facets__summary::-webkit-details-marker {
@@ -35,7 +32,7 @@
 
 @media screen and (min-width: 750px) {
 
-  /* Desktop horizontal filters: clean pills + real dropdown panels */
+  /* Desktop horizontal filters */
   #main-collection-filters .facets--horizontal .facets__item {
     border-bottom: 0;
     position: relative;
@@ -43,128 +40,148 @@
 
   #main-collection-filters .facets--horizontal details.facets__panel {
     padding: 0;
-    position: relative;
   }
 
   #main-collection-filters .facets--horizontal summary.facets__summary {
+    display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    min-height: 44px;
+    gap: 8px;
+    padding: 8px 18px;
+    min-height: 40px;
     border-radius: var(--facets-pill-radius);
     border: 1px solid var(--facets-border);
-    background: var(--facets-surface);
-    transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-    user-select: none;
+    background: transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
   }
 
   #main-collection-filters .facets--horizontal summary.facets__summary:hover {
-    background: var(--facets-surface-hover);
     border-color: var(--facets-border-strong);
+    background: var(--facets-surface-hover);
   }
 
   #main-collection-filters .facets--horizontal details[open]>summary.facets__summary {
-    background: var(--color-background, #fff);
-    border-color: var(--facets-border-strong);
-    box-shadow: 0 0 0 3px rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.12);
-  }
-
-  #main-collection-filters .facets--horizontal summary.facets__summary:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.18);
+    background: #fff;
+    border-color: var(--black);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 
   #main-collection-filters .facets--horizontal .facets__label {
-    font-size: 0.95rem;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    color: var(--color-foreground, var(--color-text));
-  }
-
-  #main-collection-filters .facets--horizontal .facets__status,
-  #main-collection-filters .facets--horizontal .facets__status-wrapper {
-    color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.82);
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--black);
+    text-transform: none;
+    /* More modern than all-caps in this theme */
   }
 
   #main-collection-filters .facets--horizontal .facets__panel-content {
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 8px);
     left: 0;
     width: max-content;
-    min-width: min(var(--facets-panel-min), 92vw);
-    max-width: min(var(--facets-panel-max), 92vw);
-    max-height: min(420px, 70vh);
-    overflow: auto;
-    padding: 14px;
+    min-width: min(var(--facets-panel-min), 90vw);
+    max-width: min(var(--facets-panel-max), 90vw);
+    padding: 20px;
     border-radius: var(--facets-radius);
     border: 1px solid var(--facets-border);
-    background: var(--color-background, #fff);
+    background: #fff;
     box-shadow: var(--facets-shadow);
-    z-index: 120;
+    z-index: 100;
+    animation: fadeInScale 0.2s cubic-bezier(0, 0, 0.2, 1);
   }
 
-  /* Price panel needs a bit more room */
-  #main-collection-filters .facets--horizontal [data-testid="price-filter"]+.facets__panel-content {
-    min-width: min(360px, 92vw);
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
   }
 
-  #main-collection-filters .facets--horizontal .facets__clear,
-  #main-collection-filters .facets--horizontal .show-more__button {
-    padding-top: 10px;
+  #main-collection-filters [data-testid="price-filter"]+.facets__panel-content {
+    min-width: 320px;
   }
 }
 
-/* Dropdown list row styling (availability, etc.) */
-#main-collection-filters .facets__inputs-list {
-  gap: 6px;
-}
-
+/* Custom Checkbox Styling */
 #main-collection-filters label.facet-checkbox {
-  padding: 10px;
-  border-radius: 10px;
-  transition: background-color 140ms ease;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-size: 1.4rem;
 }
 
 #main-collection-filters label.facet-checkbox:hover {
-  background: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.06);
+  background: var(--facets-surface-hover);
 }
 
-#main-collection-filters label.facet-checkbox svg {
-  color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.45);
+#main-collection-filters .facet-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--facets-border-strong);
+  border-radius: 4px;
+  margin-right: 12px;
+  cursor: pointer;
+  appearance: none;
+  background: #fff;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
+#main-collection-filters .facet-checkbox input[type="checkbox"]:checked {
+  background: var(--black);
+  border-color: var(--black);
+}
+
+#main-collection-filters .facet-checkbox input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 8' fill='none'%3E%3Cpath d='M1 4L4 7L9 1' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* Hide default SVG markers since we use custom checkbox */
+#main-collection-filters label.facet-checkbox svg,
 #main-collection-filters label.facet-checkbox .svg-wrapper {
-  width: 16px;
-  height: 16px;
-  margin-left: -22px;
-  color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.9);
+  display: none !important;
 }
 
-#main-collection-filters label.facet-checkbox input:checked+svg {
-  color: rgb(var(--color-foreground-rgb, 0, 0, 0) / 0.9);
-}
-
-/* Price inputs: align with theme fields */
+/* Price Inputs */
 #main-collection-filters .price-facet__input {
-  background: var(--color-background, #fff);
+  border: 1px solid var(--facets-border-strong);
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 1.4rem;
+  width: 100%;
+  transition: border-color 0.2s ease;
 }
 
-/* Sorting dropdown: ensure it sits above grid + matches border/shadow */
-#main-collection-filters .sorting-filter__options {
-  border-color: var(--facets-border);
-  box-shadow: var(--facets-shadow);
+#main-collection-filters .price-facet__input:focus {
+  border-color: var(--black);
+  outline: none;
 }
 
-/* Mobile drawer polish (keeps everything contained) */
+/* Vertical / Drawer refinements */
 @media screen and (max-width: 749px) {
   #main-collection-filters .facets-toggle {
-    border: 1px solid var(--facets-border);
-    border-radius: var(--facets-radius);
-    background: var(--facets-surface);
-  }
-
-  #main-collection-filters .facets-toggle__button {
-    background: transparent;
-    border-color: transparent;
+    border: 1px solid var(--facets-border-strong);
+    border-radius: 10px;
+    background: #fff;
+    padding: 12px 20px;
+    height: auto;
   }
 }

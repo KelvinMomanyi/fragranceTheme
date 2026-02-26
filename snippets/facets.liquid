@@ -60,15 +60,7 @@
         <h4 class="facets--filters-title">{{ 'products.facets.filter_by_label' | t | default: 'Filter' }}</h4>
       {% endif %}
 
-      <div class="products-count-wrapper" data-testid="products-count">
-        <span title="{{ 'products.facets.product_count' | t | default: 'Products' }}">
-          {% if results.products_count > 25000 %}
-            {{- 'products.facets.item_count_cutoff' | t: count: 25000 | default: '25000+ products' -}}
-          {% else %}
-            {{- 'products.facets.product_count_simple' | t: count: results.products_count | default: results.products_count -}}
-          {% endif %}
-        </span>
-      </div>
+
 
       {% if enable_sorting and filter_type == 'vertical' %}
         {% render 'sorting',
@@ -167,15 +159,7 @@
           {% endif %}
 
           {% if filter_type == 'horizontal' %}
-            <div class="products-count-wrapper" data-testid="products-count">
-              <span title="{{ 'products.facets.product_count' | t | default: 'Products' }}">
-                {% if results.products_count > 25000 %}
-                  {{- 'products.facets.item_count_cutoff' | t: count: 25000 | default: '25000+ products' -}}
-                {% else %}
-                  {{- 'products.facets.product_count_simple' | t: count: results.products_count | default: results.products_count -}}
-                {% endif %}
-              </span>
-            </div>
+
 
             {% if enable_sorting %}
               {% render 'sorting',
