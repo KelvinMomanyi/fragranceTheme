@@ -5,7 +5,7 @@
 {% endif %}">
   {% unless section.settings.background_image != blank %}
     <div class="poster-placeholder">
-      {{ 'lifestyle-1' | placeholder_svg_tag: 'poster-placeholder-svg' }}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
     </div>
   {% endunless %}
   <div class="grid grid-3">
@@ -40,7 +40,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: -1;
+    z-index: 0;
     display: var(--has-bg-image, none);
 }
 
@@ -50,7 +50,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 0;
     overflow: hidden;
     background-color: #9e9e9e;
 }
@@ -102,6 +102,8 @@
         align-content: stretch;
         padding: 40px 60px;
         box-sizing: border-box;
+        position: relative;
+        z-index: 1;
     }
     
     .grid-3{
