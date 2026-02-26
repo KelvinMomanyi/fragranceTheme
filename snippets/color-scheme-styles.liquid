@@ -11,6 +11,7 @@
 {%- if scheme_settings == blank -%}
   {%- assign scheme_settings = settings.color_schemes[scheme].settings -%}
 {%- endif -%}
+{%- comment -%}
   This theme uses both custom variables (e.g. --color-text) and Dawn-style
   variables used by some components (e.g. --color-foreground-rgb).
   Keep them in sync for the scoped section.
