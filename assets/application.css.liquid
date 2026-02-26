@@ -76,6 +76,7 @@
   --transition-2: 0.5s ease;
   --cubic-in: cubic-bezier(0.51, 0.03, 0.64, 0.28);
   --cubic-out: cubic-bezier(0.33, 0.85, 0.4, 0.96);
+  --radius-3: 0;
 }
 
 /* Dynamic Scheme Classes (Dawn-Style) */
@@ -218,6 +219,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  border-radius: 0 !important;
 }
 
 li {
@@ -690,7 +692,7 @@ h6,
   bottom: -10px;
   right: -10px;
   padding-inline: 6px;
-  border-radius: 50%;
+  border-radius: 0;
 }
 
 
@@ -1015,7 +1017,7 @@ h6,
   background-color: var(--white);
   font-size: 22px;
   padding: 12px;
-  border-radius: 50%;
+  border-radius: 0;
   transition: var(--transition-1);
 }
 
@@ -1467,7 +1469,7 @@ a.card-meta-text:is(:hover, :focus) {
   color: var(--white);
   font-size: 24px;
   padding: 18px;
-  border-radius: 50%;
+  border-radius: 0;
   z-index: 4;
   opacity: 0;
   visibility: hidden;
@@ -1882,8 +1884,10 @@ a.card-meta-text:is(:hover, :focus) {
 }
 
 /* === Drawer/Sidebar Background Robustness Fix === */
-menu-drawer, menu-drawer details[open],
-details.menu-opening, details[open],
+menu-drawer,
+menu-drawer details[open],
+details.menu-opening,
+details[open],
 menu-drawer[open] {
   background-color: var(--color-background, #fff) !important;
   opacity: 1 !important;
@@ -2018,7 +2022,7 @@ body.template-collection main > .shopify-section:nth-child(2) {
   max-width: 100%;
   height: auto;
   margin: 2rem 0;
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 .rte table {
@@ -2083,7 +2087,7 @@ body.template-collection main > .shopify-section:nth-child(2) {
   .search-modal-content {
     width: 60%;
     margin-top: 10vh;
-    border-radius: 8px;
+    border-radius: 0;
     max-height: 80vh;
   }
 }
@@ -2165,7 +2169,7 @@ body.template-collection main > .shopify-section:nth-child(2) {
 .login-modal-content {
   max-width: 450px;
   margin: 15vh auto;
-  border-radius: 8px;
+  border-radius: 0;
   padding: 40px;
 }
 
@@ -2259,7 +2263,7 @@ body.template-collection main > .shopify-section:nth-child(2) {
   padding: 0.8rem 1rem;
   text-decoration: none;
   color: var(--black);
-  border-radius: 4px;
+  border-radius: 0;
   transition: background-color 0.2s;
 }
 
@@ -2282,7 +2286,7 @@ body.template-collection main > .shopify-section:nth-child(2) {
   object-fit: contain;
   background-color: var(--white);
   border: 1px solid var(--light-gray);
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 .predictive-search__item-heading {
