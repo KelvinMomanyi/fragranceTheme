@@ -509,19 +509,25 @@
 </section>
 
 <style>
-  /* Product page styles — Dawn-aligned layout */
+  /* Product page styles */
   .product-section {
-    --radius-soft: 0px;
-    --shadow-soft: none;
-    --shadow-soft-2: none;
-    --radius-3: 0px;
-    --shadow-2: none;
-    --shadow-1: none;
+    /* Section-scoped tokens so the layout adapts to color schemes */
+    --p-surface: var(--color-background);
+    --p-surface-2: var(--cultured);
+    --p-border: var(--black_10);
+    --p-muted: var(--granite-gray);
+    --p-muted-2: var(--spanish-gray);
+    --p-accent: var(--color-button);
+    --p-accent-contrast: var(--color-button-label);
   }
 
-  .product-section,
-  .product-section * {
-    border-radius: 0 !important;
+  @supports (color: color-mix(in srgb, #000 50%, #fff)) {
+    .product-section {
+      --p-surface-2: color-mix(in srgb, var(--color-background) 94%, var(--color-text));
+      --p-border: color-mix(in srgb, var(--color-text) 16%, transparent);
+      --p-muted: color-mix(in srgb, var(--color-text) 58%, var(--color-background));
+      --p-muted-2: color-mix(in srgb, var(--color-text) 44%, var(--color-background));
+    }
   }
 
 
@@ -579,8 +585,8 @@
   .product-media-main {
     position: relative;
     overflow: hidden;
-    background: var(--cultured);
-    border: 1px solid var(--black_10);
+    background: var(--p-surface-2);
+    border: 1px solid var(--p-border);
     box-shadow: none;
   }
 
@@ -614,7 +620,7 @@
     position: relative;
     margin-top: 1.6rem;
     padding-top: 1rem;
-    border-top: 1px solid var(--black_10);
+    border-top: 1px solid var(--p-border);
   }
 
   .product-thumbnails::before,
@@ -660,9 +666,9 @@
     height: 40px;
     display: grid;
     place-content: center;
-    background: var(--white);
-    border: 1px solid var(--black_10);
-    color: var(--smokey-black);
+    background: var(--p-surface);
+    border: 1px solid var(--p-border);
+    color: var(--color-text);
     transition: transform var(--transition-1), opacity var(--transition-1), color var(--transition-1), background var(--transition-1);
     margin-inline: auto;
   }
@@ -673,8 +679,8 @@
   }
 
   .thumb-nav:is(:hover, :focus) {
-    color: var(--tan-crayola);
-    background: var(--cultured);
+    color: var(--p-accent);
+    background: var(--p-surface-2);
     transform: translateY(-1px);
   }
 
@@ -720,10 +726,10 @@
   .thumbnail-btn {
     width: 72px;
     height: 72px;
-    border: 1px solid var(--black_10);
+    border: 1px solid var(--p-border);
     overflow: hidden;
     cursor: pointer;
-    background: var(--white);
+    background: var(--p-surface);
     padding: 0;
     box-shadow: none;
     scroll-snap-align: start;
@@ -779,8 +785,8 @@
   }
 
   .thumbnail-btn.active {
-    border-color: var(--tan-crayola);
-    outline: 2px solid var(--tan-crayola);
+    border-color: var(--p-accent);
+    outline: 2px solid var(--p-accent);
     outline-offset: 2px;
   }
 
@@ -792,7 +798,7 @@
 
   @supports not (color: color-mix(in srgb, #000 50%, #fff)) {
     .thumbnail-btn.active {
-      outline: 2px solid var(--tan-crayola);
+      outline: 2px solid var(--p-accent);
       outline-offset: 2px;
     }
   }
@@ -800,7 +806,7 @@
   @media (hover: hover) {
     .thumbnail-btn:hover {
       transform: translateY(-2px);
-      border-color: var(--tan-crayola);
+      border-color: var(--p-accent);
       box-shadow: none;
     }
 
@@ -835,7 +841,7 @@
 
   .product-vendor a {
     display: inline-block;
-    color: var(--spanish-gray);
+    color: var(--p-muted-2);
     text-decoration: none;
     font-size: var(--fs-6);
     letter-spacing: 1px;
@@ -844,7 +850,7 @@
   }
 
   .product-vendor a:is(:hover, :focus) {
-    color: var(--tan-crayola);
+    color: var(--p-accent);
   }
 
   .product-price-wrapper {
@@ -863,18 +869,18 @@
   }
 
   .product-price--sale {
-    color: var(--tan-crayola);
+    color: var(--p-accent);
   }
 
   .product-compare-price {
     font-size: var(--fs-4);
-    color: var(--spanish-gray);
+    color: var(--p-muted-2);
     text-decoration: line-through;
   }
 
   .product-badge {
-    background: var(--black);
-    color: var(--white);
+    background: var(--p-accent);
+    color: var(--p-accent-contrast);
     padding: 0.5rem 1rem;
     font-size: var(--fs-7);
     font-weight: var(--fw-500);
@@ -885,20 +891,20 @@
   .product-unit-price {
     width: 100%;
     font-size: var(--fs-6);
-    color: var(--granite-gray);
+    color: var(--p-muted);
     margin-top: 0.6rem;
   }
 
   .product-tax-note,
   .product-shipping-note {
     font-size: var(--fs-6);
-    color: var(--granite-gray);
+    color: var(--p-muted);
     margin: 0.6rem 0 0;
   }
 
   .product-description {
     line-height: 1.8;
-    color: var(--granite-gray);
+    color: var(--p-muted);
   }
 
   .product-block--variants {
@@ -922,11 +928,14 @@
     width: 100%;
     padding: 1.2rem 1.4rem;
     font-size: 1.6rem;
-    background: var(--white);
+    background: var(--p-surface);
+    color: var(--color-text);
+    border: 1px solid var(--p-border);
+    border-color: var(--p-border) !important;
   }
 
   .product-option-select:focus-visible {
-    outline-color: var(--tan-crayola);
+    outline-color: var(--p-accent);
   }
 
   .product-option-swatches {
@@ -943,7 +952,7 @@
     display: block;
     width: 38px;
     height: 38px;
-    border: 1px solid var(--black_10);
+    border: 1px solid var(--p-border);
     box-shadow: none;
     transition: transform var(--transition-1), box-shadow var(--transition-1), border-color var(--transition-1);
     background-size: cover;
@@ -951,14 +960,14 @@
   }
 
   .swatch--selected {
-    border-color: var(--tan-crayola);
-    outline: 2px solid var(--tan-crayola);
+    border-color: var(--p-accent);
+    outline: 2px solid var(--p-accent);
     outline-offset: 2px;
   }
 
   @supports not (color: color-mix(in srgb, #000 50%, #fff)) {
     .swatch--selected {
-      outline: 2px solid var(--tan-crayola);
+      outline: 2px solid var(--p-accent);
       outline-offset: 2px;
     }
   }
@@ -966,7 +975,7 @@
   @media (hover: hover) {
     .swatch-label:hover .swatch {
       transform: translateY(-1px);
-      border-color: var(--tan-crayola);
+      border-color: var(--p-accent);
       box-shadow: none;
     }
   }
@@ -974,9 +983,10 @@
   .quantity-selector {
     display: inline-flex;
     align-items: center;
-    border: 1px solid var(--black_10);
+    border: 1px solid var(--p-border);
+    border-color: var(--p-border) !important;
     overflow: hidden;
-    background: var(--white);
+    background: var(--p-surface);
   }
 
   .qty-btn {
@@ -989,11 +999,20 @@
   }
 
   .qty-btn:is(:hover, :focus) {
-    background: var(--cultured);
-    color: var(--tan-crayola);
+    background: var(--p-surface-2);
+    color: var(--p-accent);
   }
 
   .qty-input {
+    border: 1px solid var(--p-border);
+    border-color: var(--p-border) !important;
+    background: var(--p-surface);
+    color: var(--color-text);
+    padding: 1.1rem 1.2rem;
+    line-height: 1.2;
+  }
+
+  .quantity-selector .qty-input {
     width: 64px;
     height: 44px;
     border: none;
@@ -1001,6 +1020,7 @@
     font-size: 1.6rem;
     -moz-appearance: textfield;
     background: transparent;
+    padding: 0;
   }
 
   .qty-input::-webkit-outer-spin-button,
@@ -1033,21 +1053,21 @@
     border-radius: 0 !important;
     font-size: inherit !important;
     transition: var(--transition-1) !important;
-    background-color: var(--white) !important;
-    color: var(--black) !important;
-    border: 1px solid var(--black) !important;
+    background-color: transparent !important;
+    color: var(--color-text) !important;
+    border: 1px solid var(--color-text) !important;
     text-align: center !important;
   }
 
   .product-form__buttons-dynamic .shopify-payment-button__button:is(:hover, :focus) {
-    background-color: var(--black) !important;
-    color: var(--white) !important;
+    background-color: var(--color-text) !important;
+    color: var(--color-background) !important;
   }
 
   .selling-plan-wrapper {
     padding: 2rem;
-    background: var(--cultured);
-    border: 1px solid var(--black_10);
+    background: var(--p-surface-2);
+    border: 1px solid var(--p-border);
   }
 
   .selling-plan-group-title {
@@ -1070,31 +1090,31 @@
     gap: 1rem;
     cursor: pointer;
     padding: 1rem 1.2rem;
-    border: 1px solid var(--black_10);
-    background: var(--white);
+    border: 1px solid var(--p-border);
+    background: var(--p-surface);
     transition: transform var(--transition-1), border-color var(--transition-1), box-shadow var(--transition-1);
   }
 
   .selling-plan-option:is(:hover, :focus-within) {
-    border-color: var(--tan-crayola);
+    border-color: var(--p-accent);
     box-shadow: none;
     transform: translateY(-1px);
   }
 
   .selling-plan-savings {
     margin-left: auto;
-    color: var(--tan-crayola);
+    color: var(--p-accent);
     font-weight: var(--fw-500);
     font-size: var(--fs-6);
     letter-spacing: 0.5px;
   }
 
   .product-block--collapsible details {
-    border-top: 1px solid var(--black_10);
+    border-top: 1px solid var(--p-border);
   }
 
   .accordion-item {
-    border-bottom: 1px solid var(--black_10);
+    border-bottom: 1px solid var(--p-border);
   }
 
   .accordion-header {
@@ -1129,13 +1149,13 @@
 
   .accordion-content {
     padding: 0 0 2rem;
-    color: var(--granite-gray);
+    color: var(--p-muted);
     line-height: 1.7;
   }
 
   .product-block--sku {
     font-size: var(--fs-6);
-    color: var(--granite-gray);
+    color: var(--p-muted);
     letter-spacing: 0.4px;
   }
 
@@ -1157,7 +1177,7 @@
     font-size: var(--fs-6);
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: var(--granite-gray);
+    color: var(--p-muted);
   }
 
   .share-buttons {
@@ -1170,9 +1190,9 @@
     place-content: center;
     width: 42px;
     height: 42px;
-    background: var(--white);
-    border: 1px solid var(--black_10);
-    color: var(--smokey-black);
+    background: var(--p-surface);
+    border: 1px solid var(--p-border);
+    color: var(--color-text);
     text-decoration: none;
     box-shadow: none;
     transition: transform var(--transition-1), box-shadow var(--transition-1), border-color var(--transition-1), color var(--transition-1);
@@ -1180,8 +1200,8 @@
 
   .share-btn:is(:hover, :focus) {
     transform: translateY(-1px);
-    border-color: var(--tan-crayola);
-    color: var(--tan-crayola);
+    border-color: var(--p-accent);
+    color: var(--p-accent);
     box-shadow: none;
   }
 
