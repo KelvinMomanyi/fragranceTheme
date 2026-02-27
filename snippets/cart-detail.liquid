@@ -258,19 +258,9 @@
           .catch(error => console.error('Error-fetching cart:', error));
       }
 
-    function getCurrencySymbol(currencyCode){
-      return (0).toLocaleString(undefined, {
-          style: "currency",
-          currency: currencyCode,
-          minimumFractionDigits:0,
-          maximumFractionDigits:0,
-      }).replace(/\d/g, '').trim();
-        }
-        
-
         const currencySymbol = "{{ shop.currency | escape }}"; 
-        {% comment %} const currency_code = getCurrencySymbol(currencySymbol)  {% endcomment %}
-        const currency_code = getCurrencySymbol(window.Shopify.currency.active)
+        
+        // Remove manual getCurrencySymbol logic in favor of Shopify.formatMoney
         {% comment %} function getCurrencySymbol(currencyCode) {
           return (0).toLocaleString(undefined, {
             style: "currency",
@@ -312,7 +302,7 @@
               <form action="/cart" method="post" novalidate>`;
             let subtotal = 0;
             cart.items.forEach(function(item, index) {
-              const itemPrice = item.price / 100;  // Convert cents to dollars
+              const itemPrice = item.price; // Keep in cents for Shopify.formatMoney
               const initialTotalPrice = itemPrice * item.quantity;
               subtotal += initialTotalPrice;
               const safeItemId = `item_${item.key.replace(/[^a-zA-Z0-9_-]/g, '')}`;
@@ -327,15 +317,11 @@
                               <div style="flex:1; display:flex;  flex-direction:column;" >
                                   <div style="flex:1; display:flex; justify-content:space-between">
                                     <a href="${item.url}" style="font-size:1.5rem;">${item.product_title}</a>
-                                      {% comment %} ${currency_code}${item.price.toFixed(2)} {% endcomment %}
                                     <a href="#" class="remove-item" data-line="${index + 1}" data-key="${item.key}" style="color: black;"><span class="icon icon--close-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M320 320L192 192M320 192L192 320"/></svg></span></a>
                                   </div>
-                                  {% comment %} <td id="price_${item.key}">
-                                    ${currency_code}${initialTotalPrice.toFixed(2)}
-                                  </td>  {% endcomment %}
                                   <div>
-                                      <p style="font-size:1.5rem;">${currency_code}${itemPrice.toFixed(2)}</p>
-                                      <p id="line_price_${item.key}" style="font-size:1.5rem;">Total:  ${currency_code}${initialTotalPrice.toFixed(2)}</p>
+                                      <p style="font-size:1.5rem;">${Shopify.formatMoney(itemPrice)}</p>
+                                      <p id="line_price_${item.key}" style="font-size:1.5rem;">Total:  ${Shopify.formatMoney(initialTotalPrice)}</p>
                                   </div> 
                                   <td style="display:flex; align-items:center; justify-content:center">
                                     <input style="display:none;" type="number" name="updates[]" id="updates_${item.key}" value="${item.quantity}" min="0">
@@ -357,7 +343,7 @@
         
             cartHTML += `
               <div>
-                <p id="subtotal">Subtotal: ${currency_code}${subtotal.toFixed(2)}</p>
+                <p id="subtotal">Subtotal: ${Shopify.formatMoney(subtotal)}</p>
                 <button type="submit" name="update">Update</button>
                 <button type="submit" name="checkout" class="btn btn-primary">Checkout</button>
                 {% comment %} <p>Sub total: ${Shopify.formatMoney(cart.total_price)}</p> {% endcomment %}
@@ -380,14 +366,14 @@
 
 
           function updatePriceAndQuantity(newQuantity) {
-            const newLinePrice = (item.price * newQuantity) / 100;
+            const newLinePrice = item.price * newQuantity; // Keep in cents
             quantityDisplay.textContent = newQuantity;
             quantityInput.value = newQuantity;
-            linePriceDisplay.textContent = `Total: ${currency_code}${newLinePrice.toFixed(2)}`;
+            linePriceDisplay.innerHTML = `Total: ${Shopify.formatMoney(newLinePrice)}`;
 
             // Update the subtotal
-            subtotal = subtotal - (item.price * item.quantity) / 100 + newLinePrice;
-            subtotalDisplay.textContent = `Subtotal: ${currency_code}${subtotal.toFixed(2)}`;
+            subtotal = subtotal - (item.price * item.quantity) + newLinePrice;
+            subtotalDisplay.innerHTML = `Subtotal: ${Shopify.formatMoney(subtotal)}`;
 
             // Update item quantity to the new quantity
             item.quantity = newQuantity;
@@ -612,9 +598,9 @@
           function updateSubtotal(updatedCart) {
             let subtotal = 0;
             updatedCart.items.forEach(item => {
-              subtotal += (item.price * item.quantity) / 100;
+              subtotal += item.price * item.quantity;
             });
-            document.getElementById('subtotal').textContent = `Subtotal: ${currencySymbol}${subtotal.toFixed(2)}`;
+            document.getElementById('subtotal').innerHTML = `Subtotal: ${Shopify.formatMoney(subtotal)}`;
           }
         }
         
