@@ -2,71 +2,29 @@
 <section class="hero1 text-center color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %} min-height: 50vh;" aria-label="home" id="home">
   <ul class="hero1-slider" data-hero-slider>
     {% if section.blocks.size == 0 %}
-      <li class="slider-item active" data-hero-slider-item style="padding-block-start: 70px;">
-        <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'r13.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
-        <div class="card-content">
-          <h1 class="h1 hero1-title slider-reveal">Bleu De Chanel</h1>
-          <p class="price slider-reveal">Starting at $17.99</p>
-          <div style="display: flex; justify-content: flex-start;">
-            <a href="#product" class="btn btn-primary slider-reveal">Shop Now</a>
+      {% for i in (1..3) %}
+        <li class="slider-item {% if forloop.first %}active{% endif %}" data-hero-slider-item style="padding-block-start: 70px;">
+          <div class="slider-bg hero1-card has-bg-image" style="background-color: #f4f4f4;">
+            {{ 'lifestyle-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
-        </div>
-      </li>
-      <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
-        <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'r14.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
-        <div class="card-content">
-          <h1 class="h1 hero1-title slider-reveal">Sun di Gioia</h1>
-          <p class="price slider-reveal">Starting at $17.99</p>
-          <div style="display: flex; justify-content: flex-start;">
-            <a href="#product" class="btn btn-primary slider-reveal">Shop Now</a>
+          <div class="card-content">
+            <h1 class="h1 hero1-title slider-reveal">Velour Scent {{ i }}</h1>
+            <p class="price slider-reveal">Starting at $17.99</p>
+            <div style="display: flex; justify-content: flex-start;">
+              <a href="#" class="btn btn-primary slider-reveal">Shop Now</a>
+            </div>
           </div>
-        </div>
-      </li>
-      <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
-        <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'r15.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
-        <div class="card-content">
-          <h1 class="h1 hero1-title slider-reveal">Dior Sauvage</h1>
-          <p class="price slider-reveal">Starting at $17.99</p>
-          <div style="display: flex; justify-content: flex-start;">
-            <a href="#product" class="btn btn-primary slider-reveal">Shop Now</a>
-          </div>
-        </div>
-      </li>
-      <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
-        <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'r16.jpg' | asset_url }}'); background-position: center;"></div>
-        <div class="card-content">
-          <h1 class="h1 hero1-title slider-reveal">Dior</h1>
-          <p class="price slider-reveal">Starting at $17.99</p>
-          <div style="display: flex; justify-content: flex-start;">
-            <a href="#product" class="btn btn-primary slider-reveal">Shop Now</a>
-          </div>
-        </div>
-      </li>
-      <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
-        <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'r17.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
-        <div class="card-content">
-          <h1 class="h1 hero1-title slider-reveal">Julliete has a gun</h1>
-          <p class="price slider-reveal">Starting at $17.99</p>
-          <div style="display: flex; justify-content: flex-start;">
-            <a href="#product" class="btn btn-primary slider-reveal">Shop Now</a>
-          </div>
-        </div>
-      </li>
-      <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
-        <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'r18.jpg' | asset_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
-        <div class="card-content">
-          <h1 class="h1 hero1-title slider-reveal">Valentino</h1>
-          <p class="price slider-reveal">Starting at $17.99</p>
-          <div style="display: flex; justify-content: flex-start;">
-            <a href="#product" class="btn btn-primary slider-reveal">Shop Now</a>
-          </div>
-        </div>
-      </li>
+        </li>
+      {% endfor %}
     {% else %}
       {% for block in section.blocks %}
         {% if block.type == 'hero_section' %}
           <li class="slider-item {% if forloop.first %}active{% endif %}" data-hero-slider-item style="padding-block-start: 70px;">
-            <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ block.settings.hero_image | image_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
+            <div class="slider-bg hero1-card has-bg-image" style="{% if block.settings.hero_image != blank %}background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ block.settings.hero_image | image_url }}');{% else %}background-color: #f4f4f4;{% endif %} background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-position: center;">
+              {% if block.settings.hero_image == blank %}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+            </div>
             <div class="card-content">
               <h1 class="h1 hero1-title slider-reveal">{{ block.settings.brand_name }}</h1>
               <p class="price slider-reveal">Starting at {{ block.settings.starting_price }}</p>
@@ -170,9 +128,19 @@
             </li>
           {% endfor %}
       {% else %}
-          <div class="empty-collection-message">
-              <p style="text-align: center; padding: 2rem; color: var(--gray-600);">No products found in the selected collection. Please select a different collection or add products.</p>
-          </div>
+          {% for i in (1..4) %}
+            <li class="decoration">
+              <div class="product-card">
+                <a href="#" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
+                  {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                </a>
+                <div class="card-content">
+                  <h3 class="h3"><a href="#" class="card-title">Example Product {{ i }}</a></h3>
+                  <div class="card-price"><data class="price" value="1999">$19.99</data></div>
+                </div>
+              </div>
+            </li>
+          {% endfor %}
       {% endif %}
   </div>
 </div>
@@ -1232,7 +1200,23 @@
   ],
   "presets": [
     {
-      "name": "Best Sellers"
+      "name": "Best Sellers",
+      "blocks": [
+        {
+          "type": "hero_section",
+          "settings": {
+            "brand_name": "Luxury Essence",
+            "starting_price": "$29.99"
+          }
+        },
+        {
+          "type": "hero_section",
+          "settings": {
+            "brand_name": "Velour Midnight",
+            "starting_price": "$34.99"
+          }
+        }
+      ]
     }
   ]
 }
