@@ -347,7 +347,7 @@
                       <button
                          type="submit" 
                          name="add" 
-                         class="btn btn-primary add-to-cart-btn"
+                         class="btn btn-primary"
                          {% unless current_variant.available %}disabled{% endunless %}
                          aria-label="{% if current_variant.available %}{{ 'products.product.add_to_cart' | t | default: 'Add to cart' }}{% else %}{{ 'products.product.sold_out' | t | default: 'Sold out' }}{% endif %}"
                        >
@@ -1013,40 +1013,35 @@
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
-    align-items: flex-start;
   }
 
-  .add-to-cart-btn {
-    width: auto;
-  }
-
-  .add-to-cart-btn:disabled {
+  .btn:disabled {
     opacity: 0.55;
     cursor: not-allowed;
   }
 
-  .product-form__buttons-dynamic .shopify-payment-button__button {
-    overflow: hidden;
-    padding: 20px 30px !important;
-    font-weight: var(--fw-600) !important;
-    border-radius: 0 !important;
-    font-size: 1.6rem !important;
-    transition: var(--transition-1) !important;
-    min-height: 44px !important;
-    text-transform: none !important;
-    letter-spacing: 0 !important;
+  .product-form__buttons-dynamic {
+    margin-top: 0.6rem;
   }
 
-  @media (max-width: 749px) {
-    .product-form-buttons {
-      align-items: stretch;
-    }
-    
-    .add-to-cart-btn,
-    .product-form__buttons-dynamic .shopify-payment-button__button {
-      width: 100% !important;
-      max-width: 100% !important;
-    }
+  .product-form__buttons-dynamic .shopify-payment-button__button {
+    display: inline-block !important;
+    font-family: inherit !important;
+    font-weight: var(--fw-600) !important;
+    max-width: max-content !important;
+    padding: 20px 30px !important;
+    border-radius: 0 !important;
+    font-size: inherit !important;
+    transition: var(--transition-1) !important;
+    background-color: var(--white) !important;
+    color: var(--black) !important;
+    border: 1px solid var(--black) !important;
+    text-align: center !important;
+  }
+
+  .product-form__buttons-dynamic .shopify-payment-button__button:is(:hover, :focus) {
+    background-color: var(--black) !important;
+    color: var(--white) !important;
   }
 
   .selling-plan-wrapper {
