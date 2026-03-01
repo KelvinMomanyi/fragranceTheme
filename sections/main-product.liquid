@@ -492,18 +492,7 @@
       </div>
     </div>
     
-    {%- comment -%} Product Recommendations {%- endcomment -%}
-    <div class="product-recommendations-wrapper">
-      <h3 class="section-title">{{ 'products.product.related_products' | t | default: 'You may also like' }}</h3>
-      {% render 'related-products', product: product %}
-    </div>
-    
-    {%- comment -%} Complementary Products - Commented out: complementary-products is a section, not a snippet {%- endcomment -%}
-    {%- comment -%}
-    <div class="complementary-products-wrapper" id="complementary-products">
-      {% render 'complementary-products', product: product %}
-    </div>
-    {%- endcomment -%}
+
     
   </div>
 </section>
@@ -511,7 +500,7 @@
 <style>
   /* ═══════════════════════════════════════════════════
      PRODUCT PAGE — Enhanced Premium Styles
-     Fragrance Theme · all changes are CSS-only
+     Fragrance Theme · 
   ═══════════════════════════════════════════════════ */
 
   /* ─── Section-scoped design tokens ──────────────────── */
