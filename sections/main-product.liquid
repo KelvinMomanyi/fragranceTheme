@@ -57,7 +57,7 @@
           <div class="main-media-container" id="main-product-media-container">
             {%- if product.media.size > 0 -%}
               {%- for media in product.media -%}
-                <div class="product-media-item {% if media.id == current_variant.featured_media.id or media.id == product.featured_media.id or forloop.first and current_variant.featured_media == nil and product.featured_media == nil %}active{% endif %}" data-media-id="{{ media.id }}" style="display: {% if media.id == current_variant.featured_media.id or media.id == product.featured_media.id or forloop.first and current_variant.featured_media == nil and product.featured_media == nil %}block{% else %}none{% endif %}; width: 100%; height: 100%;">
+                <div class="product-media-item {% if media.id == current_variant.featured_media.id or media.id == product.featured_media.id or forloop.first and current_variant.featured_media == nil and product.featured_media == nil %}active{% endif %}" data-media-id="{{ media.id }}" style="display: {% if media.id == current_variant.featured_media.id or media.id == product.featured_media.id or forloop.first and current_variant.featured_media == nil and product.featured_media == nil %}block{% else %}none{% endif %};">
                   {% render 'product-media', 
                     media: media, 
                     is_main_product_media: true,
@@ -545,7 +545,7 @@
 
   @media (min-width: 1200px) {
     .product-wrapper {
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 1.2fr 1fr;
       gap: 64px;
     }
   }
@@ -556,10 +556,10 @@
   }
 
   /* ─── Media column (left) ────────────────────────────── */
-  .product-media { min-width: 0; }
+  .product-section > .container > .product-wrapper > .product-media { min-width: 0; }
 
   @media (min-width: 750px) {
-    .product-media {
+    .product-section > .container > .product-wrapper > .product-media {
       display: grid;
       grid-template-columns: minmax(72px, 15%) minmax(0, 1fr);
       gap: 2rem;
@@ -592,10 +592,25 @@
     aspect-ratio: 3 / 4;
   }
 
+  /* Product media item — wrapper for each media rendered by product-media snippet */
+  .product-media-item {
+    width: 100%;
+  }
+
+  /* The snippet renders a div.product-media inside .product-media-item;
+     scope tightly to avoid colliding with the section's gallery container. */
+  .product-media-item > .product-media {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+  }
+
+  .product-media-item > .product-media > .product-media__image,
   .product-media-main img {
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    background: var(--p-surface-2);
     transform: scale(1);
     transition: transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 filter 0.5s ease;
@@ -603,7 +618,8 @@
   }
 
   @media (hover: hover) {
-    .product-media-main:hover img {
+    .product-media-main:hover img,
+    .product-media-main:hover .product-media__image {
       transform: scale(1.06);
       filter: saturate(1.1) brightness(1.02);
     }
