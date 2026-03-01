@@ -6,40 +6,89 @@
       {% if recommendations.performed and recommendations.products_count > 0 %}
         <div class="container">
           {%- if section.settings.heading != blank -%}
-            <h2 class="section-title">{{ section.settings.heading }}</h2>
+            <h2 class="complementary-products__heading">{{ section.settings.heading }}</h2>
           {%- endif -%}
           {%- if section.settings.description != blank -%}
-            <p class="complementary-description">{{ section.settings.description }}</p>
+            <p class="complementary-products__description">{{ section.settings.description }}</p>
           {%- endif -%}
-          
-          <div class="complementary-grid">
+
+          <ul class="complementary-products__grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; list-style: none; padding: 0;">
             {% for complementary_product in recommendations.products %}
-              <div class="complementary-card">
-                <a href="{{ complementary_product.url }}" class="complementary-link">
-                  <div class="complementary-image-wrapper">
+              <li class="grid__item decoration">
+                <div class="product-card">
+                  <a
+                    href="{{ complementary_product.url }}"
+                    class="card-banner img-holder has-before"
+                    style="--width: 300; --height: 300;"
+                  >
                     {% if complementary_product.featured_image %}
                       <img
-                        src="{{ complementary_product.featured_image | image_url: width: 400 }}"
+                        src="{{ complementary_product.featured_image | image_url: width: 600 }}"
+                        srcset="{{ complementary_product.featured_image | image_url: width: 300 }} 300w,
+                                {{ complementary_product.featured_image | image_url: width: 450 }} 450w,
+                                {{ complementary_product.featured_image | image_url: width: 600 }} 600w"
+                        sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
                         alt="{{ complementary_product.featured_image.alt | escape }}"
-                        class="complementary-image"
+                        class="img-cover"
+                        width="300"
+                        height="300"
                         loading="lazy"
-                        width="400"
-                        height="400"
                       >
                     {% else %}
-                       {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
+                    {% endif %}
+
+                    <ul class="card-action-list">
+                      <li>
+                        <form action="/cart/add" method="post" enctype="multipart/form-data" class="add-to-cart-form">
+                          <input type="hidden" name="id" value="{{ complementary_product.selected_or_first_available_variant.id }}">
+                          <button type="submit" class="card-action-btn" aria-label="add to cart">
+                            {% render 'icon-velour', icon: 'bag-handle' %}
+                          </button>
+                        </form>
+                      </li>
+                    </ul>
+
+                    {% if complementary_product.compare_at_price > complementary_product.price %}
+                      <ul class="badge-list">
+                        <li>
+                          <div class="badge orange">Sale</div>
+                        </li>
+                        <li>
+                          <div class="badge cyan">
+                            {%- assign savings = complementary_product.compare_at_price | minus: complementary_product.price -%}
+                            {%- assign savings_percent = savings | times: 100 | divided_by: complementary_product.compare_at_price -%}
+                            {{ savings_percent }}%
+                          </div>
+                        </li>
+                      </ul>
+                    {% endif %}
+                  </a>
+
+                  <div class="card-content">
+                    <h3 class="h3">
+                      <a href="{{ complementary_product.url }}" class="card-title">{{ complementary_product.title }}</a>
+                    </h3>
+                    <div class="card-price">
+                      {% if complementary_product.compare_at_price > complementary_product.price %}
+                        <del class="del">{{ complementary_product.compare_at_price | money }}</del>
+                      {% endif %}
+                      {% if complementary_product.price_varies %}
+                        <span class="price-from">From </span>
+                      {% endif %}
+                      <data class="price" value="{{ complementary_product.price }}">{{ complementary_product.price | money }}</data>
+                    </div>
+                    {% assign first_variant = complementary_product.selected_or_first_available_variant %}
+                    {% if first_variant.unit_price_measurement %}
+                      <div class="unit-price">
+                        {{ first_variant.unit_price | money }}/{{ first_variant.unit_price_measurement.reference_value }}{{ first_variant.unit_price_measurement.reference_unit }}
+                      </div>
                     {% endif %}
                   </div>
-                  <div class="complementary-content">
-                    <h3 class="complementary-title">{{ complementary_product.title }}</h3>
-                    <div class="complementary-price">
-                      {{ complementary_product.price | money }}
-                    </div>
-                  </div>
-                </a>
-              </div>
+                </div>
+              </li>
             {% endfor %}
-          </div>
+          </ul>
         </div>
       {% endif %}
     </product-recommendations>
@@ -85,7 +134,7 @@
     background: var(--white);
   }
 
-  .section-title {
+  .complementary-products__heading {
     font-family: var(--ff-mr_de_haviland);
     font-size: 3rem;
     font-weight: 500;
@@ -94,7 +143,7 @@
     color: var(--color-text);
   }
 
-  .complementary-description {
+  .complementary-products__description {
     text-align: center;
     color: var(--granite-gray);
     margin-bottom: 40px;
@@ -103,80 +152,11 @@
     margin-inline: auto;
   }
 
-  .complementary-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-
   @media (min-width: 768px) {
-    .complementary-grid {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 30px;
+    .complementary-products__grid {
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 30px !important;
     }
-  }
-
-  .complementary-card {
-    background: var(--white);
-    border-radius: var(--radius-3, 12px);
-    overflow: hidden;
-    transition: var(--transition-1);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--light-gray);
-  }
-
-  .complementary-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-2);
-    border-color: var(--tan-crayola);
-  }
-
-  .complementary-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-  }
-
-  .complementary-image-wrapper {
-    aspect-ratio: 1;
-    overflow: hidden;
-    background: var(--cultured);
-  }
-
-  .complementary-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: var(--transition-1);
-  }
-
-  .complementary-card:hover .complementary-image {
-    transform: scale(1.05);
-  }
-
-  .complementary-content {
-    padding: 15px;
-    text-align: center;
-  }
-
-  .complementary-title {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
-    font-family: var(--ff-roboto);
-    color: var(--color-text);
-    font-weight: 500;
-  }
-
-  .complementary-price {
-    font-weight: 600;
-    color: var(--tan-crayola);
-    font-family: var(--ff-roboto);
-  }
-
-  .placeholder-svg {
-    width: 100%;
-    height: 100%;
-    background: var(--cultured);
   }
 </style>
 
