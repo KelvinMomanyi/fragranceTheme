@@ -264,7 +264,7 @@
                   {{ 'products.product.quantity.label' | t | default: 'Quantity' }}
                 </label>
                 <div class="quantity-selector">
-                  <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">−</button>
+                  <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">{% render 'icon-velour', icon: 'minus', size: 'small' %}</button>
                   <input 
                     type="number" 
                     id="Quantity-{{ section.id }}"
@@ -274,7 +274,7 @@
                     class="qty-input"
                     aria-label="Quantity"
                   >
-                  <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">+</button>
+                  <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">{% render 'icon-velour', icon: 'add', size: 'small' %}</button>
                 </div>
               </div>
             

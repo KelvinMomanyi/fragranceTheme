@@ -94,7 +94,7 @@
                <li>
                  <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                   <button type="submit" class="card-action-btn" aria-label="view cart" title="view cart">
+                   <button type="submit" class="card-action-btn" aria-label="add to cart" title="add to cart">
                      {% render 'icon-velour', icon: 'bag-handle' %}
                    </button>
                  </form>
