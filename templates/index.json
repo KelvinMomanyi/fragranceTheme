@@ -1,22 +1,25 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
       "settings": {
+        "color_scheme": "scheme-4",
         "title1": "Find the best",
-        "subtitle1": "Classy Shoe",
         "title2": "Find the best",
-        "subtitle2": "Classy Shoe",
         "title3": "Find the best",
-        "subtitle3": "Classy Shoe",
-        "description1": "Designed with clean, non-toxic materials, our shoes ensure style and comfort for everyone.",
-        "description2": "Designed with clean, non-toxic materials, our shoes ensure style and comfort for everyone.",
-        "description3": "Designed with clean, non-toxic materials, our shoes ensure style and comfort for everyone.",
-        "price1": "$17.99",
-        "price2": "$17.99",
-        "price3": "$17.99",
-        "link": "",
-        "btn_label": "Shop Now"
+        "title4": "Product",
+        "title5": "Product",
+        "btn_label": "Shop Now",
+        "link": ""
       }
     },
     "collection": {
@@ -24,6 +27,16 @@
       "settings": {
         "title": "Unveil Your Essence",
         "info": "When you start with a portrait and search for a pure form, a clear volume, through successive eliminations, you arrive inevitably at the egg. Likewise, starting with the egg and following the same process in reverse, one finishes with the portrait.",
+        "video_url": "https://youtu.be/_9VUPq3SxOc?list=TLGGn1R2QQNDf6owOTEwMjAyNQ",
+        "video_file": "Ink.mp4",
+        "video_autoplay": true,
+        "video_loop": true,
+        "video_muted": true,
+        "animation_text": "scent that you can wear",
+        "text_position": "60%",
+        "animation_speed": 1200,
+        "animation_blur": 10,
+        "animation_scale": 3,
         "link1": "",
         "btn_label1": "Shop Now",
         "title2": "What's New?",
@@ -38,11 +51,14 @@
     },
     "productList": {
       "type": "productList",
-      "settings": {}
+      "settings": {
+        "color_scheme": ""
+      }
     },
     "banner": {
       "type": "banner",
       "settings": {
+        "color_scheme": "",
         "subtitle1": "NEW COLLECTION",
         "title1": "Explore Our Latest Velour Collection",
         "btn_label1": "Explore More",
@@ -56,36 +72,103 @@
     "brands": {
       "type": "brands",
       "settings": {
-        "subtitle1": "NEW COLLECTION",
-        "title1": "Discover New Sneaker Collection",
-        "btn_label1": "Explore More",
-        "button_url1": "shopify://collections/all",
-        "title2": "25% off Everything",
-        "description": "Sneakers in a range of styles and colors for every taste",
-        "btn_label2": "Shop Now",
-        "button_url2": "shopify://collections/all"
+        "color_scheme": "",
+        "section_bg_color": "#ffffff",
+        "section_height": 250,
+        "section_height_mobile": 180,
+        "section_padding_vertical": 50,
+        "show_title": true,
+        "section_title": "Our Brands",
+        "title_color": "#000000",
+        "title_font_size": 36,
+        "title_font_size_mobile": 28,
+        "title_font_family": "var(--ff-mr_de_haviland)",
+        "title_font_weight": "300",
+        "title_margin_bottom": 40,
+        "logo_width": 100,
+        "logo_width_mobile": 80,
+        "logo_gap": 80,
+        "logo_gap_mobile": 40,
+        "logo_opacity": 1,
+        "enable_grayscale": true,
+        "grayscale_amount": 100,
+        "enable_hover_effect": true,
+        "hover_scale": 11,
+        "hover_transition_speed": 0.3,
+        "enable_auto_scroll": true,
+        "scroll_speed": 1,
+        "transition_speed": 0.5,
+        "pause_on_hover": true
       }
     },
     "poster": {
       "type": "poster",
-      "settings": {}
+      "settings": {
+        "color_scheme": "",
+        "section_height": 600,
+        "text_color": "#ffffff",
+        "text_1": "DESIGNER FRAGRANCES",
+        "text_2": "NICHE PERFUMES",
+        "text_3": "SUBSCRIBE +",
+        "text_4": "EXPLORE MORE ↗"
+      }
     },
     "services": {
       "type": "services",
-      "settings": {}
+      "settings": {
+        "color_scheme": "",
+        "title_1": "Luxury Perfumes",
+        "subtitle_1": "Discover timeless scents crafted with elegance.",
+        "link_1": "",
+        "title_2": "Fresh & Floral",
+        "subtitle_2": "Light, breezy pieces inspired by nature.",
+        "link_2": "",
+        "title_3": "Exclusive Collections",
+        "subtitle_3": "Limited-edition perfumes for a signature style",
+        "link_3": "",
+        "title_4": "Evening Elegance",
+        "subtitle_4": "Bold and sophisticated scents made for special nights.",
+        "link_4": ""
+      }
     },
     "gallery": {
       "type": "gallery",
-      "settings": {}
+      "settings": {
+        "color_scheme": "",
+        "title_1": "Velour Essence",
+        "tag_1": "Luxury, Signature",
+        "link_1": "",
+        "title_2": "Blooming Petals",
+        "tag_2": "Floral, Fresh",
+        "link_2": "",
+        "title_3": "Midnight Noir",
+        "tag_3": "Bold, Evening",
+        "link_3": "",
+        "title_4": "Citrus Mist",
+        "tag_4": "Fresh, Daily Wear",
+        "link_4": "",
+        "title_5": "Golden Aura",
+        "tag_5": "Warm, Oriental",
+        "link_5": "",
+        "title_6": "Ocean Breeze",
+        "tag_6": "Aqua, Refreshing",
+        "link_6": "",
+        "title_7": "Rose Éclat",
+        "tag_7": "Romantic, Floral",
+        "link_7": "",
+        "title_8": "Vanilla Secrets",
+        "tag_8": "Sweet, Cozy",
+        "link_8": ""
+      }
     },
     "offer": {
       "type": "offer",
       "settings": {
+        "color_scheme": "",
         "percent_offer": "-20%",
         "select_product": "",
         "product_desc": "Conceived as an ode to nature, Sauvage is an act of creation inspired by wide-open spaces. Compositions marked by raw freshness, combining power and nobility.",
-        "offer_price": "$39",
-        "countdown_duration": 72
+        "offer_price": "$39"
       }
     },
     "blog": {
@@ -97,7 +180,9 @@
     },
     "newsletter": {
       "type": "newsletter",
-      "settings": {}
+      "settings": {
+        "color_scheme": ""
+      }
     },
     "newsletter-popup": {
       "type": "newsletter-popup",
