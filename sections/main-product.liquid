@@ -347,7 +347,7 @@
                       <button
                          type="submit" 
                          name="add" 
-                         class="btn btn-primary"
+                         class="btn btn-primary add-to-cart-btn"
                          {% unless current_variant.available %}disabled{% endunless %}
                          aria-label="{% if current_variant.available %}{{ 'products.product.add_to_cart' | t | default: 'Add to cart' }}{% else %}{{ 'products.product.sold_out' | t | default: 'Sold out' }}{% endif %}"
                        >
@@ -1083,13 +1083,15 @@
     color: var(--color-text) !important;
     border: 1px solid var(--p-border) !important;
     text-align: center !important;
+    cursor: pointer !important;
   }
 
-  .product-form__buttons-dynamic .shopify-payment-button__button:is(:hover, :focus) {
+  .product-form__buttons-dynamic .shopify-payment-button__button:is(:hover, :focus):not(:disabled) {
     background-color: var(--color-text) !important;
     color: var(--color-background) !important;
     border-color: var(--color-text) !important;
     transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
   }
 
   /* ─── Selling plan ───────────────────────────────────── */
