@@ -12,15 +12,11 @@
             <p class="complementary-products__description">{{ section.settings.description }}</p>
           {%- endif -%}
 
-          <ul class="complementary-products__grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; list-style: none; padding: 0;">
+          <ul class="complementary-products__grid">
             {% for complementary_product in recommendations.products %}
-              <li class="grid__item decoration">
+              <li class="decoration">
                 <div class="product-card">
-                  <a
-                    href="{{ complementary_product.url }}"
-                    class="card-banner img-holder has-before"
-                    style="--width: 300; --height: 300;"
-                  >
+                  <a href="{{ complementary_product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
                     {% if complementary_product.featured_image %}
                       <img
                         src="{{ complementary_product.featured_image | image_url: width: 600 }}"
@@ -39,6 +35,11 @@
                     {% endif %}
 
                     <ul class="card-action-list">
+                      <li>
+                        <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                          {% render 'icon-velour', icon: 'add' %}
+                        </button>
+                      </li>
                       <li>
                         <form action="/cart/add" method="post" enctype="multipart/form-data" class="add-to-cart-form">
                           <input type="hidden" name="id" value="{{ complementary_product.selected_or_first_available_variant.id }}">
@@ -129,6 +130,7 @@
 </script>
 
 <style>
+  /* Section container */
   .complementary-products {
     padding: var(--section-padding) 0;
     background: var(--white);
@@ -152,11 +154,114 @@
     margin-inline: auto;
   }
 
+  /* Product grid */
+  .complementary-products__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
   @media (min-width: 768px) {
     .complementary-products__grid {
-      grid-template-columns: repeat(4, 1fr) !important;
-      gap: 30px !important;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
     }
+  }
+
+  /* ------------------------------------------------
+     Product card styles — matches best-sellers,
+     productList, and main-collection sections
+     ------------------------------------------------ */
+
+  .complementary-products .product-card {
+    text-align: center;
+  }
+
+  .complementary-products .card-banner {
+    position: relative;
+    display: block;
+    border-bottom: 1px solid var(--light-gray, #eee);
+  }
+
+  .complementary-products .card-banner img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  .complementary-products .card-banner .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .complementary-products .card-banner:hover .overlay {
+    opacity: 1;
+  }
+
+  .complementary-products .card-action-list {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .complementary-products .card-action-btn {
+    background: white;
+    border-radius: 50%;
+    box-shadow: var(--shadow-1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .complementary-products .card-action-btn:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-2);
+  }
+
+  .complementary-products .card-content {
+    padding: 1rem 1.2rem;
+  }
+
+  .complementary-products .card-content .h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--gray-900, var(--smokey-black));
+    margin-bottom: 0.3rem;
+  }
+
+  .complementary-products .card-title {
+    font-size: 1.7rem;
+  }
+
+  .complementary-products .card-price {
+    font-size: 1.2rem;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .complementary-products .card-price .del {
+    color: var(--spanish-gray, #999);
+    text-decoration: line-through;
+  }
+
+  .complementary-products .card-price .price {
+    color: var(--granite-gray);
+    font-weight: 600;
+  }
+
+  .complementary-products .unit-price {
+    font-size: 0.85rem;
+    color: var(--granite-gray, #666);
+    margin-top: 4px;
   }
 </style>
 
