@@ -89,8 +89,8 @@
 
 <style>
   .alert {
-    background-color: var(--color-background); 
-    color: var(--color-text);
+    background-color: var(--color-background) !important; 
+    color: var(--color-text) !important;
   }
   .alert-text.visible {
     left: 44%; /* Move to the visible position */
@@ -105,8 +105,9 @@
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
     white-space: nowrap;
     font-family:var(--ff-urbanist);
-    font-weight:medium;
-    font-size:12px;
+    font-weight: 500;
+    font-size: 12px;
+    color: inherit;
   }
   
   .alert-text.visible {
@@ -375,8 +376,8 @@
 .newmenu {
     list-style-type: none;
     padding: 8px 0;
-    background-color: var(--white);
-    color: var(--black);
+    background-color: var(--color-background);
+    color: var(--color-text);
     position: absolute; 
     top: 100%;
     right: 0;
@@ -404,7 +405,7 @@
     transition: var(--transition-1);
     font-family: var(--ff-roboto);
     font-size: 1.2rem;
-    color: var(--black);
+    color: var(--color-text);
 }
 
 .newmenu li:hover {
@@ -462,13 +463,9 @@
   @media screen and (max-width: 575px){
     .alert-text{
       font-size:12px;
-
     }
     .alert-text.visible {
       left: 50%; /* Move to the visible position */
-
-    }
-     height:100%;
     }
   }
 
