@@ -88,12 +88,9 @@
 {% endif %}
 
 <style>
-  .alert{
+  .alert {
     background-color: var(--color-background); 
     color: var(--color-text);
-    --color-text: var(--color-text);
-    --color-foreground: var(--color-text);
-    --color-background: var(--color-background);
   }
   .alert-text.visible {
     left: 44%; /* Move to the visible position */
@@ -166,13 +163,13 @@
 /* Phone Icon */
 #phone-icon {
   font-size: 14px; /* Adjust the size of the phone icon */
-  color: white; /* Change the color if needed */
+  color: var(--color-text); /* Change the color if needed */
 }
 
 /* Phone Number */
 #phone-number {
   font-size: 12px; /* Adjust the font size */
-  color: white; /* Change the color if needed */
+  color: var(--color-text); /* Change the color if needed */
   text-decoration: underline;
   text-underline-offset:5px;
 }
@@ -207,12 +204,10 @@
     -webkit-appearance: none; /* Remove appearance for Safari */
     -moz-appearance: none; /* Remove appearance for Firefox */
     cursor: pointer;
-    position: relative; /* Required for positioning the arrow */
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="white" d="M5 7L2 3h6z"/></svg>'); /* Custom dropdown arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="rgba(128,128,128,0.8)" d="M5 7L2 3h6z"/></svg>'); /* Custom dropdown arrow */
     background-repeat: no-repeat;
     background-position: left 2px center; /* Position the arrow */
     background-size: 12px 12px; /* Size of the arrow */
-  
   }
   
   .currency-selector:focus {
@@ -263,8 +258,7 @@
     appearance: none; /* Remove the default browser appearance */
     -webkit-appearance: none; /* Remove appearance for Safari */
     -moz-appearance: none; /* Remove appearance for Firefox */
-    position: relative; /* Required for positioning the arrow */
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="white" d="M5 7L2 3h6z"/></svg>'); /* Custom dropdown arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="rgba(128,128,128,0.8)" d="M5 7L2 3h6z"/></svg>'); /* Custom dropdown arrow */
     background-repeat: no-repeat;
     background-position: right 10px center; /* Position the arrow */
     background-size: 12px 12px; /* Size of the arrow */
@@ -436,7 +430,7 @@
 
 .separator {
   height: 16px; /* Adjust the height as needed */
-  border-left: 1px solid white; /* Adjust the border thickness and color */
+  border-left: 1px solid var(--color-text); /* Adjust the border thickness and color */
 }
 
 .custom-select {
