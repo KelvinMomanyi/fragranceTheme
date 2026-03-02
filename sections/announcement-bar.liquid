@@ -499,69 +499,85 @@
 
 <script>
 (function() {
- document.addEventListener('DOMContentLoaded', function() {
-  const sectionId = '{{ section.id }}';
-  const sectionRoot = document.querySelector('[data-section-id="' + sectionId + '"]');
-  if (!sectionRoot) return;
+  var announcementInterval = null;
 
-  const text1 = sectionRoot.querySelector('#text1');
-  const text2 = sectionRoot.querySelector('#text2');
-  const text3 = sectionRoot.querySelector('#text3');
+  function initAnnouncementBar(root) {
+    var sectionRoot = root || document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!sectionRoot) return;
 
-  const texts = [text1, text2, text3];
-  let currentIndex = 0;
+    /* Clear any previous interval to avoid duplicates */
+    if (announcementInterval) clearInterval(announcementInterval);
 
-  function slideToMiddle(element) {
-    element.classList.add('visible');
-  }
+    var text1 = sectionRoot.querySelector('#text1');
+    var text2 = sectionRoot.querySelector('#text2');
+    var text3 = sectionRoot.querySelector('#text3');
 
-  function resetPosition(element) {
-    element.classList.remove('visible');
-    element.classList.add('exit');
-  }
+    var texts = [text1, text2, text3];
+    var currentIndex = 0;
 
-  function slideText() {
-    resetPosition(texts[currentIndex]);
-    currentIndex = (currentIndex + 1) % texts.length;
-    texts[currentIndex].classList.remove('exit');
+    function slideToMiddle(element) {
+      element.classList.add('visible');
+    }
+
+    function resetPosition(element) {
+      element.classList.remove('visible');
+      element.classList.add('exit');
+    }
+
+    function slideText() {
+      resetPosition(texts[currentIndex]);
+      currentIndex = (currentIndex + 1) % texts.length;
+      texts[currentIndex].classList.remove('exit');
+      slideToMiddle(texts[currentIndex]);
+    }
+
     slideToMiddle(texts[currentIndex]);
-  }
+    announcementInterval = setInterval(slideText, 3000);
 
-  slideToMiddle(texts[currentIndex]);
-  setInterval(slideText, 3000);
+    /* ------- Currency dropdown ------- */
+    var dropdown = sectionRoot.querySelector('#currency-dropdown-announcement');
+    if (dropdown) {
+      var select = dropdown.querySelector('.select');
+      var caretWrapper = dropdown.querySelector('.caret-icon-wrapper');
+      var menu = dropdown.querySelector('.newmenu');
+      var options = dropdown.querySelectorAll('.newmenu li');
+      var form = dropdown.closest('form');
+      var hiddenInput = form ? form.querySelector('input[name="country_code"]') : null;
 
-  /* ------- Currency dropdown (inside DOMContentLoaded so DOM is ready) ------- */
-  const dropdown = document.querySelector('#currency-dropdown-announcement');
-  if (dropdown) {
-    const select = dropdown.querySelector('.select');
-    const caretWrapper = dropdown.querySelector('.caret-icon-wrapper');
-    const menu = dropdown.querySelector('.newmenu');
-    const options = dropdown.querySelectorAll('.newmenu li');
-    const form = dropdown.closest('form');
-    const hiddenInput = form ? form.querySelector('input[name="country_code"]') : null;
-
-    if (select && menu) {
-      select.addEventListener('click', function(e) {
-        e.stopPropagation();
-        if (caretWrapper) caretWrapper.classList.toggle('caret-rotate');
-        menu.classList.toggle('menu-open');
-      });
-
-      options.forEach(function(option) {
-        option.addEventListener('click', function() {
-          const value = option.getAttribute('data-value');
-          if (hiddenInput) hiddenInput.value = value;
-          if (form) form.submit();
+      if (select && menu) {
+        select.addEventListener('click', function(e) {
+          e.stopPropagation();
+          if (caretWrapper) caretWrapper.classList.toggle('caret-rotate');
+          menu.classList.toggle('menu-open');
         });
-      });
 
-      document.addEventListener('click', function() {
-        if (caretWrapper) caretWrapper.classList.remove('caret-rotate');
-        menu.classList.remove('menu-open');
-      });
+        options.forEach(function(option) {
+          option.addEventListener('click', function() {
+            var value = option.getAttribute('data-value');
+            if (hiddenInput) hiddenInput.value = value;
+            if (form) form.submit();
+          });
+        });
+
+        document.addEventListener('click', function() {
+          if (caretWrapper) caretWrapper.classList.remove('caret-rotate');
+          menu.classList.remove('menu-open');
+        });
+      }
     }
   }
- });
+
+  /* Init on first page load */
+  document.addEventListener('DOMContentLoaded', function() {
+    initAnnouncementBar();
+  });
+
+  /* Re-init when Shopify editor re-renders this section (e.g. color scheme change) */
+  document.addEventListener('shopify:section:load', function(event) {
+    if (event.detail.sectionId === '{{ section.id }}') {
+      initAnnouncementBar(event.target);
+    }
+  });
 })();
 </script>
 {% endif %}
