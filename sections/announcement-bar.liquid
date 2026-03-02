@@ -37,7 +37,7 @@
               {% endif %}
             </ul>
           </div>
-          <div class="slider-wrapper" style="color: {{ section.settings.text_color }};">
+          <div class="slider-wrapper">
             <p class="alert-text" id="text1">{{ section.settings.text1 }}</p>
             <p class="alert-text" id="text2">{{ section.settings.text2 }}</p>
             <p class="alert-text" id="text3">{{ section.settings.text3 }}</p>
@@ -46,7 +46,7 @@
           <!-- Language and Currency Selectors Container -->
         <div id="language-currency-container">
           {%- form 'localization', id: 'AnnouncementLocalizationForm', class: 'localization-form' -%}
-            <select name="language_code" class="locale-selector" style="color:{{ section.settings.text_color }};" onchange="this.form.submit()">
+            <select name="language_code" class="locale-selector" onchange="this.form.submit()">
               {% for language in localization.available_languages %}
                 <option value="{{ language.iso_code }}" {% if language.iso_code == localization.language.iso_code %}selected{% endif %}>
                   {{ language.endonym_name | capitalize }}
@@ -54,16 +54,16 @@
               {% endfor %}
             </select>
             
-            <div class='separator' style="color: {{section.settings.text_color }};"></div>
+            <div class='separator'></div>
 
             <div class="currency-custom-container">
               <div class="dropdown" id="currency-dropdown-announcement">
-                <div class="select" style="color: {{section.settings.text_color }};">
+                <div class="select">
                   <span class="selected">
                     <div class="flag-icon" style="background-image: url('{{ localization.country | image_url: width: 32 }}');" aria-label="{{ localization.country.name }} flag"></div>
                     <span>{{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }}</span>
                   </span>
-                  <div class="caret-icon-wrapper" style="color: {{ section.settings.text_color }};">
+                  <div class="caret-icon-wrapper">
                     {% render 'icon-velour', icon: 'chevron-down', size: 'small' %}
                   </div>
                 </div>
@@ -89,11 +89,11 @@
 
 <style>
   .alert{
-    background-color: {{section.settings.background}}; 
-    color: {{section.settings.text_color}};
-    --color-text: {{ section.settings.text_color }};
-    --color-foreground: {{ section.settings.text_color }};
-    --color-background: {{ section.settings.background }};
+    background-color: var(--color-background); 
+    color: var(--color-text);
+    --color-text: var(--color-text);
+    --color-foreground: var(--color-text);
+    --color-background: var(--color-background);
   }
   .alert-text.visible {
     left: 44%; /* Move to the visible position */
@@ -197,7 +197,7 @@
   }
    .currency-selector {
     background-color: transparent; /* No background color */
-    color: {{section.settings.text_color}}; /* White text */
+    color: var(--color-text); /* White text */
     border: none; /* Remove the default border */
     {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
     padding-left: 15px; /* Adjust padding as needed */
@@ -230,7 +230,7 @@
 
   .language-selector {
     background-color: transparent; /* No background color */
-    color: {{section.settings.text_color}}; /* White text */
+    color: var(--color-text); /* White text */
     border: none; /* Remove the default border */
     
     {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
@@ -254,7 +254,7 @@
   
   .locale-selector {
     background-color: transparent; /* No background color */
-    color:{{section.settings.text_color}};
+    color: var(--color-text);
     /*color: white;*/ /* White text */
     border: none; /* Remove the default border */
     {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
@@ -568,7 +568,7 @@
   "name": "Announcement bar",
   "settings": [
     {
-      "type": "color_scheme","id": "color_scheme","label": "Color scheme","default": "scheme-1"
+      "type": "color_scheme","id": "color_scheme","label": "Color scheme","default": "scheme-4"
     },
     {
      "type": "checkbox",
@@ -600,18 +600,6 @@
       "label": "Text 3",
       "default": "Get Your Gear Faster"
     },
-    {
-      "type": "color",
-      "id": "background",
-      "label": "Background",
-      "default": "#000000"
-     },
-     {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text",
-      "default": "#F4F4F4"
-     },
      {
       "type": "checkbox",
       "id": "show_facebook_icon",
