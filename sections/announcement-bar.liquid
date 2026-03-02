@@ -1,6 +1,6 @@
 {% if section.settings.enabled %}
- <header class="color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}"> 
-    <div class="alert">
+ <header class="color-scheme-{{ section.settings.color_scheme.id | default: section.settings.color_scheme }}" data-section-id="{{ section.id }}"> 
+    <div class="alert" style="background-color: {{ section.settings.color_scheme.settings.background | default: 'transparent' }} !important; color: {{ section.settings.color_scheme.settings.text | default: 'inherit' }} !important;">
         <div class="flexBox">
           <div id="phone-container">
             <ul class="social-list" style="gap: 15px;">
@@ -89,11 +89,12 @@
 
 <style>
   .alert {
-    background-color: var(--color-background) !important; 
-    color: var(--color-text) !important;
+    position: relative;
+    width: 100%;
+    z-index: 10;
   }
   .alert-text.visible {
-    left: 44%; /* Move to the visible position */
+    left: 50%; /* Center position */
     opacity: 1; /* Fade in */
   }
    .alert-text {
@@ -107,7 +108,7 @@
     font-family:var(--ff-urbanist);
     font-weight: 500;
     font-size: 12px;
-    color: inherit;
+    color: inherit !important;
   }
   
   .alert-text.visible {
@@ -431,7 +432,7 @@
 
 .separator {
   height: 16px; /* Adjust the height as needed */
-  border-left: 1px solid var(--color-text); /* Adjust the border thickness and color */
+  border-left: 1px solid currentColor; /* Adjust the border thickness and color */
 }
 
 .custom-select {
@@ -493,9 +494,13 @@
 <script>
 (function() {
  document.addEventListener('DOMContentLoaded', function() {
-  const text1 = document.getElementById('text1');
-  const text2 = document.getElementById('text2');
-  const text3 = document.getElementById('text3');
+  const sectionId = '{{ section.id }}';
+  const sectionRoot = document.querySelector('[data-section-id="' + sectionId + '"]');
+  if (!sectionRoot) return;
+
+  const text1 = sectionRoot.querySelector('#text1');
+  const text2 = sectionRoot.querySelector('#text2');
+  const text3 = sectionRoot.querySelector('#text3');
 
   const texts = [text1, text2, text3];
   let currentIndex = 0;
