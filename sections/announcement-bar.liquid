@@ -1,14 +1,7 @@
-{% if section.settings.enabled %}
-{%- assign scheme = section.settings.color_scheme -%}
-{%- assign scheme_settings = scheme.settings -%}
-{%- if scheme_settings == blank -%}
-  {%- assign scheme_settings = settings.color_schemes[scheme].settings -%}
-{%- endif -%}
-
- <header class="color-scheme-{{ scheme.id | default: scheme }}" 
-         style="{% render 'color-scheme-styles', scheme: scheme %}" 
+ <header class="color-scheme-{{ section.settings.color_scheme }}" 
+         style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" 
          data-section-id="{{ section.id }}"> 
-    <div class="alert" style="background-color: {{ scheme_settings.background | default: 'transparent' }} !important; color: {{ scheme_settings.text | default: 'inherit' }} !important;">
+    <div class="alert" style="background-color: var(--color-background) !important; color: var(--color-text) !important;">
         <div class="flexBox">
           <div id="phone-container">
             <ul class="social-list" style="gap: 15px;">
@@ -116,7 +109,7 @@
     font-family:var(--ff-urbanist);
     font-weight: 500;
     font-size: 12px;
-    color: inherit !important;
+    color: var(--color-text) !important;
   }
   
   .alert-text.visible {
@@ -173,13 +166,13 @@
 /* Phone Icon */
 #phone-icon {
   font-size: 14px; /* Adjust the size of the phone icon */
-  color: inherit !important; /* Force inheritance from parent scheme */
+  color: var(--color-text) !important; /* Force from theme variable */
 }
 
 /* Phone Number */
 #phone-number {
   font-size: 12px; /* Adjust the font size */
-  color: inherit !important; /* Force inheritance from parent scheme */
+  color: var(--color-text) !important; /* Force from theme variable */
   text-decoration: underline;
   text-underline-offset:5px;
 }
@@ -259,7 +252,7 @@
   
   .locale-selector {
     background-color: transparent; /* No background color */
-    color: inherit;
+    color: var(--color-text);
     /*color: white;*/ /* White text */
     border: none; /* Remove the default border */
     {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
@@ -439,14 +432,14 @@
 }
 
 .social-link {
-  color: inherit !important;
+  color: var(--color-text) !important;
   display: flex;
   align-items: center;
 }
 
 .separator {
   height: 16px; /* Adjust the height as needed */
-  border-left: 1px solid currentColor; /* Adjust the border thickness and color */
+  border-left: 1px solid var(--color-text); /* Adjust the border thickness and color */
 }
 
 .custom-select {
