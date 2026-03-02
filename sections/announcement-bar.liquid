@@ -1,7 +1,8 @@
- <header class="color-scheme-{{ section.settings.color_scheme }}" 
+{% if section.settings.enabled %}
+ <header class="color-scheme-{{ section.settings.color_scheme.id | default: section.settings.color_scheme }}" 
          style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" 
          data-section-id="{{ section.id }}"> 
-    <div class="alert" style="background-color: var(--color-background) !important; color: var(--color-text) !important;">
+    <div class="alert" style="background-color: transparent !important; color: inherit !important;">
         <div class="flexBox">
           <div id="phone-container">
             <ul class="social-list" style="gap: 15px;">
@@ -109,7 +110,7 @@
     font-family:var(--ff-urbanist);
     font-weight: 500;
     font-size: 12px;
-    color: var(--color-text) !important;
+    color: inherit !important;
   }
   
   .alert-text.visible {
@@ -166,13 +167,13 @@
 /* Phone Icon */
 #phone-icon {
   font-size: 14px; /* Adjust the size of the phone icon */
-  color: var(--color-text) !important; /* Force from theme variable */
+  color: inherit !important; /* Force from parent theme variable */
 }
 
 /* Phone Number */
 #phone-number {
   font-size: 12px; /* Adjust the font size */
-  color: var(--color-text) !important; /* Force from theme variable */
+  color: inherit !important; /* Force from parent theme variable */
   text-decoration: underline;
   text-underline-offset:5px;
 }
@@ -432,14 +433,14 @@
 }
 
 .social-link {
-  color: var(--color-text) !important;
+  color: inherit !important;
   display: flex;
   align-items: center;
 }
 
 .separator {
   height: 16px; /* Adjust the height as needed */
-  border-left: 1px solid var(--color-text); /* Adjust the border thickness and color */
+  border-left: 1px solid currentColor; /* Use inherited text color */
 }
 
 .custom-select {
@@ -565,6 +566,7 @@
  });
 })();
 </script>
+{% endif %}
 
 {% schema %}
 {
