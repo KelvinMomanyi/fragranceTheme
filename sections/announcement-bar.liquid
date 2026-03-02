@@ -197,7 +197,7 @@
   }
    .currency-selector {
     background-color: transparent; /* No background color */
-    color: var(--color-text); /* White text */
+    color: inherit;
     border: none; /* Remove the default border */
     {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
     padding-left: 15px; /* Adjust padding as needed */
@@ -228,7 +228,7 @@
 
   .language-selector {
     background-color: transparent; /* No background color */
-    color: var(--color-text); /* White text */
+    color: inherit;
     border: none; /* Remove the default border */
     
     {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
@@ -252,8 +252,7 @@
   
   .locale-selector {
     background-color: transparent; /* No background color */
-    color: var(--color-text);
-    /*color: white;*/ /* White text */
+    color: inherit;
     border: none; /* Remove the default border */
     {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
     padding: 0; /* Adjust padding as needed */
@@ -379,7 +378,7 @@
     list-style-type: none;
     padding: 8px 0;
     background-color: var(--color-background);
-    color: var(--color-text);
+    color: inherit;
     position: absolute; 
     top: 100%;
     right: 0;
@@ -407,7 +406,7 @@
     transition: var(--transition-1);
     font-family: var(--ff-roboto);
     font-size: 1.2rem;
-    color: var(--color-text);
+    color: inherit;
 }
 
 .newmenu li:hover {
