@@ -1,6 +1,14 @@
 {% if section.settings.enabled %}
- <header class="color-scheme-{{ section.settings.color_scheme.id | default: section.settings.color_scheme }}" data-section-id="{{ section.id }}"> 
-    <div class="alert" style="background-color: {{ section.settings.color_scheme.settings.background | default: 'transparent' }} !important; color: {{ section.settings.color_scheme.settings.text | default: 'inherit' }} !important;">
+{%- assign scheme = section.settings.color_scheme -%}
+{%- assign scheme_settings = scheme.settings -%}
+{%- if scheme_settings == blank -%}
+  {%- assign scheme_settings = settings.color_schemes[scheme].settings -%}
+{%- endif -%}
+
+ <header class="color-scheme-{{ scheme.id | default: scheme }}" 
+         style="{% render 'color-scheme-styles', scheme: scheme %}" 
+         data-section-id="{{ section.id }}"> 
+    <div class="alert" style="background-color: {{ scheme_settings.background | default: 'transparent' }} !important; color: {{ scheme_settings.text | default: 'inherit' }} !important;">
         <div class="flexBox">
           <div id="phone-container">
             <ul class="social-list" style="gap: 15px;">
@@ -165,13 +173,13 @@
 /* Phone Icon */
 #phone-icon {
   font-size: 14px; /* Adjust the size of the phone icon */
-  color: var(--color-text); /* Change the color if needed */
+  color: inherit !important; /* Force inheritance from parent scheme */
 }
 
 /* Phone Number */
 #phone-number {
   font-size: 12px; /* Adjust the font size */
-  color: var(--color-text); /* Change the color if needed */
+  color: inherit !important; /* Force inheritance from parent scheme */
   text-decoration: underline;
   text-underline-offset:5px;
 }
@@ -251,7 +259,7 @@
   
   .locale-selector {
     background-color: transparent; /* No background color */
-    color: var(--color-text);
+    color: inherit;
     /*color: white;*/ /* White text */
     border: none; /* Remove the default border */
     {% comment %} border-bottom: 1px solid white; /* Add a white underline */ {% endcomment %}
@@ -428,6 +436,12 @@
     display: block;
     opacity: 1;
     z-index:999
+}
+
+.social-link {
+  color: inherit !important;
+  display: flex;
+  align-items: center;
 }
 
 .separator {
