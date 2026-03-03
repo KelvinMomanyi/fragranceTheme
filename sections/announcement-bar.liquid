@@ -41,17 +41,7 @@
           </div>
           <div class="slider-wrapper">
             {% if section.blocks.size > 0 %}
-              {% for block in section.blocks %}
-                <p class="alert-text" {{ block.shopify_attributes }}>
-                  {% if block.settings.link != blank %}
-                    <a href="{{ block.settings.link }}" class="announcement-link">
-                  {% endif %}
-                  {{ block.settings.text }}
-                  {% if block.settings.link != blank %}
-                    </a>
-                  {% endif %}
-                </p>
-              {% endfor %}
+              {% content_for 'blocks' %}
             {% else %}
               <p class="alert-text" id="text1">Free Shipping On All U.S. Orders $50+</p>
               <p class="alert-text" id="text2">Save Up to 40%</p>
@@ -644,21 +634,7 @@
   ],
   "blocks": [
     {
-      "type": "announcement",
-      "name": "Announcement",
-      "settings": [
-        {
-          "type": "inline_richtext",
-          "id": "text",
-          "label": "Text",
-          "default": "Announce something here"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        }
-      ]
+      "type": "_announcement"
     }
   ],
   "presets": [
@@ -666,19 +642,19 @@
       "name": "Announcement bar",
       "blocks": [
         {
-          "type": "announcement",
+          "type": "_announcement",
           "settings": {
             "text": "Free Shipping On All U.S. Orders $50+"
           }
         },
         {
-          "type": "announcement",
+          "type": "_announcement",
           "settings": {
             "text": "Save Up to 40%"
           }
         },
         {
-          "type": "announcement",
+          "type": "_announcement",
           "settings": {
             "text": "Get Your Gear Faster"
           }

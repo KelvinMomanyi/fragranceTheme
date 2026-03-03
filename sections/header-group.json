@@ -1,18 +1,43 @@
 {
-    "name": "Header",
-    "type": "header",
-    "sections": {
-      "announcement-bar": {
-        "type": "announcement-bar",
-        "settings": {}
+  "name": "Header",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {},
+      "blocks": {
+        "announcement_1": {
+          "type": "_announcement",
+          "settings": {
+            "text": "Free Shipping On All U.S. Orders $50+"
+          }
+        },
+        "announcement_2": {
+          "type": "_announcement",
+          "settings": {
+            "text": "Save Up to 40%"
+          }
+        },
+        "announcement_3": {
+          "type": "_announcement",
+          "settings": {
+            "text": "Get Your Gear Faster"
+          }
+        }
       },
-       "header": {
-         "type": "header",
-        "settings": {}
-       }
+      "block_order": [
+        "announcement_1",
+        "announcement_2",
+        "announcement_3"
+      ]
     },
-    "order": [
-      "announcement-bar",
-       "header"
-    ]
-  }
+    "header": {
+      "type": "header",
+      "settings": {}
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}
