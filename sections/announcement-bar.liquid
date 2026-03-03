@@ -40,9 +40,7 @@
             </ul>
           </div>
           <div class="slider-wrapper">
-            <p class="alert-text" id="text1">{{ section.settings.text1 }}</p>
-            <p class="alert-text" id="text2">{{ section.settings.text2 }}</p>
-            <p class="alert-text" id="text3">{{ section.settings.text3 }}</p>
+            {% content_for 'blocks' %}
           </div>
           
           <!-- Language and Currency Selectors Container -->
@@ -128,7 +126,7 @@
    flex: 1;
    overflow: hidden;
   }
-  #text1, #text2, #text3 {
+  .alert-text {
     width:100%; /* Adjust the width according to your needs */
     height:auto; /* Adjust the height according to your needs */
     position: absolute;
@@ -508,18 +506,18 @@
     /* Clear any previous interval to avoid duplicates */
     if (announcementInterval) clearInterval(announcementInterval);
 
-    var text1 = sectionRoot.querySelector('#text1');
-    var text2 = sectionRoot.querySelector('#text2');
-    var text3 = sectionRoot.querySelector('#text3');
+    var texts = sectionRoot.querySelectorAll('.slider-wrapper .alert-text');
+    if (texts.length === 0) return;
 
-    var texts = [text1, text2, text3];
     var currentIndex = 0;
 
     function slideToMiddle(element) {
+      if (!element) return;
       element.classList.add('visible');
     }
 
     function resetPosition(element) {
+      if (!element) return;
       element.classList.remove('visible');
       element.classList.add('exit');
     }
@@ -532,7 +530,9 @@
     }
 
     slideToMiddle(texts[currentIndex]);
-    announcementInterval = setInterval(slideText, 3000);
+    if (texts.length > 1) {
+      announcementInterval = setInterval(slideText, 3000);
+    }
 
     /* ------- Currency dropdown ------- */
     var dropdown = sectionRoot.querySelector('#currency-dropdown-announcement');
@@ -601,24 +601,6 @@
       "label": "Phone Number",
       "default": "+1 (123) 456-7890"
     },
-    {
-      "type": "text",
-      "id": "text1",
-      "label": "Text 1",
-      "default": "Free Shipping On All U.S. Orders $50+"
-    },
-    {
-      "type": "text",
-      "id": "text2",
-      "label": "Text 2",
-      "default": "Save Up to 40%"
-    },
-    {
-      "type": "text",
-      "id": "text3",
-      "label": "Text 3",
-      "default": "Get Your Gear Faster"
-    },
      {
       "type": "checkbox",
       "id": "show_facebook_icon",
@@ -644,10 +626,34 @@
       "default": true
     }
   ],
-  "blocks": [],
+  "blocks": [
+    {
+      "type": "_announcement"
+    }
+  ],
   "presets": [
     {
-      "name": "Announcement bar"
+      "name": "Announcement bar",
+      "blocks": [
+        {
+          "type": "_announcement",
+          "settings": {
+            "text": "Free Shipping On All U.S. Orders $50+"
+          }
+        },
+        {
+          "type": "_announcement",
+          "settings": {
+            "text": "Save Up to 40%"
+          }
+        },
+        {
+          "type": "_announcement",
+          "settings": {
+            "text": "Get Your Gear Faster"
+          }
+        }
+      ]
     }
   ]
 }
