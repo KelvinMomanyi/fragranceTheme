@@ -299,43 +299,28 @@
     cursor: pointer;
   }
   
-  .dropdown-toggle {
-    padding: 8px;
-    border: none;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .dropdown-menu {
-    display: none; /* Hidden by default */
-    position: absolute;
-    top: 100%;
-    left: 0;
+  .newmenu {
+    list-style-type: none;
+    padding: 8px 0;
     background-color: var(--color-background);
     color: var(--color-text);
-    {% comment %} border: 1px solid #ccc; {% endcomment %}
-    box-shadow: 0 8px 16px var(--color-shadow, rgba(0, 0, 0, 0.1));
-    z-index: 1000;
-  }
-  
-  .currency-selector:hover .dropdown-menu {
-    display: block; /* Show menu on hover */
-  }
-  
-  .dropdown-item {
-    padding: 8px 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .dropdown-item:hover {
-    background-color: rgba(var(--color-foreground-rgb), 0.05);
-    color: var(--color-button);
-  }
+    position: absolute; 
+    top: 100%;
+    right: 0;
+    width: auto;
+    min-width: 220px;
+    max-height: 350px;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px var(--color-shadow, rgba(0, 0, 0, 0.1));
+    border: 1px solid rgba(var(--color-foreground-rgb), 0.2);
+    border-radius: 4px;
+    opacity: 0;
+    display: none;
+    transition: var(--transition-1);
+    z-index: 10000;
+    margin-top: 10px;
+    animation: fadeIn 0.2s ease-out;
+}
 
 
   .flag-icon {
@@ -389,28 +374,6 @@
   transform: rotate(180deg);
 }
 
-  .newmenu {
-    list-style-type: none;
-    padding: 8px 0;
-    background-color: var(--color-background);
-    color: var(--color-text);
-    position: absolute; 
-    top: 100%;
-    right: 0;
-    width: auto;
-    min-width: 220px;
-    max-height: 350px;
-    overflow-y: auto;
-    box-shadow: 0 10px 40px var(--color-shadow, rgba(0, 0, 0, 0.1));
-    border: 1px solid rgba(var(--color-foreground-rgb), 0.2);
-    border-radius: 4px;
-    opacity: 0;
-    display: none;
-    transition: var(--transition-1);
-    z-index: 10000;
-    margin-top: 10px;
-    animation: fadeIn 0.2s ease-out;
-}
 
 .newmenu li {
     padding: 10px 20px;
