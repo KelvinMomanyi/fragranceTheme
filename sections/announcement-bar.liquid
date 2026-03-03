@@ -264,11 +264,15 @@
     appearance: none; /* Remove the default browser appearance */
     -webkit-appearance: none; /* Remove appearance for Safari */
     -moz-appearance: none; /* Remove appearance for Firefox */
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="rgba(128,128,128,0.8)" d="M5 7L2 3h6z"/></svg>'); /* Custom dropdown arrow */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="gray" d="M5 7L2 3h6z"/></svg>'); /* Custom dropdown arrow */
     background-repeat: no-repeat;
     background-position: right 10px center; /* Position the arrow */
     background-size: 12px 12px; /* Size of the arrow */
     padding-right: 25px; /* Add space for the arrow */
+  }
+
+  .locale-selector:hover {
+    color: var(--color-button) !important;
   }
   
   .locale-selector:focus {
@@ -359,8 +363,13 @@
     align-items: center;
     gap:5px;
     cursor: pointer;
-    /*transition: background 0.3s;*/
+    transition: color 0.3s ease;
 }
+
+.select:hover {
+  color: var(--color-button);
+}
+
 .selected{
   display:flex;
   align-items:center;
@@ -378,11 +387,11 @@
   transform: rotate(180deg);
 }
 
-.newmenu {
+  .newmenu {
     list-style-type: none;
     padding: 8px 0;
     background-color: var(--color-background);
-    color: inherit;
+    color: var(--color-text);
     position: absolute; 
     top: 100%;
     right: 0;
@@ -390,8 +399,8 @@
     min-width: 220px;
     max-height: 350px;
     overflow-y: auto;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--black_10);
+    box-shadow: 0 10px 40px var(--color-shadow, rgba(0, 0, 0, 0.1));
+    border: 1px solid rgba(var(--color-foreground-rgb), 0.2);
     border-radius: 4px;
     opacity: 0;
     display: none;
@@ -414,12 +423,12 @@
 }
 
 .newmenu li:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    color: var(--tan-crayola);
+    background-color: rgba(var(--color-foreground-rgb), 0.05);
+    color: var(--color-button);
 }
 
 .newmenu li.active {
-    background-color: rgba(0, 0, 0, 0.02);
+    background-color: rgba(var(--color-foreground-rgb), 0.1);
     font-weight: 600;
 }
 
