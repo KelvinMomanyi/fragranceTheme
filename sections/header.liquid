@@ -620,9 +620,10 @@
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--color-background);
+    color: var(--color-text);
     {% comment %} border: 1px solid #ccc; {% endcomment %}
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px var(--color-shadow, rgba(0, 0, 0, 0.1));
     z-index: 1000;
   }
   
@@ -639,7 +640,8 @@
   }
   
   .dropdown-item:hover {
-    background-color: #f0f0f0;
+    background-color: rgba(var(--color-foreground-rgb), 0.05);
+    color: var(--color-button);
   }
 
 
@@ -684,13 +686,13 @@
 .newmenu{
     list-style-type: none;
     padding: 0.1em 0.2em;
-    background:rgb(255, 255, 255);
-    color:#9fa5b5;
+    background: var(--color-background);
+    color: var(--color-text);
     position: absolute; 
     top: 100%;
     left: 0;
     min-width: max-content;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px var(--color-shadow, rgba(0,0,0,0.1));
     opacity: 0;
     display: none;
     transition: 0.2s;
@@ -708,7 +710,8 @@
 }
 
 .newmenu li:hover{
-    background: #2a2d35;
+    background-color: rgba(var(--color-foreground-rgb), 0.05);
+    color: var(--color-button);
 }
 
 .active{

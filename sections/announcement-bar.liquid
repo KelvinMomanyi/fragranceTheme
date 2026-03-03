@@ -224,8 +224,8 @@
   
   /* Optional: Add custom styles for options */
   .currency-selector option {
-    color: black; /* Change option text color if needed */
-    background-color: white; /* Change option background if needed */
+    color: var(--color-text);
+    background-color: var(--color-background);
   }
 
 
@@ -250,8 +250,8 @@
   
   /* Optional: Add custom styles for options */
   .language-selector option {
-    color: black; /* Change option text color if needed */
-    background-color: white; /* Change option background if needed */
+    color: var(--color-text);
+    background-color: var(--color-background);
   }
   
   .locale-selector {
@@ -281,8 +281,8 @@
   }
   
   .locale-selector option {
-    color: black; /* Change option text color if needed */
-    background-color: white; /* Change option background if needed */
+    color: var(--color-text);
+    background-color: var(--color-background);
   }
   
 
@@ -313,9 +313,10 @@
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #fff;
+    background-color: var(--color-background);
+    color: var(--color-text);
     {% comment %} border: 1px solid #ccc; {% endcomment %}
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px var(--color-shadow, rgba(0, 0, 0, 0.1));
     z-index: 1000;
   }
   
@@ -332,7 +333,8 @@
   }
   
   .dropdown-item:hover {
-    background-color: #f0f0f0;
+    background-color: rgba(var(--color-foreground-rgb), 0.05);
+    color: var(--color-button);
   }
 
 
