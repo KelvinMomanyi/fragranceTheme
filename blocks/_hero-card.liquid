@@ -1,4 +1,4 @@
-<li {{ block.shopify_attributes }}>
+<li class="{% if block.settings.is_large %}colspan-2{% endif %}" {{ block.shopify_attributes }}>
   <div class="hero-card">
     <div class="gradient-overlay">
       <figure class="card-banner img-holder" style="--width: {{ block.settings.width | default: 285 }}; --height: {{ block.settings.height | default: 396 }};">
@@ -53,6 +53,12 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_large",
+      "label": "Large Card (2 Columns)",
+      "default": false
     },
     {
       "type": "number",

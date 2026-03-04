@@ -1691,33 +1691,21 @@ a.card-meta-text:is(:hover, :focus) {
     grid-column: span 2;
   }
 
-  /* Dynamic Grid Spanning Logic */
+  /* Dynamic Grid Spanning Logic (Applies if not explicitly overridden by colspan classes) */
   
-  /* If 1 card: Make it span all 4 columns */
+  /* If 1 card total: Make it span all 4 columns */
   .hero-list li:first-child:nth-last-child(1) {
     grid-column: span 4;
   }
 
-  /* If 2 cards: Each spans 2 columns */
+  /* If 2 cards total: Each spans 2 columns */
   .hero-list li:first-child:nth-last-child(2),
   .hero-list li:first-child:nth-last-child(2) ~ li {
     grid-column: span 2;
   }
 
-  /* If 3 cards: First one spans 2, others span 1. Total 4. */
+  /* If 3 cards total: First one spans 2, others span 1. */
   .hero-list li:first-child:nth-last-child(3) {
-    grid-column: span 2;
-  }
-
-  /* If 4 cards: All span 1 (default grid) */
-
-  /* If 5 cards (Default Original Layout): 
-     1st: 1 col, 2nd: 2 cols, 3rd: 1 col (Row 1 total 4)
-     4th: 2 cols, 5th: 2 cols (Row 2 total 4)
-  */
-  .hero-list li:first-child:nth-last-child(5) ~ li:nth-child(2),
-  .hero-list li:first-child:nth-last-child(5) ~ li:nth-child(4),
-  .hero-list li:first-child:nth-last-child(5) ~ li:nth-child(5) {
     grid-column: span 2;
   }
 
