@@ -858,10 +858,13 @@ h6,
    \*-----------------------------------
 */
 
-/*.hero { padding-block-start: calc(var(--section-padding) + 60px); } */.hero-list {
+.hero {
+  padding-block-start: calc(var(--section-padding, 20px) + 60px);
+}
+
+.hero-list {
   display: grid;
   gap: 15px;
-
 }
 
 .hero-card {
