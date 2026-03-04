@@ -6,7 +6,6 @@
         "card_1": {
           "type": "_hero-card",
           "settings": {
-            "is_large": false,
             "width": 285,
             "height": 396,
             "svg_placeholder": "product-1"
@@ -30,7 +29,6 @@
         "card_2": {
           "type": "_hero-card",
           "settings": {
-            "is_large": true,
             "width": 568,
             "height": 389,
             "svg_placeholder": "product-2"
@@ -54,7 +52,6 @@
         "card_3": {
           "type": "_hero-card",
           "settings": {
-            "is_large": false,
             "width": 285,
             "height": 396,
             "svg_placeholder": "product-3"
@@ -78,7 +75,6 @@
         "card_4": {
           "type": "_hero-card",
           "settings": {
-            "is_large": true,
             "width": 580,
             "height": 213,
             "svg_placeholder": "product-4"
@@ -102,7 +98,6 @@
         "card_5": {
           "type": "_hero-card",
           "settings": {
-            "is_large": true,
             "width": 580,
             "height": 213,
             "svg_placeholder": "product-5"
