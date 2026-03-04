@@ -1,0 +1,32 @@
+<h3 {{ block.shopify_attributes }}>
+  {% if block.settings.link != blank %}
+    <a href="{{ block.settings.link }}" class="card-title">{{ block.settings.title | default: "Product" }}</a>
+  {% else %}
+    <span class="card-title">{{ block.settings.title | default: "Product" }}</span>
+  {% endif %}
+</h3>
+
+{% schema %}
+{
+  "name": "Hero Title",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Product"
+    },
+    {
+       "type": "url",
+       "id": "link",
+       "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Title"
+    }
+  ]
+}
+{% endschema %}

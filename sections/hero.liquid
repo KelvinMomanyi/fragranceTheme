@@ -7,157 +7,170 @@
 <section class="section hero color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="home" aria-label="home">
   <div class="container">
 
-    <ul class="hero-list">
+      <ul class="hero-list">
 
-      <li>
-        <div class="hero-card">
-         <div class="gradient-overlay">
-          <figure class="card-banner img-holder" style="--width: 285; --height: 396;">
-            {% if section.settings.image1 != blank %}
-               <img src="{{ section.settings.image1 | image_url: width: 600 }}"
-                    srcset="{{ section.settings.image1 | image_url: width: 285 }} 285w,
-                            {{ section.settings.image1 | image_url: width: 570 }} 570w,
-                            {{ section.settings.image1 | image_url: width: 600 }} 600w"
-                    sizes="(max-width: 575px) 100vw, 285px"
-                    width="285" height="396" alt="Art Deco Home" class="img-cover">
-             {% else %}
-               {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
-              {% endif %} 
-          </figure>
-          </div>
-          <div class="card-content">
-            <h3>
-              <a href="#" class="card-title">{{ section.settings.title1 | default: "Product" }}</a>
-            </h3>
-            <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
-          </div>
-
-        </div>
-      </li>
-
-      <li class="colspan-2">
-        <div class="hero-card">
-          <div class="gradient-overlay">
-           <figure class="card-banner img-holder" style="--width: 568; --height: 389;">
-              {% if section.settings.image2 != blank %}
-               <img src="{{ section.settings.image2 | image_url: width: 1200 }}"
-                    srcset="{{ section.settings.image2 | image_url: width: 568 }} 568w,
-                            {{ section.settings.image2 | image_url: width: 900 }} 900w,
-                            {{ section.settings.image2 | image_url: width: 1200 }} 1200w"
-                    sizes="(max-width: 575px) 100vw, 568px"
-                    width="568" height="389" alt="Helen Chair" class="img-cover"
-                    loading="lazy">
-             {% else %}
-               {{ 'product-2' | placeholder_svg_tag: 'img-cover' }}
-              {% endif %}   
-           </figure>
-          </div>
-          <div class="overlay"></div>
-          <div class="card-content">
-            <h3>
-              <a href="#" class="card-title">{{ section.settings.title2 | default: "Product" }}</a>
-            </h3>
-            <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
-          </div>
-
-        </div>
-      </li>
-
-      <li>
-        <div class="hero-card">
-         <div class="gradient-overlay">
-          <figure class="card-banner img-holder" style="--width: 285; --height: 396;">
-           {% if section.settings.image3 != blank %}
-             <img src="{{ section.settings.image3 | image_url: width: 600 }}"
-                  srcset="{{ section.settings.image3 | image_url: width: 285 }} 285w,
-                          {{ section.settings.image3 | image_url: width: 570 }} 570w,
-                          {{ section.settings.image3 | image_url: width: 600 }} 600w"
-                  sizes="(max-width: 575px) 100vw, 285px"
-                  width="285" height="396" alt="Vase Of Flowers" class="img-cover"
-                  loading="lazy">
-           {% else %}
-              {{ 'product-3' | placeholder_svg_tag: 'img-cover' }}
-           {% endif %}
-          </figure>
-        </div>
-          <div class="card-content">
-            <h3>
-              <a href="#" class="card-title">{{ section.settings.title3 | default: "Product" }}</a>
-            </h3>
-            <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
-          </div>
-
-        </div>
-      </li>
-
-      <li class="colspan-2">
-        <div class="hero-card">
-         <div class="gradient-overlay">
-            <figure class="card-banner img-holder" style="--width: 580; --height: 213;">
-              {% if section.settings.image4 != blank %}
-                <img src="{{ section.settings.image4 | image_url: width: 1200 }}"
-                     srcset="{{ section.settings.image4 | image_url: width: 580 }} 580w,
-                             {{ section.settings.image4 | image_url: width: 900 }} 900w,
-                             {{ section.settings.image4 | image_url: width: 1200 }} 1200w"
-                     sizes="(max-width: 575px) 100vw, 580px"
-                     width="580" height="213" alt="Product Image" class="img-cover"
-                     loading="lazy">
-              {% else %}
-                {{ 'product-4' | placeholder_svg_tag: 'img-cover' }}
+        {% if section.blocks.size > 0 %}
+          {% content_for 'blocks' %}
+        {% else %}
+          <li>
+            <div class="hero-card">
+             <div class="gradient-overlay">
+              <figure class="card-banner img-holder" style="--width: 285; --height: 396;">
+                {% if section.settings.image1 != blank %}
+                   <img src="{{ section.settings.image1 | image_url: width: 600 }}"
+                        srcset="{{ section.settings.image1 | image_url: width: 285 }} 285w,
+                                {{ section.settings.image1 | image_url: width: 570 }} 570w,
+                                {{ section.settings.image1 | image_url: width: 600 }} 600w"
+                        sizes="(max-width: 575px) 100vw, 285px"
+                        width="285" height="396" alt="Art Deco Home" class="img-cover">
+                 {% else %}
+                   {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
+                  {% endif %} 
+              </figure>
+              </div>
+              <div class="card-content">
+                <h3>
+                  <a href="#" class="card-title">{{ section.settings.title1 | default: "Product" }}</a>
+                </h3>
+                <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
+              </div>
+    
+            </div>
+          </li>
+    
+          <li class="colspan-2">
+            <div class="hero-card">
+              <div class="gradient-overlay">
+               <figure class="card-banner img-holder" style="--width: 568; --height: 389;">
+                  {% if section.settings.image2 != blank %}
+                   <img src="{{ section.settings.image2 | image_url: width: 1200 }}"
+                        srcset="{{ section.settings.image2 | image_url: width: 568 }} 568w,
+                                {{ section.settings.image2 | image_url: width: 900 }} 900w,
+                                {{ section.settings.image2 | image_url: width: 1200 }} 1200w"
+                        sizes="(max-width: 575px) 100vw, 568px"
+                        width="568" height="389" alt="Helen Chair" class="img-cover"
+                        loading="lazy">
+                 {% else %}
+                   {{ 'product-2' | placeholder_svg_tag: 'img-cover' }}
+                  {% endif %}   
+               </figure>
+              </div>
+              <div class="overlay"></div>
+              <div class="card-content">
+                <h3>
+                  <a href="#" class="card-title">{{ section.settings.title2 | default: "Product" }}</a>
+                </h3>
+                <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
+              </div>
+    
+            </div>
+          </li>
+    
+          <li>
+            <div class="hero-card">
+             <div class="gradient-overlay">
+              <figure class="card-banner img-holder" style="--width: 285; --height: 396;">
+               {% if section.settings.image3 != blank %}
+                 <img src="{{ section.settings.image3 | image_url: width: 600 }}"
+                      srcset="{{ section.settings.image3 | image_url: width: 285 }} 285w,
+                              {{ section.settings.image3 | image_url: width: 570 }} 570w,
+                              {{ section.settings.image3 | image_url: width: 600 }} 600w"
+                      sizes="(max-width: 575px) 100vw, 285px"
+                      width="285" height="396" alt="Vase Of Flowers" class="img-cover"
+                      loading="lazy">
+               {% else %}
+                  {{ 'product-3' | placeholder_svg_tag: 'img-cover' }}
                {% endif %}
-           </figure>
-          </div>
-          <div class="card-content">
-            <h3>
-              <a href="#" class="card-title">{{ section.settings.title4 | default: "Product" }}</a>
-            </h3>
-            <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
-          </div>
+              </figure>
+            </div>
+              <div class="card-content">
+                <h3>
+                  <a href="#" class="card-title">{{ section.settings.title3 | default: "Product" }}</a>
+                </h3>
+                <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
+              </div>
+    
+            </div>
+          </li>
+    
+          <li class="colspan-2">
+            <div class="hero-card">
+             <div class="gradient-overlay">
+                <figure class="card-banner img-holder" style="--width: 580; --height: 213;">
+                  {% if section.settings.image4 != blank %}
+                    <img src="{{ section.settings.image4 | image_url: width: 1200 }}"
+                         srcset="{{ section.settings.image4 | image_url: width: 580 }} 580w,
+                                 {{ section.settings.image4 | image_url: width: 900 }} 900w,
+                                 {{ section.settings.image4 | image_url: width: 1200 }} 1200w"
+                         sizes="(max-width: 575px) 100vw, 580px"
+                         width="580" height="213" alt="Product Image" class="img-cover"
+                         loading="lazy">
+                  {% else %}
+                    {{ 'product-4' | placeholder_svg_tag: 'img-cover' }}
+                   {% endif %}
+               </figure>
+              </div>
+              <div class="card-content">
+                <h3>
+                  <a href="#" class="card-title">{{ section.settings.title4 | default: "Product" }}</a>
+                </h3>
+                <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
+              </div>
+    
+            </div>
+          </li>
+    
+          <li class="colspan-2">
+            <div class="hero-card">
+              <div class="gradient-overlay">
+                <figure class="card-banner img-holder" style="--width: 580; --height: 213;">
+                  {% if section.settings.image5 != blank %}
+                    <img src="{{ section.settings.image5 | image_url: width: 1200 }}"
+                         srcset="{{ section.settings.image5 | image_url: width: 580 }} 580w,
+                                 {{ section.settings.image5 | image_url: width: 900 }} 900w,
+                                 {{ section.settings.image5 | image_url: width: 1200 }} 1200w"
+                         sizes="(max-width: 575px) 100vw, 580px"
+                         width="580" height="213" alt="Product Image" class="img-cover"
+                         loading="lazy">
+                  {% else %}
+                      {{ 'product-5' | placeholder_svg_tag: 'img-cover' }}
+                  {% endif %}        
+               </figure>
+              </div>
+              <div class="card-content">
+                <h3>
+                  <a href="#" class="card-title">{{ section.settings.title5 | default: "Product" }}</a>
+                </h3>
+                <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
+              </div>
+    
+            </div>
+          </li>
+        {% endif %}
 
-        </div>
-      </li>
-
-      <li class="colspan-2">
-        <div class="hero-card">
-          <div class="gradient-overlay">
-            <figure class="card-banner img-holder" style="--width: 580; --height: 213;">
-              {% if section.settings.image5 != blank %}
-                <img src="{{ section.settings.image5 | image_url: width: 1200 }}"
-                     srcset="{{ section.settings.image5 | image_url: width: 580 }} 580w,
-                             {{ section.settings.image5 | image_url: width: 900 }} 900w,
-                             {{ section.settings.image5 | image_url: width: 1200 }} 1200w"
-                     sizes="(max-width: 575px) 100vw, 580px"
-                     width="580" height="213" alt="Product Image" class="img-cover"
-                     loading="lazy">
-              {% else %}
-                  {{ 'product-5' | placeholder_svg_tag: 'img-cover' }}
-              {% endif %}        
-           </figure>
-          </div>
-          <div class="card-content">
-            <h3>
-              <a href="#" class="card-title">{{ section.settings.title5 | default: "Product" }}</a>
-            </h3>
-            <a class="btn btn-primary">{{ section.settings.btn_label }}</a>
-          </div>
-
-        </div>
-      </li>
-
-    </ul>
+      </ul>
 
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Image grid",
+  "name": "Hero Section",
+  "blocks": [
+    {
+      "type": "_hero-card"
+    }
+  ],
   "settings":[
     {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Fallback Settings (When no blocks added)"
     },
     {
       "type": "image_picker",
@@ -226,17 +239,106 @@
       "label": "Button link"
     }
   ],
-  "blocks": [],
   "presets": [
     {
-      "name": "Image grid",
-      "settings": {
-        "title1": "Luxury Home",
-        "title2": "Modern Comfort",
-        "title3": "Floral Accents",
-        "title4": "New Arrivals",
-        "title5": "Best Sellers"
-      }
+      "name": "Hero Section",
+      "blocks": [
+        {
+          "type": "_hero-card",
+          "settings": {
+            "is_large": false,
+            "width": 285,
+            "height": 396
+          },
+          "blocks": [
+            {
+              "type": "_hero-title",
+              "settings": {
+                "title": "Luxury Home"
+              }
+            },
+            {
+              "type": "_hero-button"
+            }
+          ]
+        },
+        {
+          "type": "_hero-card",
+          "settings": {
+            "is_large": true,
+            "width": 568,
+            "height": 389
+          },
+          "blocks": [
+            {
+              "type": "_hero-title",
+              "settings": {
+                "title": "Modern Comfort"
+              }
+            },
+            {
+              "type": "_hero-button"
+            }
+          ]
+        },
+        {
+          "type": "_hero-card",
+          "settings": {
+            "is_large": false,
+            "width": 285,
+            "height": 396
+          },
+          "blocks": [
+            {
+              "type": "_hero-title",
+              "settings": {
+                "title": "Floral Accents"
+              }
+            },
+            {
+              "type": "_hero-button"
+            }
+          ]
+        },
+        {
+          "type": "_hero-card",
+          "settings": {
+            "is_large": true,
+            "width": 580,
+            "height": 213
+          },
+          "blocks": [
+            {
+              "type": "_hero-title",
+              "settings": {
+                "title": "New Arrivals"
+              }
+            },
+            {
+              "type": "_hero-button"
+            }
+          ]
+        },
+        {
+          "type": "_hero-card",
+          "settings": {
+            "is_large": true,
+            "width": 580,
+            "height": 213
+          },
+          "blocks": [
+            {
+              "type": "_hero-title",
+              "settings": {
+                "title": "Best Sellers"
+              }
+            },
+            {
+              "type": "_hero-button"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
