@@ -14,7 +14,7 @@
                alt="{{ block.settings.image.alt | escape }}" class="img-cover"
                loading="lazy">
         {% else %}
-          {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
+          {{ block.settings.placeholder | default: 'product-1' | placeholder_svg_tag: 'img-cover' }}
         {% endif %}
       </figure>
     </div>
@@ -71,6 +71,20 @@
       "id": "height",
       "label": "Aspect Ratio Height",
       "default": 396
+    },
+    {
+      "type": "select",
+      "id": "placeholder",
+      "label": "Placeholder SVG",
+      "options": [
+        { "value": "product-1", "label": "Product 1" },
+        { "value": "product-2", "label": "Product 2" },
+        { "value": "product-3", "label": "Product 3" },
+        { "value": "product-4", "label": "Product 4" },
+        { "value": "product-5", "label": "Product 5" },
+        { "value": "product-6", "label": "Product 6" }
+      ],
+      "default": "product-1"
     },
     {
       "type": "url",
