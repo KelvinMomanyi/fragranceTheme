@@ -2,21 +2,112 @@
   "sections": {
     "hero": {
       "type": "hero",
+      "blocks": {
+        "card_1": {
+          "type": "_hero-card",
+          "settings": {
+            "is_large": false,
+            "width": 285,
+            "height": 396
+          },
+          "blocks": {
+            "title": {
+              "type": "_hero-title",
+              "settings": {
+                "title": "Luxury Home"
+              }
+            },
+            "button": {
+              "type": "_hero-button"
+            }
+          }
+        },
+        "card_2": {
+          "type": "_hero-card",
+          "settings": {
+            "is_large": true,
+            "width": 568,
+            "height": 389
+          },
+          "blocks": {
+            "title": {
+              "type": "_hero-title",
+              "settings": {
+                "title": "Modern Comfort"
+              }
+            },
+            "button": {
+              "type": "_hero-button"
+            }
+          }
+        },
+        "card_3": {
+          "type": "_hero-card",
+          "settings": {
+            "is_large": false,
+            "width": 285,
+            "height": 396
+          },
+          "blocks": {
+            "title": {
+              "type": "_hero-title",
+              "settings": {
+                "title": "Floral Accents"
+              }
+            },
+            "button": {
+              "type": "_hero-button"
+            }
+          }
+        },
+        "card_4": {
+          "type": "_hero-card",
+          "settings": {
+            "is_large": true,
+            "width": 580,
+            "height": 213
+          },
+          "blocks": {
+            "title": {
+              "type": "_hero-title",
+              "settings": {
+                "title": "New Arrivals"
+              }
+            },
+            "button": {
+              "type": "_hero-button"
+            }
+          }
+        },
+        "card_5": {
+          "type": "_hero-card",
+          "settings": {
+            "is_large": true,
+            "width": 580,
+            "height": 213
+          },
+          "blocks": {
+            "title": {
+              "type": "_hero-title",
+              "settings": {
+                "title": "Best Sellers"
+              }
+            },
+            "button": {
+              "type": "_hero-button"
+            }
+          }
+        }
+      },
+      "block_order": [
+        "card_1",
+        "card_2",
+        "card_3",
+        "card_4",
+        "card_5"
+      ],
       "settings": {
-        "title1": "Find the best",
-        "subtitle1": "Classy Shoe",
-        "title2": "Find the best",
-        "subtitle2": "Classy Shoe",
-        "title3": "Find the best",
-        "subtitle3": "Classy Shoe",
-        "description1": "Designed with clean, non-toxic materials, our shoes ensure style and comfort for everyone.",
-        "description2": "Designed with clean, non-toxic materials, our shoes ensure style and comfort for everyone.",
-        "description3": "Designed with clean, non-toxic materials, our shoes ensure style and comfort for everyone.",
-        "price1": "$17.99",
-        "price2": "$17.99",
-        "price3": "$17.99",
-        "link": "",
-        "btn_label": "Shop Now"
+        "color_scheme": "scheme-1"
       }
     },
     "collection": {
