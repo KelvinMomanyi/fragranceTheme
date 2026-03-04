@@ -21,7 +21,11 @@
             "button": {
               "type": "_hero-button"
             }
-          }
+          },
+          "block_order": [
+            "title",
+            "button"
+          ]
         },
         "card_2": {
           "type": "_hero-card",
@@ -41,7 +45,11 @@
             "button": {
               "type": "_hero-button"
             }
-          }
+          },
+          "block_order": [
+            "title",
+            "button"
+          ]
         },
         "card_3": {
           "type": "_hero-card",
@@ -61,7 +69,11 @@
             "button": {
               "type": "_hero-button"
             }
-          }
+          },
+          "block_order": [
+            "title",
+            "button"
+          ]
         },
         "card_4": {
           "type": "_hero-card",
@@ -81,7 +93,11 @@
             "button": {
               "type": "_hero-button"
             }
-          }
+          },
+          "block_order": [
+            "title",
+            "button"
+          ]
         },
         "card_5": {
           "type": "_hero-card",
@@ -101,7 +117,11 @@
             "button": {
               "type": "_hero-button"
             }
-          }
+          },
+          "block_order": [
+            "title",
+            "button"
+          ]
         }
       },
       "block_order": [
