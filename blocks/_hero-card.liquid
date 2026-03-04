@@ -14,7 +14,7 @@
                alt="{{ block.settings.image.alt | escape }}" class="img-cover"
                loading="lazy">
         {% else %}
-          {{ block.settings.placeholder | default: 'product-1' | placeholder_svg_tag: 'img-cover' }}
+          {{ block.settings.svg_placeholder | default: 'product-1' | placeholder_svg_tag: 'img-cover' }}
         {% endif %}
       </figure>
     </div>
@@ -74,7 +74,7 @@
     },
     {
       "type": "select",
-      "id": "placeholder",
+      "id": "svg_placeholder",
       "label": "Placeholder SVG",
       "options": [
         { "value": "product-1", "label": "Product 1" },
