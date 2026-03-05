@@ -980,6 +980,7 @@ h6,
    \*-----------------------------------
 */
 
+.featured-collection .section-title,
 .product .section-title {
   text-align: center;
 }
@@ -1129,13 +1130,18 @@ h6,
   color: var(--spanish-gray);
 }
 
+.product-slider > *,
 .product-list > * {
   display: none;
 }
 
+.product-slider[data-filter="all"] > *,
 .product-list[data-filter="all"] > *,
+.product-slider[data-filter="accessory"]>.accessory,
 .product-list[data-filter="accessory"]>.accessory,
+.product-slider[data-filter="decoration"]>.decoration,
 .product-list[data-filter="decoration"]>.decoration,
+.product-slider[data-filter="furniture"] > .furniture,
 .product-list[data-filter="furniture"] > .furniture {
   display: block;
   animation: fadeUp 1s ease forwards;
@@ -1751,6 +1757,7 @@ a.card-meta-text:is(:hover, :focus) {
    * PRODUCT
    */
 
+  .featured-collection .title-wrapper,
   .product .title-wrapper {
     display: flex;
     justify-content: space-between;
