@@ -152,8 +152,8 @@
         "btn_label3": "Shop Now"
       }
     },
-    "productList": {
-      "type": "productList",
+    "featured_collection": {
+      "type": "featured-collection",
       "settings": {}
     },
     "banner": {
@@ -227,7 +227,7 @@
   "order": [
     "hero",
     "collection",
-    "productList",
+    "featured_collection",
     "banner",
     "brands",
     "poster",

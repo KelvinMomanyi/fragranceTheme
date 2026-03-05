@@ -1,6 +1,6 @@
-<!--- #PRODUCTS -->
+<!--- #FEATURED COLLECTION -->
 
-<section class="section product color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="product" aria-label="product" data-aos="fade-up">
+<section class="section featured-collection color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="featured-collection" aria-label="featured collection" data-aos="fade-up">
   <div class="container">
 
     <div class="title-wrapper">
@@ -152,7 +152,7 @@
 (function() {
   'use strict';
   document.addEventListener('DOMContentLoaded', function() {
-    const section = document.querySelector('.section.product-list'); // Assuming a unique class or using ID
+    const section = document.querySelector('.section.featured-collection');
     const slider = section?.querySelector('.product-slider');
     if (!slider) return;
 
@@ -194,7 +194,7 @@
 
 {% schema %}
 {
-  "name": "Collection banner",
+  "name": "Featured collection",
   "settings": [
     {
       "type": "color_scheme","id": "color_scheme","label": "Color scheme","default": "scheme-1"
@@ -233,7 +233,7 @@
   ],
   "presets": [
     {
-      "name": "Collection banner",
+      "name": "Featured collection",
       "category": "Custom",
       "blocks": [
         {
