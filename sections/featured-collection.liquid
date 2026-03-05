@@ -24,9 +24,36 @@
     </div>
 
     <div class="collection-containers">
-      {%- for block in section.blocks -%}
-        <ul class="product-slider{% unless forloop.first %} hidden{% endunless %}" data-collection-id="{{ block.id }}">
-          {%- assign collection = block.settings.collection -%}
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <ul class="product-slider{% unless forloop.first %} hidden{% endunless %}" data-collection-id="{{ block.id }}">
+            {%- assign collection = block.settings.collection -%}
+            {%- if collection != blank and collection.all_products_count > 0 -%}
+              {%- for product in collection.products limit: 8 -%}
+                <li class="product-item">
+                  {% render 'product-card', product: product %}
+                </li>
+              {%- endfor -%}
+            {%- else -%}
+              {%- for i in (1..4) -%}
+                <li class="product-item">
+                  <div class="product-card">
+                    <div class="card-banner img-holder" style="--width: 300; --height: 300;">
+                      {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg img-cover' }}
+                    </div>
+                    <div class="card-content">
+                      <h3 class="h3"><span class="card-title">Example Product {{ i }}</span></h3>
+                      <div class="card-price"><span class="price">$19.99</span></div>
+                    </div>
+                  </div>
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
+          </ul>
+        {%- endfor -%}
+      {%- else -%}
+        <ul class="product-slider" data-collection-id="default">
+          {%- assign collection = collections['all'] -%}
           {%- if collection != blank and collection.all_products_count > 0 -%}
             {%- for product in collection.products limit: 8 -%}
               <li class="product-item">
@@ -49,10 +76,10 @@
             {%- endfor -%}
           {%- endif -%}
         </ul>
-      {%- endfor -%}
+      {%- endif -%}
     </div>
 
-    {%- if section.blocks.size > 0 -%}
+    {%- if section.blocks.size > 0 or collections['all'].products.size > 0 -%}
       <div class="slider-nav">
         <button class="slider-prev" aria-label="{{ 'accessibility.previous_slide' | t | default: 'Previous' }}">
           {% render 'icon-velour', icon: 'chevron-back' %}
