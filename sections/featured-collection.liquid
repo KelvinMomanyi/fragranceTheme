@@ -1,87 +1,131 @@
-<!--- #FEATURED COLLECTION -->
+{%- comment -%}
+  FEATURED COLLECTION SECTION
+{%- endcomment -%}
 
-<section class="section featured-collection color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="featured-collection" aria-label="featured collection" data-aos="fade-up">
+<section class="section featured-collection color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="featured-collection-{{ section.id }}" aria-label="featured collection" data-aos="fade-up">
   <div class="container">
 
     <div class="title-wrapper">
-      <h2 class="h2 section-title">Popular Products</h2>
+      <h2 class="h2 section-title">{{ section.settings.title | default: 'Popular Products' }}</h2>
 
-      <ul class="filter-btn-list">
-        <li class="filter-btn-item">
-          <button class="filter-btn" data-filter-btn="accessory">Men's</button>
-        </li>
-
-        <li class="filter-btn-item">
-          <button class="filter-btn" data-filter-btn="decoration">Women's</button>
-        </li>
-
-        <li class="filter-btn-item">
-          <button class="filter-btn" data-filter-btn="furniture">Unisex</button>
-        </li>
-
-      </ul>
+      {% if section.blocks.size > 0 %}
+        <ul class="filter-btn-list">
+          {% for block in section.blocks %}
+            <li class="filter-btn-item">
+              <button class="filter-btn {% if forloop.first %}active{% endif %}" data-filter-btn="{{ block.id }}">{{ block.settings.title }}</button>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
     </div>
 
-    <ul class="product-slider">
-          {% assign collection_handle = 'all' %}
-          {% for product in collections[collection_handle].products limit:8 %}
-            <li class="decoration">
-              <div class="product-card">
-                <a href="{{ product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
-                  {% if product.featured_image %}
-                    <img src="{{ product.featured_image | image_url: width: 600 }}" 
-                      srcset="{{ product.featured_image | image_url: width: 300 }} 300w,
-                              {{ product.featured_image | image_url: width: 450 }} 450w,
-                              {{ product.featured_image | image_url: width: 600 }} 600w"
-                      sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 25vw"
-                      alt="{{ product.featured_image.alt | escape }}" 
-                      class="img-cover" 
-                      width="300" 
-                      height="300" 
-                      loading="lazy">
-                      <ul class="card-action-list">
-
-                        <li>
-                          <button class="card-action-btn" aria-label="add to cart" title="add to cart">
-                            {% render 'icon-velour', icon: 'add' %}
-                          </button>
-                        </li>
-    
-                        <li>
-                          <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
-                            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                            <button type="submit" class="card-action-btn" aria-label="add to cart" title="add to cart">
-                              {% render 'icon-velour', icon: 'bag-handle' %}
+    <div class="product-sliders-container">
+      {% for block in section.blocks %}
+        <ul class="product-slider {% if forloop.first %}active{% else %}hidden{% endif %}" data-slider="{{ block.id }}">
+          {% assign collection = collections[block.settings.collection] %}
+          {% if collection and collection.products.size > 0 %}
+            {% for product in collection.products limit: section.settings.products_to_show %}
+              <li class="product-item">
+                <div class="product-card">
+                  <a href="{{ product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
+                    {% if product.featured_image %}
+                      <img src="{{ product.featured_image | image_url: width: 600 }}" 
+                        srcset="{{ product.featured_image | image_url: width: 300 }} 300w,
+                                {{ product.featured_image | image_url: width: 450 }} 450w,
+                                {{ product.featured_image | image_url: width: 600 }} 600w"
+                        sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 25vw"
+                        alt="{{ product.featured_image.alt | escape }}" 
+                        class="img-cover" 
+                        width="300" 
+                        height="300" 
+                        loading="lazy">
+                        <ul class="card-action-list">
+                          <li>
+                            <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                              {% render 'icon-velour', icon: 'add' %}
                             </button>
-                          </form>
-                        </li>
-                      </ul>
-    
-                      <ul class="badge-list">
-                        <li>
-                          <div class="badge cyan">-10%</div>
-                        </li>
-    
-                      </ul>
-                  {% else %}
-                    {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
-                  {% endif %}
+                          </li>
+                          <li>
+                            <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
+                              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                              <button type="submit" class="card-action-btn" aria-label="add to cart" title="add to cart">
+                                {% render 'icon-velour', icon: 'bag-handle' %}
+                              </button>
+                            </form>
+                          </li>
+                        </ul>
+      
+                        {% if product.compare_at_price > product.price %}
+                        <ul class="badge-list">
+                          <li>
+                            <div class="badge cyan">Sale</div>
+                          </li>
+                        </ul>
+                        {% endif %}
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
+                    {% endif %}
+                  </a>
+                  <div class="card-content">
+                    <h3 class="h3">
+                      <a href="{{ product.url }}" class="card-title">{{ product.title }}</a>
+                    </h3>
+                    <div class="card-price">
+                      {% if product.compare_at_price > product.price %}
+                        <del class="del">{{ product.compare_at_price | money }}</del>
+                      {% endif %}
+                      <data class="price" value="{{ product.price }}">{{ product.price | money }}</data>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          {% else %}
+            {% for i in (1..section.settings.products_to_show) %}
+              <li class="product-item">
+                <div class="product-card">
+                  <a href="#" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
+                    {% assign placeholder_idx = i | modulo: 6 | plus: 1 %}
+                    {{ 'product-' | append: placeholder_idx | placeholder_svg_tag: 'img-cover' }}
+                  </a>
+                  <div class="card-content">
+                    <h3 class="h3">
+                      <a href="#" class="card-title">Example Product {{ i }}</a>
+                    </h3>
+                    <div class="card-price">
+                      <data class="price" value="19.99">$19.99</data>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          {% endif %}
+        </ul>
+      {% endfor %}
+      
+      {% if section.blocks.size == 0 %}
+        <ul class="product-slider active">
+          {% for i in (1..section.settings.products_to_show) %}
+            <li class="product-item">
+              <div class="product-card">
+                <a href="#" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
+                  {% assign placeholder_idx = i | modulo: 6 | plus: 1 %}
+                  {{ 'product-' | append: placeholder_idx | placeholder_svg_tag: 'img-cover' }}
                 </a>
                 <div class="card-content">
                   <h3 class="h3">
-                    <a href="{{ product.url }}" class="card-title">{{ product.title }}</a>
+                    <a href="#" class="card-title">Example Product {{ i }}</a>
                   </h3>
                   <div class="card-price">
-                    {% if product.compare_at_price > product.price %}
-                      <del class="del">{{ product.compare_at_price | money }}</del>
-                    {% endif %}
-                    <data class="price" value="{{ product.price }}">{{ product.price | money }}</data>
+                    <data class="price" value="19.99">$19.99</data>
                   </div>
                 </div>
               </div>
             </li>
           {% endfor %}
-    </ul>
+        </ul>
+      {% endif %}
+    </div>
 
     <div class="slider-nav">
       <button class="slider-prev" aria-label="Previous">&larr;</button>
@@ -92,7 +136,42 @@
 </section>
 
 <style>
-.product-slider {
+/* Filter Buttons */
+.featured-collection .title-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.featured-collection .filter-btn-list {
+  display: flex;
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+  margin: 15px 0 0 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.featured-collection .filter-btn {
+  background: none;
+  border: 1px solid var(--color-text, #000);
+  padding: 8px 20px;
+  cursor: pointer;
+  color: var(--color-text, #000);
+  transition: all 0.3s ease;
+  border-radius: 20px;
+}
+.featured-collection .filter-btn.active, .featured-collection .filter-btn:hover {
+  background: var(--color-text, #000);
+  color: var(--color-background, #fff);
+}
+
+/* Products */
+.featured-collection .product-slider.hidden {
+  display: none !important;
+}
+.featured-collection .product-slider {
   display: flex;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -104,24 +183,24 @@
   padding-left: 0;
   margin: 0;
 }
-.product-slider::-webkit-scrollbar {
+.featured-collection .product-slider::-webkit-scrollbar {
   display: none;
 }
-.product-slider > li {
+.featured-collection .product-slider > li {
   flex: 0 0 calc(25% - 12px);
   scroll-snap-align: start;
 }
-.product-card {
+.featured-collection .product-card {
   text-align: center;
   padding: 10px;
 }
-.slider-nav {
+.featured-collection .slider-nav {
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-top: 15px;
 }
-.slider-nav button {
+.featured-collection .slider-nav button {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -135,16 +214,18 @@
   justify-content: center;
   transition: opacity 0.2s;
 }
-.slider-nav button:hover { opacity: 0.7; }
+.featured-collection .slider-nav button:hover { opacity: 0.7; }
 
 @media (max-width: 1024px) {
-  .product-slider > li { flex: 0 0 calc(33.33% - 10px); }
+  .featured-collection .product-slider > li { flex: 0 0 calc(33.33% - 10px); }
 }
 @media (max-width: 768px) {
-  .product-slider > li { flex: 0 0 calc(50% - 8px); }
+  .featured-collection .product-slider > li { flex: 0 0 calc(50% - 8px); }
+  .featured-collection .title-wrapper { align-items: flex-start; }
+  .featured-collection .filter-btn-list { justify-content: flex-start; }
 }
 @media (max-width: 480px) {
-  .product-slider > li { flex: 0 0 100%; }
+  .featured-collection .product-slider > li { flex: 0 0 100%; }
 }
 </style>
 
@@ -152,42 +233,55 @@
 (function() {
   'use strict';
   document.addEventListener('DOMContentLoaded', function() {
-    const section = document.querySelector('.section.featured-collection');
-    const slider = section?.querySelector('.product-slider');
-    if (!slider) return;
+    // Only target this specific section instance to avoid conflicts if used multiple times
+    const section = document.getElementById('featured-collection-{{ section.id }}');
+    if (!section) return;
 
-    const getScrollAmount = () => {
+    // Filter Buttons Logic
+    const filterBtns = section.querySelectorAll('.filter-btn');
+    const sliders = section.querySelectorAll('.product-slider');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Remove active class from all buttons and sliders
+        filterBtns.forEach(b => b.classList.remove('active'));
+        sliders.forEach(s => {
+          s.classList.remove('active');
+          s.classList.add('hidden');
+        });
+
+        // Add active class to clicked button
+        this.classList.add('active');
+
+        // Show corresponding slider
+        const targetId = this.getAttribute('data-filter-btn');
+        const targetSlider = section.querySelector(`.product-slider[data-slider="${targetId}"]`);
+        if (targetSlider) {
+          targetSlider.classList.remove('hidden');
+          targetSlider.classList.add('active');
+        }
+      });
+    });
+
+    // Slider Controls Logic
+    const getScrollAmount = (slider) => {
       const firstItem = slider.querySelector('li');
       return firstItem ? firstItem.offsetWidth + 15 : 300;
     };
 
-    // Delegation for controls
     section.addEventListener('click', function(event) {
-      if (event.target.closest('.slider-next')) {
-        slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-      } else if (event.target.closest('.slider-prev')) {
-        slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+      if (event.target.closest('.slider-next') || event.target.closest('.slider-prev')) {
+        const activeSlider = section.querySelector('.product-slider.active');
+        if (!activeSlider) return;
+
+        if (event.target.closest('.slider-next')) {
+          activeSlider.scrollBy({ left: getScrollAmount(activeSlider), behavior: 'smooth' });
+        } else if (event.target.closest('.slider-prev')) {
+          activeSlider.scrollBy({ left: -getScrollAmount(activeSlider), behavior: 'smooth' });
+        }
       }
     });
 
-    // Optimized Autoplay
-    let autoplayInterval;
-    const startAutoplay = () => {
-      autoplayInterval = setInterval(() => {
-        const maxScroll = slider.scrollWidth - slider.clientWidth;
-        if (slider.scrollLeft >= maxScroll - 5) {
-          slider.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-        }
-      }, 4000);
-    };
-
-    const stopAutoplay = () => clearInterval(autoplayInterval);
-
-    slider.addEventListener('mouseenter', stopAutoplay);
-    slider.addEventListener('mouseleave', startAutoplay);
-    startAutoplay();
   });
 })();
 </script>
@@ -197,18 +291,36 @@
   "name": "Featured collection",
   "settings": [
     {
-      "type": "color_scheme","id": "color_scheme","label": "Color scheme","default": "scheme-1"
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Popular Products"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "blocks": [
     {
       "type": "collection_section",
-      "name": "Collection section",
+      "name": "Collection Tab",
       "settings": [
         {
           "type": "text",
           "id": "title",
-          "label": "Section Title",
+          "label": "Tab Title",
           "default": "Discover What's New"
         },
         {
@@ -240,18 +352,14 @@
           "type": "collection_section",
           "settings": {
             "title": "Discover What's New",
-            "collection": "new-arrivals-1",
-            "button_url": "/collections/new-arrivals",
-            "button_label": "Shop Now"
+            "collection": ""
           }
         },
         {
           "type": "collection_section",
           "settings": {
             "title": "Top Trending",
-            "collection":"trending",
-            "button_url": "/collections/trending",
-            "button_label": "Shop Now"
+            "collection": ""
           }
         }
       ]
