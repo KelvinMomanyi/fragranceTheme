@@ -4,147 +4,131 @@
   <div class="container">
 
     <div class="title-wrapper">
-      <h2 class="h2 section-title">Popular Products</h2>
+      {%- if section.blocks.size > 0 -%}
+        <h2 class="h2 section-title">{{ section.blocks.first.settings.title | escape }}</h2>
+      {%- else -%}
+        <h2 class="h2 section-title">{{ 'sections.featured_collection.title' | t | default: "Popular Products" }}</h2>
+      {%- endif -%}
 
-      <ul class="filter-btn-list">
-        <li class="filter-btn-item">
-          <button class="filter-btn" data-filter-btn="accessory">Men's</button>
-        </li>
-
-        <li class="filter-btn-item">
-          <button class="filter-btn" data-filter-btn="decoration">Women's</button>
-        </li>
-
-        <li class="filter-btn-item">
-          <button class="filter-btn" data-filter-btn="furniture">Unisex</button>
-        </li>
-
-      </ul>
+      {%- if section.blocks.size > 1 -%}
+        <ul class="filter-btn-list">
+          {%- for block in section.blocks -%}
+            <li class="filter-btn-item">
+              <button class="filter-btn{% if forloop.first %} active{% endif %}" data-filter-btn="{{ block.id }}">
+                {{ block.settings.collection.title | default: block.settings.title }}
+              </button>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
     </div>
 
-    <ul class="product-slider">
-          {% assign collection_handle = 'all' %}
-          {% for product in collections[collection_handle].products limit:8 %}
-            <li class="decoration">
-              <div class="product-card">
-                <a href="{{ product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
-                  {% if product.featured_image %}
-                    <img src="{{ product.featured_image | image_url: width: 600 }}" 
-                      srcset="{{ product.featured_image | image_url: width: 300 }} 300w,
-                              {{ product.featured_image | image_url: width: 450 }} 450w,
-                              {{ product.featured_image | image_url: width: 600 }} 600w"
-                      sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 25vw"
-                      alt="{{ product.featured_image.alt | escape }}" 
-                      class="img-cover" 
-                      width="300" 
-                      height="300" 
-                      loading="lazy">
-                      <ul class="card-action-list">
-
-                        <li>
-                          <button class="card-action-btn" aria-label="add to cart" title="add to cart">
-                            {% render 'icon-velour', icon: 'add' %}
-                          </button>
-                        </li>
-    
-                        <li>
-                          <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
-                            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                            <button type="submit" class="card-action-btn" aria-label="add to cart" title="add to cart">
-                              {% render 'icon-velour', icon: 'bag-handle' %}
-                            </button>
-                          </form>
-                        </li>
-                      </ul>
-    
-                      <ul class="badge-list">
-                        <li>
-                          <div class="badge cyan">-10%</div>
-                        </li>
-    
-                      </ul>
-                  {% else %}
-                    {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
-                  {% endif %}
-                </a>
-                <div class="card-content">
-                  <h3 class="h3">
-                    <a href="{{ product.url }}" class="card-title">{{ product.title }}</a>
-                  </h3>
-                  <div class="card-price">
-                    {% if product.compare_at_price > product.price %}
-                      <del class="del">{{ product.compare_at_price | money }}</del>
-                    {% endif %}
-                    <data class="price" value="{{ product.price }}">{{ product.price | money }}</data>
+    <div class="collection-containers">
+      {%- for block in section.blocks -%}
+        <ul class="product-slider{% unless forloop.first %} hidden{% endunless %}" data-collection-id="{{ block.id }}">
+          {%- assign collection = block.settings.collection -%}
+          {%- if collection != blank and collection.all_products_count > 0 -%}
+            {%- for product in collection.products limit: 8 -%}
+              <li class="product-item">
+                {% render 'product-card', product: product %}
+              </li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..4) -%}
+              <li class="product-item">
+                <div class="product-card">
+                  <div class="card-banner img-holder" style="--width: 300; --height: 300;">
+                    {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg img-cover' }}
+                  </div>
+                  <div class="card-content">
+                    <h3 class="h3"><span class="card-title">Example Product {{ i }}</span></h3>
+                    <div class="card-price"><span class="price">$19.99</span></div>
                   </div>
                 </div>
-              </div>
-            </li>
-          {% endfor %}
-    </ul>
-
-    <div class="slider-nav">
-      <button class="slider-prev" aria-label="Previous">&larr;</button>
-      <button class="slider-next" aria-label="Next">&rarr;</button>
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+      {%- endfor -%}
     </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="slider-nav">
+        <button class="slider-prev" aria-label="{{ 'accessibility.previous_slide' | t | default: 'Previous' }}">
+          {% render 'icon-velour', icon: 'chevron-back' %}
+        </button>
+        <button class="slider-next" aria-label="{{ 'accessibility.next_slide' | t | default: 'Next' }}">
+          {% render 'icon-velour', icon: 'chevron-forward' %}
+        </button>
+      </div>
+    {%- endif -%}
 
   </div>
 </section>
 
 <style>
-.product-slider {
+.featured-collection .title-wrapper {
+  margin-block-end: 40px;
+  text-align: center;
+}
+.featured-collection .product-slider {
   display: flex;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  gap: 15px;
-  padding-bottom: 10px;
+  gap: 20px;
+  padding-bottom: 20px;
   scrollbar-width: none;
   list-style: none;
   padding-left: 0;
   margin: 0;
 }
-.product-slider::-webkit-scrollbar {
+.featured-collection .product-slider.hidden {
   display: none;
 }
-.product-slider > li {
-  flex: 0 0 calc(25% - 12px);
+.featured-collection .product-slider::-webkit-scrollbar {
+  display: none;
+}
+.featured-collection .product-item {
+  flex: 0 0 calc(25% - 15px);
   scroll-snap-align: start;
 }
-.product-card {
-  text-align: center;
-  padding: 10px;
-}
-.slider-nav {
+.featured-collection .slider-nav {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 15px;
+  margin-top: 30px;
 }
-.slider-nav button {
-  width: 36px;
-  height: 36px;
+.featured-collection .slider-nav button {
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: var(--color-text, #000);
-  color: var(--color-background, #fff);
-  border: none;
+  background-color: var(--color-button);
+  color: var(--color-button-label);
+  border: 1px solid var(--color-button);
   cursor: pointer;
-  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s;
+  transition: all var(--transition-1);
 }
-.slider-nav button:hover { opacity: 0.7; }
+.featured-collection .slider-nav button:hover {
+  background-color: transparent;
+  color: var(--color-button);
+}
+.featured-collection .slider-nav button svg {
+  width: 20px;
+  height: 20px;
+}
 
 @media (max-width: 1024px) {
-  .product-slider > li { flex: 0 0 calc(33.33% - 10px); }
+  .featured-collection .product-item { flex: 0 0 calc(33.33% - 14px); }
 }
 @media (max-width: 768px) {
-  .product-slider > li { flex: 0 0 calc(50% - 8px); }
+  .featured-collection .product-item { flex: 0 0 calc(50% - 10px); }
 }
 @media (max-width: 480px) {
-  .product-slider > li { flex: 0 0 100%; }
+  .featured-collection .product-item { flex: 0 0 calc(100% - 0px); }
 }
 </style>
 
@@ -153,20 +137,46 @@
   'use strict';
   document.addEventListener('DOMContentLoaded', function() {
     const section = document.querySelector('.section.featured-collection');
-    const slider = section?.querySelector('.product-slider');
-    if (!slider) return;
+    if (!section) return;
+
+    const sliders = section.querySelectorAll('.product-slider');
+    const filterBtns = section.querySelectorAll('.filter-btn');
+    const sectionTitle = section.querySelector('.section-title');
+
+    const getActiveSlider = () => section.querySelector('.product-slider:not(.hidden)');
 
     const getScrollAmount = () => {
-      const firstItem = slider.querySelector('li');
-      return firstItem ? firstItem.offsetWidth + 15 : 300;
+      const activeSlider = getActiveSlider();
+      const firstItem = activeSlider?.querySelector('li');
+      return firstItem ? firstItem.offsetWidth + 20 : 300;
     };
 
-    // Delegation for controls
+    // Filter functionality
     section.addEventListener('click', function(event) {
+      const filterBtn = event.target.closest('.filter-btn');
+      if (filterBtn) {
+        const targetId = filterBtn.getAttribute('data-filter-btn');
+        
+        // Update buttons
+        filterBtns.forEach(btn => btn.classList.toggle('active', btn === filterBtn));
+        
+        // Update Title if it's the specific collection title
+        if (sectionTitle) {
+          // You might want to update the title to the collection title here
+          // For now, we keep it simple or use the block title if available
+        }
+
+        // Update Sliders
+        sliders.forEach(slider => {
+          slider.classList.toggle('hidden', slider.getAttribute('data-collection-id') !== targetId);
+        });
+      }
+
+      // Slider Nav
       if (event.target.closest('.slider-next')) {
-        slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+        getActiveSlider()?.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
       } else if (event.target.closest('.slider-prev')) {
-        slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+        getActiveSlider()?.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
       }
     });
 
@@ -174,19 +184,21 @@
     let autoplayInterval;
     const startAutoplay = () => {
       autoplayInterval = setInterval(() => {
+        const slider = getActiveSlider();
+        if (!slider) return;
         const maxScroll = slider.scrollWidth - slider.clientWidth;
         if (slider.scrollLeft >= maxScroll - 5) {
           slider.scrollTo({ left: 0, behavior: 'smooth' });
         } else {
           slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
         }
-      }, 4000);
+      }, 5000);
     };
 
     const stopAutoplay = () => clearInterval(autoplayInterval);
 
-    slider.addEventListener('mouseenter', stopAutoplay);
-    slider.addEventListener('mouseleave', startAutoplay);
+    section.addEventListener('mouseenter', stopAutoplay);
+    section.addEventListener('mouseleave', startAutoplay);
     startAutoplay();
   });
 })();

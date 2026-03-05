@@ -999,6 +999,8 @@ h6,
 .filter-btn-item:not(:last-child)::after {
   content: "|";
   margin-inline: 15px;
+  color: var(--color-text);
+  opacity: 0.3;
 }
 
 .filter-btn {
@@ -1006,7 +1008,8 @@ h6,
 }
 
 .filter-btn.active {
-  color: var(--tan-crayola);
+  color: var(--color-button);
+  font-weight: var(--fw-700);
 }
 
 .product-card {
@@ -1693,6 +1696,7 @@ a.card-meta-text:is(:hover, :focus) {
     gap: 10px;
   }
 
+
   /*
    * HERO AUTO-LAYOUT SYSTEM
    * Automatically adjusts card sizes based on total card count (1–5).
@@ -1725,9 +1729,12 @@ a.card-meta-text:is(:hover, :focus) {
     grid-column: span 2;
   }
 
-  /* 5 cards: original layout pattern
-     Row 1: Card1 (1col) + Card2 (2col) + Card3 (1col) = 4
-     Row 2: Card4 (2col) + Card5 (2col)               = 4 */
+
+  /*
+   5 cards: original layout pattern
+   Row 1: Card1 (1col) + Card2 (2col) + Card3 (1col) = 4
+   Row 2: Card4 (2col) + Card5 (2col) = 4
+*/
   .hero-list li:first-child:nth-last-child(5),
   .hero-list li:first-child:nth-last-child(5) ~ li:nth-child(3) {
     grid-column: span 1;
