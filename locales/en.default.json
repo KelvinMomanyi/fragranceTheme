@@ -43,8 +43,6 @@
     "slideshow_pause": "Pause slideshow",
     "slideshow_play": "Play slideshow",
     "slideshow_previous": "Previous slide",
-    "next_slide": "Next slide",
-    "previous_slide": "Previous slide",
     "unit_price": "Unit price",
     "find_country": "Find country",
     "view_pricing_info": "View pricing information",
@@ -459,9 +457,6 @@
     },
     "aside": {
       "name": "Aside"
-    },
-    "featured_collection": {
-      "title": "Popular Products"
     }
   },
   "names": {
