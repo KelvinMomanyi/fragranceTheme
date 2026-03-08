@@ -1,4 +1,4 @@
-<section class="section about" id="about-{{ section.id }}" aria-label="about" data-aos="fade-up">
+<section class="section about" id="about-{{ section.id }}" data-section-id="{{ section.id }}" aria-label="about" data-aos="fade-up">
   <div class="container"> 
     {%- for block in section.blocks -%}
       {%- case block.type -%}
@@ -165,8 +165,12 @@
     font-family: var(--ff-roboto);
   }
 
+  .about-card {
+    position: relative;
+  }
+
   .box {
-    position: fixed;
+    position: absolute;
     top: {{ section.settings.text_position }};
     left: 50%;
     transform: translate(-50%, -50%);
@@ -255,7 +259,7 @@
 <script>
 (function() {
 function initSlowMotionEffect() {
-  const sectionElement = document.getElementById('about-{{ section.id }}');
+  const sectionElement = document.querySelector('[data-section-id="{{ section.id }}"]');
   if (!sectionElement) return;
   const boxElement = sectionElement.querySelector('.box');
   if (!boxElement) return;
@@ -326,11 +330,11 @@ function initSlowMotionEffect() {
     rootMargin: '100px 0px 100px 0px'
   });
   
-  boxObserver.observe(sectionElement);
+  boxObserver.observe(boxElement);
   
   // Fine-tuned scroll-based animation
   function updateInViewEffect() {
-    const rect = sectionElement.getBoundingClientRect(); // Use sectionElement for scrolling context
+    const rect = boxElement.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     
     if (rect.top <= windowHeight && rect.bottom >= 0) {
