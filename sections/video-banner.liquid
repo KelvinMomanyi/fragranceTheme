@@ -121,7 +121,7 @@
           {%- assign words = block.settings.animation_text | split: ' ' -%}
           <span class="animated-text-container" {{ block.shopify_attributes }}>
             {%- for word in words -%}
-              <span>{{ word }}</span>
+              <span class="animated-word">{{ word }}</span>
               {%- unless forloop.last -%}<span>&nbsp;</span>{%- endunless -%}
             {%- endfor -%}
           </span>
@@ -176,7 +176,7 @@
     z-index: 10;
   }
 
-  .box span {
+  .box .animated-word {
     font-family: "Quicksand", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -273,14 +273,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function initSlowMotionEffect() {
   const boxElement = document.querySelector('.box');
-  const spans = document.querySelectorAll('.box span');
+  const spans = document.querySelectorAll('.box .animated-word');
   
   if (!boxElement || spans.length === 0) return;
   
-  // Get animation settings from section settings
-  const animationSpeed = {{ section.settings.animation_speed | default: 1200 }};
-  const maxBlur = {{ section.settings.animation_blur | default: 10 }};
-  const maxScale = {{ section.settings.animation_scale | default: 3 }};
+  // Get animation settings from the animated text block
+  {%- assign anim_block = section.blocks | where: "type", "animated_text" | first -%}
+  const animationSpeed = {{ anim_block.settings.animation_speed | default: 1200 }};
+  const maxBlur = {{ anim_block.settings.animation_blur | default: 10 }};
+  const maxScale = {{ anim_block.settings.animation_scale | default: 3 }};
   
   // Original effect parameters
   let start = -300;
@@ -451,25 +452,6 @@ initSlowMotionEffect();
     },
     {
       "type": "range",
-      "id": "animation_speed",
-      "label": "Animation Speed (ms)",
-      "min": 500,
-      "max": 3000,
-      "step": 100,
-      "default": 1200,
-      "info": "Lower = faster animation"
-    },
-    {
-      "type": "range",
-      "id": "animation_blur",
-      "label": "Maximum Blur (px)",
-      "min": 0,
-      "max": 20,
-      "step": 1,
-      "default": 10
-    },
-    {
-      "type": "range",
       "id": "animation_scale",
       "label": "Maximum Scale",
       "min": 1,
@@ -517,6 +499,33 @@ initSlowMotionEffect();
           "label": "Animation Text",
           "default": "scent that you can wear",
           "info": "Words will be animated individually (separated by spaces)"
+        },
+        {
+          "type": "range",
+          "id": "animation_speed",
+          "label": "Animation Speed (ms)",
+          "min": 500,
+          "max": 3000,
+          "step": 100,
+          "default": 1200
+        },
+        {
+          "type": "range",
+          "id": "animation_blur",
+          "label": "Maximum Blur (px)",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "animation_scale",
+          "label": "Maximum Scale",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "default": 3
         }
       ]
     }
@@ -540,7 +549,10 @@ initSlowMotionEffect();
         {
           "type": "animated_text",
           "settings": {
-            "animation_text": "scent that you can wear"
+            "animation_text": "scent that you can wear",
+            "animation_speed": 1200,
+            "animation_blur": 10,
+            "animation_scale": 3
           }
         }
       ]
