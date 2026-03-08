@@ -7,27 +7,106 @@
   <div class="about-card">
     <figure class="card-banner img-holder" style="--width: 1380; --height: 550;">
       {% assign uploaded_video = section.settings.uploaded_video %}
-      <video 
-        id="promoVideo" 
-        width="1170" 
-        height="550" 
-        class="img-cover" 
-        {% if section.settings.video_autoplay %}autoplay{% endif %}
-        {% if section.settings.video_loop %}loop{% endif %}
-        {% if section.settings.video_muted %}muted{% endif %}
-        playsinline
-      >
-        {% if uploaded_video != blank %}
+      {% assign raw_video_url = section.settings.video_url | strip %}
+      {% assign fallback_video_file = section.settings.video_file | strip %}
+      {% assign video_url_lower = raw_video_url | downcase %}
+      {% assign is_youtube = false %}
+      {% assign is_vimeo = false %}
+      {% assign is_direct_video = false %}
+      {% assign embed_url = '' %}
+
+      {% if raw_video_url != blank %}
+        {% if video_url_lower contains 'youtube.com' or video_url_lower contains 'youtu.be' %}
+          {% assign is_youtube = true %}
+          {% assign youtube_id = '' %}
+          {% if raw_video_url contains 'youtu.be/' %}
+            {% assign youtube_id = raw_video_url | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first | split: '#' | first %}
+          {% elsif raw_video_url contains 'watch?v=' %}
+            {% assign youtube_id = raw_video_url | split: 'watch?v=' | last | split: '&' | first | split: '#' | first %}
+          {% elsif raw_video_url contains '/shorts/' %}
+            {% assign youtube_id = raw_video_url | split: '/shorts/' | last | split: '?' | first | split: '&' | first | split: '#' | first %}
+          {% elsif raw_video_url contains '/embed/' %}
+            {% assign youtube_id = raw_video_url | split: '/embed/' | last | split: '?' | first | split: '&' | first | split: '#' | first %}
+          {% endif %}
+          {% if youtube_id != blank %}
+            {% assign embed_url = 'https://www.youtube.com/embed/' | append: youtube_id | append: '?playsinline=1&rel=0' %}
+            {% if section.settings.video_autoplay %}
+              {% assign embed_url = embed_url | append: '&autoplay=1' %}
+            {% endif %}
+            {% if section.settings.video_muted %}
+              {% assign embed_url = embed_url | append: '&mute=1' %}
+            {% endif %}
+            {% if section.settings.video_loop %}
+              {% assign embed_url = embed_url | append: '&loop=1&playlist=' | append: youtube_id %}
+            {% endif %}
+          {% endif %}
+        {% elsif video_url_lower contains 'vimeo.com' %}
+          {% assign is_vimeo = true %}
+          {% assign vimeo_id = raw_video_url | split: '/' | last | split: '?' | first | split: '&' | first | split: '#' | first %}
+          {% if vimeo_id != blank %}
+            {% assign embed_url = 'https://player.vimeo.com/video/' | append: vimeo_id | append: '?title=0&byline=0&portrait=0' %}
+            {% if section.settings.video_autoplay %}
+              {% assign embed_url = embed_url | append: '&autoplay=1' %}
+            {% endif %}
+            {% if section.settings.video_loop %}
+              {% assign embed_url = embed_url | append: '&loop=1' %}
+            {% endif %}
+            {% if section.settings.video_muted %}
+              {% assign embed_url = embed_url | append: '&muted=1' %}
+            {% endif %}
+          {% endif %}
+        {% elsif video_url_lower contains '.mp4' or video_url_lower contains '.webm' or video_url_lower contains '.ogg' or video_url_lower contains '.mov' or video_url_lower contains '.m3u8' %}
+          {% assign is_direct_video = true %}
+        {% endif %}
+      {% endif %}
+
+      {% if uploaded_video != blank %}
+        <video
+          data-promo-video="{{ section.id }}"
+          width="1170"
+          height="550"
+          class="img-cover"
+          {% if section.settings.video_autoplay %}autoplay{% endif %}
+          {% if section.settings.video_loop %}loop{% endif %}
+          {% if section.settings.video_muted %}muted{% endif %}
+          playsinline
+        >
           {% for source in uploaded_video.sources %}
             <source src="{{ source.url }}" type="{{ source.mime_type }}">
           {% endfor %}
-        {% elsif section.settings.video_url != blank %}
-          <source src="{{ section.settings.video_url }}" type="video/mp4">
-        {% elsif section.settings.video_file != blank %}
-          <source src="{{ section.settings.video_file | default: 'Ink.mp4' | asset_url }}" type="video/mp4">
-        {% endif %}
-        Your browser does not support the video tag.
-      </video>
+          Your browser does not support the video tag.
+        </video>
+      {% elsif embed_url != blank and (is_youtube or is_vimeo) %}
+        <iframe
+          class="img-cover"
+          width="1170"
+          height="550"
+          src="{{ embed_url }}"
+          title="{{ section.settings.title | escape }}"
+          loading="lazy"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      {% else %}
+        <video
+          data-promo-video="{{ section.id }}"
+          width="1170"
+          height="550"
+          class="img-cover"
+          {% if section.settings.video_autoplay %}autoplay{% endif %}
+          {% if section.settings.video_loop %}loop{% endif %}
+          {% if section.settings.video_muted %}muted{% endif %}
+          playsinline
+        >
+          {% if is_direct_video and raw_video_url != blank %}
+            <source src="{{ raw_video_url }}" type="video/mp4">
+          {% elsif fallback_video_file != blank %}
+            <source src="{{ fallback_video_file | default: 'Ink.mp4' | asset_url }}" type="video/mp4">
+          {% endif %}
+          Your browser does not support the video tag.
+        </video>
+      {% endif %}
     </figure>
 
     <div class="box" data-text-position="{{ section.settings.text_position }}">
@@ -165,7 +244,7 @@
 <script>
 (function() {
 document.addEventListener("DOMContentLoaded", function () {
-  const video = document.getElementById("promoVideo");
+  const video = document.querySelector('[data-promo-video="{{ section.id }}"]');
   if (!video) return;
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -330,7 +409,7 @@ initSlowMotionEffect();
       "id": "video_url",
       "label": "Video URL",
       "default": "https://youtu.be/_9VUPq3SxOc?list=TLGGn1R2QQNDf6owOTEwMjAyNQ",
-      "info": "Fallback source. Use a direct video file URL (for example .mp4)."
+      "info": "Fallback source when no uploaded video is set. Supports YouTube, Vimeo, and direct video URLs (e.g., .mp4)."
     },
     {
       "type": "text",
