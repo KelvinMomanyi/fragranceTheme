@@ -1,4 +1,4 @@
-<section class="section about" id="about-{{ section.id }}" data-section-id="{{ section.id }}" aria-label="about" data-aos="fade-up">
+<section class="section about color-scheme-{{ section.settings.color_scheme }}" id="about-{{ section.id }}" data-section-id="{{ section.id }}" aria-label="about" data-aos="fade-up" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}">
   <div class="container"> 
     {%- for block in section.blocks -%}
       {%- case block.type -%}
@@ -149,6 +149,15 @@
     flex-direction: column;
   }
 
+  .section-title {
+    color: inherit;
+    margin-block-end: 20px;
+  }
+
+  .section-text {
+    color: inherit;
+  }
+
   .collection-card .card-title {
     margin-block-end: 12px;
   }
@@ -196,7 +205,7 @@
     text-shadow: 0px 0px 5px rgba(31, 29, 46, 0.55);
     font-size: 4rem;
     text-transform: uppercase;
-    color: rgb(11, 11, 11);
+    color: inherit;
     display: inline-block;
   }
 
@@ -424,6 +433,12 @@ document.addEventListener("shopify:section:load", function(event) {
 {
   "name": "Video banner",
   "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
     {
       "type": "header",
       "content": "Video Settings"
