@@ -62,14 +62,14 @@
 
 .service-card .img { display: none; }
 
-.service-list > li:not(:last-child) { border-block-start: 1px solid black; }
+.service-list > li:not(:last-child) { border-block-start: 1px solid currentColor; }
 
-.service-list > li:last-child { border-block: 1px solid black; }
+.service-list > li:last-child { border-block: 1px solid currentColor; }
 
 .service-card { padding: 30px 10px; }
 
 .service-card .card-subtitle {
-  color:black;
+  color: inherit;
   font-size: var(--fs-7);
   font-weight: var(--fw-300);
   line-height: 1.5;
@@ -79,10 +79,10 @@
 .service-card .btn-icon {
   width: 55px;
   height: 55px;
-  border: 1px solid black;
+  border: 1px solid currentColor;
   --bg-color: transparent;
   --hover-bg-color: gray;
-  --hover-text-color: var(--black);
+  --hover-text-color: var(--color-text);
 }
 
 .service-card .btn-icon svg { width: 25px; }
@@ -94,7 +94,7 @@
 
 
 .btn-icon {
-  background-color: var(--bg-color, var(--white));
+  background-color: var(--bg-color, transparent);
   border-radius: 50%;
   display: grid;
   place-content: center;
@@ -104,11 +104,11 @@
 .btn-icon path { transition: var(--transition-2); }
 
 .btn-icon:is(:hover, :focus-visible) {
-  background-color: var(--hover-bg-color, var(--white));
+  background-color: var(--hover-bg-color, transparent);
 }
 
 .btn-icon:is(:hover, :focus-visible) path {
-  stroke: var(--hover-text-color, var(--black));
+  stroke: var(--hover-text-color, currentColor);
 }
 
 @media (min-width: 768px){

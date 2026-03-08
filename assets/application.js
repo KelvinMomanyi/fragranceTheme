@@ -114,23 +114,37 @@
    * AOS replacement (lightweight)
    * Uses CSS classes defined in theme.liquid
    * -------------------------------- */
-  var aosElements = document.querySelectorAll('[data-aos]');
-  if (aosElements.length > 0) {
-    var aosObserver = new IntersectionObserver(function (entries, observer) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('aos-animate');
-          observer.unobserve(entry.target);
-        }
+  var initAOS = function (container) {
+    var scope = container || document;
+    var aosElements = scope.querySelectorAll('[data-aos]');
+    if (aosElements.length > 0) {
+      var aosObserver = new IntersectionObserver(function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('aos-animate');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
       });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
 
-    aosElements.forEach(function (el) {
-      aosObserver.observe(el);
-    });
-  }
+      aosElements.forEach(function (el) {
+        aosObserver.observe(el);
+      });
+    }
+  };
+
+  // Initial load
+  initAOS();
+
+  /* --------------------------------
+   * Shopify Theme Editor Events
+   * -------------------------------- */
+  document.addEventListener('shopify:section:load', function (event) {
+    // Re-initialize AOS for the newly loaded section
+    initAOS(event.target);
+  });
 
 })();

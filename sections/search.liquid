@@ -1,4 +1,4 @@
-<section class="section search-section" id="search" aria-labelledby="search-label">
+<section class="section search-section color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="search" aria-labelledby="search-label">
 
   <div class="container">
     <p class="section-subtitle" id="search-label">{{ section.settings.subtitle }}</p>
@@ -303,7 +303,6 @@
   display: flex;
   align-items: center;
   border: 2px solid black;
-  background-color: var(--white);
   transition: var(--transition-2);
 }
 
@@ -597,7 +596,6 @@
 }
 
 .search-grid-item {
-  background: #fff;
   border: 1px solid #eee;
   border-radius: 8px;
   overflow: hidden;
@@ -718,6 +716,12 @@
   ],
   "blocks": [],
   "presets": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
     {
       "name": "Search page"
     }

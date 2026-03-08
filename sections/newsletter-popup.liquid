@@ -1,4 +1,4 @@
-<div id="newsletter-popup" class="newsletter-popup">
+<div id="newsletter-popup" class="newsletter-popup color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}">
     <div class="newsletter-popup-content">
       <button class="close-popup" onclick="closePopup()">
         {% render 'icon-velour', icon: 'close', size: 'large' %}
@@ -49,8 +49,6 @@
       }
       
       .newsletter-popup-content {
-        background: white;
-        {% comment %} border-radius: 10px; {% endcomment %}
         padding: 20px;
         max-width: 600px;
         width: 90%;
@@ -83,7 +81,6 @@
     
     .newcard-content {
       flex: 1;
-      background-color: #f8f9fa;
       padding: 40px;
       display: flex;
       flex-direction: column;
@@ -196,6 +193,12 @@
 {
   "name": "Newsletter popup",
   "settings": [
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "default": "scheme-1"
+      },
       {
         "type": "image_picker",
         "id": "image1",

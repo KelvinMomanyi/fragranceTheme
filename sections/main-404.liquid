@@ -1,4 +1,4 @@
-<section class="section section-404" aria-labelledby="error-title">
+<section class="section section-404 color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" aria-labelledby="error-title">
   <div class="container">
     <div class="content-wrapper">
       <h1 class="error-title" id="error-title">404</h1>
@@ -59,12 +59,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--white);
     padding: var(--section-padding) 15px;
   }
   
   .content-wrapper {
-    background: var(--white);
     padding: 60px 40px;
     text-align: center;
   }
@@ -229,6 +227,12 @@
     }
   ],
   "presets": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
     {
       "name": "404 Page"
     }
