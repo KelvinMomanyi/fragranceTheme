@@ -6,6 +6,7 @@
   
   <div class="about-card">
     <figure class="card-banner img-holder" style="--width: 1380; --height: 550;">
+      {% assign uploaded_video = section.settings.uploaded_video %}
       <video 
         id="promoVideo" 
         width="1170" 
@@ -16,9 +17,13 @@
         {% if section.settings.video_muted %}muted{% endif %}
         playsinline
       >
-        {% if section.settings.video_url != blank %}
+        {% if uploaded_video != blank %}
+          {% for source in uploaded_video.sources %}
+            <source src="{{ source.url }}" type="{{ source.mime_type }}">
+          {% endfor %}
+        {% elsif section.settings.video_url != blank %}
           <source src="{{ section.settings.video_url }}" type="video/mp4">
-        {% else %}
+        {% elsif section.settings.video_file != blank %}
           <source src="{{ section.settings.video_file | default: 'Ink.mp4' | asset_url }}" type="video/mp4">
         {% endif %}
         Your browser does not support the video tag.
@@ -161,7 +166,7 @@
 (function() {
 document.addEventListener("DOMContentLoaded", function () {
   const video = document.getElementById("promoVideo");
-  
+  if (!video) return;
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -172,7 +177,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }, { threshold: 0.5 });
-
   observer.observe(video);
 });
 
@@ -316,11 +320,17 @@ initSlowMotionEffect();
       "content": "Video Settings"
     },
     {
+      "type": "video",
+      "id": "uploaded_video",
+      "label": "Uploaded video",
+      "info": "Preferred source. If set, this is used before Video URL."
+    },
+    {
       "type": "text",
       "id": "video_url",
       "label": "Video URL",
       "default": "https://youtu.be/_9VUPq3SxOc?list=TLGGn1R2QQNDf6owOTEwMjAyNQ",
-      "info": "Enter external video URL (e.g., from CDN, YouTube, or cloud storage). Replace default with your video URL."
+      "info": "Fallback source. Use a direct video file URL (for example .mp4)."
     },
     {
       "type": "text",
