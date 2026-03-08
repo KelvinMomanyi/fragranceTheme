@@ -119,6 +119,126 @@
   </div>
 </section>
 
+<style>
+  .collection {
+    padding-block-start: 0; 
+    margin-top: 5%;
+  }
+
+  .collection-list {
+    display: grid;
+    gap: 15px;
+  }
+
+  .collection-card {
+    background-color: var(--light-gray);
+    min-height: 400px;
+    padding: 40px;
+    padding-block-end: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .collection-card .card-title {
+    margin-block-end: 12px;
+  }
+
+  .collection-card .card-text {
+    color: var(--black);
+    font-size: var(--fs-6);
+    font-weight: var(--fs-600);
+    margin-block-end: auto;
+  }
+
+  .scents {
+    font-size: large;
+    font-family: var(--ff-roboto);
+  }
+
+  .box {
+    position: fixed;
+    top: {{ section.settings.text_position }};
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    z-index: 10;
+  }
+
+  .box span {
+    font-family: "Quicksand", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-shadow: 0px 0px 5px rgba(31, 29, 46, 0.55);
+    font-size: 4rem;
+    text-transform: uppercase;
+    color: rgb(11, 11, 11);
+    display: inline-block;
+  }
+
+  /* Responsive for larger than 575px screen */
+  @media screen and (max-width: 575px) {
+    .scents {
+      font-size: medium;
+    }
+
+    .box {
+      top: 70%;
+    }
+
+    .box span {
+      font-size: 2rem;
+    }
+  }
+
+  /* Responsive for larger than 768px screen */
+  @media screen and (min-width: 768px) {
+    .flex-item {
+      max-width: calc(50% - 15px);
+    }
+
+    .collection-card {
+      min-height: 450px;
+    }
+
+    .scents {
+      font-size: large;
+    }
+  }
+
+  /* Responsive for larger than 992px screen */
+  @media screen and (min-width: 992px) {
+    .scrollbar-item {
+      min-width: calc(33.33% - 20px);
+    }
+
+    .flex-item {
+      max-width: calc(33.33% - 20px);
+    }
+
+    .collection-list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .scents {
+      font-size: large;
+    }
+  }
+
+  /* Responsive for larger than 1200px screen */
+  @media screen and (min-width: 1200px) {
+    .scrollbar-item {
+      min-width: calc(20% - 24px);
+    }
+
+    .flex-item {
+      max-width: calc(33.33% - 20px);
+    }
+
+    .scents {
+      font-size: large;
+    }
+  }
 </style>
 
 <script>
@@ -368,6 +488,82 @@ initSlowMotionEffect();
       "step": 0.5,
       "default": 3,
       "info": "How large text grows when scrolling away"
+    },
+    {
+      "type": "header",
+      "content": "Collection Cards (Legacy)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image 1"
+    },
+    {
+      "type": "url",
+      "id": "link1",
+      "label": "Button link 1"
+    },
+    {
+      "type": "text",
+      "id": "btn_label1",
+      "label": "Button label 1",
+      "default": "Shop Now"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image 2"
+    },
+    {
+      "type": "text",
+      "id": "title2",
+      "label": "Heading 2",
+      "default": "What's New?"
+    },
+    {
+      "type": "text",
+      "id": "subtitle2",
+      "label": "Subheading 2",
+      "default": "Get the newest kicks"
+    },
+    {
+      "type": "url",
+      "id": "link2",
+      "label": "Button link 2"
+    },
+    {
+      "type": "text",
+      "id": "btn_label2",
+      "label": "Button label 2",
+      "default": "Discover Now"
+    },
+    {
+      "type": "image_picker",
+      "id": "image3",
+      "label": "Image 3"
+    },
+    {
+      "type": "text",
+      "id": "title3",
+      "label": "Heading 3",
+      "default": "Buy 1 Get 1"
+    },
+    {
+      "type": "text",
+      "id": "subtitle3",
+      "label": "Subheading 3",
+      "default": "Starting at $17.99"
+    },
+    {
+      "type": "url",
+      "id": "link3",
+      "label": "Button link 3"
+    },
+    {
+      "type": "text",
+      "id": "btn_label3",
+      "label": "Button label 3",
+      "default": "Shop Now"
     }
   ],
   "blocks": [],
