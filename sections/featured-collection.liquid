@@ -22,11 +22,12 @@
       </ul>
     </div>
 
-    <ul class="product-slider">
+    <ul class="product-slider" data-filter="all">
           {% assign featured_collection = section.settings.collection %}
-          {% if featured_collection == blank %}
+          {% if featured_collection == blank or featured_collection.products_count == 0 %}
             {% assign featured_collection = collections['all'] %}
           {% endif %}
+          {% if featured_collection != blank and featured_collection.products_count > 0 %}
           {% for product in featured_collection.products limit: section.settings.products_to_show %}
             <li class="decoration">
               <div class="product-card">
@@ -84,6 +85,15 @@
               </div>
             </li>
           {% endfor %}
+          {% else %}
+            <li class="decoration">
+              <div class="product-card">
+                <div class="card-content">
+                  <h3 class="h3">No products found.</h3>
+                </div>
+              </div>
+            </li>
+          {% endif %}
     </ul>
 
     <div class="slider-nav">
