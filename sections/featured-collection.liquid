@@ -23,14 +23,11 @@
     </div>
 
     <ul class="product-slider">
-          {% assign collection_handle = 'all' %}
-          {% for block in section.blocks %}
-            {% if block.settings.collection != blank %}
-              {% assign collection_handle = block.settings.collection.handle %}
-              {% break %}
-            {% endif %}
-          {% endfor %}
-          {% for product in collections[collection_handle].products limit:8 %}
+          {% assign featured_collection = section.settings.collection %}
+          {% if featured_collection == blank %}
+            {% assign featured_collection = collections['all'] %}
+          {% endif %}
+          {% for product in featured_collection.products limit: section.settings.products_to_show %}
             <li class="decoration">
               <div class="product-card">
                 <a href="{{ product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
@@ -203,64 +200,36 @@
   "name": "Featured collection",
   "settings": [
     {
-      "type": "color_scheme","id": "color_scheme","label": "Color scheme","default": "scheme-1"
-    }
-  ],
-  "blocks": [
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
     {
-      "type": "collection_section",
-      "name": "Collection section",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Section Title",
-          "default": "Discover What's New"
-        },
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Select Collection"
-        },
-        {
-          "type": "url",
-          "id": "button_url",
-          "label": "Button URL",
-          "default": "/collections/all"
-        },
-        {
-          "type": "text",
-          "id": "button_label",
-          "label": "Button Label",
-          "default": "Shop All Products"
-        }
-      ]
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Popular Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8,
+      "label": "Products to show"
     }
   ],
   "presets": [
     {
       "name": "Featured collection",
-      "category": "Custom",
-      "blocks": [
-        {
-          "type": "collection_section",
-          "settings": {
-            "title": "Discover What's New",
-            "collection": "new-arrivals-1",
-            "button_url": "/collections/new-arrivals",
-            "button_label": "Shop Now"
-          }
-        },
-        {
-          "type": "collection_section",
-          "settings": {
-            "title": "Top Trending",
-            "collection":"trending",
-            "button_url": "/collections/trending",
-            "button_label": "Shop Now"
-          }
-        }
-      ]
+      "category": "Custom"
     }
   ]
 }
