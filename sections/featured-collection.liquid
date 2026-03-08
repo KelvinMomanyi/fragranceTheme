@@ -1,6 +1,7 @@
 <!--- #FEATURED COLLECTION -->
 
-<section class="section featured-collection color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="featured-collection" aria-label="featured collection" data-aos="fade-up">
+{% assign section_color_scheme = section.settings.color_scheme | default: 'scheme-1' %}
+<section class="section featured-collection color-scheme-{{ section_color_scheme }}" style="{% render 'color-scheme-styles', scheme: section_color_scheme %} background-color: var(--color-background, #ffffff); color: var(--color-text, #111111);" id="featured-collection" aria-label="featured collection" data-aos="fade-up">
   <div class="container">
 
     <div class="title-wrapper">
