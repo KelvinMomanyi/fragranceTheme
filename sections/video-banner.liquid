@@ -1,4 +1,4 @@
-<section class="section about" id="about" aria-label="about" data-aos="fade-up">
+<section class="section about" id="about-{{ section.id }}" aria-label="about" data-aos="fade-up">
   <div class="container"> 
     {%- for block in section.blocks -%}
       {%- case block.type -%}
@@ -251,35 +251,28 @@
   }
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/scrollmoo@1.0.7/dist/scrollmoo.min.js"></script>
 <script>
 (function() {
-document.addEventListener("DOMContentLoaded", function () {
-  const video = document.querySelector('[data-promo-video="{{ section.id }}"]');
-  if (!video) return;
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        video.currentTime = 1;
-        video.play();
-      } else {
-        video.pause();
-      }
-    });
-  }, { threshold: 0.5 });
-  observer.observe(video);
-});
-
 function initSlowMotionEffect() {
-  const boxElement = document.querySelector('.box');
+  const sectionElement = document.getElementById('about-{{ section.id }}');
+  if (!sectionElement) return;
+  const boxElement = sectionElement.querySelector('.box');
   if (!boxElement) return;
   const spans = boxElement.querySelectorAll('span');
   if (spans.length === 0) return;
   
   // Get animation settings from the animated text block
   {%- assign anim_block = section.blocks | where: "type", "animated_text" | first -%}
-  const animationSpeed = {{ anim_block.settings.animation_speed | default: 1200 }};
-  const maxBlur = {{ anim_block.settings.animation_blur | default: 10 }};
-  const maxScale = {{ anim_block.settings.animation_scale | default: 3 }};
+  {%- if anim_block -%}
+    const animationSpeed = {{ anim_block.settings.animation_speed | default: 1200 }};
+    const maxBlur = {{ anim_block.settings.animation_blur | default: 10 }};
+    const maxScale = {{ anim_block.settings.animation_scale | default: 3 }};
+  {%- else -%}
+    const animationSpeed = 1200;
+    const maxBlur = 10;
+    const maxScale = 3;
+  {%- endif -%}
   
   // Original effect parameters
   let start = -300;
@@ -333,11 +326,11 @@ function initSlowMotionEffect() {
     rootMargin: '100px 0px 100px 0px'
   });
   
-  boxObserver.observe(boxElement);
+  boxObserver.observe(sectionElement);
   
   // Fine-tuned scroll-based animation
   function updateInViewEffect() {
-    const rect = boxElement.getBoundingClientRect();
+    const rect = sectionElement.getBoundingClientRect(); // Use sectionElement for scrolling context
     const windowHeight = window.innerHeight;
     
     if (rect.top <= windowHeight && rect.bottom >= 0) {
@@ -377,13 +370,33 @@ function initSlowMotionEffect() {
       scrollTimeout = null;
     }, 16);
   });
-  
   updateInViewEffect();
 }
 
-document.addEventListener("DOMContentLoaded", initSlowMotionEffect);
+function initVideoVisibility() {
+  const video = document.querySelector('[data-promo-video="{{ section.id }}"]');
+  if (!video) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        video.currentTime = 1;
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+  }, { threshold: 0.5 });
+  observer.observe(video);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  initVideoVisibility();
+  initSlowMotionEffect();
+});
+
 document.addEventListener("shopify:section:load", function(event) {
   if (event.detail.sectionId === '{{ section.id }}') {
+    initVideoVisibility();
     initSlowMotionEffect();
   }
 });
