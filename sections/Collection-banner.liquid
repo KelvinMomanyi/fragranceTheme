@@ -76,7 +76,7 @@
           {% endfor %}
           Your browser does not support the video tag.
         </video>
-      {% elsif embed_url != blank and (is_youtube or is_vimeo) %}
+      {% elsif embed_url != blank and is_youtube or is_vimeo %}
         <iframe
           class="img-cover"
           width="1170"
