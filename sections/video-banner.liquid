@@ -166,8 +166,7 @@
   }
 
   .about {
-    transform: translateZ(0); /* Anchors position: fixed children to this section */
-    will-change: transform;
+    /* Base section padding only */
   }
 
   .about .container {
@@ -176,6 +175,8 @@
 
   .about-card {
     position: relative;
+    transform: translate3d(0, 0, 0); /* Anchors position: fixed children specifically to the video container */
+    will-change: transform;
   }
 
   .box {
