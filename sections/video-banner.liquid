@@ -165,17 +165,27 @@
     font-family: var(--ff-roboto);
   }
 
+  .about {
+    transform: translateZ(0); /* Anchors position: fixed children to this section */
+    will-change: transform;
+  }
+
+  .about .container {
+    position: relative;
+  }
+
   .about-card {
     position: relative;
   }
 
   .box {
-    position: absolute;
+    position: fixed;
     top: {{ section.settings.text_position }};
     left: 50%;
     transform: translate(-50%, -50%);
     white-space: nowrap;
     z-index: 10;
+    pointer-events: none;
   }
 
   .box span {
@@ -284,9 +294,9 @@ function initSlowMotionEffect() {
   let steps = spans.length;
   let stepSize = (end - start) / (steps - 1);
   
-  // Set initial state
+  // Set initial state - shortened transition for "on scroll" feel
   spans.forEach((span, index) => {
-    span.style.transition = `all ${animationSpeed}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+    span.style.transition = `transform 0.2s ease-out, filter 0.2s ease-out, opacity 0.2s ease-out`;
     span.style.transform = 'translateX(0%) scale(1)';
     span.style.filter = 'blur(0px)';
     span.style.opacity = '1';
@@ -305,9 +315,7 @@ function initSlowMotionEffect() {
         
         setTimeout(() => {
           if (isIntersecting) {
-            span.style.transform = 'translateX(0%) scale(1)';
-            span.style.filter = 'blur(0px)';
-            span.style.opacity = '1';
+            // No hard reset here, let updateInViewEffect handle the state
           } else {
             const translateX = start + stepSize * index;
             let finalTranslateX;
@@ -346,15 +354,19 @@ function initSlowMotionEffect() {
       const effectStrength = 1 - centerRatio;
       
       spans.forEach((span, index) => {
-        if (centerRatio > 0.7) {
+        if (centerRatio > 0.8) {
           span.style.transform = 'translateX(0%) scale(1)';
           span.style.filter = 'blur(0px)';
           span.style.opacity = '1';
-        } else if (centerRatio > 0.3) {
-          const translateX = (start + stepSize * index) * effectStrength * 0.3;
-          const scale = 1 + (effectStrength * 0.5);
-          const blur = effectStrength * 3;
-          const opacity = 1 - (effectStrength * 0.3);
+        } else {
+          // Linear mapping as we move away from center
+          const strength = 1 - ((centerRatio - 0.3) / 0.5); // 0 at 0.8 centerRatio, 1 at 0.3 centerRatio
+          const clampedStrength = Math.max(0, Math.min(1, strength));
+          
+          const translateX = (start + stepSize * index) * clampedStrength * 0.5;
+          const scale = 1 + (clampedStrength * (maxScale - 1));
+          const blur = clampedStrength * maxBlur;
+          const opacity = 1 - (clampedStrength * 0.8);
           
           span.style.transform = `translateX(${translateX}%) scale(${scale})`;
           span.style.filter = `blur(${blur}px)`;
