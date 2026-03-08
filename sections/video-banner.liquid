@@ -119,12 +119,12 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'animated_text' -%}
           {%- assign words = block.settings.animation_text | split: ' ' -%}
-          <div class="animated-text-block" {{ block.shopify_attributes }}>
+          <span class="animated-text-container" {{ block.shopify_attributes }}>
             {%- for word in words -%}
               <span>{{ word }}</span>
               {%- unless forloop.last -%}<span>&nbsp;</span>{%- endunless -%}
             {%- endfor -%}
-          </div>
+          </span>
         {%- endif -%}
       {%- endfor -%}
     </div>
@@ -526,13 +526,22 @@ initSlowMotionEffect();
       "name": "Video banner",
       "blocks": [
         {
-          "type": "heading"
+          "type": "heading",
+          "settings": {
+            "title": "Unveil Your Essence"
+          }
         },
         {
-          "type": "description"
+          "type": "description",
+          "settings": {
+            "info": "When you start with a portrait and search for a pure form, a clear volume, through successive eliminations, you arrive inevitably at the egg. Likewise, starting with the egg and following the same process in reverse, one finishes with the portrait."
+          }
         },
         {
-          "type": "animated_text"
+          "type": "animated_text",
+          "settings": {
+            "animation_text": "scent that you can wear"
+          }
         }
       ]
     }
