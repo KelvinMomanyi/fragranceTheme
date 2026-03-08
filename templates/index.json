@@ -137,19 +137,33 @@
     },
     "collection": {
       "type": "video-banner",
+      "blocks": {
+        "heading_1": {
+          "type": "heading",
+          "settings": {
+            "title": "Unveil Your Essence"
+          }
+        },
+        "description_1": {
+          "type": "description",
+          "settings": {
+            "info": "When you start with a portrait and search for a pure form, a clear volume, through successive eliminations, you arrive inevitably at the egg. Likewise, starting with the egg and following the same process in reverse, one finishes with the portrait."
+          }
+        },
+        "animated_text_1": {
+          "type": "animated_text",
+          "settings": {
+            "animation_text": "scent that you can wear"
+          }
+        }
+      },
+      "block_order": [
+        "heading_1",
+        "description_1",
+        "animated_text_1"
+      ],
       "settings": {
-        "title": "Unveil Your Essence",
-        "info": "When you start with a portrait and search for a pure form, a clear volume, through successive eliminations, you arrive inevitably at the egg. Likewise, starting with the egg and following the same process in reverse, one finishes with the portrait.",
-        "link1": "",
-        "btn_label1": "Shop Now",
-        "title2": "What's New?",
-        "subtitle2": "Get the newest kicks",
-        "link2": "",
-        "btn_label2": "Discover Now",
-        "title3": "Buy 1 Get 1",
-        "subtitle3": "Starting at $17.99",
-        "link3": "",
-        "btn_label3": "Shop Now"
+        "video_url": "https://youtu.be/_9VUPq3SxOc?list=TLGGn1R2QQNDf6owOTEwMjAyNQ"
       }
     },
     "featured_collection": {

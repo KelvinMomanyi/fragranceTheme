@@ -1,7 +1,13 @@
 <section class="section about" id="about" aria-label="about" data-aos="fade-up">
   <div class="container"> 
-    <h2 class="section-title">{{ section.settings.title }}</h2>
-    <p class="section-text">{{ section.settings.info }}</p>
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'heading' -%}
+          <h2 class="section-title" {{ block.shopify_attributes }}>{{ block.settings.title }}</h2>
+        {%- when 'description' -%}
+          <p class="section-text" {{ block.shopify_attributes }}>{{ block.settings.info }}</p>
+      {%- endcase -%}
+    {%- endfor -%}
   </div>
   
   <div class="about-card">
@@ -110,11 +116,17 @@
     </figure>
 
     <div class="box" data-text-position="{{ section.settings.text_position }}">
-      {% assign words = section.settings.animation_text | split: ' ' %}
-      {% for word in words %}
-        <span>{{ word }}</span>
-        {% unless forloop.last %}<span>&nbsp;</span>{% endunless %}
-      {% endfor %}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'animated_text' -%}
+          {%- assign words = block.settings.animation_text | split: ' ' -%}
+          <div class="animated-text-block" {{ block.shopify_attributes }}>
+            {%- for word in words -%}
+              <span>{{ word }}</span>
+              {%- unless forloop.last -%}<span>&nbsp;</span>{%- endunless -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
     </div>
   </div>
 </section>
@@ -380,22 +392,6 @@ initSlowMotionEffect();
   "settings": [
     {
       "type": "header",
-      "content": "Section Content"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Heading",
-      "default": "Unveil Your Essence"
-    },
-    {
-      "type": "textarea",
-      "id": "info",
-      "label": "Description",
-      "default": "When you start with a portrait and search for a pure form, a clear volume, through successive eliminations, you arrive inevitably at the egg. Likewise, starting with the egg and following the same process in reverse, one finishes with the portrait."
-    },
-    {
-      "type": "header",
       "content": "Video Settings"
     },
     {
@@ -442,13 +438,6 @@ initSlowMotionEffect();
       "content": "Text Animation Settings"
     },
     {
-      "type": "text",
-      "id": "animation_text",
-      "label": "Animation Text",
-      "default": "scent that you can wear",
-      "info": "Words will be animated individually (separated by spaces)"
-    },
-    {
       "type": "select",
       "id": "text_position",
       "label": "Text Position",
@@ -490,10 +479,62 @@ initSlowMotionEffect();
       "info": "How large text grows when scrolling away"
     }
   ],
-  "blocks": [],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Unveil Your Essence"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "info",
+          "label": "Description",
+          "default": "When you start with a portrait and search for a pure form, a clear volume, through successive eliminations, you arrive inevitably at the egg. Likewise, starting with the egg and following the same process in reverse, one finishes with the portrait."
+        }
+      ]
+    },
+    {
+      "type": "animated_text",
+      "name": "Animated Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "animation_text",
+          "label": "Animation Text",
+          "default": "scent that you can wear",
+          "info": "Words will be animated individually (separated by spaces)"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Video banner"
+      "name": "Video banner",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "animated_text"
+        }
+      ]
     }
   ]
 }
