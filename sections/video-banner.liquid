@@ -119,12 +119,10 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'animated_text' -%}
           {%- assign words = block.settings.animation_text | split: ' ' -%}
-          <span class="animated-text-container" {{ block.shopify_attributes }}>
-            {%- for word in words -%}
-              <span class="animated-word">{{ word }}</span>
-              {%- unless forloop.last -%}<span>&nbsp;</span>{%- endunless -%}
-            {%- endfor -%}
-          </span>
+          {%- for word in words -%}
+            <span {{ block.shopify_attributes }}>{{ word }}</span>
+            {%- unless forloop.last -%}<span>&nbsp;</span>{%- endunless -%}
+          {%- endfor -%}
         {%- endif -%}
       {%- endfor -%}
     </div>
@@ -176,7 +174,7 @@
     z-index: 10;
   }
 
-  .box .animated-word {
+  .box span {
     font-family: "Quicksand", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -273,9 +271,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function initSlowMotionEffect() {
   const boxElement = document.querySelector('.box');
-  const spans = document.querySelectorAll('.box .animated-word');
-  
-  if (!boxElement || spans.length === 0) return;
+  if (!boxElement) return;
+  const spans = boxElement.querySelectorAll('span');
+  if (spans.length === 0) return;
   
   // Get animation settings from the animated text block
   {%- assign anim_block = section.blocks | where: "type", "animated_text" | first -%}
@@ -383,7 +381,12 @@ function initSlowMotionEffect() {
   updateInViewEffect();
 }
 
-initSlowMotionEffect();
+document.addEventListener("DOMContentLoaded", initSlowMotionEffect);
+document.addEventListener("shopify:section:load", function(event) {
+  if (event.detail.sectionId === '{{ section.id }}') {
+    initSlowMotionEffect();
+  }
+});
 })();
 </script>
 
