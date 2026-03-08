@@ -4,7 +4,7 @@
   <div class="container">
 
     <div class="title-wrapper">
-      <h2 class="h2 section-title">Popular Products</h2>
+      <h2 class="h2 section-title">{{ section.settings.title | default: 'Popular Products' }}</h2>
 
       <ul class="filter-btn-list">
         <li class="filter-btn-item">
@@ -24,6 +24,12 @@
 
     <ul class="product-slider">
           {% assign collection_handle = 'all' %}
+          {% for block in section.blocks %}
+            {% if block.settings.collection != blank %}
+              {% assign collection_handle = block.settings.collection.handle %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
           {% for product in collections[collection_handle].products limit:8 %}
             <li class="decoration">
               <div class="product-card">
