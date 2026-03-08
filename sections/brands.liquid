@@ -1,8 +1,8 @@
-<section class="clients color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %} background-color: {{ section.settings.section_bg_color }}; padding-block: {{ section.settings.section_padding_vertical }}px;" id="client">
+<section class="clients color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %} padding-block: {{ section.settings.section_padding_vertical }}px;" id="client">
   <div class="carousel-wrapper">
     {% if section.settings.show_title %}
     <div class="carousel-title">
-      <h2 class="section-title" style="color: {{ section.settings.title_color }}; font-size: {{ section.settings.title_font_size }}px; margin-bottom: {{ section.settings.title_margin_bottom }}px;">
+      <h2 class="section-title" style="font-size: {{ section.settings.title_font_size }}px; margin-bottom: {{ section.settings.title_margin_bottom }}px;">
         {{ section.settings.section_title }}
       </h2>
     </div>
@@ -234,12 +234,6 @@
       "content": "Section Settings"
     },
     {
-      "type": "color",
-      "id": "section_bg_color",
-      "label": "Background color",
-      "default": "#ffffff"
-    },
-    {
       "type": "range",
       "id": "section_height",
       "min": 150,
@@ -284,12 +278,6 @@
       "id": "section_title",
       "label": "Heading",
       "default": "Our Brands"
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Heading color",
-      "default": "#000000"
     },
     {
       "type": "range",
