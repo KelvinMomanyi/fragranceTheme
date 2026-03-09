@@ -1,0 +1,23 @@
+{% if block.settings.subheading != blank %}
+  <p class="card-subtitle" {{ block.shopify_attributes }}>{{ block.settings.subheading }}</p>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Banner subheading",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "NEW COLLECTION"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner subheading"
+    }
+  ]
+}
+{% endschema %}

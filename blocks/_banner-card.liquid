@@ -20,18 +20,19 @@
 {
   "name": "Banner image",
   "tag": null,
+  "max_blocks": 3,
   "blocks": [
     {
-      "type": "_banner-content"
+      "type": "_banner-subheading",
+      "limit": 1
     },
     {
-      "type": "@theme"
+      "type": "_banner-heading",
+      "limit": 1
     },
     {
-      "type": "@app"
-    },
-    {
-      "type": "group"
+      "type": "_banner-button",
+      "limit": 1
     }
   ],
   "settings": [
@@ -56,7 +57,13 @@
       "name": "Banner image",
       "blocks": [
         {
-          "type": "_banner-content"
+          "type": "_banner-subheading"
+        },
+        {
+          "type": "_banner-heading"
+        },
+        {
+          "type": "_banner-button"
         }
       ]
     }

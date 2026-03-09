@@ -179,18 +179,30 @@
             "variant": "1"
           },
           "blocks": {
-            "banner_content_1": {
-              "type": "_banner-content",
+            "banner_subheading_1": {
+              "type": "_banner-subheading",
               "settings": {
-                "subheading": "Perfumes in distinctive notes to match every style",
-                "heading": "25% off Everything",
+                "subheading": "Perfumes in distinctive notes to match every style"
+              }
+            },
+            "banner_heading_1": {
+              "type": "_banner-heading",
+              "settings": {
+                "heading": "25% off Everything"
+              }
+            },
+            "banner_button_1": {
+              "type": "_banner-button",
+              "settings": {
                 "button_label": "Shop Now",
                 "button_url": "shopify://collections/all"
               }
             }
           },
           "block_order": [
-            "banner_content_1"
+            "banner_subheading_1",
+            "banner_heading_1",
+            "banner_button_1"
           ]
         },
         "banner_card_2": {
@@ -199,18 +211,30 @@
             "variant": "2"
           },
           "blocks": {
-            "banner_content_2": {
-              "type": "_banner-content",
+            "banner_subheading_2": {
+              "type": "_banner-subheading",
               "settings": {
-                "subheading": "NEW COLLECTION",
-                "heading": "Explore Our Latest Velour Collection",
+                "subheading": "NEW COLLECTION"
+              }
+            },
+            "banner_heading_2": {
+              "type": "_banner-heading",
+              "settings": {
+                "heading": "Explore Our Latest Velour Collection"
+              }
+            },
+            "banner_button_2": {
+              "type": "_banner-button",
+              "settings": {
                 "button_label": "Explore More",
                 "button_url": "shopify://collections/all"
               }
             }
           },
           "block_order": [
-            "banner_content_2"
+            "banner_subheading_2",
+            "banner_heading_2",
+            "banner_button_2"
           ]
         }
       },
@@ -219,14 +243,7 @@
         "banner_card_2"
       ],
       "settings": {
-        "subtitle1": "NEW COLLECTION",
-        "title1": "Explore Our Latest Velour Collection",
-        "btn_label1": "Explore More",
-        "button_url1": "shopify://collections/all",
-        "title2": "25% off Everything",
-        "description": "Perfumes in distinctive notes to match every style",
-        "btn_label2": "Shop Now",
-        "button_url2": "shopify://collections/all"
+        "color_scheme": "scheme-1"
       }
     },
     "brands": {
