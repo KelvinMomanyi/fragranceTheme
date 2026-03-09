@@ -1,0 +1,58 @@
+{% if block.settings.subheading != blank %}
+  <p class="card-subtitle">{{ block.settings.subheading }}</p>
+{% endif %}
+{% if block.settings.heading != blank %}
+  <h2 class="h2 card-title">{{ block.settings.heading }}</h2>
+{% endif %}
+{% if block.settings.button_label != blank %}
+  <a
+    {% if block.settings.button_url != blank %}
+      href="{{ block.settings.button_url }}"
+    {% else %}
+      role="link" aria-disabled="true"
+    {% endif %}
+    class="btn btn-primary"
+    style="cursor:pointer;"
+    {{ block.shopify_attributes }}
+  >
+    {{ block.settings.button_label }}
+  </a>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Banner content",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "NEW COLLECTION"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Explore Our Latest Velour Collection"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Explore More"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link",
+      "default": "/collections/all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner content"
+    }
+  ]
+}
+{% endschema %}

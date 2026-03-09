@@ -1,0 +1,65 @@
+<li {{ block.shopify_attributes }}>
+  <div class="banner-card banner-card-{{ block.settings.variant | default: '1' }} has-before hover:shine">
+    {% content_for 'blocks' %}
+
+    {% if block.settings.image != blank %}
+      <div class="has-bg-image" style="background-image: url('{{ block.settings.image | image_url }}');"></div>
+    {% else %}
+      <div class="banner-placeholder">
+        {% if block.settings.variant == '1' %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'banner-placeholder-svg' }}
+        {% else %}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'banner-placeholder-svg' }}
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</li>
+
+{% schema %}
+{
+  "name": "Banner image",
+  "tag": null,
+  "blocks": [
+    {
+      "type": "_banner-content"
+    },
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "group"
+    }
+  ],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "variant",
+      "label": "Card variant",
+      "options": [
+        { "value": "1", "label": "First" },
+        { "value": "2", "label": "Second" }
+      ],
+      "default": "1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner image",
+      "blocks": [
+        {
+          "type": "_banner-content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

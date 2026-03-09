@@ -4,41 +4,7 @@
     <div class="container">
         <ul class="banner-list">
             {% if section.blocks.size > 0 %}
-              {% for block in section.blocks %}
-                <li {{ block.shopify_attributes }}>
-                  <div class="banner-card banner-card-{{ forloop.index }} has-before hover:shine">
-                    {% if block.settings.subheading != blank %}
-                      <p class="card-subtitle">{{ block.settings.subheading }}</p>
-                    {% endif %}
-                    {% if block.settings.heading != blank %}
-                      <h2 class="h2 card-title">{{ block.settings.heading }}</h2>
-                    {% endif %}
-                    {% if block.settings.button_label != blank %}
-                      <a {% if block.settings.button_url != blank %}
-                          href="{{ block.settings.button_url }}"
-                        {% else %}
-                          role="link" aria-disabled="true"
-                        {% endif %}
-                        class="btn btn-primary"
-                        style="cursor:pointer;"
-                      >
-                        {{ block.settings.button_label }}
-                      </a>
-                    {% endif %}
-                    {% if block.settings.image != blank %}
-                      <div class="has-bg-image" style="background-image: url('{{ block.settings.image | image_url }}');"></div>
-                    {% else %}
-                      <div class="banner-placeholder">
-                        {% if forloop.first %}
-                          {{ 'lifestyle-1' | placeholder_svg_tag: 'banner-placeholder-svg' }}
-                        {% else %}
-                          {{ 'lifestyle-2' | placeholder_svg_tag: 'banner-placeholder-svg' }}
-                        {% endif %}
-                      </div>
-                    {% endif %}
-                  </div>
-                </li>
-              {% endfor %}
+              {% content_for 'blocks' %}
             {% else %}
               <li>
                 <div class="banner-card banner-card-1 has-before hover:shine">
@@ -486,42 +452,10 @@
       "default": "/collections/all"
     }
   ],
+  "max_blocks": 2,
   "blocks": [
     {
-      "type": "image_banner",
-      "name": "Image banner",
-      "limit": 2,
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        },
-        {
-          "type": "text",
-          "id": "subheading",
-          "label": "Subheading",
-          "default": "NEW COLLECTION"
-        },
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "Explore Our Latest Velour Collection"
-        },
-        {
-          "type": "text",
-          "id": "button_label",
-          "label": "Button label",
-          "default": "Explore More"
-        },
-        {
-          "type": "url",
-          "id": "button_url",
-          "label": "Button link",
-          "default": "/collections/all"
-        }
-      ]
+      "type": "_banner-card"
     }
   ],
   "presets": [
@@ -537,22 +471,38 @@
       },
       "blocks": [
         {
-          "type": "image_banner",
+          "type": "_banner-card",
           "settings": {
-            "subheading": "Perfumes in distinctive notes to match every style",
-            "heading": "25% off Everything",
-            "button_label": "Shop Now",
-            "button_url": "/collections/all"
-          }
+            "variant": "1"
+          },
+          "blocks": [
+            {
+              "type": "_banner-content",
+              "settings": {
+                "subheading": "Perfumes in distinctive notes to match every style",
+                "heading": "25% off Everything",
+                "button_label": "Shop Now",
+                "button_url": "/collections/all"
+              }
+            }
+          ]
         },
         {
-          "type": "image_banner",
+          "type": "_banner-card",
           "settings": {
-            "subheading": "NEW COLLECTION",
-            "heading": "Explore Our Latest Velour Collection",
-            "button_label": "Explore More",
-            "button_url": "/collections/all"
-          }
+            "variant": "2"
+          },
+          "blocks": [
+            {
+              "type": "_banner-content",
+              "settings": {
+                "subheading": "NEW COLLECTION",
+                "heading": "Explore Our Latest Velour Collection",
+                "button_label": "Explore More",
+                "button_url": "/collections/all"
+              }
+            }
+          ]
         }
       ]
     }

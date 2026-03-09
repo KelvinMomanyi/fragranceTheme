@@ -173,28 +173,50 @@
     "banner": {
       "type": "banner",
       "blocks": {
-        "image_banner_1": {
-          "type": "image_banner",
+        "banner_card_1": {
+          "type": "_banner-card",
           "settings": {
-            "subheading": "Perfumes in distinctive notes to match every style",
-            "heading": "25% off Everything",
-            "button_label": "Shop Now",
-            "button_url": "shopify://collections/all"
-          }
+            "variant": "1"
+          },
+          "blocks": {
+            "banner_content_1": {
+              "type": "_banner-content",
+              "settings": {
+                "subheading": "Perfumes in distinctive notes to match every style",
+                "heading": "25% off Everything",
+                "button_label": "Shop Now",
+                "button_url": "shopify://collections/all"
+              }
+            }
+          },
+          "block_order": [
+            "banner_content_1"
+          ]
         },
-        "image_banner_2": {
-          "type": "image_banner",
+        "banner_card_2": {
+          "type": "_banner-card",
           "settings": {
-            "subheading": "NEW COLLECTION",
-            "heading": "Explore Our Latest Velour Collection",
-            "button_label": "Explore More",
-            "button_url": "shopify://collections/all"
-          }
+            "variant": "2"
+          },
+          "blocks": {
+            "banner_content_2": {
+              "type": "_banner-content",
+              "settings": {
+                "subheading": "NEW COLLECTION",
+                "heading": "Explore Our Latest Velour Collection",
+                "button_label": "Explore More",
+                "button_url": "shopify://collections/all"
+              }
+            }
+          },
+          "block_order": [
+            "banner_content_2"
+          ]
         }
       },
       "block_order": [
-        "image_banner_1",
-        "image_banner_2"
+        "banner_card_1",
+        "banner_card_2"
       ],
       "settings": {
         "subtitle1": "NEW COLLECTION",
