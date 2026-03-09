@@ -3,48 +3,104 @@
 <section class="section banner color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" aria-label="banner" data-aos="fade-up">
     <div class="container">
         <ul class="banner-list">
-            <li>
-                <div class="banner-card banner-card-1  has-before hover:shine">
-                  <h2 class="h2 card-title">{{section.settings.title2 }}</h2>
-                  <p class="card-text">
-                    {{section.settings.description}}
-                  </p>
-                  <a {% if section.settings.link %}
-                    href="{{ section.settings.link }}"
+            {% if section.blocks.size > 0 %}
+              {% for block in section.blocks %}
+                <li {{ block.shopify_attributes }}>
+                  <div class="banner-card banner-card-{{ forloop.index }} has-before hover:shine">
+                    {% if block.settings.subheading != blank %}
+                      <p class="card-subtitle">{{ block.settings.subheading }}</p>
+                    {% endif %}
+                    {% if block.settings.heading != blank %}
+                      <h2 class="h2 card-title">{{ block.settings.heading }}</h2>
+                    {% endif %}
+                    {% if block.settings.button_label != blank %}
+                      <a {% if block.settings.button_url != blank %}
+                          href="{{ block.settings.button_url }}"
+                        {% else %}
+                          role="link" aria-disabled="true"
+                        {% endif %}
+                        class="btn btn-primary"
+                        style="cursor:pointer;"
+                      >
+                        {{ block.settings.button_label }}
+                      </a>
+                    {% endif %}
+                    {% if block.settings.image != blank %}
+                      <div class="has-bg-image" style="background-image: url('{{ block.settings.image | image_url }}');"></div>
                     {% else %}
-                     role="link" aria-disabled="true"
-                     {% endif %}
-                    class="btn btn-primary" style="cursor:pointer;">{{section.settings.btn_label2}}</a>
-                    {% if section.settings.image2 != blank %}
-                      <div class="has-bg-image" style="background-image: url('{{ section.settings.image2 | image_url}}');">
-                      </div>   
-                     {% else %}
                       <div class="banner-placeholder">
-                        {{ 'lifestyle-1' | placeholder_svg_tag: 'banner-placeholder-svg' }}
+                        {% if forloop.first %}
+                          {{ 'lifestyle-1' | placeholder_svg_tag: 'banner-placeholder-svg' }}
+                        {% else %}
+                          {{ 'lifestyle-2' | placeholder_svg_tag: 'banner-placeholder-svg' }}
+                        {% endif %}
                       </div>
                     {% endif %}
-                </div>
-            </li>
-            <li>
-               <div class="banner-card banner-card-2   has-before hover:shine">
-                <p class="card-subtitle">{{section.settings.subtitle1 }}</p>
-                <h2 class="h2 card-title">{{section.settings.title1 }}</h2>
-                <a {% if section.settings.link %}
-                  href="{{ section.settings.link }}"
+                  </div>
+                </li>
+              {% endfor %}
+            {% else %}
+              <li>
+                <div class="banner-card banner-card-1 has-before hover:shine">
+                  {% if section.settings.legacy_subheading2 != blank %}
+                    <p class="card-subtitle">{{ section.settings.legacy_subheading2 }}</p>
+                  {% elsif section.settings.description != blank %}
+                    <p class="card-subtitle">{{ section.settings.description }}</p>
+                  {% endif %}
+                  {% if section.settings.title2 != blank %}
+                    <h2 class="h2 card-title">{{ section.settings.title2 }}</h2>
+                  {% endif %}
+                  {% if section.settings.btn_label2 != blank %}
+                    <a {% if section.settings.button_url2 != blank %}
+                        href="{{ section.settings.button_url2 }}"
+                      {% else %}
+                        role="link" aria-disabled="true"
+                      {% endif %}
+                      class="btn btn-primary"
+                      style="cursor:pointer;"
+                    >
+                      {{ section.settings.btn_label2 }}
+                    </a>
+                  {% endif %}
+                  {% if section.settings.image2 != blank %}
+                    <div class="has-bg-image" style="background-image: url('{{ section.settings.image2 | image_url }}');"></div>
                   {% else %}
-                   role="link" aria-disabled="true"
-                   {% endif %}
-                  class="btn btn-primary" style="cursor:pointer;">{{section.settings.btn_label1}}</a>
+                    <div class="banner-placeholder">
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'banner-placeholder-svg' }}
+                    </div>
+                  {% endif %}
+                </div>
+              </li>
+              <li>
+                <div class="banner-card banner-card-2 has-before hover:shine">
+                  {% if section.settings.subtitle1 != blank %}
+                    <p class="card-subtitle">{{ section.settings.subtitle1 }}</p>
+                  {% endif %}
+                  {% if section.settings.title1 != blank %}
+                    <h2 class="h2 card-title">{{ section.settings.title1 }}</h2>
+                  {% endif %}
+                  {% if section.settings.btn_label1 != blank %}
+                    <a {% if section.settings.button_url1 != blank %}
+                        href="{{ section.settings.button_url1 }}"
+                      {% else %}
+                        role="link" aria-disabled="true"
+                      {% endif %}
+                      class="btn btn-primary"
+                      style="cursor:pointer;"
+                    >
+                      {{ section.settings.btn_label1 }}
+                    </a>
+                  {% endif %}
                   {% if section.settings.image1 != blank %}
-                   <div class="has-bg-image" style="background-image: url('{{ section.settings.image1 | image_url}}');">
-                   </div>   
+                    <div class="has-bg-image" style="background-image: url('{{ section.settings.image1 | image_url }}');"></div>
                   {% else %}
-                   <div class="banner-placeholder">
-                     {{ 'lifestyle-2' | placeholder_svg_tag: 'banner-placeholder-svg' }}
-                   </div>
-                 {% endif %}
+                    <div class="banner-placeholder">
+                      {{ 'lifestyle-2' | placeholder_svg_tag: 'banner-placeholder-svg' }}
+                    </div>
+                  {% endif %}
                 </div>
-            </li>
+              </li>
+            {% endif %}
         </ul>
     </div>   
 </section>
@@ -406,9 +462,15 @@
       "default": "25% off Everything"
     },
     {
+      "type": "text",
+      "id": "legacy_subheading2",
+      "label": "Subheading 2 (legacy fallback)",
+      "default": "Perfumes in distinctive notes to match every style"
+    },
+    {
       "type": "inline_richtext",
       "id": "description",
-      "label": "Description",
+      "label": "Description (legacy fallback)",
       "default": "Perfumes in distinctive notes to match every style"
     },
     {
@@ -424,7 +486,44 @@
       "default": "/collections/all"
     }
   ],
-  "blocks": [],
+  "blocks": [
+    {
+      "type": "image_banner",
+      "name": "Image banner",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "NEW COLLECTION"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Explore Our Latest Velour Collection"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Explore More"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button link",
+          "default": "/collections/all"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "Image banner",
@@ -435,7 +534,27 @@
         "title2": "25% off Everything",
         "description": "Perfumes in distinctive notes to match every style",
         "btn_label2": "Shop Now"
-      }
+      },
+      "blocks": [
+        {
+          "type": "image_banner",
+          "settings": {
+            "subheading": "Perfumes in distinctive notes to match every style",
+            "heading": "25% off Everything",
+            "button_label": "Shop Now",
+            "button_url": "/collections/all"
+          }
+        },
+        {
+          "type": "image_banner",
+          "settings": {
+            "subheading": "NEW COLLECTION",
+            "heading": "Explore Our Latest Velour Collection",
+            "button_label": "Explore More",
+            "button_url": "/collections/all"
+          }
+        }
+      ]
     }
   ]
 }
