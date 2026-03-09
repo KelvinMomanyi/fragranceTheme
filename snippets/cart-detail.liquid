@@ -1,6 +1,6 @@
 <div id="myModal2" class="cartBar" >
     <div class="cartBar-content" style="overflow-y:auto;" >
-      <button class="nav-close-btn" onclick="closeCartbar()">
+      <button class="nav-close-btn cartBar-close-btn" onclick="closeCartbar()" aria-label="Close cart">
         {% render 'icon-velour', icon: 'close' %}
       </button>
   
@@ -71,181 +71,184 @@
     </div>
   </div>
  <style>
- /*-----------------------------------*\
-    #OPEN-CART
-  \*-----------------------------------*/
-  
-  .cartBar {
-    display:none; /* Hide the modal by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-  }
-  
-  /* Style for the modal content */
-  .cartBar-content {
-    background-color: #fefefe;
-    display: relative;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    padding: 20px 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 350px;
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-    
-  }
-  .cartBar-close{
-    width: 100%;
-    height: auto;
-    text-align: end;
-  }
-  
-  /* Style for the close button */
-   .close {
-    display: absolute;
-    right: 2px;
-    top: -2px;
-    color:black;
-    /* float: right; */
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  /* Style for the close button on hover */
-  .close:hover {
-    color: black;
-  }
-  
-  .cart-content a img{
-    width:80px;
-    height:80px;
-    text-align: center;
-  }
-  
-  .cart-content form {
-    display:flex;
-    gap: .4rem;
-    flex-direction: column;
-    text-align: start;
-  }
-  .cart-content form label {
-   justify-content: left;
-  }
-  
-  
-  .cart-content form p a {
-    font-size: medium;
-   }
-  
-   .cart-content form p a:hover {
-    text-decoration: underline;
-   }
-   .hidden{
-    display: none;
-   }
+ .cartBar {
+   display: none;
+   position: fixed;
+   inset: 0;
+   background-color: rgba(0, 0, 0, 0.45);
+   backdrop-filter: blur(3px);
+   z-index: 9100;
+ }
 
-   @media screen and (min-width: 1200px) {
-  
-    /*
- REUSED STYLE
-  */
- 
-  .container{max-width: 1300px;}
- 
-  .scrollbar-item {min-width: calc(20% - 24px);}
- 
-  .flex-item {max-width: calc(33.33% - 20px);}
- 
-  /*-----------------------------------*\
-   #CART NAVBAR
- \*-----------------------------------*/
- .cartSidebar{z-index: 5;}
- 
- .cart-navbar{
-   background-color: var(--white);
+ .cartBar-content {
    position: fixed;
    top: 0;
    right: 0;
    bottom: 0;
-   max-width: 350px;
-   width: 100%;
-   padding: 25px 40px;
-   z-index: 6;
-   transform: translateX(-100%);
-   visibility: hidden;
-   transition: 0.25s var(--cubic-out);
+   width: min(94vw, 430px);
+   background: linear-gradient(to bottom, var(--white), var(--cultured));
+   border-left: 1px solid var(--light-gray);
+   box-shadow: -16px 0 34px rgba(0, 0, 0, 0.16);
+   padding: 12px 14px 18px;
+   overflow-y: auto;
  }
- 
- .cart-navbar.active{
-   visibility: visible;
-   transform: translateX(0);
-   transition: 0.4s var(--cubic-out);
+
+ .cartBar-close-btn {
+   width: 38px;
+   height: 38px;
+   margin-left: auto;
+   border: 1px solid var(--light-gray);
+   background: var(--white);
+   color: var(--dark-gray);
+   display: grid;
+   place-items: center;
+   transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
  }
- 
- 
- .cart-navbar .wrapper{
+
+ .cartBar-close-btn:hover {
+   color: var(--tan-crayola);
+   border-color: var(--tan-crayola);
+   background: var(--cultured);
+ }
+
+ #cart-content h1,
+ #cart-content h2 {
+   font-family: var(--ff-mr_de_haviland);
+   font-size: clamp(3rem, 6vw, 4.2rem);
+   font-weight: var(--fw-500);
+   line-height: 1;
+   text-align: left;
+   margin: 12px 2px 16px;
+ }
+
+ #cart-content .cart-items-wrap form {
    display: flex;
-   justify-content: space-between;
-   align-items: center;
-   margin-block-end: 55px;
+   flex-direction: column;
  }
- 
- .cart-close-btn{
-   font-size: 28px;
-   color: var(--hoockers-green);
- }
- 
- .cart-close-btn .icon {
-   --ionicon-stroke-width:40px;
- }
- 
- .cart-navbar .navbar-link{
-   color: var(--black);
-   font-size: var(--fs-8);
-   text-transform: uppercase;
-   font-weight: var(--fw-600);
-   letter-spacing: 1px;
-   padding-block: 5px;
-   transition: var(--transition-1);
- }
- 
- .cart-navbar .navbar-link:is(hover, :focus){color: var(--hoockers-green);}
- 
- 
- .cartoverlay{
-   background-color: transparent;
-   position: fixed;
-   top: 0;
-   right: 0;
-   bottom: 0;
-   left: 0;
-   z-index: 5;
-   pointer-events: none;
-   transition: var(--transition-1);
- }
- 
- .cartoverlay.active{
-   background-color: var(--black_50);
-   pointer-events: all;
- 
- }
- 
- 
 
- 
- 
-  
+ #cart-content .cart-item-row {
+   display: grid !important;
+   grid-template-columns: 96px 1fr;
+   gap: 14px;
+   padding: 14px 8px !important;
+   border-top: 1px solid var(--light-gray);
+ }
+
+ #cart-content .cart-item-row:last-of-type {
+   border-bottom: 1px solid var(--light-gray);
+ }
+
+ #cart-content .cart-item-image {
+   width: 96px;
+   height: 120px;
+   object-fit: cover;
+   border: 1px solid var(--light-gray);
+   background: var(--white);
+ }
+
+ #cart-content .cart-item-top {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 10px;
+   margin-bottom: 6px;
+ }
+
+ #cart-content .cart-item-title {
+   font-size: 1.4rem !important;
+   line-height: 1.35;
+   color: var(--black);
+   text-decoration: none;
+ }
+
+ #cart-content .cart-item-title:hover {
+   color: var(--tan-crayola);
+ }
+
+ #cart-content .remove-item {
+   color: var(--dark-gray) !important;
+ }
+
+ #cart-content .remove-item:hover {
+   color: #b72c2c !important;
+ }
+
+ #cart-content .cart-item-price,
+ #cart-content .cart-item-line-price {
+   margin: 0;
+   font-size: 1.35rem !important;
+   line-height: 1.45;
+ }
+
+ #cart-content .cart-item-line-price {
+   color: var(--spanish-gray);
+   margin-bottom: 10px;
+ }
+
+ #cart-content .quantity-selector {
+   display: inline-grid;
+   grid-template-columns: 32px 1fr 32px;
+   align-items: center;
+   border: 1px solid var(--light-gray);
+   width: 108px;
+   height: 34px;
+   margin-top: 4px;
+ }
+
+ #cart-content .quantity-selector button {
+   border: 0;
+   background: var(--white);
+   font-size: 1.8rem;
+   color: var(--dark-gray);
+   cursor: pointer;
+   height: 100%;
+ }
+
+ #cart-content .quantity-selector button:hover {
+   color: var(--tan-crayola);
+   background: var(--cultured);
+ }
+
+ #cart-content .quantity-selector span {
+   text-align: center;
+   font-size: 1.3rem;
+ }
+
+ #cart-content .cart-summary {
+   padding: 14px 8px 4px;
+   display: grid;
+   gap: 10px;
+ }
+
+ #cart-content #subtotal {
+   margin: 0 0 4px;
+   font-size: 1.5rem;
+   font-weight: var(--fw-500);
+ }
+
+ #cart-content .cart-summary button[name="update"] {
+   width: 100%;
+   min-height: 42px;
+   border: 1px solid var(--light-gray);
+   background: var(--white);
+   color: var(--black);
+   cursor: pointer;
+ }
+
+ #cart-content .cart-summary button[name="checkout"] {
+   width: 100%;
+   min-height: 44px;
+ }
+
+ #cart-content .cart-empty {
+   margin: 18px 4px;
+   color: var(--spanish-gray);
+   font-size: 1.35rem;
+   text-align: left;
+ }
+
+ .hidden {
+   display: none;
  }
  </style>
   <script>
@@ -347,7 +350,7 @@
           
           if (cart.item_count > 0) {
             var cartHTML = `
-            <div style="display: flex; flex-direction: column;">
+            <div class="cart-items-wrap" style="display: flex; flex-direction: column;">
               <h1>Cart</h1>
               <form action="/cart" method="post" novalidate>`;
             let subtotal = 0;
@@ -358,20 +361,20 @@
               const safeItemId = `item_${item.key.replace(/[^a-zA-Z0-9_-]/g, '')}`;
 
               cartHTML += `
-                          <div style="display:flex; padding:20px; margin-bottom:1rem;"  id="${safeItemId}">
+                          <div class="cart-item-row" style="display:flex; padding:20px; margin-bottom:1rem;" id="${safeItemId}">
                               <div style="flex:1; display:flex; align-items:center; justify-content:center;">
                                 <a href="${item.url}">
-                                  <img src="${item.image}" alt="${item.title}" class="img-cover" width="480" height="640" loading="lazy">
+                                  <img src="${item.image}" alt="${item.title}" class="img-cover cart-item-image" width="480" height="640" loading="lazy">
                                 </a>
                               </div>
-                              <div style="flex:1; display:flex;  flex-direction:column;" >
-                                  <div style="flex:1; display:flex; justify-content:space-between">
-                                    <a href="${item.url}" style="font-size:1.5rem;">${item.product_title}</a>
+                              <div class="cart-item-details" style="flex:1; display:flex;  flex-direction:column;" >
+                                  <div class="cart-item-top" style="flex:1; display:flex; justify-content:space-between">
+                                    <a href="${item.url}" class="cart-item-title" style="font-size:1.5rem;">${item.product_title}</a>
                                     <a href="#" class="remove-item" data-line="${index + 1}" data-key="${item.key}" style="color: black;"><span class="icon icon--close-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M320 320L192 192M320 192L192 320"/></svg></span></a>
                                   </div>
                                   <div>
-                                      <p style="font-size:1.5rem;">${formatMoney(itemPrice)}</p>
-                                      <p id="line_price_${item.key}" style="font-size:1.5rem;">Total:  ${formatMoney(initialTotalPrice)}</p>
+                                      <p class="cart-item-price" style="font-size:1.5rem;">${formatMoney(itemPrice)}</p>
+                                      <p id="line_price_${item.key}" class="cart-item-line-price" style="font-size:1.5rem;">Total:  ${formatMoney(initialTotalPrice)}</p>
                                   </div> 
                                   <td style="display:flex; align-items:center; justify-content:center">
                                     <input style="display:none;" type="number" name="updates[]" id="updates_${item.key}" value="${item.quantity}" min="0">
@@ -392,7 +395,7 @@
             });
         
             cartHTML += `
-              <div>
+              <div class="cart-summary">
                 <p id="subtotal">Subtotal: ${formatMoney(subtotal)}</p>
                 <button type="submit" name="update">Update</button>
                 <button type="submit" name="checkout" class="btn btn-primary">Checkout</button>
@@ -560,7 +563,7 @@
         });
             {% comment %} cartContent.innerHTML = cartHTML; {% endcomment %}
           } else {
-            cartContent.innerHTML = '<h2>Cart</h2><p>Cart is empty</p>';
+            cartContent.innerHTML = '<h2>Cart</h2><p class="cart-empty">Your cart is currently empty.</p>';
           }
 
 

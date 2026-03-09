@@ -21,6 +21,9 @@
   window.closeCartbar = function () {
     var modal = document.getElementById('myModal2');
     if (modal) modal.style.display = 'none';
+    if (!document.querySelector('.modal[style*="display: block"]')) {
+      document.body.classList.remove('modal-open');
+    }
   };
 
   window.toggleForm = function (formToShow) {

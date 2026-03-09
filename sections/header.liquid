@@ -318,11 +318,15 @@
     window.onclick = function(event) {
       var searchModal = document.getElementById('search-modal');
       var loginModal = document.getElementById('login-modal');
+      var cartModal = document.getElementById('myModal2');
       if (event.target == searchModal) {
         window.closeSearchModal();
       }
       if (event.target == loginModal) {
         window.closeLoginModal();
+      }
+      if (event.target == cartModal && typeof window.closeCartbar === 'function') {
+        window.closeCartbar();
       }
     }
 
@@ -367,6 +371,7 @@
       var modal = document.getElementById('myModal2');
       if (modal) {
         modal.style.display = 'block'; // Open cart drawer
+        document.body.classList.add('modal-open');
         if (typeof fetchCart === 'function') fetchCart();
       }
     };
