@@ -266,24 +266,52 @@
   (function() {
     'use strict';
 
+    function ensureModalInBody(id) {
+      var modal = document.getElementById(id);
+      if (!modal) return null;
+      if (modal.parentNode !== document.body) {
+        document.body.appendChild(modal);
+      }
+      return modal;
+    }
+
+    function syncModalBodyState() {
+      var openModal = Array.from(document.querySelectorAll('.modal')).some(function(modal) {
+        return window.getComputedStyle(modal).display !== 'none';
+      });
+      document.body.classList.toggle('modal-open', openModal);
+    }
+
     /* Modal Actions */
     window.openSearchModal = function() {
-      document.getElementById('search-modal').style.display = 'block';
+      var searchModal = ensureModalInBody('search-modal');
+      if (!searchModal) return;
+      searchModal.style.display = 'block';
+      syncModalBodyState();
       setTimeout(() => {
         document.getElementById('Search-In-Modal').focus();
       }, 100);
     };
 
     window.closeSearchModal = function() {
-      document.getElementById('search-modal').style.display = 'none';
+      var searchModal = document.getElementById('search-modal');
+      if (!searchModal) return;
+      searchModal.style.display = 'none';
+      syncModalBodyState();
     };
 
     window.openLoginModal = function() {
-      document.getElementById('login-modal').style.display = 'block';
+      var loginModal = ensureModalInBody('login-modal');
+      if (!loginModal) return;
+      loginModal.style.display = 'block';
+      syncModalBodyState();
     };
 
     window.closeLoginModal = function() {
-      document.getElementById('login-modal').style.display = 'none';
+      var loginModal = document.getElementById('login-modal');
+      if (!loginModal) return;
+      loginModal.style.display = 'none';
+      syncModalBodyState();
     };
 
     // Close modals on outside click
@@ -291,10 +319,10 @@
       var searchModal = document.getElementById('search-modal');
       var loginModal = document.getElementById('login-modal');
       if (event.target == searchModal) {
-        searchModal.style.display = "none";
+        window.closeSearchModal();
       }
       if (event.target == loginModal) {
-        loginModal.style.display = "none";
+        window.closeLoginModal();
       }
     }
 
@@ -377,6 +405,12 @@
           menu.classList.remove('menu-open');
       });
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      ensureModalInBody('search-modal');
+      ensureModalInBody('login-modal');
+      syncModalBodyState();
+    });
 
   })();
   </script> 
