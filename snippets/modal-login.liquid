@@ -5,6 +5,14 @@
       <h2 class="h3 text-center">Login</h2>
     </div>
     <div class="modal-body">
+      {% if enable_shop_login_button %}
+        <div class="shop-login-wrapper">
+          {{ shop | login_button: action: 'sign_in', size: 'large' }}
+        </div>
+        <p class="login-divider" role="separator" aria-label="or">
+          <span>or</span>
+        </p>
+      {% endif %}
       {% form 'customer_login' %}
         {{ form.errors | default_errors }}
         <div class="field">

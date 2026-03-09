@@ -2301,6 +2301,38 @@ body.modal-open {
   margin-bottom: 12px;
 }
 
+#login-modal .shop-login-wrapper {
+  margin-bottom: 14px;
+}
+
+#login-modal .shop-login-wrapper .shopify-login-button {
+  width: 100%;
+  display: block;
+}
+
+#login-modal .login-divider {
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--spanish-gray);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+#login-modal .login-divider::before,
+#login-modal .login-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--light-gray);
+}
+
+#login-modal .login-divider span {
+  white-space: nowrap;
+}
+
 #login-modal .modal-body .field input {
   width: 100%;
   border: 1px solid var(--light-gray);

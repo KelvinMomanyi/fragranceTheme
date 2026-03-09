@@ -67,7 +67,7 @@
 
     <!-- Modals -->
     {% render 'modal-search' %}
-    {% render 'modal-login' %}
+    {% render 'modal-login', enable_shop_login_button: section.settings.enable_shop_login_button %}
 
     <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
@@ -853,6 +853,12 @@
       "label": "Mobile menu",
       "info":"Select a different menu for mobile sidebar",
       "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_shop_login_button",
+      "label": "Enable Shop login button in modal",
+      "default": true
     }
   ],
   "blocks": [],
