@@ -10,8 +10,14 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign current_variant = product.selected_or_first_available_variant
-  assign first_3d_model = product.media | where: "media_type", "model" | first
+  if product == blank and section.settings.product != blank
+    assign product = section.settings.product
+  endif
+
+  if product != blank
+    assign current_variant = product.selected_or_first_available_variant
+    assign first_3d_model = product.media | where: "media_type", "model" | first
+  endif
 -%}
 
 {% if template == 'product' %}
@@ -47,8 +53,9 @@
   </script>
 {% endif %}
 
-<section class="section product-section color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="product-{{ product.id }}">
+<section class="section product-section color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="product-{{ product.id | default: section.id }}">
   <div class="container">
+    {%- if product != blank -%}
     <div class="product-wrapper">
       
       {%- comment -%} Product Media Gallery {%- endcomment -%}
@@ -491,9 +498,12 @@
         
       </div>
     </div>
-    
+    {%- else -%}
+      <div class="featured-product-placeholder">
+        <p>Please select a product to display.</p>
+      </div>
+    {%- endif -%}
 
-    
   </div>
 </section>
 
@@ -1344,6 +1354,11 @@ document.addEventListener('DOMContentLoaded', function() {
   "tag": "section",
   "class": "section-product",
   "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",
