@@ -1,0 +1,224 @@
+<section class="section about-story color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}">
+  <div class="container about-story__grid about-story__grid--{{ section.settings.image_position }}">
+    <div class="about-story__media">
+      {%- if section.settings.image != blank -%}
+        <img
+          src="{{ section.settings.image | image_url: width: 1400 }}"
+          alt="{{ section.settings.image.alt | escape }}"
+          loading="lazy"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+        >
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+
+    <div class="about-story__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="about-story__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+
+      <h2 class="about-story__title">{{ section.settings.heading }}</h2>
+
+      {%- if section.settings.body != blank -%}
+        <div class="about-story__text rte">{{ section.settings.body }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.established_label != blank or section.settings.established_value != blank -%}
+        <div class="about-story__established">
+          <span class="about-story__established-label">{{ section.settings.established_label }}</span>
+          <span class="about-story__established-value">{{ section.settings.established_value }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="about-story__features">
+          {%- for block in section.blocks -%}
+            <div class="about-story__feature" {{ block.shopify_attributes }}>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.text }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-story__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(24px, 4vw, 64px);
+    align-items: center;
+  }
+
+  .about-story__grid--right .about-story__media {
+    order: 2;
+  }
+
+  .about-story__media img,
+  .about-story__media .placeholder-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .about-story__eyebrow {
+    font-size: 1.2rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    margin-bottom: 12px;
+  }
+
+  .about-story__title {
+    font-size: clamp(2.2rem, 4vw, 3.6rem);
+    margin: 0 0 16px;
+    color: var(--color-text);
+  }
+
+  .about-story__text {
+    color: var(--color-text);
+    font-size: 1.5rem;
+    line-height: 1.8;
+  }
+
+  .about-story__established {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-text);
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    letter-spacing: 0.14em;
+  }
+
+  .about-story__established-value {
+    color: var(--color-button);
+    font-weight: 600;
+  }
+
+  .about-story__features {
+    margin-top: 24px;
+    display: grid;
+    gap: 16px;
+  }
+
+  .about-story__feature {
+    padding: 16px;
+    border: 1px solid var(--color-text);
+  }
+
+  .about-story__feature h3 {
+    margin: 0 0 8px;
+    font-size: 1.4rem;
+    color: var(--color-text);
+  }
+
+  .about-story__feature p {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 900px) {
+    .about-story__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "About story",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Our craft"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The essence of timeless fragrance"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>Every bottle is composed to evoke memory and emotion, blending bold notes with refined balance.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "established_label",
+      "label": "Established label",
+      "default": "Est."
+    },
+    {
+      "type": "text",
+      "id": "established_value",
+      "label": "Established value",
+      "default": "2019"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Small-batch blending"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Each batch is tuned for balance and longevity."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About story",
+      "blocks": [
+        { "type": "feature" },
+        { "type": "feature" },
+        { "type": "feature" }
+      ]
+    }
+  ]
+}
+{% endschema %}

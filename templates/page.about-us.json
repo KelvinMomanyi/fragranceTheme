@@ -1,14 +1,248 @@
 {
-    "sections": {
-      
-      "about-us": {
-        "type": "about",
-        "settings": {}
-      }
+  "sections": {
+    "about-hero": {
+      "type": "about-hero",
+      "settings": {
+        "eyebrow": "Our story",
+        "title": "About",
+        "highlight": "Velour",
+        "subtitle": "<p>We craft modern scents that feel timeless, designed for everyday rituals.</p>",
+        "overlay_opacity": 35,
+        "content_alignment": "left",
+        "color_scheme": "scheme-1"
+      },
+      "blocks": {
+        "hero-button-1": {
+          "type": "button",
+          "settings": {
+            "label": "Shop collection",
+            "link": "",
+            "style": "primary"
+          }
+        },
+        "hero-button-2": {
+          "type": "button",
+          "settings": {
+            "label": "Our process",
+            "link": "",
+            "style": "secondary"
+          }
+        },
+        "hero-social-1": {
+          "type": "social",
+          "settings": {
+            "label": "Instagram",
+            "icon": "logo-instagram",
+            "link": ""
+          }
+        },
+        "hero-social-2": {
+          "type": "social",
+          "settings": {
+            "label": "Facebook",
+            "icon": "logo-facebook",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "hero-button-1",
+        "hero-button-2",
+        "hero-social-1",
+        "hero-social-2"
+      ]
     },
-    "order": [
-      "about-us"
-    ]
-  }
-  
-  
+    "about-story": {
+      "type": "about-story",
+      "settings": {
+        "eyebrow": "Crafted with intention",
+        "heading": "The essence of timeless fragrance",
+        "body": "<p>Every blend is tuned to evoke memory and emotion, balancing bold notes with refined clarity.</p>",
+        "image_position": "left",
+        "established_label": "Est.",
+        "established_value": "2019",
+        "color_scheme": "scheme-1"
+      },
+      "blocks": {
+        "story-feature-1": {
+          "type": "feature",
+          "settings": {
+            "title": "Small-batch blending",
+            "text": "Each batch is tuned for balance and longevity."
+          }
+        },
+        "story-feature-2": {
+          "type": "feature",
+          "settings": {
+            "title": "Global sourcing",
+            "text": "We partner with artisan houses across the world."
+          }
+        },
+        "story-feature-3": {
+          "type": "feature",
+          "settings": {
+            "title": "Layered rituals",
+            "text": "Design your own signature with curated pairings."
+          }
+        }
+      },
+      "block_order": [
+        "story-feature-1",
+        "story-feature-2",
+        "story-feature-3"
+      ]
+    },
+    "about-highlights": {
+      "type": "about-highlights",
+      "settings": {
+        "heading": "What makes us different",
+        "subheading": "Thoughtful sourcing, intentional blends, and a ritual-first mindset.",
+        "columns": "3",
+        "color_scheme": "scheme-1"
+      },
+      "blocks": {
+        "highlight-1": {
+          "type": "highlight",
+          "settings": {
+            "title": "Curated profiles",
+            "text": "Every blend is reviewed for balance and longevity.",
+            "link_label": "Learn more",
+            "link": ""
+          }
+        },
+        "highlight-2": {
+          "type": "highlight",
+          "settings": {
+            "title": "Modern rituals",
+            "text": "Layer fragrances for mood, time, and place.",
+            "link_label": "See rituals",
+            "link": ""
+          }
+        },
+        "highlight-3": {
+          "type": "highlight",
+          "settings": {
+            "title": "Sustainable choices",
+            "text": "Refillable formats with responsibly sourced notes.",
+            "link_label": "Our values",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "highlight-1",
+        "highlight-2",
+        "highlight-3"
+      ]
+    },
+    "about-collections": {
+      "type": "about-collections",
+      "settings": {
+        "heading": "Featured collections",
+        "subheading": "Explore signature scents for every moment.",
+        "show_description": true,
+        "color_scheme": "scheme-1"
+      },
+      "blocks": {
+        "collection-1": {
+          "type": "collection",
+          "settings": {
+            "title": "Executive Collection",
+            "description": "Sophisticated profiles for focused, confident days.",
+            "cta_label": "Shop collection"
+          }
+        },
+        "collection-2": {
+          "type": "collection",
+          "settings": {
+            "title": "Casual Luxe",
+            "description": "Everyday essentials with premium comfort.",
+            "cta_label": "Shop collection"
+          }
+        },
+        "collection-3": {
+          "type": "collection",
+          "settings": {
+            "title": "Evening Elegance",
+            "description": "Refined blends for unforgettable nights.",
+            "cta_label": "Shop collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection-1",
+        "collection-2",
+        "collection-3"
+      ]
+    },
+    "about-testimonials": {
+      "type": "about-testimonials",
+      "settings": {
+        "heading": "What our customers say",
+        "subheading": "Real notes from fragrance lovers.",
+        "color_scheme": "scheme-1"
+      },
+      "blocks": {
+        "testimonial-1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "This is the only store I trust for my signature scent.",
+            "author": "Jane D.",
+            "role": "Customer"
+          }
+        },
+        "testimonial-2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Unmatched service and a collection that feels curated just for me.",
+            "author": "Michael S.",
+            "role": "Collector"
+          }
+        },
+        "testimonial-3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Every scent tells a story. I keep coming back.",
+            "author": "Sarah K.",
+            "role": "Customer"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial-1",
+        "testimonial-2",
+        "testimonial-3"
+      ]
+    },
+    "about-cta": {
+      "type": "about-cta",
+      "settings": {
+        "heading": "Explore our signature collection",
+        "text": "<p>Discover the fragrance that feels like your next chapter.</p>",
+        "overlay_opacity": 35,
+        "color_scheme": "scheme-1"
+      },
+      "blocks": {
+        "cta-button-1": {
+          "type": "button",
+          "settings": {
+            "label": "Shop now",
+            "link": "",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "cta-button-1"
+      ]
+    }
+  },
+  "order": [
+    "about-hero",
+    "about-story",
+    "about-highlights",
+    "about-collections",
+    "about-testimonials",
+    "about-cta"
+  ]
+}

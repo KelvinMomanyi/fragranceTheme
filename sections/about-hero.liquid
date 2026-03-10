@@ -1,0 +1,329 @@
+{%- liquid
+  assign overlay_opacity = section.settings.overlay_opacity | times: 0.01
+  assign has_buttons = false
+  assign has_socials = false
+  for block in section.blocks
+    if block.type == 'button'
+      assign has_buttons = true
+    endif
+    if block.type == 'social'
+      assign has_socials = true
+    endif
+  endfor
+-%}
+
+<section class="section about-hero color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}">
+  <div class="about-hero__media" style="--about-hero-overlay: {{ overlay_opacity }};">
+    {%- if section.settings.background_image != blank -%}
+      <img
+        src="{{ section.settings.background_image | image_url: width: 2400 }}"
+        alt="{{ section.settings.background_image.alt | escape }}"
+        loading="lazy"
+        width="{{ section.settings.background_image.width }}"
+        height="{{ section.settings.background_image.height }}"
+      >
+    {%- endif -%}
+  </div>
+
+  <div class="container about-hero__container about-hero__container--{{ section.settings.content_alignment }}">
+    <div class="about-hero__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="about-hero__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+
+      <h1 class="about-hero__title">
+        <span>{{ section.settings.title }}</span>
+        {%- if section.settings.highlight != blank -%}
+          <span class="about-hero__title-highlight">{{ section.settings.highlight }}</span>
+        {%- endif -%}
+      </h1>
+
+      {%- if section.settings.subtitle != blank -%}
+        <div class="about-hero__subtitle rte">{{ section.settings.subtitle }}</div>
+      {%- endif -%}
+
+      {%- if has_buttons -%}
+        <div class="about-hero__actions">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'button' -%}
+                {%- assign button_class = 'btn btn-primary' -%}
+                {%- if block.settings.style == 'secondary' -%}
+                  {%- assign button_class = 'btn btn-secondary' -%}
+                {%- endif -%}
+                <a class="{{ button_class }}" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+                  {{ block.settings.label }}
+                </a>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if has_socials -%}
+        <div class="about-hero__socials">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'social' -%}
+                <a class="about-hero__social" href="{{ block.settings.link }}" aria-label="{{ block.settings.label }}" {{ block.shopify_attributes }}>
+                  {%- if block.settings.icon != blank -%}
+                    <ion-icon name="{{ block.settings.icon }}"></ion-icon>
+                  {%- endif -%}
+                  <span class="visually-hidden">{{ block.settings.label }}</span>
+                </a>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(80px, 12vw, 160px) 0;
+  }
+
+  .about-hero__media {
+    position: absolute;
+    inset: 0;
+    background: var(--color-background);
+  }
+
+  .about-hero__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, var(--about-hero-overlay, 0.2));
+  }
+
+  .about-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .about-hero__container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .about-hero__content {
+    max-width: 620px;
+    display: grid;
+    gap: 18px;
+  }
+
+  .about-hero__container--center .about-hero__content {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .about-hero__container--right .about-hero__content {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .about-hero__eyebrow {
+    font-size: 1.2rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+
+  .about-hero__title {
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height: 1.05;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .about-hero__title-highlight {
+    display: block;
+    color: var(--color-button);
+  }
+
+  .about-hero__subtitle {
+    font-size: 1.6rem;
+    color: var(--color-text);
+  }
+
+  .about-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .about-hero__container--center .about-hero__actions {
+    justify-content: center;
+  }
+
+  .about-hero__container--right .about-hero__actions {
+    justify-content: flex-end;
+  }
+
+  .about-hero__socials {
+    display: flex;
+    gap: 12px;
+  }
+
+  .about-hero__container--center .about-hero__socials {
+    justify-content: center;
+  }
+
+  .about-hero__container--right .about-hero__socials {
+    justify-content: flex-end;
+  }
+
+  .about-hero__social {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--color-text);
+    color: var(--color-text);
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .about-hero__social:hover {
+    transform: translateY(-2px);
+    background: var(--color-text);
+    color: var(--color-background);
+  }
+
+  @media (max-width: 749px) {
+    .about-hero__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "About hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Crafted for modern fragrance lovers"
+    },
+    {
+      "type": "text",
+      "id": "highlight",
+      "label": "Highlight",
+      "default": "Since 2019"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<p>We curate bold, timeless scents that turn everyday moments into signatures.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 35
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Shop collection"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "primary"
+        }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Social link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Instagram"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Ionicon name",
+          "default": "logo-instagram"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About hero",
+      "blocks": [
+        { "type": "button" },
+        { "type": "button" },
+        { "type": "social" },
+        { "type": "social" }
+      ]
+    }
+  ]
+}
+{% endschema %}
