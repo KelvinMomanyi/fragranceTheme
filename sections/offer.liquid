@@ -2,64 +2,66 @@
 <section class="section offer color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="offer" aria-label="offer" data-aos="fade-up">
     <div class="container">
       <figure class="offer-banner">
-      
-        {% if section.settings.image2 != blank %}
-          <img src="{{ section.settings.image2 | image_url: width: 610 }}" 
-            srcset="{{ section.settings.image2 | image_url: width: 305 }} 305w,
-                    {{ section.settings.image2 | image_url: width: 610 }} 610w"
-            sizes="(max-width: 480px) 100vw, 305px"
-            alt="offer products" width="305" height="405" class="w-100" loading="lazy">    
-        {% else %}
-          <div class="offer-placeholder">
-            {{ 'lifestyle-1' | placeholder_svg_tag: 'offer-placeholder-svg' }}
-          </div>
-        {% endif %}  
-        {% if section.settings.image1 != blank %}
-           <img src="{{ section.settings.image1 | image_url: width: 610 }}" 
-             srcset="{{ section.settings.image1 | image_url: width: 305 }} 305w,
-                     {{ section.settings.image1 | image_url: width: 610 }} 610w"
-             sizes="(max-width: 480px) 100vw, 305px"
-             alt="offer products" width="305" height="405" class="w-100" loading="lazy">    
-        {% else %}
-           <div class="offer-placeholder">
-             {{ 'lifestyle-2' | placeholder_svg_tag: 'offer-placeholder-svg' }}
-           </div>
-        {% endif %} 
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'offer_image' %}
+              {% if block.settings.image != blank %}
+                <img
+                  src="{{ block.settings.image | image_url: width: 610 }}"
+                  srcset="{{ block.settings.image | image_url: width: 305 }} 305w,
+                          {{ block.settings.image | image_url: width: 610 }} 610w"
+                  sizes="(max-width: 480px) 100vw, 305px"
+                  alt="{{ block.settings.alt_text | escape }}"
+                  width="305"
+                  height="405"
+                  class="w-100"
+                  loading="lazy"
+                  {{ block.shopify_attributes }}>
+              {% else %}
+                <div class="offer-placeholder" {{ block.shopify_attributes }}>
+                  {{ block.settings.placeholder | default: 'lifestyle-1' | placeholder_svg_tag: 'offer-placeholder-svg' }}
+                </div>
+              {% endif %}
+          {% endcase %}
+        {% endfor %}
       </figure>
-    
+
       <div class="offer-content">
-        <p class="offer-subtitle">
-            <span class="span">Special Offer</span>
-            <span class="badge" aria-label="20% off">
-                {{ section.settings.percent_offer }}
-            </span>
-        </p>
-        {% if section.settings.select_product != blank %}
-          <h2 class="h2-large section-title">
-            {{ section.settings.select_product.title }}
-          </h2>
-        {% else %}
-          <h2 class="h2-large section-title">
-            Dior Sauvage
-          </h2>
-        {% endif %}
-        
-        {% if section.settings.product_desc %}
-          <p>
-           {{section.settings.product_desc }}
-          </p> 
-        {% else %} 
-         <p class="section-text">
-          Conceived as an ode to nature, Sauvage is an act of creation inspired by wide-open spaces. Compositions marked by raw freshness, combining power and nobility.
-         </p>
-        {% endif %}
-
-
-        <div ></div>
-        <a href="#" class="btn btn-primary"> Get Only {{ section.settings.offer_price }}</a>
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'offer_badge' %}
+              <p class="offer-subtitle" {{ block.shopify_attributes }}>
+                <span class="span">{{ block.settings.subtitle }}</span>
+                <span class="badge" aria-label="{{ block.settings.percent_offer | escape }}">
+                  {{ block.settings.percent_offer }}
+                </span>
+              </p>
+            {% when 'offer_product' %}
+              <h2 class="h2-large section-title" {{ block.shopify_attributes }}>
+                {% if block.settings.select_product != blank %}
+                  {{ block.settings.select_product.title }}
+                {% else %}
+                  {{ block.settings.fallback_title }}
+                {% endif %}
+              </h2>
+            {% when 'offer_description' %}
+              {% if block.settings.product_desc != blank %}
+                <p {{ block.shopify_attributes }}>
+                  {{ block.settings.product_desc }}
+                </p>
+              {% else %}
+                <p class="section-text" {{ block.shopify_attributes }}>
+                  Conceived as an ode to nature, Sauvage is an act of creation inspired by wide-open spaces. Compositions marked by raw freshness, combining power and nobility.
+                </p>
+              {% endif %}
+            {% when 'offer_price' %}
+              <a href="{{ block.settings.button_link | default: '#' }}" class="btn btn-primary" {{ block.shopify_attributes }}>
+                {{ block.settings.button_label }} {{ block.settings.offer_price }}
+              </a>
+          {% endcase %}
+        {% endfor %}
       </div>
-      
-    </div>          
+    </div>
 </section>
 
 
@@ -90,48 +92,148 @@
 {% schema %}
 {
   "name": "Offer",
+  "max_blocks": 6,
   "settings": [
     {
       "type": "color_scheme","id": "color_scheme","label": "Color scheme","default": "scheme-1"
-    },
-    {
-     "type": "image_picker",
-     "id": "image1",
-     "label": "Image 1"
-    },
-    {
-     "type": "image_picker",
-     "id": "image2",
-     "label": "Image 2"
-    },
-    {
-      "type":"text",
-      "id":"percent_offer",
-      "label":"Percentage Offer",
-      "default":"-20%"
-    },
-    {
-      "type": "product",
-      "id": "select_product",
-      "label": "Select Product"
-    },
-    {
-     "type":"text",
-     "id":"product_desc",
-     "label":"Product Description",
-     "default":"Conceived as an ode to nature, Sauvage is an act of creation inspired by wide-open spaces. Compositions marked by raw freshness, combining power and nobility."    
-    },
-    {
-      "type":"text",
-      "id":"offer_price",
-      "label":"Offer price",
-      "default":"$39"
     }
   ],
-  "blocks": [],
+  "blocks": [
+    {
+      "type": "offer_image",
+      "name": "Offer image",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "placeholder",
+          "label": "Placeholder",
+          "default": "lifestyle-1",
+          "options": [
+            { "value": "lifestyle-1", "label": "Lifestyle 1" },
+            { "value": "lifestyle-2", "label": "Lifestyle 2" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt text",
+          "default": "Offer products"
+        }
+      ]
+    },
+    {
+      "type": "offer_badge",
+      "name": "Offer badge",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Special Offer"
+        },
+        {
+          "type": "text",
+          "id": "percent_offer",
+          "label": "Percentage offer",
+          "default": "-20%"
+        }
+      ]
+    },
+    {
+      "type": "offer_product",
+      "name": "Product title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "product",
+          "id": "select_product",
+          "label": "Select product"
+        },
+        {
+          "type": "text",
+          "id": "fallback_title",
+          "label": "Fallback title",
+          "default": "Dior Sauvage"
+        }
+      ]
+    },
+    {
+      "type": "offer_description",
+      "name": "Product description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "product_desc",
+          "label": "Description",
+          "default": "Conceived as an ode to nature, Sauvage is an act of creation inspired by wide-open spaces. Compositions marked by raw freshness, combining power and nobility."
+        }
+      ]
+    },
+    {
+      "type": "offer_price",
+      "name": "Price button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Get Only"
+        },
+        {
+          "type": "text",
+          "id": "offer_price",
+          "label": "Offer price",
+          "default": "$39"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link",
+          "default": "#"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Offer"
+      "name": "Offer",
+      "blocks": [
+        {
+          "type": "offer_image",
+          "settings": {
+            "placeholder": "lifestyle-1",
+            "alt_text": "Offer products"
+          }
+        },
+        {
+          "type": "offer_image",
+          "settings": {
+            "placeholder": "lifestyle-2",
+            "alt_text": "Offer products"
+          }
+        },
+        {
+          "type": "offer_badge"
+        },
+        {
+          "type": "offer_product"
+        },
+        {
+          "type": "offer_description"
+        },
+        {
+          "type": "offer_price"
+        }
+      ]
     }
   ]
 }
