@@ -85,7 +85,7 @@
         {% endif %}
 
         {% if offer_price_block %}
-          <a href="{{ offer_price_block.settings.button_link | default: '#' }}" class="btn btn-primary" {{ offer_price_block.shopify_attributes }}>
+          <a href="{{ offer_price_block.settings.button_link | default: '#' }}" class="btn btn-primary offer-cta" {{ offer_price_block.shopify_attributes }}>
             {{ offer_price_block.settings.button_label }} {{ offer_price_block.settings.offer_price }}
           </a>
         {% endif %}
@@ -112,6 +112,11 @@
     position: absolute;
     top: 0;
     left: 0;
+  }
+
+  .offer .offer-cta {
+    margin-top: 18px;
+    display: inline-block;
   }
 </style>
 
