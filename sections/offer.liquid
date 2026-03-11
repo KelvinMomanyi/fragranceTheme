@@ -1,65 +1,94 @@
 <!--OFFER-->
 <section class="section offer color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="offer" aria-label="offer" data-aos="fade-up">
     <div class="container">
+      {% assign offer_image_blocks = section.blocks | where: "type", "offer_image" %}
+      {% assign offer_badge_block = section.blocks | where: "type", "offer_badge" | first %}
+      {% assign offer_product_block = section.blocks | where: "type", "offer_product" | first %}
+      {% assign offer_description_block = section.blocks | where: "type", "offer_description" | first %}
+      {% assign offer_price_block = section.blocks | where: "type", "offer_price" | first %}
+
       <figure class="offer-banner">
-        {% for block in section.blocks %}
-          {% case block.type %}
-            {% when 'offer_image' %}
-              {% if block.settings.image != blank %}
-                <img
-                  src="{{ block.settings.image | image_url: width: 610 }}"
-                  srcset="{{ block.settings.image | image_url: width: 305 }} 305w,
-                          {{ block.settings.image | image_url: width: 610 }} 610w"
-                  sizes="(max-width: 480px) 100vw, 305px"
-                  alt="{{ block.settings.alt_text | escape }}"
-                  width="305"
-                  height="405"
-                  class="w-100"
-                  loading="lazy"
-                  {{ block.shopify_attributes }}>
-              {% else %}
-                <div class="offer-placeholder" {{ block.shopify_attributes }}>
-                  {{ block.settings.placeholder | default: 'lifestyle-1' | placeholder_svg_tag: 'offer-placeholder-svg' }}
-                </div>
-              {% endif %}
-          {% endcase %}
-        {% endfor %}
+        {% assign offer_image_block_1 = offer_image_blocks[0] %}
+        {% assign offer_image_block_2 = offer_image_blocks[1] %}
+
+        {% if offer_image_block_1 %}
+          {% if offer_image_block_1.settings.image != blank %}
+            <img
+              src="{{ offer_image_block_1.settings.image | image_url: width: 610 }}"
+              srcset="{{ offer_image_block_1.settings.image | image_url: width: 305 }} 305w,
+                      {{ offer_image_block_1.settings.image | image_url: width: 610 }} 610w"
+              sizes="(max-width: 480px) 100vw, 305px"
+              alt="{{ offer_image_block_1.settings.alt_text | escape }}"
+              width="305"
+              height="405"
+              class="w-100"
+              loading="lazy"
+              {{ offer_image_block_1.shopify_attributes }}>
+          {% else %}
+            <div class="offer-placeholder" {{ offer_image_block_1.shopify_attributes }}>
+              {{ offer_image_block_1.settings.placeholder | default: 'lifestyle-1' | placeholder_svg_tag: 'offer-placeholder-svg' }}
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% if offer_image_block_2 %}
+          {% if offer_image_block_2.settings.image != blank %}
+            <img
+              src="{{ offer_image_block_2.settings.image | image_url: width: 610 }}"
+              srcset="{{ offer_image_block_2.settings.image | image_url: width: 305 }} 305w,
+                      {{ offer_image_block_2.settings.image | image_url: width: 610 }} 610w"
+              sizes="(max-width: 480px) 100vw, 305px"
+              alt="{{ offer_image_block_2.settings.alt_text | escape }}"
+              width="305"
+              height="405"
+              class="w-100"
+              loading="lazy"
+              {{ offer_image_block_2.shopify_attributes }}>
+          {% else %}
+            <div class="offer-placeholder" {{ offer_image_block_2.shopify_attributes }}>
+              {{ offer_image_block_2.settings.placeholder | default: 'lifestyle-2' | placeholder_svg_tag: 'offer-placeholder-svg' }}
+            </div>
+          {% endif %}
+        {% endif %}
       </figure>
 
       <div class="offer-content">
-        {% for block in section.blocks %}
-          {% case block.type %}
-            {% when 'offer_badge' %}
-              <p class="offer-subtitle" {{ block.shopify_attributes }}>
-                <span class="span">{{ block.settings.subtitle }}</span>
-                <span class="badge" aria-label="{{ block.settings.percent_offer | escape }}">
-                  {{ block.settings.percent_offer }}
-                </span>
-              </p>
-            {% when 'offer_product' %}
-              <h2 class="h2-large section-title" {{ block.shopify_attributes }}>
-                {% if block.settings.select_product != blank %}
-                  {{ block.settings.select_product.title }}
-                {% else %}
-                  {{ block.settings.fallback_title }}
-                {% endif %}
-              </h2>
-            {% when 'offer_description' %}
-              {% if block.settings.product_desc != blank %}
-                <p {{ block.shopify_attributes }}>
-                  {{ block.settings.product_desc }}
-                </p>
-              {% else %}
-                <p class="section-text" {{ block.shopify_attributes }}>
-                  Conceived as an ode to nature, Sauvage is an act of creation inspired by wide-open spaces. Compositions marked by raw freshness, combining power and nobility.
-                </p>
-              {% endif %}
-            {% when 'offer_price' %}
-              <a href="{{ block.settings.button_link | default: '#' }}" class="btn btn-primary" {{ block.shopify_attributes }}>
-                {{ block.settings.button_label }} {{ block.settings.offer_price }}
-              </a>
-          {% endcase %}
-        {% endfor %}
+        {% if offer_badge_block %}
+          <p class="offer-subtitle" {{ offer_badge_block.shopify_attributes }}>
+            <span class="span">{{ offer_badge_block.settings.subtitle }}</span>
+            <span class="badge" aria-label="{{ offer_badge_block.settings.percent_offer | escape }}">
+              {{ offer_badge_block.settings.percent_offer }}
+            </span>
+          </p>
+        {% endif %}
+
+        {% if offer_product_block %}
+          <h2 class="h2-large section-title" {{ offer_product_block.shopify_attributes }}>
+            {% if offer_product_block.settings.select_product != blank %}
+              {{ offer_product_block.settings.select_product.title }}
+            {% else %}
+              {{ offer_product_block.settings.fallback_title }}
+            {% endif %}
+          </h2>
+        {% endif %}
+
+        {% if offer_description_block %}
+          {% if offer_description_block.settings.product_desc != blank %}
+            <p {{ offer_description_block.shopify_attributes }}>
+              {{ offer_description_block.settings.product_desc }}
+            </p>
+          {% else %}
+            <p class="section-text" {{ offer_description_block.shopify_attributes }}>
+              Conceived as an ode to nature, Sauvage is an act of creation inspired by wide-open spaces. Compositions marked by raw freshness, combining power and nobility.
+            </p>
+          {% endif %}
+        {% endif %}
+
+        {% if offer_price_block %}
+          <a href="{{ offer_price_block.settings.button_link | default: '#' }}" class="btn btn-primary" {{ offer_price_block.shopify_attributes }}>
+            {{ offer_price_block.settings.button_label }} {{ offer_price_block.settings.offer_price }}
+          </a>
+        {% endif %}
       </div>
     </div>
 </section>

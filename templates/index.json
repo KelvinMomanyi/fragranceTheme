@@ -273,12 +273,60 @@
     },
     "offer": {
       "type": "offer",
+      "blocks": {
+        "offer_image_1": {
+          "type": "offer_image",
+          "settings": {
+            "placeholder": "lifestyle-1",
+            "alt_text": "Offer products"
+          }
+        },
+        "offer_image_2": {
+          "type": "offer_image",
+          "settings": {
+            "placeholder": "lifestyle-2",
+            "alt_text": "Offer products"
+          }
+        },
+        "offer_badge_1": {
+          "type": "offer_badge",
+          "settings": {
+            "subtitle": "Special Offer",
+            "percent_offer": "-20%"
+          }
+        },
+        "offer_product_1": {
+          "type": "offer_product",
+          "settings": {
+            "select_product": "",
+            "fallback_title": "Dior Sauvage"
+          }
+        },
+        "offer_description_1": {
+          "type": "offer_description",
+          "settings": {
+            "product_desc": "Conceived as an ode to nature, Sauvage is an act of creation inspired by wide-open spaces. Compositions marked by raw freshness, combining power and nobility."
+          }
+        },
+        "offer_price_1": {
+          "type": "offer_price",
+          "settings": {
+            "button_label": "Get Only",
+            "offer_price": "$39",
+            "button_link": "#"
+          }
+        }
+      },
+      "block_order": [
+        "offer_image_1",
+        "offer_image_2",
+        "offer_badge_1",
+        "offer_product_1",
+        "offer_description_1",
+        "offer_price_1"
+      ],
       "settings": {
-        "percent_offer": "-20%",
-        "select_product": "",
-        "product_desc": "Conceived as an ode to nature, Sauvage is an act of creation inspired by wide-open spaces. Compositions marked by raw freshness, combining power and nobility.",
-        "offer_price": "$39",
-        "countdown_duration": 72
+        "color_scheme": "scheme-1"
       }
     },
     "blog": {
