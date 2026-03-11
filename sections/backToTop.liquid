@@ -1,5 +1,7 @@
 <!--BACK TO TOP-->
-<div class="back-to-top" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}">
+<div class="back-to-top color-scheme-{{ section.settings.color_scheme.id | default: section.settings.color_scheme }}" 
+     style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}"
+     data-section-id="{{ section.id }}">
   <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
     {% render 'icon-velour', icon: 'arrow-up' %}
   </a>
