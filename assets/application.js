@@ -56,13 +56,13 @@
   /* --------------------------------
    * Sticky header & back-to-top
    * -------------------------------- */
-  var header = document.querySelector('[data-header]');
-  var backTopBtn = document.querySelector('[data-back-top-btn]');
   var lastScrolledPos = 0;
   var isScrolling = false;
 
   var handleScroll = function () {
     var currentScrollY = window.scrollY;
+    var header = document.querySelector('[data-header]');
+    var backTopBtn = document.querySelector('[data-back-top-btn]');
 
     if (header) {
       if (currentScrollY > 150) {
@@ -84,6 +84,7 @@
         backTopBtn.classList.remove('active');
       }
     }
+
 
     lastScrolledPos = currentScrollY;
     isScrolling = false;
