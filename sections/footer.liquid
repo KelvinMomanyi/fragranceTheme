@@ -13,7 +13,24 @@ FOOTER
           {%- case block.type -%}
             {%- when 'brand_info' -%}
               <div class="footer-brand" {{ block.shopify_attributes }}>
-                <a href="{{ routes.root_url }}" class="logo">{{ block.settings.logo_text | default: shop.name }}</a>
+                <a href="{{ routes.root_url }}" class="logo">
+                  {%- if block.settings.logo_image != blank -%}
+                    {%- assign logo_alt = block.settings.logo_image.alt | default: shop.name | escape -%}
+                    {%- assign logo_height = block.settings.logo_width | divided_by: block.settings.logo_image.aspect_ratio -%}
+                    {{
+                      block.settings.logo_image
+                      | image_url: width: 600
+                      | image_tag:
+                        width: block.settings.logo_width,
+                        height: logo_height,
+                        class: 'footer-logo-image',
+                        widths: '50, 100, 150, 200, 250, 300, 400, 500',
+                        alt: logo_alt
+                    }}
+                  {%- else -%}
+                    {{ block.settings.logo_text | default: shop.name }}
+                  {%- endif -%}
+                </a>
 
                 {%- if block.settings.show_social -%}
                   <ul class="social-list">
@@ -222,6 +239,21 @@ FOOTER
         "name": "Brand info",
         "limit": 1,
         "settings": [
+          {
+            "type": "image_picker",
+            "id": "logo_image",
+            "label": "Logo image"
+          },
+          {
+            "type": "range",
+            "id": "logo_width",
+            "min": 50,
+            "max": 300,
+            "step": 5,
+            "default": 100,
+            "unit": "px",
+            "label": "Logo width"
+          },
           {
             "type": "text",
             "id": "logo_text",
