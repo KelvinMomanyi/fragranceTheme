@@ -8,193 +8,102 @@ FOOTER
          Safe now that .section is padding-only (not a grid).
          This gives the footer top the correct section padding. -->' -}}
     <div class="footer-top section">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'brand_info' -%}
+            <div class="footer-brand" {{ block.shopify_attributes }}>
+              <a href="{{ routes.root_url }}" class="logo">{{ block.settings.logo_text | default: shop.name }}</a>
 
-      <div class="footer-brand">
+              {%- if block.settings.show_social -%}
+                <ul class="social-list">
+                  {%- assign social_accounts = 'Facebook, Instagram, TikTok, Tumblr, Twitter, Pinterest, Snapchat, YouTube, Vimeo' | split: ', ' -%}
+                  {%- for social in social_accounts -%}
+                    {%- assign social_handle = social | handleize -%}
+                    {%- assign social_link = 'social_' | append: social_handle -%}
+                    {%- if settings[social_link] != blank -%}
+                      <li>
+                        <a href="{{ settings[social_link] }}" class="social-link" target="_blank" rel="noopener" aria-label="{{ social }}">
+                          {% render 'icon-velour', icon: social_handle, size: 'small' %}
+                        </a>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
 
-        <a href="#" class="logo">{{ section.settings.logo_text | default: 'Velour' }}</a>
+              {%- if block.settings.show_follow_on_shop -%}
+                <div class="footer-list-item">
+                  {% render 'follow-on-shop', button_size: block.settings.follow_button_size %}
+                </div>
+              {%- endif -%}
+            </div>
 
-        {%- if section.settings.show_social -%}
-          <ul class="social-list">
-            {%- if settings.social_facebook != blank -%}
-              <li>
-                <a href="{{ settings.social_facebook }}" class="social-link" target="_blank" rel="noopener" aria-label="Facebook">
-                  {% render 'icon-velour', icon: 'facebook', size: 'small' %}
-                </a>
-              </li>
-            {%- endif -%}
+          {%- when 'link_list' -%}
+            <div class="footer-list" {{ block.shopify_attributes }}>
+              {%- if block.settings.title != blank -%}
+                <p class="footer-list-title">{{ block.settings.title }}</p>
+              {%- endif -%}
 
-            {%- if settings.social_instagram != blank -%}
-              <li>
-                <a href="{{ settings.social_instagram }}" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
-                  {% render 'icon-velour', icon: 'instagram', size: 'small' %}
-                </a>
-              </li>
-            {%- endif -%}
+              {%- if block.settings.menu != blank -%}
+                <ul class="footer-list-items">
+                  {%- for link in block.settings.menu.links -%}
+                    <li>
+                      <a href="{{ link.url }}" class="footer-link">{{ link.title }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- else -%}
+                <ul class="footer-list-items">
+                  <li><a href="#" class="footer-link">Home</a></li>
+                  <li><a href="#" class="footer-link">Shop</a></li>
+                  <li><a href="#" class="footer-link">Blog</a></li>
+                  <li><a href="#" class="footer-link">Terms and Conditions</a></li>
+                </ul>
+              {%- endif -%}
+            </div>
 
-            {%- if settings.social_tiktok != blank -%}
-              <li>
-                <a href="{{ settings.social_tiktok }}" class="social-link" target="_blank" rel="noopener" aria-label="TikTok">
-                  {% render 'icon-velour', icon: 'tiktok', size: 'small' %}
-                </a>
-              </li>
-            {%- endif -%}
+          {%- when 'newsletter' -%}
+            <div class="footer-list" {{ block.shopify_attributes }}>
+              {%- if block.settings.title != blank -%}
+                <p class="footer-list-title">{{ block.settings.title }}</p>
+              {%- endif -%}
 
-            {%- if settings.social_tumblr != blank -%}
-              <li>
-                <a href="{{ settings.social_tumblr }}" class="social-link" target="_blank" rel="noopener" aria-label="Tumblr">
-                  {% render 'icon-velour', icon: 'tumblr', size: 'small' %}
-                </a>
-              </li>
-            {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <p class="newsletter-description">{{ block.settings.description }}</p>
+              {%- endif -%}
 
-            {%- if settings.social_twitter != blank -%}
-              <li>
-                <a href="{{ settings.social_twitter }}" class="social-link" target="_blank" rel="noopener" aria-label="Twitter">
-                  {% render 'icon-velour', icon: 'twitter', size: 'small' %}
-                </a>
-              </li>
-            {%- endif -%}
+              {%- form 'customer', id: 'ContactFooter', class: 'footer-form' -%}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <input
+                  type="email"
+                  name="contact[email]"
+                  placeholder="{{ block.settings.placeholder }}"
+                  required
+                  class="email-field"
+                  aria-label="Email address"
+                  value="{{ form.email }}"
+                >
+                <button type="submit" class="footer-form-btn" aria-label="Subscribe">
+                  {% render 'icon-velour', icon: 'arrow-forward' %}
+                </button>
+              {%- endform -%}
 
-            {%- if settings.social_pinterest != blank -%}
-              <li>
-                <a href="{{ settings.social_pinterest }}" class="social-link" target="_blank" rel="noopener" aria-label="Pinterest">
-                  {% render 'icon-velour', icon: 'pinterest', size: 'small' %}
-                </a>
-              </li>
-            {%- endif -%}
-
-            {%- if settings.social_snapchat != blank -%}
-              <li>
-                <a href="{{ settings.social_snapchat }}" class="social-link" target="_blank" rel="noopener" aria-label="Snapchat">
-                  {% render 'icon-velour', icon: 'snapchat', size: 'small' %}
-                </a>
-              </li>
-            {%- endif -%}
-
-            {%- if settings.social_youtube != blank -%}
-              <li>
-                <a href="{{ settings.social_youtube }}" class="social-link" target="_blank" rel="noopener" aria-label="YouTube">
-                  {% render 'icon-velour', icon: 'youtube', size: 'small' %}
-                </a>
-              </li>
-            {%- endif -%}
-            
-            {%- if settings.social_vimeo != blank -%}
-              <li>
-                <a href="{{ settings.social_vimeo }}" class="social-link" target="_blank" rel="noopener" aria-label="Vimeo">
-                  {% render 'icon-velour', icon: 'vimeo', size: 'small' %}
-                </a>
-              </li>
-            {%- endif -%}
-          </ul>
-        {%- endif -%}
-
-          {%- if section.settings.show_follow_on_shop -%}
-          <div class="footer-list-item">
-            {% render 'follow-on-shop', button_size: section.settings.follow_button_size %}
-          </div>
-          {%- endif -%}
-
-      </div>
-
-    {%- if section.settings.show_quick_links -%}
-    <ul class="footer-list">
-
-      <li>
-      <p class="footer-list-title">{{ section.settings.quick_links_title }}</p>
-      </li>
-
-      {%- if section.settings.quick_links_menu != blank -%}
-        {% assign quick_nav_links = linklists[section.settings.quick_links_menu].links %}
-        {% for link in quick_nav_links %}
-          <li>
-            <a href="{{ link.url }}" class="footer-link">{{ link.title }}</a>
-          </li>
-        {% endfor %}
-      {%- else -%}
-        <li>
-        <a href="#" class="footer-link">Home</a>
-        </li>
-
-        <li>
-        <a href="#" class="footer-link">Shop</a>
-        </li>
-
-        <li>
-        <a href="#" class="footer-link">Blog</a>
-        </li>
-
-        <li>
-        <a href="#" class="footer-link">Terms and Conditions</a>
-        </li>
-      {%- endif -%}
-
-      </ul>
-      {%- endif -%}
-
-      {%- if section.settings.show_about_links -%}
-      <ul class="footer-list">
-        <li>
-          <p class="footer-list-title">{{ section.settings.about_links_title }}</p>
-        </li>
-        {%- if section.settings.about_links_menu != blank -%}
-          {% assign nav_links = linklists[section.settings.about_links_menu].links %}
-          {% for link in nav_links %}
-            <li class="navbar-item">
-              <a
-                href="{{ link.url }}"
-                class="footer-link"
-                data-nav-link>{{ link.title }}</a>
-            </li>
-          {% endfor %}
-        {%- endif -%}
-      </ul>
-      {%- endif -%}
-
-      {%- if section.settings.show_newsletter -%}
-      <div class="footer-list">
-
-        <p class="footer-list-title">{{ section.settings.newsletter_title }}</p>
-
-        {%- if section.settings.newsletter_description != blank -%}
-        <p class="newsletter-description">{{ section.settings.newsletter_description }}</p>
-        {%- endif -%}
-
-        <form action="" class="footer-form">
-          <input
-            type="email"
-            name="email_address"
-            placeholder="{{ section.settings.newsletter_placeholder }}"
-            required
-            class="email-field"
-            aria-label="Email address">
-
-          <button type="submit" class="footer-form-btn" aria-label="Subscribe">
-            {% render 'icon-velour', icon: 'arrow-forward' %}
-          </button>
-        </form>
-
-        {%- if section.settings.show_footer_links -%}
-        <div class="wrapper">
-
-          {%- if section.settings.terms_link != blank -%}
-          <a href="{{ section.settings.terms_link }}" class="footer-link">{{ section.settings.terms_text }}</a>
-          {%- endif -%}
-
-          {%- if section.settings.policy_link != blank -%}
-          <a href="{{ section.settings.policy_link }}" class="footer-link">{{ section.settings.policy_text }}</a>
-          {%- endif -%}
-
-          {%- if section.settings.map_link != blank -%}
-          <a href="{{ section.settings.map_link }}" class="footer-link">{{ section.settings.map_text }}</a>
-          {%- endif -%}
-
-        </div>
-        {%- endif -%}
-
-      </div>
-      {%- endif -%}
-
+              {%- if block.settings.show_footer_links -%}
+                <div class="wrapper">
+                  {%- if block.settings.terms_link != blank -%}
+                    <a href="{{ block.settings.terms_link }}" class="footer-link">{{ block.settings.terms_text }}</a>
+                  {%- endif -%}
+                  {%- if block.settings.policy_link != blank -%}
+                    <a href="{{ block.settings.policy_link }}" class="footer-link">{{ block.settings.policy_text }}</a>
+                  {%- endif -%}
+                  {%- if block.settings.map_link != blank -%}
+                    <a href="{{ block.settings.map_link }}" class="footer-link">{{ block.settings.map_text }}</a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
     </div>
 
     <div class="footer-bottom">
@@ -247,204 +156,6 @@ FOOTER
       },
       {
         "type": "header",
-        "content": "Brand settings"
-      },
-      {
-        "type": "text",
-        "id": "logo_text",
-        "label": "Logo text",
-        "default": "Velour"
-      },
-      {
-        "type": "header",
-        "content": "Contact information"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_address",
-        "label": "Show address",
-        "default": true
-      },
-      {
-        "type": "text",
-        "id": "address_text",
-        "label": "Address",
-        "default": "123 Velour St, Perfume City"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_phone",
-        "label": "Show phone number",
-        "default": true
-      },
-      {
-        "type": "text",
-        "id": "phone_number",
-        "label": "Phone number (for tel: link)",
-        "default": "+1234567890",
-        "info": "Format: +1234567890"
-      },
-      {
-        "type": "text",
-        "id": "phone_display",
-        "label": "Phone number (display)",
-        "default": "+1 (234) 567-890"
-      },
-      {
-        "type": "header",
-        "content": "Social media"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_social",
-        "label": "Show social media icons",
-        "default": true
-      },
-      {
-        "type": "header",
-        "content": "Follow on Shop"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_follow_on_shop",
-        "label": "Show Follow on Shop button",
-        "default": true,
-        "info": "Allows customers to follow your store in the Shop app"
-      },
-      {
-        "type": "select",
-        "id": "follow_button_size",
-        "label": "Button size",
-        "options": [
-          {
-            "value": "small",
-            "label": "Small"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "large",
-            "label": "Large"
-          }
-        ],
-        "default": "medium"
-      },
-      {
-        "type": "header",
-        "content": "Quick links column"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_quick_links",
-        "label": "Show quick links",
-        "default": true
-      },
-      {
-        "type": "text",
-        "id": "quick_links_title",
-        "label": "Quick links title",
-        "default": "Quick Links"
-      },
-      {
-        "type": "link_list",
-        "id": "quick_links_menu",
-        "label": "Quick links menu",
-        "default": "footer",
-        "info": "Select a menu from Navigation settings"
-      },
-      {
-        "type": "header",
-        "content": "About us column"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_about_links",
-        "label": "Show about links",
-        "default": true
-      },
-      {
-        "type": "text",
-        "id": "about_links_title",
-        "label": "About links title",
-        "default": "About Us"
-      },
-      {
-        "type": "link_list",
-        "id": "about_links_menu",
-        "label": "About links menu",
-        "default": "footer",
-        "info": "Select a menu from Navigation settings"
-      },
-      {
-        "type": "header",
-        "content": "Newsletter section"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_newsletter",
-        "label": "Show newsletter",
-        "default": true
-      },
-      {
-        "type": "text",
-        "id": "newsletter_title",
-        "label": "Newsletter title",
-        "default": "Newsletter"
-      },
-      {
-        "type": "textarea",
-        "id": "newsletter_description",
-        "label": "Newsletter Description"
-      },
-      {
-        "type": "text",
-        "id": "newsletter_placeholder",
-        "label": "Newsletter placeholder text",
-        "default": "Your email address"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_footer_links",
-        "label": "Show footer links (Terms, Policy, Map)",
-        "default": true
-      },
-      {
-        "type": "url",
-        "id": "terms_link",
-        "label": "Terms and Conditions Link"
-      },
-      {
-        "type": "text",
-        "id": "terms_text",
-        "label": "Terms Link Text",
-        "default": "Terms and Conditions"
-      },
-      {
-        "type": "url",
-        "id": "policy_link",
-        "label": "Policy Link"
-      },
-      {
-        "type": "text",
-        "id": "policy_text",
-        "label": "Policy Link Text",
-        "default": "Policy"
-      },
-      {
-        "type": "url",
-        "id": "map_link",
-        "label": "Map Link"
-      },
-      {
-        "type": "text",
-        "id": "map_text",
-        "label": "Map Link Text",
-        "default": "Map"
-      },
-      {
-        "type": "header",
         "content": "Footer bottom"
       },
       {
@@ -459,7 +170,6 @@ FOOTER
         "label": "Show 'Powered by' text",
         "default": true
       },
-
       {
         "type": "checkbox",
         "id": "payment_enable",
@@ -467,10 +177,154 @@ FOOTER
         "default": true
       }
     ],
-    "blocks": [],
+    "blocks": [
+      {
+        "type": "brand_info",
+        "name": "Brand info",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "logo_text",
+            "label": "Logo text",
+            "default": "Velour"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_social",
+            "label": "Show social media icons",
+            "default": true
+          },
+          {
+            "type": "header",
+            "content": "Follow on Shop"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_follow_on_shop",
+            "label": "Show Follow on Shop button",
+            "default": true
+          },
+          {
+            "type": "select",
+            "id": "follow_button_size",
+            "label": "Button size",
+            "options": [
+              { "value": "small", "label": "Small" },
+              { "value": "medium", "label": "Medium" },
+              { "value": "large", "label": "Large" }
+            ],
+            "default": "medium"
+          }
+        ]
+      },
+      {
+        "type": "link_list",
+        "name": "Menu",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Quick Links"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Menu",
+            "default": "footer"
+          }
+        ]
+      },
+      {
+        "type": "newsletter",
+        "name": "Newsletter",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Newsletter"
+          },
+          {
+            "type": "textarea",
+            "id": "description",
+            "label": "Description"
+          },
+          {
+            "type": "text",
+            "id": "placeholder",
+            "label": "Placeholder",
+            "default": "Your email address"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_footer_links",
+            "label": "Show footer links",
+            "default": true
+          },
+          {
+            "type": "url",
+            "id": "terms_link",
+            "label": "Terms and Conditions Link"
+          },
+          {
+            "type": "text",
+            "id": "terms_text",
+            "label": "Terms Link Text",
+            "default": "Terms and Conditions"
+          },
+          {
+            "type": "url",
+            "id": "policy_link",
+            "label": "Policy Link"
+          },
+          {
+            "type": "text",
+            "id": "policy_text",
+            "label": "Policy Link Text",
+            "default": "Policy"
+          },
+          {
+            "type": "url",
+            "id": "map_link",
+            "label": "Map Link"
+          },
+          {
+            "type": "text",
+            "id": "map_text",
+            "label": "Map Link Text",
+            "default": "Map"
+          }
+        ]
+      }
+    ],
     "presets": [
       {
-        "name": "Footer"
+        "name": "Footer",
+        "blocks": [
+          {
+            "type": "brand_info"
+          },
+          {
+            "type": "link_list",
+            "settings": {
+              "title": "Quick Links",
+              "menu": "footer"
+            }
+          },
+          {
+            "type": "link_list",
+            "settings": {
+              "title": "About Us",
+              "menu": "footer"
+            }
+          },
+          {
+            "type": "newsletter"
+          }
+        ]
       }
     ]
   }
