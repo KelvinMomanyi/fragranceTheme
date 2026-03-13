@@ -82,7 +82,8 @@
   .about-hero {
     position: relative;
     overflow: hidden;
-    padding: clamp(80px, 12vw, 160px) 0;
+    padding: clamp(70px, 12vw, 150px) 0;
+    color: var(--color-text);
   }
 
   .about-hero__media {
@@ -95,7 +96,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, var(--about-hero-overlay, 0.2));
+    background: rgba(0, 0, 0, var(--about-hero-overlay, 0.35));
   }
 
   .about-hero__media img {
@@ -110,9 +111,9 @@
   }
 
   .about-hero__content {
-    max-width: 620px;
+    max-width: 640px;
     display: grid;
-    gap: 18px;
+    gap: 20px;
   }
 
   .about-hero__container--center .about-hero__content {
@@ -126,27 +127,28 @@
   }
 
   .about-hero__eyebrow {
-    font-size: 1.2rem;
-    letter-spacing: 0.18em;
+    font-size: var(--fs-6);
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--color-text);
+    opacity: 0.75;
   }
 
   .about-hero__title {
-    font-size: clamp(2.8rem, 5vw, 5rem);
+    font-size: clamp(3.2rem, 6vw, 6.8rem);
     line-height: 1.05;
-    color: var(--color-text);
+    font-weight: var(--fw-500);
     margin: 0;
   }
 
   .about-hero__title-highlight {
     display: block;
-    color: var(--color-button);
+    color: var(--color-button) !important;
   }
 
   .about-hero__subtitle {
-    font-size: 1.6rem;
-    color: var(--color-text);
+    font-size: var(--fs-4);
+    max-width: 44ch;
+    opacity: 0.85;
   }
 
   .about-hero__actions {
@@ -177,22 +179,38 @@
   }
 
   .about-hero__social {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     display: grid;
     place-items: center;
-    border: 1px solid var(--color-text);
-    color: var(--color-text);
+    border: 1px solid currentColor;
+    color: inherit;
     transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
   }
 
   .about-hero__social:hover {
     transform: translateY(-2px);
-    background: var(--color-text);
+    background: currentColor;
     color: var(--color-background);
   }
 
+  .about-hero__container--center .about-hero__subtitle {
+    margin: 0 auto;
+  }
+
+  .about-hero__container--right .about-hero__subtitle {
+    margin-left: auto;
+  }
+
   @media (max-width: 749px) {
+    .about-hero {
+      padding: calc(var(--section-padding) * 2) 0;
+    }
+
+    .about-hero__subtitle {
+      font-size: 1.5rem;
+    }
+
     .about-hero__actions {
       flex-direction: column;
       align-items: stretch;

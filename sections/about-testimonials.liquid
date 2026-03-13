@@ -10,7 +10,7 @@
     <div class="about-testimonials__grid">
       {%- for block in section.blocks -%}
         <article class="about-testimonials__card" {{ block.shopify_attributes }}>
-          <p class="about-testimonials__quote">“{{ block.settings.quote }}”</p>
+          <p class="about-testimonials__quote">&ldquo;{{ block.settings.quote }}&rdquo;</p>
           <p class="about-testimonials__author">
             <span>{{ block.settings.author }}</span>
             {%- if block.settings.role != blank -%}
@@ -31,34 +31,35 @@
   }
 
   .about-testimonials__title {
-    font-size: clamp(2rem, 3.4vw, 3rem);
+    font-size: var(--fs-2);
     margin: 0 0 12px;
-    color: var(--color-text);
+    font-weight: var(--fw-500);
   }
 
   .about-testimonials__subtitle {
-    color: var(--color-text);
     opacity: 0.8;
-    font-size: 1.5rem;
+    font-size: var(--fs-4);
   }
 
   .about-testimonials__grid {
     display: grid;
-    gap: 20px;
+    gap: 22px;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 
   .about-testimonials__card {
-    border: 1px solid var(--color-text);
-    padding: 24px;
-    background: transparent;
+    border: 1px solid currentColor;
+    padding: 24px 22px;
+    background: var(--color-background);
+    display: grid;
+    gap: 12px;
   }
 
   .about-testimonials__quote {
-    font-size: 1.5rem;
+    font-size: var(--fs-4);
     line-height: 1.7;
-    margin: 0 0 16px;
-    color: var(--color-text);
+    margin: 0;
+    font-style: italic;
   }
 
   .about-testimonials__author {
@@ -67,7 +68,7 @@
     gap: 4px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    font-size: 1.2rem;
+    font-size: var(--fs-6);
   }
 
   .about-testimonials__role {

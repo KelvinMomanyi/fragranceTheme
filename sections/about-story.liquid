@@ -50,8 +50,8 @@
   .about-story__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(24px, 4vw, 64px);
-    align-items: center;
+    gap: clamp(28px, 4vw, 80px);
+    align-items: start;
   }
 
   .about-story__grid--right .about-story__media {
@@ -63,25 +63,25 @@
     width: 100%;
     height: auto;
     display: block;
+    border: 1px solid currentColor;
   }
 
   .about-story__eyebrow {
-    font-size: 1.2rem;
-    letter-spacing: 0.18em;
+    font-size: var(--fs-6);
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--color-text);
     margin-bottom: 12px;
+    opacity: 0.75;
   }
 
   .about-story__title {
-    font-size: clamp(2.2rem, 4vw, 3.6rem);
+    font-size: var(--fs-2);
     margin: 0 0 16px;
-    color: var(--color-text);
+    font-weight: var(--fw-500);
   }
 
   .about-story__text {
-    color: var(--color-text);
-    font-size: 1.5rem;
+    font-size: var(--fs-4);
     line-height: 1.8;
   }
 
@@ -91,38 +91,45 @@
     gap: 10px;
     margin-top: 18px;
     padding-top: 10px;
-    border-top: 1px solid var(--color-text);
+    border-top: 1px solid currentColor;
     text-transform: uppercase;
-    font-size: 1.2rem;
-    letter-spacing: 0.14em;
+    font-size: var(--fs-6);
+    letter-spacing: 0.16em;
   }
 
   .about-story__established-value {
-    color: var(--color-button);
+    color: var(--color-button) !important;
     font-weight: 600;
   }
 
   .about-story__features {
     margin-top: 24px;
     display: grid;
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
   }
 
   .about-story__feature {
-    padding: 16px;
-    border: 1px solid var(--color-text);
+    padding: 18px;
+    border: 1px solid currentColor;
+    background: var(--color-background);
+    transition: transform var(--transition-1);
   }
 
   .about-story__feature h3 {
     margin: 0 0 8px;
-    font-size: 1.4rem;
-    color: var(--color-text);
+    font-size: var(--fs-4);
+    font-weight: var(--fw-500);
   }
 
   .about-story__feature p {
     margin: 0;
-    color: var(--color-text);
     font-size: 1.4rem;
+    opacity: 0.85;
+  }
+
+  .about-story__feature:hover {
+    transform: translateY(-2px);
   }
 
   @media (max-width: 900px) {
