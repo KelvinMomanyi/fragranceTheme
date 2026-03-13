@@ -1,11 +1,101 @@
 {
-    "sections": {
-      "best-sellers": {
-        "type": "best-sellers",
-        "settings": {}
+  "sections": {
+    "best-sellers-hero": {
+      "type": "best-sellers-hero",
+      "settings": {
+        "color_scheme": "scheme-1"
+      },
+      "blocks": {
+        "hero-slide-1": {
+          "type": "slide",
+          "settings": {
+            "brand_name": "Luxury Essence",
+            "starting_price": "$29.99",
+            "button_label": "Shop now"
+          }
+        },
+        "hero-slide-2": {
+          "type": "slide",
+          "settings": {
+            "brand_name": "Velour Midnight",
+            "starting_price": "$34.99",
+            "button_label": "Shop now"
+          }
+        }
+      },
+      "block_order": [
+        "hero-slide-1",
+        "hero-slide-2"
+      ]
+    },
+    "best-sellers-products": {
+      "type": "best-sellers-products",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_heading": true,
+        "heading": "Best sellers",
+        "subheading": "Our most-loved fragrances this season."
       }
     },
-    "order": [
-      "best-sellers"
-    ]
-  }
+    "best-sellers-info": {
+      "type": "best-sellers-info",
+      "settings": {
+        "color_scheme": "scheme-1"
+      },
+      "blocks": {
+        "info-features": {
+          "type": "features_card",
+          "settings": {
+            "title": "Why Our Best Sellers?",
+            "title_icon": "star",
+            "item1_icon": "checkmark-circle",
+            "item1_title": "Verified Quality",
+            "item1_text": "Hand-picked products with verified customer reviews.",
+            "item2_icon": "shield-checkmark",
+            "item2_title": "100% Authentic",
+            "item2_text": "Guaranteed genuine products from trusted brands.",
+            "item3_icon": "flash",
+            "item3_title": "Fast Shipping",
+            "item3_text": "Express delivery on all best-selling items.",
+            "item4_icon": "refresh",
+            "item4_title": "Easy Returns",
+            "item4_text": "30-day hassle-free return policy."
+          }
+        },
+        "info-reviews": {
+          "type": "reviews_card",
+          "settings": {
+            "title": "Customer Love",
+            "title_icon": "people",
+            "stars": 5,
+            "rating_text": "4.8 out of 5",
+            "review_count": "Based on 2,847 reviews",
+            "quote": "Amazing quality and fast delivery! These best sellers never disappoint.",
+            "author": "- Sarah M."
+          }
+        },
+        "info-offer": {
+          "type": "offer_card",
+          "settings": {
+            "badge": "Limited Time",
+            "title": "Get 15% Off",
+            "description": "On your first purchase of any best seller.",
+            "code_label": "Use code:",
+            "code_value": "BEST15",
+            "button_label": "Shop now"
+          }
+        }
+      },
+      "block_order": [
+        "info-features",
+        "info-reviews",
+        "info-offer"
+      ]
+    }
+  },
+  "order": [
+    "best-sellers-hero",
+    "best-sellers-products",
+    "best-sellers-info"
+  ]
+}

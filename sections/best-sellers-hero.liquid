@@ -1,0 +1,359 @@
+<section
+  class="section best-sellers-hero hero1 color-scheme-{{ section.settings.color_scheme }}"
+  style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}"
+  aria-label="Best sellers hero"
+  data-best-sellers-hero
+>
+  <ul class="hero1-slider" data-hero-slider>
+    {% if section.blocks.size == 0 %}
+      {% for i in (1..3) %}
+        <li class="slider-item {% if forloop.first %}active{% endif %}" data-hero-slider-item>
+          <div class="slider-bg hero1-card has-bg-image" style="background-color: #f4f4f4;">
+            {{ 'lifestyle-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+          <div class="container">
+            <div class="card-content">
+              <h1 class="h1 hero1-title slider-reveal">Velour Scent {{ i }}</h1>
+              <p class="price slider-reveal">Starting at $17.99</p>
+              <div class="hero1-actions">
+                <a href="#" class="btn btn-primary slider-reveal">Shop now</a>
+              </div>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    {% else %}
+      {% for block in section.blocks %}
+        {% if block.type == 'slide' %}
+          <li class="slider-item {% if forloop.first %}active{% endif %}" data-hero-slider-item {{ block.shopify_attributes }}>
+            <div class="slider-bg hero1-card has-bg-image" style="{% if block.settings.hero_image != blank %}background-image: url('{{ block.settings.hero_image | image_url }}');{% else %}background-color: #f4f4f4;{% endif %} background-size: cover; background-repeat: no-repeat; background-position: center;">
+              {% if block.settings.hero_image == blank %}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+            </div>
+            <div class="container">
+              <div class="card-content">
+                <h1 class="h1 hero1-title slider-reveal">{{ block.settings.brand_name }}</h1>
+                {% if block.settings.starting_price != blank %}
+                  <p class="price slider-reveal">Starting at {{ block.settings.starting_price }}</p>
+                {% endif %}
+                {% if block.settings.button_label != blank %}
+                  <div class="hero1-actions">
+                    <a href="{{ block.settings.button_link }}" class="btn btn-primary slider-reveal">{{ block.settings.button_label }}</a>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </li>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </ul>
+
+  <button class="slider-btn prev" aria-label="slide to previous" data-prev-btn>
+    {% render 'icon-velour', icon: 'chevron-back' %}
+  </button>
+
+  <button class="slider-btn next" aria-label="slide to next" data-next-btn>
+    {% render 'icon-velour', icon: 'chevron-forward' %}
+  </button>
+</section>
+
+<style>
+  .best-sellers-hero {
+    position: relative;
+    min-height: clamp(360px, 70vh, 640px);
+    padding-block: clamp(70px, 10vw, 140px);
+    overflow: hidden;
+    color: var(--color-text);
+  }
+
+  .best-sellers-hero .hero1-slider {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .best-sellers-hero .slider-item {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-2);
+  }
+
+  .best-sellers-hero .slider-item.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .best-sellers-hero .slider-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    transform: scale(1.05);
+  }
+
+  .best-sellers-hero .slider-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  .best-sellers-hero .slider-item.active .slider-bg {
+    animation: bestSellersHeroScale 7s linear forwards;
+  }
+
+  @keyframes bestSellersHeroScale {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.12);
+    }
+  }
+
+  .best-sellers-hero .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .best-sellers-hero .card-content {
+    max-width: 520px;
+    display: grid;
+    gap: 14px;
+  }
+
+  .best-sellers-hero .hero1-title {
+    font-size: clamp(3.2rem, 6vw, 6.6rem);
+    line-height: 1.05;
+    font-weight: var(--fw-500);
+    color: #fff !important;
+  }
+
+  .best-sellers-hero .price {
+    color: #fff !important;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: var(--fs-6);
+  }
+
+  .best-sellers-hero .hero1-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .best-sellers-hero .slider-reveal {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+
+  .best-sellers-hero .slider-item.active .slider-reveal {
+    animation: bestSellersHeroReveal 0.9s ease forwards;
+  }
+
+  @keyframes bestSellersHeroReveal {
+    0% {
+      transform: translateY(24px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .best-sellers-hero .slider-item.active .hero1-title {
+    animation-delay: 200ms;
+  }
+
+  .best-sellers-hero .slider-item.active .price {
+    animation-delay: 400ms;
+  }
+
+  .best-sellers-hero .slider-item.active .btn {
+    animation-delay: 600ms;
+  }
+
+  .best-sellers-hero .slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.35);
+    color: #fff;
+    border: 1px solid #fff;
+    cursor: pointer;
+    z-index: 2;
+    transition: var(--transition-1);
+  }
+
+  .best-sellers-hero .slider-btn:hover {
+    background: #fff;
+    color: #000;
+  }
+
+  .best-sellers-hero .slider-btn.prev {
+    left: 20px;
+  }
+
+  .best-sellers-hero .slider-btn.next {
+    right: 20px;
+  }
+
+  @media (max-width: 749px) {
+    .best-sellers-hero .slider-btn {
+      display: none;
+    }
+
+    .best-sellers-hero {
+      padding-block: calc(var(--section-padding) * 2);
+    }
+  }
+</style>
+
+<script>
+(function() {
+  'use strict';
+
+  document.querySelectorAll('[data-best-sellers-hero]').forEach((root) => {
+    const heroSliderItems = root.querySelectorAll('[data-hero-slider-item]');
+    if (!heroSliderItems.length) {
+      return;
+    }
+
+    const heroSliderPrevBtn = root.querySelector('[data-prev-btn]');
+    const heroSliderNextBtn = root.querySelector('[data-next-btn]');
+
+    let currentSlidePos = 0;
+    let lastActiveSliderItem = heroSliderItems[0];
+
+    const updateSliderPos = function() {
+      lastActiveSliderItem.classList.remove('active');
+      heroSliderItems[currentSlidePos].classList.add('active');
+      lastActiveSliderItem = heroSliderItems[currentSlidePos];
+    };
+
+    const slideNext = function() {
+      currentSlidePos = (currentSlidePos >= heroSliderItems.length - 1) ? 0 : currentSlidePos + 1;
+      updateSliderPos();
+    };
+
+    const slidePrev = function() {
+      currentSlidePos = (currentSlidePos < 1) ? heroSliderItems.length - 1 : currentSlidePos - 1;
+      updateSliderPos();
+    };
+
+    if (heroSliderPrevBtn) {
+      heroSliderPrevBtn.addEventListener('click', slidePrev);
+    }
+
+    if (heroSliderNextBtn) {
+      heroSliderNextBtn.addEventListener('click', slideNext);
+    }
+
+    let autoSlideInterval;
+    const autoSlide = function() {
+      autoSlideInterval = setInterval(slideNext, 5000);
+    };
+
+    const stopAutoSlide = function() {
+      clearInterval(autoSlideInterval);
+    };
+
+    root.addEventListener('mouseenter', stopAutoSlide);
+    root.addEventListener('mouseleave', autoSlide);
+
+    [heroSliderNextBtn, heroSliderPrevBtn].forEach((btn) => {
+      if (!btn) {
+        return;
+      }
+      btn.addEventListener('mouseenter', stopAutoSlide);
+      btn.addEventListener('mouseleave', autoSlide);
+    });
+
+    window.addEventListener('load', autoSlide, { once: true });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Best sellers hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "hero_image",
+          "label": "Hero image"
+        },
+        {
+          "type": "text",
+          "id": "brand_name",
+          "label": "Heading",
+          "default": "Luxury Essence"
+        },
+        {
+          "type": "text",
+          "id": "starting_price",
+          "label": "Starting price",
+          "default": "$29.99"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best sellers hero",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "brand_name": "Luxury Essence",
+            "starting_price": "$29.99"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "brand_name": "Velour Midnight",
+            "starting_price": "$34.99"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

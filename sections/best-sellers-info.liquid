@@ -1,0 +1,460 @@
+<section
+  class="section best-sellers-info color-scheme-{{ section.settings.color_scheme }}"
+  style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}"
+  aria-label="Best sellers info"
+>
+  <div class="container">
+    <div class="info-cards-grid">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'features_card' %}
+            <div class="info-card features-card" {{ block.shopify_attributes }}>
+              <h3 class="info-card-title">
+                {% if block.settings.title_icon != blank %}
+                  {% render 'icon-velour', icon: block.settings.title_icon, class: 'title-icon' %}
+                {% endif %}
+                {{ block.settings.title }}
+              </h3>
+              <ul class="features-list">
+                {% for i in (1..4) %}
+                  {% assign icon_key = 'item' | append: i | append: '_icon' %}
+                  {% assign title_key = 'item' | append: i | append: '_title' %}
+                  {% assign text_key = 'item' | append: i | append: '_text' %}
+                  {% assign item_title = block.settings[title_key] %}
+                  {% assign item_text = block.settings[text_key] %}
+                  {% assign item_icon = block.settings[icon_key] %}
+                  {% if item_title != blank or item_text != blank %}
+                    <li class="feature-item">
+                      {% if item_icon != blank %}
+                        {% render 'icon-velour', icon: item_icon, class: 'feature-icon' %}
+                      {% endif %}
+                      <div class="feature-content">
+                        {% if item_title != blank %}
+                          <h4>{{ item_title }}</h4>
+                        {% endif %}
+                        {% if item_text != blank %}
+                          <p>{{ item_text }}</p>
+                        {% endif %}
+                      </div>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% when 'reviews_card' %}
+            <div class="info-card reviews-card" {{ block.shopify_attributes }}>
+              <h3 class="info-card-title">
+                {% if block.settings.title_icon != blank %}
+                  {% render 'icon-velour', icon: block.settings.title_icon, class: 'title-icon' %}
+                {% endif %}
+                {{ block.settings.title }}
+              </h3>
+              <div class="reviews-summary">
+                <div class="rating-display">
+                  <div class="stars-large">
+                    {% for i in (1..block.settings.stars) %}
+                      &#9733;
+                    {% endfor %}
+                  </div>
+                  <p class="rating-text">{{ block.settings.rating_text }}</p>
+                  <p class="review-count-text">{{ block.settings.review_count }}</p>
+                </div>
+                <div class="review-highlight">
+                  <p class="review-quote">{{ block.settings.quote }}</p>
+                  <p class="review-author">{{ block.settings.author }}</p>
+                </div>
+              </div>
+            </div>
+          {% when 'offer_card' %}
+            <div class="info-card offer-card" {{ block.shopify_attributes }}>
+              {% if block.settings.badge != blank %}
+                <div class="offer-badge">{{ block.settings.badge }}</div>
+              {% endif %}
+              <h3 class="offer-title">{{ block.settings.title }}</h3>
+              <p class="offer-description">{{ block.settings.description }}</p>
+              <div class="offer-code">
+                <span class="code-label">{{ block.settings.code_label }}</span>
+                <span class="code-value">{{ block.settings.code_value }}</span>
+              </div>
+              {% if block.settings.button_label != blank %}
+                <a href="{{ block.settings.button_link }}" class="btn btn-primary">{{ block.settings.button_label }}</a>
+              {% endif %}
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .best-sellers-info {
+    color: var(--color-text);
+  }
+
+  .best-sellers-info .info-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    width: 100%;
+  }
+
+  .best-sellers-info .info-card {
+    padding: 28px;
+    border: 1px solid currentColor;
+    background: var(--color-background);
+    transition: transform var(--transition-1);
+  }
+
+  .best-sellers-info .info-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .best-sellers-info .info-card-title {
+    font-size: var(--fs-3);
+    font-weight: var(--fw-500);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .best-sellers-info .title-icon {
+    color: var(--color-button);
+  }
+
+  .best-sellers-info .features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  .best-sellers-info .feature-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+
+  .best-sellers-info .feature-icon {
+    color: var(--color-button);
+  }
+
+  .best-sellers-info .feature-content h4 {
+    font-size: var(--fs-4);
+    font-weight: var(--fw-500);
+    margin: 0 0 4px;
+  }
+
+  .best-sellers-info .feature-content p {
+    margin: 0;
+    opacity: 0.8;
+  }
+
+  .best-sellers-info .rating-display {
+    border: 1px solid currentColor;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+
+  .best-sellers-info .stars-large {
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+    color: var(--color-button);
+  }
+
+  .best-sellers-info .rating-text {
+    font-size: var(--fs-4);
+    font-weight: var(--fw-500);
+    margin: 6px 0 2px;
+  }
+
+  .best-sellers-info .review-count-text {
+    font-size: 1.3rem;
+    opacity: 0.75;
+  }
+
+  .best-sellers-info .review-highlight {
+    border-left: 2px solid currentColor;
+    padding-left: 12px;
+  }
+
+  .best-sellers-info .review-quote {
+    font-style: italic;
+    margin: 0 0 6px;
+  }
+
+  .best-sellers-info .review-author {
+    margin: 0;
+    font-weight: var(--fw-500);
+  }
+
+  .best-sellers-info .offer-card {
+    text-align: center;
+  }
+
+  .best-sellers-info .offer-badge {
+    display: inline-block;
+    background: var(--color-button);
+    color: var(--color-button-label);
+    padding: 4px 10px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 10px;
+  }
+
+  .best-sellers-info .offer-title {
+    font-size: var(--fs-3);
+    margin: 0 0 8px;
+  }
+
+  .best-sellers-info .offer-description {
+    margin: 0 0 14px;
+    opacity: 0.85;
+  }
+
+  .best-sellers-info .offer-code {
+    border: 1px solid currentColor;
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .best-sellers-info .code-label {
+    font-size: 1.1rem;
+    opacity: 0.7;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .best-sellers-info .code-value {
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    font-family: "Courier New", monospace;
+    font-weight: 700;
+    color: var(--color-button) !important;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Best sellers info",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "features_card",
+      "name": "Features card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Why Our Best Sellers?"
+        },
+        {
+          "type": "text",
+          "id": "title_icon",
+          "label": "Title icon",
+          "default": "star"
+        },
+        {
+          "type": "text",
+          "id": "item1_icon",
+          "label": "Item 1 icon",
+          "default": "checkmark-circle"
+        },
+        {
+          "type": "text",
+          "id": "item1_title",
+          "label": "Item 1 title",
+          "default": "Verified Quality"
+        },
+        {
+          "type": "text",
+          "id": "item1_text",
+          "label": "Item 1 text",
+          "default": "Hand-picked products with verified customer reviews."
+        },
+        {
+          "type": "text",
+          "id": "item2_icon",
+          "label": "Item 2 icon",
+          "default": "shield-checkmark"
+        },
+        {
+          "type": "text",
+          "id": "item2_title",
+          "label": "Item 2 title",
+          "default": "100% Authentic"
+        },
+        {
+          "type": "text",
+          "id": "item2_text",
+          "label": "Item 2 text",
+          "default": "Guaranteed genuine products from trusted brands."
+        },
+        {
+          "type": "text",
+          "id": "item3_icon",
+          "label": "Item 3 icon",
+          "default": "flash"
+        },
+        {
+          "type": "text",
+          "id": "item3_title",
+          "label": "Item 3 title",
+          "default": "Fast Shipping"
+        },
+        {
+          "type": "text",
+          "id": "item3_text",
+          "label": "Item 3 text",
+          "default": "Express delivery on all best-selling items."
+        },
+        {
+          "type": "text",
+          "id": "item4_icon",
+          "label": "Item 4 icon",
+          "default": "refresh"
+        },
+        {
+          "type": "text",
+          "id": "item4_title",
+          "label": "Item 4 title",
+          "default": "Easy Returns"
+        },
+        {
+          "type": "text",
+          "id": "item4_text",
+          "label": "Item 4 text",
+          "default": "30-day hassle-free return policy."
+        }
+      ]
+    },
+    {
+      "type": "reviews_card",
+      "name": "Reviews card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Customer Love"
+        },
+        {
+          "type": "text",
+          "id": "title_icon",
+          "label": "Title icon",
+          "default": "people"
+        },
+        {
+          "type": "range",
+          "id": "stars",
+          "label": "Stars",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "rating_text",
+          "label": "Rating text",
+          "default": "4.8 out of 5"
+        },
+        {
+          "type": "text",
+          "id": "review_count",
+          "label": "Review count",
+          "default": "Based on 2,847 reviews"
+        },
+        {
+          "type": "text",
+          "id": "quote",
+          "label": "Quote",
+          "default": "Amazing quality and fast delivery! These best sellers never disappoint."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "- Sarah M."
+        }
+      ]
+    },
+    {
+      "type": "offer_card",
+      "name": "Offer card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge",
+          "default": "Limited Time"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Get 15% Off"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "On your first purchase of any best seller."
+        },
+        {
+          "type": "text",
+          "id": "code_label",
+          "label": "Code label",
+          "default": "Use code:"
+        },
+        {
+          "type": "text",
+          "id": "code_value",
+          "label": "Code value",
+          "default": "BEST15"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best sellers info",
+      "blocks": [
+        {
+          "type": "features_card"
+        },
+        {
+          "type": "reviews_card"
+        },
+        {
+          "type": "offer_card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

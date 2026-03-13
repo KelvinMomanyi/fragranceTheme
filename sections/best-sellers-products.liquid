@@ -1,0 +1,214 @@
+<section
+  class="section best-sellers-products color-scheme-{{ section.settings.color_scheme }}"
+  style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}"
+  aria-label="Best sellers products"
+>
+  <div class="container">
+    {% if section.settings.show_heading %}
+      <div class="best-sellers-products__header">
+        <h2 class="best-sellers-products__title">{{ section.settings.heading }}</h2>
+        {% if section.settings.subheading != blank %}
+          <p class="best-sellers-products__subtitle">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="collection-container">
+      <ul class="collection">
+        {% comment %} Smart collection selection with fallback {% endcomment %}
+        {% if section.settings.best_sellers_collection != blank %}
+          {% assign selected_collection = collections[section.settings.best_sellers_collection] %}
+        {% elsif collections['best-sellers'] %}
+          {% assign selected_collection = collections['best-sellers'] %}
+        {% else %}
+          {% assign selected_collection = collections.all %}
+        {% endif %}
+
+        {% if selected_collection and selected_collection.products.size > 0 %}
+          {% for product in selected_collection.products %}
+            <li class="decoration">
+              <div class="product-card">
+                <a href="{{ product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
+                  {% if product.featured_image %}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 600 }}"
+                      srcset="{{ product.featured_image | image_url: width: 300 }} 300w,
+                              {{ product.featured_image | image_url: width: 450 }} 450w,
+                              {{ product.featured_image | image_url: width: 600 }} 600w"
+                      sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
+                      alt="{{ product.featured_image.alt | escape }}"
+                      class="img-cover"
+                      width="300"
+                      height="300"
+                      loading="lazy"
+                    >
+                  {% else %}
+                    <img
+                      src="{{ 'default-image.jpg' | asset_url }}"
+                      alt="No image available"
+                      class="img-cover"
+                      width="300"
+                      height="300"
+                      loading="lazy"
+                    >
+                  {% endif %}
+
+                  <ul class="card-action-list">
+                    <li>
+                      <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                        {% render 'icon-velour', icon: 'add' %}
+                      </button>
+                    </li>
+                    <li>
+                      <form action="/cart/add" method="post" enctype="multipart/form-data" onsubmit="submitAddToCartForm(this); return false;">
+                        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                        <button type="submit" class="card-action-btn" aria-label="add to cart" title="add to cart">
+                          {% render 'icon-velour', icon: 'bag-handle' %}
+                        </button>
+                      </form>
+                    </li>
+                  </ul>
+
+                  {% if product.compare_at_price > product.price %}
+                    <ul class="badge-list">
+                      <li>
+                        <div class="badge orange">Sale</div>
+                      </li>
+                      <li>
+                        <div class="badge cyan">10%</div>
+                      </li>
+                    </ul>
+                  {% endif %}
+                </a>
+
+                <div class="card-content">
+                  <h3 class="h3">
+                    <a href="{{ product.url }}" class="card-title">{{ product.title }}</a>
+                  </h3>
+                  <div class="card-price">
+                    {% if product.compare_at_price > product.price %}
+                      <del class="del">{{ product.compare_at_price | money }}</del>
+                    {% endif %}
+                    <data class="price" value="{{ product.price }}">{{ product.price | money }}</data>
+                  </div>
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        {% else %}
+          {% for i in (1..4) %}
+            <li class="decoration">
+              <div class="product-card">
+                <a href="#" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
+                  {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                </a>
+                <div class="card-content">
+                  <h3 class="h3"><a href="#" class="card-title">Example Product {{ i }}</a></h3>
+                  <div class="card-price"><data class="price" value="1999">$19.99</data></div>
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .best-sellers-products {
+    color: var(--color-text);
+  }
+
+  .best-sellers-products__header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 32px;
+  }
+
+  .best-sellers-products__title {
+    font-size: var(--fs-2);
+    margin: 0 0 12px;
+    font-weight: var(--fw-500);
+  }
+
+  .best-sellers-products__subtitle {
+    font-size: var(--fs-4);
+    opacity: 0.8;
+  }
+
+  .best-sellers-products .collection-container {
+    margin-top: 10px;
+  }
+
+  .best-sellers-products .collection {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .best-sellers-products .card-action-btn {
+    background: var(--color-background);
+    border: 1px solid currentColor;
+    box-shadow: none;
+  }
+
+  .best-sellers-products .card-action-btn:hover {
+    background: currentColor;
+    color: var(--color-background);
+  }
+
+  .best-sellers-products .badge {
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Best sellers products",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_heading",
+      "label": "Show heading",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best sellers"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Our most-loved fragrances this season."
+    },
+    {
+      "type": "collection",
+      "id": "best_sellers_collection",
+      "label": "Best sellers collection",
+      "info": "Select a collection to display. If not selected, it will default to 'best-sellers' collection, or all products if that doesn't exist."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best sellers products"
+    }
+  ]
+}
+{% endschema %}
