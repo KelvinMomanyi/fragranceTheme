@@ -265,6 +265,42 @@
     },
     "services": {
       "type": "brand-excellence",
+      "blocks": {
+        "shipping": {
+          "type": "service_card",
+          "settings": {
+            "title": "Fast Shipping",
+            "description": "Global delivery in 3-5 business days."
+          }
+        },
+        "payments": {
+          "type": "service_card",
+          "settings": {
+            "title": "Secure Payments",
+            "description": "Your transactions are protected and encrypted."
+          }
+        },
+        "returns": {
+          "type": "service_card",
+          "settings": {
+            "title": "Easy Returns",
+            "description": "30-day hassle-free return policy."
+          }
+        },
+        "support": {
+          "type": "service_card",
+          "settings": {
+            "title": "24/7 Support",
+            "description": "Dedicated team to assist you anytime."
+          }
+        }
+      },
+      "block_order": [
+        "shipping",
+        "payments",
+        "returns",
+        "support"
+      ],
       "settings": {}
     },
     "gallery": {
