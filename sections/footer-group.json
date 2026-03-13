@@ -4,9 +4,44 @@
   "sections": {
     "footer": {
       "type": "footer",
+      "blocks": {
+        "brand_info": {
+          "type": "brand_info",
+          "settings": {
+            "logo_text": "Velour",
+            "show_social": true,
+            "show_follow_on_shop": true,
+            "follow_button_size": "medium"
+          }
+        },
+        "quick_links": {
+          "type": "link_list",
+          "settings": {
+            "title": "Quick Links",
+            "menu": "footer"
+          }
+        },
+        "about_us": {
+          "type": "link_list",
+          "settings": {
+            "title": "About Us",
+            "menu": "footer"
+          }
+        },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "title": "Newsletter"
+          }
+        }
+      },
+      "block_order": [
+        "brand_info",
+        "quick_links",
+        "about_us",
+        "newsletter"
+      ],
       "settings": {
-        "show_follow_on_shop": true,
-        "follow_button_size": "medium"
       }
     }
   },

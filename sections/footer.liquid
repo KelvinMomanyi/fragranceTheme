@@ -8,102 +8,141 @@ FOOTER
          Safe now that .section is padding-only (not a grid).
          This gives the footer top the correct section padding. -->' -}}
     <div class="footer-top section">
-      {%- for block in section.blocks -%}
-        {%- case block.type -%}
-          {%- when 'brand_info' -%}
-            <div class="footer-brand" {{ block.shopify_attributes }}>
-              <a href="{{ routes.root_url }}" class="logo">{{ block.settings.logo_text | default: shop.name }}</a>
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'brand_info' -%}
+              <div class="footer-brand" {{ block.shopify_attributes }}>
+                <a href="{{ routes.root_url }}" class="logo">{{ block.settings.logo_text | default: shop.name }}</a>
 
-              {%- if block.settings.show_social -%}
-                <ul class="social-list">
-                  {%- assign social_accounts = 'Facebook, Instagram, TikTok, Tumblr, Twitter, Pinterest, Snapchat, YouTube, Vimeo' | split: ', ' -%}
-                  {%- for social in social_accounts -%}
-                    {%- assign social_handle = social | handleize -%}
-                    {%- assign social_link = 'social_' | append: social_handle -%}
-                    {%- if settings[social_link] != blank -%}
+                {%- if block.settings.show_social -%}
+                  <ul class="social-list">
+                    {%- assign social_accounts = 'Facebook, Instagram, TikTok, Tumblr, Twitter, Pinterest, Snapchat, YouTube, Vimeo' | split: ', ' -%}
+                    {%- for social in social_accounts -%}
+                      {%- assign social_handle = social | handleize -%}
+                      {%- assign social_link = 'social_' | append: social_handle -%}
+                      {%- if settings[social_link] != blank -%}
+                        <li>
+                          <a href="{{ settings[social_link] }}" class="social-link" target="_blank" rel="noopener" aria-label="{{ social }}">
+                            {% render 'icon-velour', icon: social_handle, size: 'small' %}
+                          </a>
+                        </li>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+
+                {%- if block.settings.show_follow_on_shop -%}
+                  <div class="footer-list-item">
+                    {% render 'follow-on-shop', button_size: block.settings.follow_button_size %}
+                  </div>
+                {%- endif -%}
+              </div>
+
+            {%- when 'link_list' -%}
+              <div class="footer-list" {{ block.shopify_attributes }}>
+                {%- if block.settings.title != blank -%}
+                  <p class="footer-list-title">{{ block.settings.title }}</p>
+                {%- endif -%}
+
+                {%- if block.settings.menu != blank -%}
+                  <ul class="footer-list-items">
+                    {%- for link in block.settings.menu.links -%}
                       <li>
-                        <a href="{{ settings[social_link] }}" class="social-link" target="_blank" rel="noopener" aria-label="{{ social }}">
-                          {% render 'icon-velour', icon: social_handle, size: 'small' %}
-                        </a>
+                        <a href="{{ link.url }}" class="footer-link">{{ link.title }}</a>
                       </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- else -%}
+                  <ul class="footer-list-items">
+                    <li><a href="#" class="footer-link">Home</a></li>
+                    <li><a href="#" class="footer-link">Shop</a></li>
+                    <li><a href="#" class="footer-link">Blog</a></li>
+                    <li><a href="#" class="footer-link">Terms and Conditions</a></li>
+                  </ul>
+                {%- endif -%}
+              </div>
+
+            {%- when 'newsletter' -%}
+              <div class="footer-list" {{ block.shopify_attributes }}>
+                {%- if block.settings.title != blank -%}
+                  <p class="footer-list-title">{{ block.settings.title }}</p>
+                {%- endif -%}
+
+                {%- if block.settings.description != blank -%}
+                  <p class="newsletter-description">{{ block.settings.description }}</p>
+                {%- endif -%}
+
+                {%- form 'customer', id: 'ContactFooter', class: 'footer-form' -%}
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <input
+                    type="email"
+                    name="contact[email]"
+                    placeholder="{{ block.settings.placeholder }}"
+                    required
+                    class="email-field"
+                    aria-label="Email address"
+                    value="{{ form.email }}"
+                  >
+                  <button type="submit" class="footer-form-btn" aria-label="Subscribe">
+                    {% render 'icon-velour', icon: 'arrow-forward' %}
+                  </button>
+                {%- endform -%}
+
+                {%- if block.settings.show_footer_links -%}
+                  <div class="wrapper">
+                    {%- if block.settings.terms_link != blank -%}
+                      <a href="{{ block.settings.terms_link }}" class="footer-link">{{ block.settings.terms_text }}</a>
                     {%- endif -%}
-                  {%- endfor -%}
-                </ul>
+                    {%- if block.settings.policy_link != blank -%}
+                      <a href="{{ block.settings.policy_link }}" class="footer-link">{{ block.settings.policy_text }}</a>
+                    {%- endif -%}
+                    {%- if block.settings.map_link != blank -%}
+                      <a href="{{ block.settings.map_link }}" class="footer-link">{{ block.settings.map_text }}</a>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Fallback when no blocks are present {%- endcomment -%}
+        <div class="footer-brand">
+          <a href="{{ routes.root_url }}" class="logo">{{ shop.name }}</a>
+          <ul class="social-list">
+            {%- assign social_accounts = 'Facebook, Instagram, TikTok, Twitter' | split: ', ' -%}
+            {%- for social in social_accounts -%}
+              {%- assign social_handle = social | handleize -%}
+              {%- assign social_link = 'social_' | append: social_handle -%}
+              {%- if settings[social_link] != blank -%}
+                <li>
+                  <a href="{{ settings[social_link] }}" class="social-link" target="_blank" rel="noopener" aria-label="{{ social }}">
+                    {% render 'icon-velour', icon: social_handle, size: 'small' %}
+                  </a>
+                </li>
               {%- endif -%}
-
-              {%- if block.settings.show_follow_on_shop -%}
-                <div class="footer-list-item">
-                  {% render 'follow-on-shop', button_size: block.settings.follow_button_size %}
-                </div>
-              {%- endif -%}
-            </div>
-
-          {%- when 'link_list' -%}
-            <div class="footer-list" {{ block.shopify_attributes }}>
-              {%- if block.settings.title != blank -%}
-                <p class="footer-list-title">{{ block.settings.title }}</p>
-              {%- endif -%}
-
-              {%- if block.settings.menu != blank -%}
-                <ul class="footer-list-items">
-                  {%- for link in block.settings.menu.links -%}
-                    <li>
-                      <a href="{{ link.url }}" class="footer-link">{{ link.title }}</a>
-                    </li>
-                  {%- endfor -%}
-                </ul>
-              {%- else -%}
-                <ul class="footer-list-items">
-                  <li><a href="#" class="footer-link">Home</a></li>
-                  <li><a href="#" class="footer-link">Shop</a></li>
-                  <li><a href="#" class="footer-link">Blog</a></li>
-                  <li><a href="#" class="footer-link">Terms and Conditions</a></li>
-                </ul>
-              {%- endif -%}
-            </div>
-
-          {%- when 'newsletter' -%}
-            <div class="footer-list" {{ block.shopify_attributes }}>
-              {%- if block.settings.title != blank -%}
-                <p class="footer-list-title">{{ block.settings.title }}</p>
-              {%- endif -%}
-
-              {%- if block.settings.description != blank -%}
-                <p class="newsletter-description">{{ block.settings.description }}</p>
-              {%- endif -%}
-
-              {%- form 'customer', id: 'ContactFooter', class: 'footer-form' -%}
-                <input type="hidden" name="contact[tags]" value="newsletter">
-                <input
-                  type="email"
-                  name="contact[email]"
-                  placeholder="{{ block.settings.placeholder }}"
-                  required
-                  class="email-field"
-                  aria-label="Email address"
-                  value="{{ form.email }}"
-                >
-                <button type="submit" class="footer-form-btn" aria-label="Subscribe">
-                  {% render 'icon-velour', icon: 'arrow-forward' %}
-                </button>
-              {%- endform -%}
-
-              {%- if block.settings.show_footer_links -%}
-                <div class="wrapper">
-                  {%- if block.settings.terms_link != blank -%}
-                    <a href="{{ block.settings.terms_link }}" class="footer-link">{{ block.settings.terms_text }}</a>
-                  {%- endif -%}
-                  {%- if block.settings.policy_link != blank -%}
-                    <a href="{{ block.settings.policy_link }}" class="footer-link">{{ block.settings.policy_text }}</a>
-                  {%- endif -%}
-                  {%- if block.settings.map_link != blank -%}
-                    <a href="{{ block.settings.map_link }}" class="footer-link">{{ block.settings.map_text }}</a>
-                  {%- endif -%}
-                </div>
-              {%- endif -%}
-            </div>
-        {%- endcase -%}
-      {%- endfor -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+        <div class="footer-list">
+          <p class="footer-list-title">Quick Links</p>
+          <ul class="footer-list-items">
+            <li><a href="#" class="footer-link">Home</a></li>
+            <li><a href="#" class="footer-link">Shop</a></li>
+            <li><a href="#" class="footer-link">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-list">
+          <p class="footer-list-title">Newsletter</p>
+          {%- form 'customer', id: 'ContactFooterFallback', class: 'footer-form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input type="email" name="contact[email]" placeholder="Your email" required class="email-field">
+            <button type="submit" class="footer-form-btn" aria-label="Subscribe">
+              {% render 'icon-velour', icon: 'arrow-forward' %}
+            </button>
+          {%- endform -%}
+        </div>
+      {%- endif -%}
     </div>
 
     <div class="footer-bottom">
