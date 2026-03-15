@@ -12,8 +12,8 @@
   endfor
 -%}
 
-<section class="section about-hero color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}">
-  <div class="about-hero__media" style="--about-hero-overlay: {{ overlay_opacity }};">
+<section class="section hero-wide color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}">
+  <div class="hero-wide__media" style="--hero-wide-overlay: {{ overlay_opacity }};">
     {%- if section.settings.background_image != blank -%}
       <img
         src="{{ section.settings.background_image | image_url: width: 2400 }}"
@@ -25,25 +25,25 @@
     {%- endif -%}
   </div>
 
-  <div class="container about-hero__container about-hero__container--{{ section.settings.content_alignment }}">
-    <div class="about-hero__content">
+  <div class="container hero-wide__container hero-wide__container--{{ section.settings.content_alignment }}">
+    <div class="hero-wide__content">
       {%- if section.settings.eyebrow != blank -%}
-        <p class="about-hero__eyebrow">{{ section.settings.eyebrow }}</p>
+        <p class="hero-wide__eyebrow">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
 
-      <h1 class="about-hero__title">
+      <h1 class="hero-wide__title">
         <span>{{ section.settings.title }}</span>
         {%- if section.settings.highlight != blank -%}
-          <span class="about-hero__title-highlight">{{ section.settings.highlight }}</span>
+          <span class="hero-wide__title-highlight">{{ section.settings.highlight }}</span>
         {%- endif -%}
       </h1>
 
       {%- if section.settings.subtitle != blank -%}
-        <div class="about-hero__subtitle rte">{{ section.settings.subtitle }}</div>
+        <div class="hero-wide__subtitle rte">{{ section.settings.subtitle }}</div>
       {%- endif -%}
 
       {%- if has_buttons -%}
-        <div class="about-hero__actions">
+        <div class="hero-wide__actions">
           {%- for block in section.blocks -%}
             {%- case block.type -%}
               {%- when 'button' -%}
@@ -60,11 +60,11 @@
       {%- endif -%}
 
       {%- if has_socials -%}
-        <div class="about-hero__socials">
+        <div class="hero-wide__socials">
           {%- for block in section.blocks -%}
             {%- case block.type -%}
               {%- when 'social' -%}
-                <a class="about-hero__social" href="{{ block.settings.link }}" aria-label="{{ block.settings.label }}" {{ block.shopify_attributes }}>
+                <a class="hero-wide__social" href="{{ block.settings.link }}" aria-label="{{ block.settings.label }}" {{ block.shopify_attributes }}>
                   {%- assign icon_name = block.settings.icon | downcase | strip -%}
                   {%- case icon_name -%}
                     {%- when 'logo-instagram' -%}
@@ -102,106 +102,106 @@
 </section>
 
 <style>
-  .about-hero {
+  .hero-wide {
     position: relative;
     overflow: hidden;
     padding: clamp(70px, 12vw, 150px) 0;
     color: var(--color-text);
   }
 
-  .about-hero__media {
+  .hero-wide__media {
     position: absolute;
     inset: 0;
     background: var(--color-background);
   }
 
-  .about-hero__media::after {
+  .hero-wide__media::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, var(--about-hero-overlay, 0.35));
+    background: rgba(0, 0, 0, var(--hero-wide-overlay, 0.35));
   }
 
-  .about-hero__media img {
+  .hero-wide__media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .about-hero__container {
+  .hero-wide__container {
     position: relative;
     z-index: 1;
   }
 
-  .about-hero__content {
+  .hero-wide__content {
     max-width: 640px;
     display: grid;
     gap: 20px;
   }
 
-  .about-hero__container--center .about-hero__content {
+  .hero-wide__container--center .hero-wide__content {
     margin: 0 auto;
     text-align: center;
   }
 
-  .about-hero__container--right .about-hero__content {
+  .hero-wide__container--right .hero-wide__content {
     margin-left: auto;
     text-align: right;
   }
 
-  .about-hero__eyebrow {
+  .hero-wide__eyebrow {
     font-size: var(--fs-6);
     letter-spacing: 0.2em;
     text-transform: uppercase;
     opacity: 0.75;
   }
 
-  .about-hero__title {
+  .hero-wide__title {
     font-size: clamp(3.2rem, 6vw, 6.8rem);
     line-height: 1.05;
     font-weight: var(--fw-500);
     margin: 0;
   }
 
-  .about-hero__title-highlight {
+  .hero-wide__title-highlight {
     display: block;
     color: var(--color-button) !important;
   }
 
-  .about-hero__subtitle {
+  .hero-wide__subtitle {
     font-size: var(--fs-4);
     max-width: 44ch;
     opacity: 0.85;
   }
 
-  .about-hero__actions {
+  .hero-wide__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
   }
 
-  .about-hero__container--center .about-hero__actions {
+  .hero-wide__container--center .hero-wide__actions {
     justify-content: center;
   }
 
-  .about-hero__container--right .about-hero__actions {
+  .hero-wide__container--right .hero-wide__actions {
     justify-content: flex-end;
   }
 
-  .about-hero__socials {
+  .hero-wide__socials {
     display: flex;
     gap: 12px;
   }
 
-  .about-hero__container--center .about-hero__socials {
+  .hero-wide__container--center .hero-wide__socials {
     justify-content: center;
   }
 
-  .about-hero__container--right .about-hero__socials {
+  .hero-wide__container--right .hero-wide__socials {
     justify-content: flex-end;
   }
 
-  .about-hero__social {
+  .hero-wide__social {
     width: 42px;
     height: 42px;
     display: grid;
@@ -211,30 +211,30 @@
     transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
   }
 
-  .about-hero__social:hover {
+  .hero-wide__social:hover {
     transform: translateY(-2px);
     background: currentColor;
     color: var(--color-background);
   }
 
-  .about-hero__container--center .about-hero__subtitle {
+  .hero-wide__container--center .hero-wide__subtitle {
     margin: 0 auto;
   }
 
-  .about-hero__container--right .about-hero__subtitle {
+  .hero-wide__container--right .hero-wide__subtitle {
     margin-left: auto;
   }
 
   @media (max-width: 749px) {
-    .about-hero {
+    .hero-wide {
       padding: calc(var(--section-padding) * 2) 0;
     }
 
-    .about-hero__subtitle {
+    .hero-wide__subtitle {
       font-size: 1.5rem;
     }
 
-    .about-hero__actions {
+    .hero-wide__actions {
       flex-direction: column;
       align-items: stretch;
     }
@@ -243,7 +243,7 @@
 
 {% schema %}
 {
-  "name": "About hero",
+  "name": "Hero:wide",
   "tag": "section",
   "class": "section",
   "settings": [
@@ -368,7 +368,7 @@
   ],
   "presets": [
     {
-      "name": "About hero",
+      "name": "Hero:wide",
       "blocks": [
         { "type": "button" },
         { "type": "button" },
@@ -379,3 +379,4 @@
   ]
 }
 {% endschema %}
+

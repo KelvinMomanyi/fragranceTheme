@@ -1,7 +1,7 @@
 {
   "sections": {
-    "about-hero": {
-      "type": "about-hero",
+    "hero-wide": {
+      "type": "hero-wide",
       "settings": {
         "eyebrow": "Our story",
         "title": "About",
@@ -238,7 +238,7 @@
     }
   },
   "order": [
-    "about-hero",
+    "hero-wide",
     "about-story",
     "about-highlights",
     "about-collections",
