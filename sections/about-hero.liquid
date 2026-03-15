@@ -65,8 +65,31 @@
             {%- case block.type -%}
               {%- when 'social' -%}
                 <a class="about-hero__social" href="{{ block.settings.link }}" aria-label="{{ block.settings.label }}" {{ block.shopify_attributes }}>
-                  {%- if block.settings.icon != blank -%}
-                    <ion-icon name="{{ block.settings.icon }}"></ion-icon>
+                  {%- assign icon_name = block.settings.icon | downcase | strip -%}
+                  {%- case icon_name -%}
+                    {%- when 'logo-instagram' -%}
+                      {%- assign icon_name = 'instagram' -%}
+                    {%- when 'logo-facebook' -%}
+                      {%- assign icon_name = 'facebook' -%}
+                    {%- when 'logo-twitter' -%}
+                      {%- assign icon_name = 'twitter' -%}
+                    {%- when 'logo-x' -%}
+                      {%- assign icon_name = 'twitter' -%}
+                    {%- when 'logo-tiktok' -%}
+                      {%- assign icon_name = 'tiktok' -%}
+                    {%- when 'logo-tumblr' -%}
+                      {%- assign icon_name = 'tumblr' -%}
+                    {%- when 'logo-pinterest' -%}
+                      {%- assign icon_name = 'pinterest' -%}
+                    {%- when 'logo-youtube' -%}
+                      {%- assign icon_name = 'youtube' -%}
+                    {%- when 'logo-snapchat' -%}
+                      {%- assign icon_name = 'snapchat' -%}
+                    {%- when 'logo-vimeo' -%}
+                      {%- assign icon_name = 'vimeo' -%}
+                  {%- endcase -%}
+                  {%- if icon_name != blank -%}
+                    {% render 'icon-velour', icon: icon_name %}
                   {%- endif -%}
                   <span class="visually-hidden">{{ block.settings.label }}</span>
                 </a>
@@ -319,10 +342,21 @@
           "default": "Instagram"
         },
         {
-          "type": "text",
+          "type": "select",
           "id": "icon",
-          "label": "Ionicon name",
-          "default": "logo-instagram"
+          "label": "Icon",
+          "options": [
+            { "value": "instagram", "label": "Instagram" },
+            { "value": "facebook", "label": "Facebook" },
+            { "value": "twitter", "label": "Twitter" },
+            { "value": "tiktok", "label": "TikTok" },
+            { "value": "pinterest", "label": "Pinterest" },
+            { "value": "tumblr", "label": "Tumblr" },
+            { "value": "youtube", "label": "YouTube" },
+            { "value": "snapchat", "label": "Snapchat" },
+            { "value": "vimeo", "label": "Vimeo" }
+          ],
+          "default": "instagram"
         },
         {
           "type": "url",

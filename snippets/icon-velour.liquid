@@ -6,8 +6,34 @@
   - size: {String} Optional size (small, medium, large)
 {%- endcomment -%}
 
+{%- assign icon_name = icon | downcase | strip -%}
+{%- case icon_name -%}
+  {%- when 'logo-facebook' -%}
+    {%- assign icon_name = 'facebook' -%}
+  {%- when 'logo-instagram' -%}
+    {%- assign icon_name = 'instagram' -%}
+  {%- when 'logo-twitter' -%}
+    {%- assign icon_name = 'twitter' -%}
+  {%- when 'logo-x' -%}
+    {%- assign icon_name = 'twitter' -%}
+  {%- when 'logo-pinterest' -%}
+    {%- assign icon_name = 'pinterest' -%}
+  {%- when 'logo-tiktok' -%}
+    {%- assign icon_name = 'tiktok' -%}
+  {%- when 'logo-tumblr' -%}
+    {%- assign icon_name = 'tumblr' -%}
+  {%- when 'logo-youtube' -%}
+    {%- assign icon_name = 'youtube' -%}
+  {%- when 'logo-snapchat' -%}
+    {%- assign icon_name = 'snapchat' -%}
+  {%- when 'logo-vimeo' -%}
+    {%- assign icon_name = 'vimeo' -%}
+  {%- when 'chevron-up' -%}
+    {%- assign icon_name = 'arrow-up' -%}
+{%- endcase -%}
+
 {%- capture icon_svg -%}
-  {%- case icon -%}
+  {%- case icon_name -%}
     {%- when 'menu' -%}
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M1 3.5H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -78,6 +104,33 @@
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M394 480a16 16 0 01-9.39-3L256 383.76 127.39 477a16 16 0 01-24.55-18.08L153 310.35 23 221.2a16 16 0 019-27.2l152.32-22.12L252.34 33a16 16 0 0131.32 0l68 138.88L504 194a16 16 0 019 27.2l-130 89.15 50.16 148.57A16 16 0 01394 480z" fill="currentColor"/></svg>
     {%- when 'checkmark-circle' -%}
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm108.25 138.25l-131 131a16 16 0 01-22.62 0l-63-63a16 16 0 0122.62-22.62l51.69 51.69 120-120a16 16 0 0122.62 22.63z" fill="currentColor"/></svg>
+    {%- when 'information-circle-outline' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <circle cx="256" cy="256" r="176" fill="none" stroke="currentColor" stroke-width="32"/>
+        <line x1="256" y1="200" x2="256" y2="296" stroke="currentColor" stroke-width="32" stroke-linecap="round"/>
+        <circle cx="256" cy="156" r="20" fill="currentColor"/>
+      </svg>
+    {%- when 'share-social-outline' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <circle cx="128" cy="256" r="48" fill="none" stroke="currentColor" stroke-width="32"/>
+        <circle cx="384" cy="128" r="48" fill="none" stroke="currentColor" stroke-width="32"/>
+        <circle cx="384" cy="384" r="48" fill="none" stroke="currentColor" stroke-width="32"/>
+        <line x1="168" y1="240" x2="336" y2="152" stroke="currentColor" stroke-width="32" stroke-linecap="round"/>
+        <line x1="168" y1="272" x2="336" y2="360" stroke="currentColor" stroke-width="32" stroke-linecap="round"/>
+      </svg>
+    {%- when 'bicycle-outline' -%}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <circle cx="152" cy="360" r="72" fill="none" stroke="currentColor" stroke-width="32"/>
+        <circle cx="360" cy="360" r="72" fill="none" stroke="currentColor" stroke-width="32"/>
+        <line x1="152" y1="360" x2="240" y2="200" stroke="currentColor" stroke-width="32" stroke-linecap="round"/>
+        <line x1="240" y1="200" x2="320" y2="200" stroke="currentColor" stroke-width="32" stroke-linecap="round"/>
+        <line x1="240" y1="200" x2="300" y2="360" stroke="currentColor" stroke-width="32" stroke-linecap="round"/>
+        <line x1="300" y1="360" x2="152" y2="360" stroke="currentColor" stroke-width="32" stroke-linecap="round"/>
+        <line x1="320" y1="200" x2="360" y2="360" stroke="currentColor" stroke-width="32" stroke-linecap="round"/>
+        <line x1="320" y1="200" x2="380" y2="176" stroke="currentColor" stroke-width="32" stroke-linecap="round"/>
+        <line x1="220" y1="180" x2="260" y2="180" stroke="currentColor" stroke-width="32" stroke-linecap="round"/>
+        <circle cx="300" cy="360" r="16" fill="currentColor"/>
+      </svg>
     {%- when 'shield-checkmark' -%}
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M336 176L225.2 286.8l-49.2-49.2c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l71.8 71.8c12.5 12.5 32.8 12.5 45.3 0L381.3 221.3c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z" fill="currentColor"/><path d="M464.1 110.4c-97.9-12.8-164.8-14-208.1-78.4-43.3 64.4-110.2 65.5-208.1 78.4-5.3.7-8.9 5.8-7.8 11.2 5.8 28.5 21.6 86.8 59.4 146.5 43.1 68.3 111.9 121.2 153.6 149.2a6.38 6.38 0 005.9 0c41.7-28 110.5-80.9 153.6-149.2 37.8-59.7 53.6-118 59.4-146.5 1.1-5.3-2.5-10.4-7.9-11.2zM256 448c-36.9-24.6-96.1-71.3-134.4-131.9-34.1-54-47.5-106.6-52.6-132.3 84.8-11.1 146-13.6 187-57.8 41 44.2 102.2 46.7 187 57.8-5.1 25.7-18.5 78.3-52.6 132.3C352.1 376.7 292.9 423.4 256 448z" fill="currentColor"/></svg>
     {%- when 'flash' -%}
@@ -99,7 +152,7 @@
   {%- endcase -%}
 {%- endcapture -%}
 
-<span class="icon icon--{{ icon }} {{ class }} icon--size-{{ size | default: 'medium' }}" aria-hidden="true">
+<span class="icon icon--{{ icon_name }} {{ class }} icon--size-{{ size | default: 'medium' }}" aria-hidden="true">
   {{ icon_svg }}
 </span>
 

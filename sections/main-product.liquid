@@ -85,10 +85,10 @@
           <div class="product-thumbnails" aria-label="Product media thumbnails">
             <div class="product-thumbnails__controls">
               <button type="button" class="thumb-nav thumb-nav--prev" aria-label="Scroll thumbnails up" data-thumb-prev>
-                <ion-icon name="chevron-up"></ion-icon>
+                {% render 'icon-velour', icon: 'chevron-up', size: 'small' %}
               </button>
               <button type="button" class="thumb-nav thumb-nav--next" aria-label="Scroll thumbnails down" data-thumb-next>
-                <ion-icon name="chevron-down"></ion-icon>
+                {% render 'icon-velour', icon: 'chevron-down', size: 'small' %}
               </button>
             </div>
 
@@ -449,13 +449,13 @@
                   <span class="share-label">{{ 'products.product.share' | t | default: 'Share' }}:</span>
                   <div class="share-buttons">
                     <a href="https://www.facebook.com/sharer.php?u={{ shop.url }}{{ product.url }}" target="_blank" rel="noopener" class="share-btn share-btn--facebook" aria-label="Share on Facebook">
-                      <ion-icon name="logo-facebook"></ion-icon>
+                      {% render 'icon-velour', icon: 'facebook' %}
                     </a>
                     <a href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}&text={{ product.title | url_encode }}" target="_blank" rel="noopener" class="share-btn share-btn--twitter" aria-label="Share on Twitter">
-                      <ion-icon name="logo-twitter"></ion-icon>
+                      {% render 'icon-velour', icon: 'twitter' %}
                     </a>
                     <a href="https://pinterest.com/pin/create/button/?url={{ shop.url }}{{ product.url }}&media={{ product.featured_image | image_url: width: 1024 }}&description={{ product.title | url_encode }}" target="_blank" rel="noopener" class="share-btn share-btn--pinterest" aria-label="Share on Pinterest">
-                      <ion-icon name="logo-pinterest"></ion-icon>
+                      {% render 'icon-velour', icon: 'pinterest' %}
                     </a>
                   </div>
                 </div>
@@ -468,7 +468,7 @@
                   <summary class="accordion-header">
                     <span class="accordion-title">
                       {%- if block.settings.icon != blank -%}
-                        <ion-icon name="{{ block.settings.icon }}"></ion-icon>
+                        {% render 'icon-velour', icon: block.settings.icon, size: 'small' %}
                       {%- endif -%}
                       {{ block.settings.heading | default: 'Tab heading' }}
                     </span>
@@ -1481,7 +1481,7 @@ document.addEventListener('DOMContentLoaded', function() {
           "type": "text",
           "id": "icon",
           "label": "Icon name",
-          "info": "Use Ionicons names (e.g., information-circle-outline)"
+          "info": "Use icon-velour names (e.g., information-circle-outline, bicycle-outline, share-social-outline). Legacy Ionicons names are supported."
         },
         {
           "type": "richtext",
