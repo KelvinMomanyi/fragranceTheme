@@ -1,8 +1,8 @@
 <section
-  class="section best-sellers-hero hero1 color-scheme-{{ section.settings.color_scheme }}"
+  class="section hero-sliders hero1 color-scheme-{{ section.settings.color_scheme }}"
   style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}"
-  aria-label="Best sellers hero"
-  data-best-sellers-hero
+  aria-label="Hero sliders"
+  data-hero-sliders
 >
   <ul class="hero1-slider" data-hero-slider>
     {% if section.blocks.size == 0 %}
@@ -60,7 +60,7 @@
 </section>
 
 <style>
-  .best-sellers-hero {
+  .hero-sliders {
     position: relative;
     min-height: clamp(360px, 70vh, 640px);
     padding-block: clamp(70px, 10vw, 140px);
@@ -68,13 +68,13 @@
     color: var(--color-text);
   }
 
-  .best-sellers-hero .hero1-slider {
+  .hero-sliders .hero1-slider {
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  .best-sellers-hero .slider-item {
+  .hero-sliders .slider-item {
     position: absolute;
     inset: 0;
     display: flex;
@@ -84,30 +84,30 @@
     transition: var(--transition-2);
   }
 
-  .best-sellers-hero .slider-item.active {
+  .hero-sliders .slider-item.active {
     opacity: 1;
     visibility: visible;
   }
 
-  .best-sellers-hero .slider-bg {
+  .hero-sliders .slider-bg {
     position: absolute;
     inset: 0;
     z-index: 0;
     transform: scale(1.05);
   }
 
-  .best-sellers-hero .slider-bg::after {
+  .hero-sliders .slider-bg::after {
     content: "";
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.45);
   }
 
-  .best-sellers-hero .slider-item.active .slider-bg {
-    animation: bestSellersHeroScale 7s linear forwards;
+  .hero-sliders .slider-item.active .slider-bg {
+    animation: heroSlidersScale 7s linear forwards;
   }
 
-  @keyframes bestSellersHeroScale {
+  @keyframes heroSlidersScale {
     0% {
       transform: scale(1);
     }
@@ -116,48 +116,48 @@
     }
   }
 
-  .best-sellers-hero .container {
+  .hero-sliders .container {
     position: relative;
     z-index: 1;
     width: 100%;
   }
 
-  .best-sellers-hero .card-content {
+  .hero-sliders .card-content {
     max-width: 520px;
     display: grid;
     gap: 14px;
   }
 
-  .best-sellers-hero .hero1-title {
+  .hero-sliders .hero1-title {
     font-size: clamp(3.2rem, 6vw, 6.6rem);
     line-height: 1.05;
     font-weight: var(--fw-500);
     color: #fff !important;
   }
 
-  .best-sellers-hero .price {
+  .hero-sliders .price {
     color: #fff !important;
     text-transform: uppercase;
     letter-spacing: 0.16em;
     font-size: var(--fs-6);
   }
 
-  .best-sellers-hero .hero1-actions {
+  .hero-sliders .hero1-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
   }
 
-  .best-sellers-hero .slider-reveal {
+  .hero-sliders .slider-reveal {
     transform: translateY(24px);
     opacity: 0;
   }
 
-  .best-sellers-hero .slider-item.active .slider-reveal {
-    animation: bestSellersHeroReveal 0.9s ease forwards;
+  .hero-sliders .slider-item.active .slider-reveal {
+    animation: heroSlidersReveal 0.9s ease forwards;
   }
 
-  @keyframes bestSellersHeroReveal {
+  @keyframes heroSlidersReveal {
     0% {
       transform: translateY(24px);
       opacity: 0;
@@ -168,19 +168,19 @@
     }
   }
 
-  .best-sellers-hero .slider-item.active .hero1-title {
+  .hero-sliders .slider-item.active .hero1-title {
     animation-delay: 200ms;
   }
 
-  .best-sellers-hero .slider-item.active .price {
+  .hero-sliders .slider-item.active .price {
     animation-delay: 400ms;
   }
 
-  .best-sellers-hero .slider-item.active .btn {
+  .hero-sliders .slider-item.active .btn {
     animation-delay: 600ms;
   }
 
-  .best-sellers-hero .slider-btn {
+  .hero-sliders .slider-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -196,25 +196,25 @@
     transition: var(--transition-1);
   }
 
-  .best-sellers-hero .slider-btn:hover {
+  .hero-sliders .slider-btn:hover {
     background: #fff;
     color: #000;
   }
 
-  .best-sellers-hero .slider-btn.prev {
+  .hero-sliders .slider-btn.prev {
     left: 20px;
   }
 
-  .best-sellers-hero .slider-btn.next {
+  .hero-sliders .slider-btn.next {
     right: 20px;
   }
 
   @media (max-width: 749px) {
-    .best-sellers-hero .slider-btn {
+    .hero-sliders .slider-btn {
       display: none;
     }
 
-    .best-sellers-hero {
+    .hero-sliders {
       padding-block: calc(var(--section-padding) * 2);
     }
   }
@@ -224,7 +224,7 @@
 (function() {
   'use strict';
 
-  document.querySelectorAll('[data-best-sellers-hero]').forEach((root) => {
+  document.querySelectorAll('[data-hero-sliders]').forEach((root) => {
     const heroSliderItems = root.querySelectorAll('[data-hero-slider-item]');
     if (!heroSliderItems.length) {
       return;
@@ -287,7 +287,7 @@
 
 {% schema %}
 {
-  "name": "Best sellers hero",
+  "name": "Hero sliders",
   "tag": "section",
   "class": "section",
   "settings": [
@@ -336,7 +336,7 @@
   ],
   "presets": [
     {
-      "name": "Best sellers hero",
+      "name": "Hero sliders",
       "blocks": [
         {
           "type": "slide",
@@ -357,3 +357,4 @@
   ]
 }
 {% endschema %}
+

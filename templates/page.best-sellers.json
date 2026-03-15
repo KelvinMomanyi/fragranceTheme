@@ -1,7 +1,7 @@
 {
   "sections": {
-    "best-sellers-hero": {
-      "type": "best-sellers-hero",
+    "hero-sliders": {
+      "type": "hero-sliders",
       "settings": {
         "color_scheme": "scheme-1"
       },
@@ -94,7 +94,7 @@
     }
   },
   "order": [
-    "best-sellers-hero",
+    "hero-sliders",
     "best-sellers-products",
     "best-sellers-info"
   ]
