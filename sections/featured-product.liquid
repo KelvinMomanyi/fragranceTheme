@@ -1,258 +1,615 @@
-{%- comment -%}
-  Featured Product Section
-  Showcases a single product on pages other than the product page.
-  Meets Shopify Theme Store requirements for:
-  - Block-based architecture
-  - @app block support
-  - Custom Liquid support
-{%- endcomment -%}
+<section class="section about color-scheme-{{ section.settings.color_scheme }}" id="about-{{ section.id }}" data-section-id="{{ section.id }}" aria-label="about" data-aos="fade-up" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}">
+  <div class="container"> 
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'heading' -%}
+          <h2 class="section-title" {{ block.shopify_attributes }}>{{ block.settings.title }}</h2>
+        {%- when 'description' -%}
+          <p class="section-text" {{ block.shopify_attributes }}>{{ block.settings.info }}</p>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+  
+  <div class="about-card">
+    <figure class="card-banner img-holder" style="--width: 1380; --height: 550;">
+      {% assign uploaded_video = section.settings.uploaded_video %}
+      {% assign raw_video_url = section.settings.video_url | strip %}
+      {% assign fallback_video_file = section.settings.video_file | strip %}
+      {% assign video_url_lower = raw_video_url | downcase %}
+      {% assign is_youtube = false %}
+      {% assign is_vimeo = false %}
+      {% assign is_direct_video = false %}
+      {% assign embed_url = '' %}
 
-{%- liquid
-  assign product = section.settings.product
-  assign current_variant = product.selected_or_first_available_variant
--%}
+      {% if raw_video_url != blank %}
+        {% if video_url_lower contains 'youtube.com' or video_url_lower contains 'youtu.be' %}
+          {% assign is_youtube = true %}
+          {% assign youtube_id = '' %}
+          {% if raw_video_url contains 'youtu.be/' %}
+            {% assign youtube_id = raw_video_url | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first | split: '#' | first %}
+          {% elsif raw_video_url contains 'watch?v=' %}
+            {% assign youtube_id = raw_video_url | split: 'watch?v=' | last | split: '&' | first | split: '#' | first %}
+          {% elsif raw_video_url contains '/shorts/' %}
+            {% assign youtube_id = raw_video_url | split: '/shorts/' | last | split: '?' | first | split: '&' | first | split: '#' | first %}
+          {% elsif raw_video_url contains '/embed/' %}
+            {% assign youtube_id = raw_video_url | split: '/embed/' | last | split: '?' | first | split: '&' | first | split: '#' | first %}
+          {% endif %}
+          {% if youtube_id != blank %}
+            {% assign embed_url = 'https://www.youtube.com/embed/' | append: youtube_id | append: '?playsinline=1&rel=0' %}
+            {% if section.settings.video_autoplay %}
+              {% assign embed_url = embed_url | append: '&autoplay=1' %}
+            {% endif %}
+            {% if section.settings.video_muted %}
+              {% assign embed_url = embed_url | append: '&mute=1' %}
+            {% endif %}
+            {% if section.settings.video_loop %}
+              {% assign embed_url = embed_url | append: '&loop=1&playlist=' | append: youtube_id %}
+            {% endif %}
+          {% endif %}
+        {% elsif video_url_lower contains 'vimeo.com' %}
+          {% assign is_vimeo = true %}
+          {% assign vimeo_id = raw_video_url | split: '/' | last | split: '?' | first | split: '&' | first | split: '#' | first %}
+          {% if vimeo_id != blank %}
+            {% assign embed_url = 'https://player.vimeo.com/video/' | append: vimeo_id | append: '?title=0&byline=0&portrait=0' %}
+            {% if section.settings.video_autoplay %}
+              {% assign embed_url = embed_url | append: '&autoplay=1' %}
+            {% endif %}
+            {% if section.settings.video_loop %}
+              {% assign embed_url = embed_url | append: '&loop=1' %}
+            {% endif %}
+            {% if section.settings.video_muted %}
+              {% assign embed_url = embed_url | append: '&muted=1' %}
+            {% endif %}
+          {% endif %}
+        {% elsif video_url_lower contains '.mp4' or video_url_lower contains '.webm' or video_url_lower contains '.ogg' or video_url_lower contains '.mov' or video_url_lower contains '.m3u8' %}
+          {% assign is_direct_video = true %}
+        {% endif %}
+      {% endif %}
 
-<section class="section featured-product color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="featured-product-{{ section.id }}">
-  <div class="container">
-    {%- if product != blank -%}
-      <div class="product-wrapper">
-        
-        {%- comment -%} Product Media Gallery {%- endcomment -%}
-        <div class="product-media">
-          <div class="product-media-list">
-            {% for media in product.media %}
-              <div class="product-media-item {% if forloop.first %}active{% endif %}" data-media-id="{{ media.id }}">
-                {% case media.media_type %}
-                  {% when 'image' %}
-                    <img 
-                      src="{{ media | image_url: width: 800 }}" 
-                      srcset="{{ media | image_url: width: 400 }} 400w,
-                              {{ media | image_url: width: 800 }} 800w,
-                              {{ media | image_url: width: 1200 }} 1200w"
-                      sizes="(max-width: 768px) 100vw, 800px"
-                      alt="{{ media.alt | escape | default: product.title }}" 
-                      class="img-cover"
-                      loading="lazy"
-                      width="800"
-                      height="800"
-                    >
-                  {% when 'external_video' %}
-                    <div class="media-video external-video">
-                      {{ media | external_video_tag: class: 'video-iframe' }}
-                    </div>
-                  {% when 'video' %}
-                    <div class="media-video">
-                      {{ media | video_tag: loop: true, controls: true, class: 'video-element' }}
-                    </div>
-                  {% when 'model' %}
-                    <div class="media-model">
-                      {{ media | model_viewer_tag: reveal: 'interaction', toggleable: true, data-model-id: media.id }}
-                    </div>
-                {% endcase %}
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-        
-        {%- comment -%} Product Info with Blocks {%- endcomment -%}
-        <div class="product-info">
-          {% for block in section.blocks %}
-            {% case block.type %}
-              
-              {% when 'title' %}
-                <div class="product-block product-block--title" {{ block.shopify_attributes }}>
-                  <h2 class="h2 product-title">
-                    <a href="{{ product.url }}">{{ product.title }}</a>
-                  </h2>
-                </div>
-              
-              {% when 'price' %}
-                <div class="product-block product-block--price" {{ block.shopify_attributes }}>
-                  <div class="product-price-wrapper">
-                    {%- if current_variant.compare_at_price > current_variant.price -%}
-                      <del class="product-compare-price">{{ current_variant.compare_at_price | money }}</del>
-                      <span class="product-price product-price--sale">{{ current_variant.price | money }}</span>
-                    {%- else -%}
-                      <span class="product-price">{{ current_variant.price | money }}</span>
-                    {%- endif -%}
-                    
-                    {%- if current_variant.unit_price_measurement -%}
-                      <div class="product-unit-price">
-                        {{ current_variant.unit_price | money }}/{{ current_variant.unit_price_measurement.reference_value }}{{ current_variant.unit_price_measurement.reference_unit }}
-                      </div>
-                    {%- endif -%}
-                  </div>
-                </div>
-              
-              {% when 'variant_picker' %}
-                <div class="product-block product-block--variants" {{ block.shopify_attributes }}>
-                  {%- unless product.has_only_default_variant -%}
-                    <variant-selects class="product-variants" data-section="{{ section.id }}" data-url="{{ product.url }}">
-                      {%- for option in product.options_with_values -%}
-                        <div class="product-option">
-                          <label class="product-option-label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
-                            {{ option.name }}
-                          </label>
-                          <select id="Option-{{ section.id }}-{{ forloop.index0 }}" class="product-option-select" name="options[{{ option.name | escape }}]">
-                            {%- for value in option.values -%}
-                              <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
-                                {{ value }}
-                              </option>
-                            {%- endfor -%}
-                          </select>
-                        </div>
-                      {%- endfor -%}
-                    </variant-selects>
-                  {%- endunless -%}
-                </div>
-              
-              {% when 'quantity_selector' %}
-                <div class="product-block product-block--quantity" {{ block.shopify_attributes }}>
-                  <label class="product-option-label" for="Quantity-{{ section.id }}">Quantity</label>
-                  <div class="quantity-selector">
-                    <input type="number" id="Quantity-{{ section.id }}" name="quantity" min="1" value="1" class="qty-input">
-                  </div>
-                </div>
-              
-              {% when 'buy_buttons' %}
-                <div class="product-block product-block--buy-buttons" {{ block.shopify_attributes }}>
-                  <product-form class="product-form">
-                    {%- form 'product', product -%}
-                      <input type="hidden" name="id" value="{{ current_variant.id }}">
-                      <div class="product-form-buttons">
-                        <button type="submit" name="add" class="btn btn-primary add-to-cart-btn" {% unless current_variant.available %}disabled{% endunless %}>
-                          <span>{% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}</span>
-                        </button>
-                        {%- if block.settings.show_dynamic_checkout -%}
-                          {{ form | payment_button }}
-                        {%- endif -%}
-                      </div>
-                    {%- endform -%}
-                  </product-form>
-                </div>
-
-              {% when 'description' %}
-                <div class="product-block product-block--description" {{ block.shopify_attributes }}>
-                  <div class="product-description rte">
-                    {{ product.description | truncatewords: 30 }}
-                  </div>
-                </div>
-              
-              {% when 'social_sharing' %}
-                <div class="product-block product-block--share" {{ block.shopify_attributes }}>
-                  {% render 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media %}
-                </div>
-
-              {% when 'custom_liquid' %}
-                <div class="product-block product-block--custom" {{ block.shopify_attributes }}>
-                  {{ block.settings.custom_liquid }}
-                </div>
-
-              {% when '@app' %}
-                <div class="product-block product-block--app" {{ block.shopify_attributes }}>
-                  {% render block %}
-                </div>
-                
-            {% endcase %}
+      {% if uploaded_video != blank %}
+        <video
+          data-promo-video="{{ section.id }}"
+          width="1170"
+          height="550"
+          class="img-cover"
+          {% if section.settings.video_autoplay %}autoplay{% endif %}
+          {% if section.settings.video_loop %}loop{% endif %}
+          {% if section.settings.video_muted %}muted{% endif %}
+          playsinline
+        >
+          {% for source in uploaded_video.sources %}
+            <source src="{{ source.url }}" type="{{ source.mime_type }}">
           {% endfor %}
-        </div>
-      </div>
-    {%- else -%}
-      <div class="featured-product-placeholder">
-        <p>Please select a product to display.</p>
-      </div>
-    {%- endif -%}
+          Your browser does not support the video tag.
+        </video>
+      {% elsif embed_url != blank and is_youtube or is_vimeo %}
+        <iframe
+          class="img-cover"
+          width="1170"
+          height="550"
+          src="{{ embed_url }}"
+          title="{{ section.settings.title | escape }}"
+          loading="lazy"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      {% else %}
+        <video
+          data-promo-video="{{ section.id }}"
+          width="1170"
+          height="550"
+          class="img-cover"
+          {% if section.settings.video_autoplay %}autoplay{% endif %}
+          {% if section.settings.video_loop %}loop{% endif %}
+          {% if section.settings.video_muted %}muted{% endif %}
+          playsinline
+        >
+          {% if is_direct_video and raw_video_url != blank %}
+            <source src="{{ raw_video_url }}" type="video/mp4">
+          {% elsif fallback_video_file != blank %}
+            <source src="{{ fallback_video_file | default: 'Ink.mp4' | asset_url }}" type="video/mp4">
+          {% endif %}
+          Your browser does not support the video tag.
+        </video>
+      {% endif %}
+    </figure>
+
+    <div class="box" data-text-position="{{ section.settings.text_position }}">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'animated_text' -%}
+          {%- assign words = block.settings.animation_text | split: ' ' -%}
+          {%- for word in words -%}
+            <span {{ block.shopify_attributes }}>{{ word }}</span>
+            {%- unless forloop.last -%}<span>&nbsp;</span>{%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
   </div>
 </section>
 
+<style>
+  .collection {
+    padding-block-start: 0; 
+    margin-top: 5%;
+  }
+
+  .collection-list {
+    display: grid;
+    gap: 15px;
+  }
+
+  .collection-card {
+    background-color: var(--light-gray);
+    min-height: 400px;
+    padding: 40px;
+    padding-block-end: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .section-title {
+    color: inherit;
+    margin-block-end: 20px;
+  }
+
+  .section-text {
+    color: inherit;
+  }
+
+  .collection-card .card-title {
+    margin-block-end: 12px;
+  }
+
+  .collection-card .card-text {
+    color: var(--black);
+    font-size: var(--fs-6);
+    font-weight: var(--fs-600);
+    margin-block-end: auto;
+  }
+
+  .scents {
+    font-size: large;
+    font-family: var(--ff-roboto);
+  }
+
+  .about {
+    /* Base section padding only */
+  }
+
+  .about .container {
+    position: relative;
+  }
+
+  .about-card {
+    position: relative;
+    transform: translate3d(0, 0, 0); /* Anchors position: fixed children specifically to the video container */
+    will-change: transform;
+  }
+
+  .box {
+    position: fixed;
+    top: {{ section.settings.text_position }};
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .box span {
+    font-family: "Quicksand", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-shadow: 0px 0px 5px rgba(31, 29, 46, 0.55);
+    font-size: 4rem;
+    text-transform: uppercase;
+    color: inherit;
+    display: inline-block;
+  }
+
+  /* Responsive for larger than 575px screen */
+  @media screen and (max-width: 575px) {
+    .scents {
+      font-size: medium;
+    }
+
+    .box {
+      top: 70%;
+    }
+
+    .box span {
+      font-size: 2rem;
+    }
+  }
+
+  /* Responsive for larger than 768px screen */
+  @media screen and (min-width: 768px) {
+    .flex-item {
+      max-width: calc(50% - 15px);
+    }
+
+    .collection-card {
+      min-height: 450px;
+    }
+
+    .scents {
+      font-size: large;
+    }
+  }
+
+  /* Responsive for larger than 992px screen */
+  @media screen and (min-width: 992px) {
+    .scrollbar-item {
+      min-width: calc(33.33% - 20px);
+    }
+
+    .flex-item {
+      max-width: calc(33.33% - 20px);
+    }
+
+    .collection-list {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .scents {
+      font-size: large;
+    }
+  }
+
+  /* Responsive for larger than 1200px screen */
+  @media screen and (min-width: 1200px) {
+    .scrollbar-item {
+      min-width: calc(20% - 24px);
+    }
+
+    .flex-item {
+      max-width: calc(33.33% - 20px);
+    }
+
+    .scents {
+      font-size: large;
+    }
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/scrollmoo@1.0.7/dist/scrollmoo.min.js"></script>
+<script>
+(function() {
+function initSlowMotionEffect() {
+  const sectionElement = document.querySelector('[data-section-id="{{ section.id }}"]');
+  if (!sectionElement) return;
+  const boxElement = sectionElement.querySelector('.box');
+  if (!boxElement) return;
+  const spans = boxElement.querySelectorAll('span');
+  if (spans.length === 0) return;
+  
+  // Get animation settings from the animated text block
+  {%- assign anim_block = section.blocks | where: "type", "animated_text" | first -%}
+  {%- if anim_block -%}
+    const animationSpeed = {{ anim_block.settings.animation_speed | default: 1200 }};
+    const maxBlur = {{ anim_block.settings.animation_blur | default: 10 }};
+    const maxScale = {{ anim_block.settings.animation_scale | default: 3 }};
+  {%- else -%}
+    const animationSpeed = 1200;
+    const maxBlur = 10;
+    const maxScale = 3;
+  {%- endif -%}
+  
+  // Original effect parameters
+  let start = -300;
+  let end = 300;
+  let steps = spans.length;
+  let stepSize = (end - start) / (steps - 1);
+  
+  // Set initial state - shortened transition for "on scroll" feel
+  spans.forEach((span, index) => {
+    span.style.transition = `transform 0.2s ease-out, filter 0.2s ease-out, opacity 0.2s ease-out`;
+    span.style.transform = 'translateX(0%) scale(1)';
+    span.style.filter = 'blur(0px)';
+    span.style.opacity = '1';
+  });
+  
+  // Create intersection observer
+  const boxObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const isIntersecting = entry.isIntersecting;
+      const rect = entry.boundingClientRect;
+      const isComingFromTop = rect.top > 0;
+      const isLeavingToTop = rect.bottom < window.innerHeight && !isIntersecting;
+      
+      spans.forEach((span, index) => {
+        const delay = index * 50;
+        
+        setTimeout(() => {
+          if (isIntersecting) {
+            // No hard reset here, let updateInViewEffect handle the state
+          } else {
+            const translateX = start + stepSize * index;
+            let finalTranslateX;
+            
+            if (isComingFromTop) {
+              finalTranslateX = translateX;
+            } else {
+              finalTranslateX = -translateX;
+            }
+            
+            span.style.transform = `translateX(${finalTranslateX}%) scale(${maxScale})`;
+            span.style.filter = `blur(${maxBlur}px)`;
+            span.style.opacity = '0';
+          }
+        }, delay);
+      });
+    });
+  }, {
+    threshold: [0, 0.1, 0.3, 0.7, 1],
+    rootMargin: '100px 0px 100px 0px'
+  });
+  
+  boxObserver.observe(boxElement);
+  
+  // Fine-tuned scroll-based animation
+  function updateInViewEffect() {
+    const rect = boxElement.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    
+    if (rect.top <= windowHeight && rect.bottom >= 0) {
+      const elementCenter = rect.top + rect.height / 2;
+      const viewportCenter = windowHeight / 2;
+      const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
+      const maxDistance = windowHeight / 2;
+      const centerRatio = 1 - Math.min(distanceFromCenter / maxDistance, 1);
+      const effectStrength = 1 - centerRatio;
+      
+      spans.forEach((span, index) => {
+        if (centerRatio > 0.8) {
+          span.style.transform = 'translateX(0%) scale(1)';
+          span.style.filter = 'blur(0px)';
+          span.style.opacity = '1';
+        } else {
+          // Linear mapping as we move away from center
+          const strength = 1 - ((centerRatio - 0.3) / 0.5); // 0 at 0.8 centerRatio, 1 at 0.3 centerRatio
+          const clampedStrength = Math.max(0, Math.min(1, strength));
+          
+          const translateX = (start + stepSize * index) * clampedStrength * 0.5;
+          const scale = 1 + (clampedStrength * (maxScale - 1));
+          const blur = clampedStrength * maxBlur;
+          const opacity = 1 - (clampedStrength * 0.8);
+          
+          span.style.transform = `translateX(${translateX}%) scale(${scale})`;
+          span.style.filter = `blur(${blur}px)`;
+          span.style.opacity = opacity;
+        }
+      });
+    }
+  }
+  
+  // Throttled scroll listener
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    if (scrollTimeout) return;
+    
+    scrollTimeout = setTimeout(() => {
+      updateInViewEffect();
+      scrollTimeout = null;
+    }, 16);
+  });
+  updateInViewEffect();
+}
+
+function initVideoVisibility() {
+  const video = document.querySelector('[data-promo-video="{{ section.id }}"]');
+  if (!video) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        video.currentTime = 1;
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+  }, { threshold: 0.5 });
+  observer.observe(video);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  initVideoVisibility();
+  initSlowMotionEffect();
+});
+
+document.addEventListener("shopify:section:load", function(event) {
+  if (event.detail.sectionId === '{{ section.id }}') {
+    initVideoVisibility();
+    initSlowMotionEffect();
+  }
+});
+})();
+</script>
+
 {% schema %}
 {
-  "name": "Featured product",
-  "tag": "section",
-  "class": "section",
+  "name": "Video banner",
   "settings": [
-    {
-      "type": "product",
-      "id": "product",
-      "label": "Product"
-    },
     {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Video Settings"
+    },
+    {
+      "type": "video",
+      "id": "uploaded_video",
+      "label": "Uploaded video",
+      "info": "Preferred source. If set, this is used before Video URL."
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Video URL",
+      "default": "https://youtu.be/_9VUPq3SxOc?list=TLGGn1R2QQNDf6owOTEwMjAyNQ",
+      "info": "Fallback source when no uploaded video is set. Supports YouTube, Vimeo, and direct video URLs (e.g., .mp4)."
+    },
+    {
+      "type": "text",
+      "id": "video_file",
+      "label": "OR Video File Name",
+      "default": "Ink.mp4",
+      "info": "Upload video to Files in Shopify admin, then enter filename here (e.g., video.mp4). Used only if Video URL is empty."
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "Autoplay Video",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_loop",
+      "label": "Loop Video",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_muted",
+      "label": "Mute Video",
+      "default": true,
+      "info": "Video must be muted for autoplay to work"
+    },
+    {
+      "type": "header",
+      "content": "Text Animation Settings"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text Position",
+      "options": [
+        {"value": "40%", "label": "Upper Center"},
+        {"value": "50%", "label": "Center"},
+        {"value": "60%", "label": "Lower Center"},
+        {"value": "70%", "label": "Bottom Third"}
+      ],
+      "default": "60%"
+    },
+    {
+      "type": "range",
+      "id": "animation_scale",
+      "label": "Maximum Scale",
+      "min": 1,
+      "max": 5,
+      "step": 0.5,
+      "default": 3,
+      "info": "How large text grows when scrolling away"
     }
   ],
   "blocks": [
     {
-      "type": "@app"
-    },
-    {
-      "type": "title",
-      "name": "Title",
-      "limit": 1
-    },
-    {
-      "type": "price",
-      "name": "Price",
-      "limit": 1
-    },
-    {
-      "type": "description",
-      "name": "Description",
-      "limit": 1
-    },
-    {
-      "type": "variant_picker",
-      "name": "Variant picker",
-      "limit": 1
-    },
-    {
-      "type": "quantity_selector",
-      "name": "Quantity selector",
-      "limit": 1
-    },
-    {
-      "type": "buy_buttons",
-      "name": "Buy buttons",
+      "type": "heading",
+      "name": "Heading",
       "limit": 1,
       "settings": [
         {
-          "type": "checkbox",
-          "id": "show_dynamic_checkout",
-          "label": "Show dynamic checkout buttons",
-          "default": true
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Unveil Your Essence"
         }
       ]
     },
     {
-      "type": "social_sharing",
-      "name": "Social sharing",
-      "limit": 1
-    },
-    {
-      "type": "custom_liquid",
-      "name": "Custom Liquid",
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
       "settings": [
         {
-          "type": "liquid",
-          "id": "custom_liquid",
-          "label": "Custom Liquid"
+          "type": "textarea",
+          "id": "info",
+          "label": "Description",
+          "default": "When you start with a portrait and search for a pure form, a clear volume, through successive eliminations, you arrive inevitably at the egg. Likewise, starting with the egg and following the same process in reverse, one finishes with the portrait."
+        }
+      ]
+    },
+    {
+      "type": "animated_text",
+      "name": "Animated Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "animation_text",
+          "label": "Animation Text",
+          "default": "scent that you can wear",
+          "info": "Words will be animated individually (separated by spaces)"
+        },
+        {
+          "type": "range",
+          "id": "animation_speed",
+          "label": "Animation Speed (ms)",
+          "min": 500,
+          "max": 3000,
+          "step": 100,
+          "default": 1200
+        },
+        {
+          "type": "range",
+          "id": "animation_blur",
+          "label": "Maximum Blur (px)",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "animation_scale",
+          "label": "Maximum Scale",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "default": 3
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Featured product",
+      "name": "Video banner",
+      "category": "Products",
       "blocks": [
-        { "type": "title" },
-        { "type": "price" },
-        { "type": "variant_picker" },
-        { "type": "quantity_selector" },
-        { "type": "buy_buttons" }
+        {
+          "type": "heading",
+          "settings": {
+            "title": "Unveil Your Essence"
+          }
+        },
+        {
+          "type": "description",
+          "settings": {
+            "info": "When you start with a portrait and search for a pure form, a clear volume, through successive eliminations, you arrive inevitably at the egg. Likewise, starting with the egg and following the same process in reverse, one finishes with the portrait."
+          }
+        },
+        {
+          "type": "animated_text",
+          "settings": {
+            "animation_text": "scent that you can wear",
+            "animation_speed": 1200,
+            "animation_blur": 10,
+            "animation_scale": 3
+          }
+        }
       ]
     }
   ]
 }
 {% endschema %}
+
+
+
+
