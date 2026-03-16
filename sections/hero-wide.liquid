@@ -22,6 +22,8 @@
         width="{{ section.settings.background_image.width }}"
         height="{{ section.settings.background_image.height }}"
       >
+    {%- else -%}
+      {{ 'hero-apparel-2' | placeholder_svg_tag: 'hero-wide__media-placeholder' }}
     {%- endif -%}
   </div>
 
@@ -126,6 +128,11 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .hero-wide__media svg {
+    width: 100%;
+    height: 100%;
   }
 
   .hero-wide__container {
@@ -372,8 +379,20 @@
       "blocks": [
         { "type": "button" },
         { "type": "button" },
-        { "type": "social" },
-        { "type": "social" }
+        {
+          "type": "social",
+          "settings": {
+            "label": "Instagram",
+            "icon": "instagram"
+          }
+        },
+        {
+          "type": "social",
+          "settings": {
+            "label": "TikTok",
+            "icon": "tiktok"
+          }
+        }
       ]
     }
   ]
