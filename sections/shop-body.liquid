@@ -1,59 +1,115 @@
 <section class="section product color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="product" aria-label="product">
-    <div class="container">
+  <div class="container">
 
       <div class="title-wrapper" style="text-align: center; margin-bottom: 40px;">
         <h1 class="h2 section-title" style="font-size: 3rem;">{{ 'templates.list_collections.title' | t | default: 'Collections' }}</h1>
       </div>
 
-      {% paginate collections by 12 %}
-      <ul class="grid-list collection-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
-        {% for collection in collections %}
-          <li class="decoration" style="list-style: none;">
-            <div class="collection-card" style="text-align: center;">
-              <a href="{{ collection.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300; border-radius: 8px; overflow: hidden; display: block; position: relative;">
-                {% if collection.image %}
-                  <img src="{{ collection.image | image_url: width: 600 }}" 
-                    srcset="{{ collection.image | image_url: width: 300 }} 300w,
-                            {{ collection.image | image_url: width: 600 }} 600w"
-                    sizes="(max-width: 480px) 100vw, 300px"
-                    alt="{{ collection.title | escape }}"
-                    class="img-cover"
-                    width="300"
-                    height="300"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    loading="lazy">
-                {% elsif collection.products.first and collection.products.first.featured_image %}
-                  <img src="{{ collection.products.first.featured_image | image_url: width: 600 }}" 
-                    srcset="{{ collection.products.first.featured_image | image_url: width: 300 }} 300w,
-                            {{ collection.products.first.featured_image | image_url: width: 600 }} 600w"
-                    sizes="(max-width: 480px) 100vw, 300px"
-                    alt="{{ collection.title | escape }}"
-                    class="img-cover"
-                    width="300"
-                    height="300"
-                    style="width: 100%; height: 100%; object-fit: cover;"
-                    loading="lazy">
-                {% else %}
-                  {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                {% endif %}
-              </a>
-              <div class="card-content" style="padding-top: 15px;">
-                <h3 class="h3" style="font-size: 1.5rem; margin-bottom: 5px;">
-                  <a href="{{ collection.url }}" class="card-title" style="color: inherit; text-decoration: none;">{{ collection.title }}</a>
-                </h3>
-                <p style="color: var(--granite-gray, #666);">{{ collection.all_products_count }} {{ 'sections.collection_list.products' | t | default: 'products' }}</p>
+      {% assign has_custom_collections = false %}
+      {% for block in section.blocks %}
+        {% if block.settings.specific_collection != blank %}
+          {% assign has_custom_collections = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+
+      {% if has_custom_collections %}
+        <ul class="grid-list collection-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
+          {% for block in section.blocks %}
+            {% assign collection = block.settings.specific_collection %}
+            {% if collection != blank %}
+              <li class="decoration" style="list-style: none;" {{ block.shopify_attributes }}>
+                <div class="collection-card" style="text-align: center;">
+                  <a href="{{ collection.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300; border-radius: 8px; overflow: hidden; display: block; position: relative;">
+                    {% if collection.image %}
+                      <img src="{{ collection.image | image_url: width: 600 }}"
+                        srcset="{{ collection.image | image_url: width: 300 }} 300w,
+                                {{ collection.image | image_url: width: 600 }} 600w"
+                        sizes="(max-width: 480px) 100vw, 300px"
+                        alt="{{ collection.title | escape }}"
+                        class="img-cover"
+                        width="300"
+                        height="300"
+                        style="width: 100%; height: 100%; object-fit: cover;"
+                        loading="lazy">
+                    {% elsif collection.products.first and collection.products.first.featured_image %}
+                      <img src="{{ collection.products.first.featured_image | image_url: width: 600 }}"
+                        srcset="{{ collection.products.first.featured_image | image_url: width: 300 }} 300w,
+                                {{ collection.products.first.featured_image | image_url: width: 600 }} 600w"
+                        sizes="(max-width: 480px) 100vw, 300px"
+                        alt="{{ collection.title | escape }}"
+                        class="img-cover"
+                        width="300"
+                        height="300"
+                        style="width: 100%; height: 100%; object-fit: cover;"
+                        loading="lazy">
+                    {% else %}
+                      {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                  </a>
+                  <div class="card-content" style="padding-top: 15px;">
+                    <h3 class="h3" style="font-size: 1.5rem; margin-bottom: 5px;">
+                      <a href="{{ collection.url }}" class="card-title" style="color: inherit; text-decoration: none;">{{ collection.title }}</a>
+                    </h3>
+                    <p style="color: var(--granite-gray, #666);">{{ collection.all_products_count }} {{ 'sections.collection_list.products' | t | default: 'products' }}</p>
+                  </div>
+                </div>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% else %}
+        {% paginate collections by 12 %}
+        <ul class="grid-list collection-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
+          {% for collection in collections %}
+            <li class="decoration" style="list-style: none;">
+              <div class="collection-card" style="text-align: center;">
+                <a href="{{ collection.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300; border-radius: 8px; overflow: hidden; display: block; position: relative;">
+                  {% if collection.image %}
+                    <img src="{{ collection.image | image_url: width: 600 }}"
+                      srcset="{{ collection.image | image_url: width: 300 }} 300w,
+                              {{ collection.image | image_url: width: 600 }} 600w"
+                      sizes="(max-width: 480px) 100vw, 300px"
+                      alt="{{ collection.title | escape }}"
+                      class="img-cover"
+                      width="300"
+                      height="300"
+                      style="width: 100%; height: 100%; object-fit: cover;"
+                      loading="lazy">
+                  {% elsif collection.products.first and collection.products.first.featured_image %}
+                    <img src="{{ collection.products.first.featured_image | image_url: width: 600 }}"
+                      srcset="{{ collection.products.first.featured_image | image_url: width: 300 }} 300w,
+                              {{ collection.products.first.featured_image | image_url: width: 600 }} 600w"
+                      sizes="(max-width: 480px) 100vw, 300px"
+                      alt="{{ collection.title | escape }}"
+                      class="img-cover"
+                      width="300"
+                      height="300"
+                      style="width: 100%; height: 100%; object-fit: cover;"
+                      loading="lazy">
+                  {% else %}
+                    {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </a>
+                <div class="card-content" style="padding-top: 15px;">
+                  <h3 class="h3" style="font-size: 1.5rem; margin-bottom: 5px;">
+                    <a href="{{ collection.url }}" class="card-title" style="color: inherit; text-decoration: none;">{{ collection.title }}</a>
+                  </h3>
+                  <p style="color: var(--granite-gray, #666);">{{ collection.all_products_count }} {{ 'sections.collection_list.products' | t | default: 'products' }}</p>
+                </div>
               </div>
-            </div>
-          </li>
-        {% endfor %}
-      </ul>
-      
-      {% if paginate.pages > 1 %}
-        <div style="margin-top: 40px; display: flex; justify-content: center;">
-          {% render 'pagination', paginate: paginate %}
-        </div>
+            </li>
+          {% endfor %}
+        </ul>
+        
+        {% if paginate.pages > 1 %}
+          <div style="margin-top: 40px; display: flex; justify-content: center;">
+            {% render 'pagination', paginate: paginate %}
+          </div>
+        {% endif %}
+        {% endpaginate %}
       {% endif %}
-      {% endpaginate %}
+    </div>
   </section>
    
 
@@ -81,7 +137,18 @@
     ],
     "presets": [
         {
-        "name": "Shop body"
+        "name": "Shop body",
+        "blocks": [
+          {
+            "type": "collection_section"
+          },
+          {
+            "type": "collection_section"
+          },
+          {
+            "type": "collection_section"
+          }
+        ]
         }
     ]
     }

@@ -20,12 +20,12 @@
       {% if section.blocks.size == 0 %}
         <li class="slider-item active" data-hero-slider-item style="padding-block-start: 70px;">
     
-            <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'product-1' | placeholder_svg_tag: 'img-cover' }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
-           
+            <div class="slider-bg hero1-card has-bg-image">
+              {{ 'product-1' | placeholder_svg_tag: 'hero1-placeholder' }}
             </div>
       
             <div class="card-content">
-            <h1 class="h1 hero1-title slider-reveal">
+            <h1 class="h1 hero-title slider-reveal">
               Product
             </h1>
             <p class="price slider-reveal"> Starting at $17.99</p>
@@ -37,12 +37,12 @@
         </li>
         <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
     
-          <div class="slider-bg hero1-card has-bg-image" style="background-image:  linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'product-2' | placeholder_svg_tag: 'img-cover' }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
-            {% comment %} <img src="{{ 'shoe8.jpg' | asset_url }}" width="1880" height="950" alt="" class="img-cover hero-card has-bg-image"> {% endcomment %}
+          <div class="slider-bg hero1-card has-bg-image">
+            {{ 'product-2' | placeholder_svg_tag: 'hero1-placeholder' }}
           </div>
     
           <div class="card-content">
-            <h1 class="h1 hero1-title slider-reveal">
+            <h1 class="h1 hero-title slider-reveal">
               Product 
               </h1>
               <p class="price slider-reveal"> Starting at $17.99</p>
@@ -53,12 +53,12 @@
         </li>
         <li class="slider-item " data-hero-slider-item style="padding-block-start:70px;">
     
-          <div class="slider-bg hero1-card has-bg-image" style="background-image:  linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'product-3' | placeholder_svg_tag: 'img-cover' }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
-            {% comment %} <img src="{{ 'shoe8.jpg' | asset_url }}" width="1880" height="950" alt="" class="img-cover hero-card has-bg-image"> {% endcomment %}
+          <div class="slider-bg hero1-card has-bg-image">
+            {{ 'product-3' | placeholder_svg_tag: 'hero1-placeholder' }}
           </div>
     
           <div class="card-content">
-            <h1 class="h1 hero1-title slider-reveal">
+            <h1 class="h1 hero-title slider-reveal">
               Product
             </h1>
             <p class="price slider-reveal"> Starting at $17.99</p>
@@ -71,12 +71,12 @@
         
         <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
     
-          <div class="slider-bg hero1-card has-bg-image" style="background-image:  linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'product-4' | placeholder_svg_tag: 'img-cover' }}'); background-position: center;">
-            {% comment %} <img src="{{ 'shoe8.jpg' | asset_url }}" width="1880" height="950" alt="" class="img-cover hero-card has-bg-image"> {% endcomment %}
+          <div class="slider-bg hero1-card has-bg-image">
+            {{ 'product-4' | placeholder_svg_tag: 'hero1-placeholder' }}
           </div>
     
           <div class="card-content">
-            <h1 class="h1 hero1-title slider-reveal">
+            <h1 class="h1 hero-title slider-reveal">
               Product
               </h1>
               <p class="price slider-reveal"> Starting at $17.99</p>
@@ -86,12 +86,12 @@
             </div>
         </li>
         <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
-          <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ 'product-5' | placeholder_svg_tag: 'img-cover' }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
-            {% comment %} <img src="{{ 'shoe8.jpg' | asset_url }}" width="1880" height="950" alt="" class="img-cover hero-card has-bg-image"> {% endcomment %}
+          <div class="slider-bg hero1-card has-bg-image">
+            {{ 'product-5' | placeholder_svg_tag: 'hero1-placeholder' }}
           </div>
     
           <div class="card-content">
-            <h1 class="h1 hero1-title slider-reveal">
+            <h1 class="h1 hero-title slider-reveal">
               Product
               </h1>
               <p class="price slider-reveal"> Starting at $17.99</p>
@@ -102,12 +102,12 @@
         </li>
         <li class="slider-item" data-hero-slider-item  style="padding-block-start:70px;">
     
-          <div class="slider-bg hero1-card has-bg-image" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url('{{ 'product-6' | placeholder_svg_tag: 'img-cover' }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; background-position: center;">
-            {% comment %} <img src="{{ 'shoe8.jpg' | asset_url }}" width="1880" height="950" alt="" class="img-cover hero-card has-bg-image"> {% endcomment %}
+          <div class="slider-bg hero1-card has-bg-image">
+            {{ 'product-6' | placeholder_svg_tag: 'hero1-placeholder' }}
           </div>
     
           <div class="card-content">
-            <h1 class="h1 hero1-title slider-reveal">
+            <h1 class="h1 hero-title slider-reveal">
               Valentino
               </h1>
               <p class="price slider-reveal"> Starting at $17.99</p>
@@ -118,10 +118,26 @@
         </li>
       {% else %}
       {% for block in section.blocks %}
-          <li class="slider-item active" data-hero-slider-item style="padding-block-start: 70px;">
+          <li class="slider-item{% if forloop.first %} active{% endif %}" data-hero-slider-item style="padding-block-start: 70px;">
 
-            <div class="slider-bg hero-card has-bg-image" 
-                style="background-image: url('{{ block.settings.hero_image | image_url }}'); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; background-position: center;">
+            <div class="slider-bg hero1-card has-bg-image">
+              {% if block.settings.hero_image != blank %}
+                {% liquid
+                  assign loading = 'lazy'
+                  assign fetchpriority = 'auto'
+                  if forloop.first
+                    assign loading = 'eager'
+                    assign fetchpriority = 'high'
+                  endif
+                %}
+                {{
+                  block.settings.hero_image
+                  | image_url: width: 2400
+                  | image_tag: sizes: '100vw', widths: '720, 1024, 1366, 1600, 2000, 2400', loading: loading, fetchpriority: fetchpriority, class: 'hero1-bg-img'
+                }}
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'hero1-placeholder' }}
+              {% endif %}
             </div>
           
             <div class="card-content">
@@ -210,9 +226,32 @@
    width: 100%; 
   height: 100%;
   transform: scale(1.15);
+  overflow: hidden;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   pointer-events: none;
   user-select: none;
   z-index: -1;
+}
+
+.hero1 .slider-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5));
+  z-index: 1;
+}
+
+.hero1 .slider-bg .hero1-bg-img,
+.hero1 .slider-bg .hero1-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 0;
 }
 
 .hero1 .slider-item.active .slider-bg {
@@ -308,7 +347,7 @@ color:white;
   
  }
 
- @media screen and(max-width: 992px){
+ @media screen and (max-width: 992px){
  
 }
  @media (min-width: 1200px) {
@@ -340,6 +379,10 @@ color:white;
   const heroSliderPrevBtn = document.querySelector("[data-prev-btn]")
   const heroSliderNextBtn = document.querySelector("[data-next-btn]")
   
+  if (!heroSlider || heroSliderItems.length === 0 || !heroSliderPrevBtn || !heroSliderNextBtn) {
+    return
+  }
+
   let currentSlidePos = 0;
   let lastActiveSliderItem = heroSliderItems[0];
   
@@ -355,7 +398,6 @@ color:white;
     } else {
       currentSlidePos++
     }
-   console.log("new")
     updateSliderPos()
   }
   
@@ -454,7 +496,36 @@ color:white;
   ],
   "presets": [
     {
-      "name": "Shop"
+      "name": "Shop",
+      "blocks": [
+        {
+          "type": "hero_section",
+          "settings": {
+            "brand_name": "Signature Scents",
+            "starting_price": "$17.99",
+            "shop_now_link": "/collections/all",
+            "shop_now_text": "Shop Now"
+          }
+        },
+        {
+          "type": "hero_section",
+          "settings": {
+            "brand_name": "Fresh Arrivals",
+            "starting_price": "$21.99",
+            "shop_now_link": "/collections/all",
+            "shop_now_text": "Shop Now"
+          }
+        },
+        {
+          "type": "hero_section",
+          "settings": {
+            "brand_name": "Best Sellers",
+            "starting_price": "$19.99",
+            "shop_now_link": "/collections/all",
+            "shop_now_text": "Shop Now"
+          }
+        }
+      ]
     }
   ]
 }
