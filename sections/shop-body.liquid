@@ -1,8 +1,9 @@
-<section class="section product color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="product" aria-label="product">
+<section class="section product shop-body color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="product" aria-label="product">
+
   <div class="container">
 
-      <div class="title-wrapper" style="text-align: center; margin-bottom: 40px;">
-        <h1 class="h2 section-title" style="font-size: 3rem;">{{ 'templates.list_collections.title' | t | default: 'Collections' }}</h1>
+      <div class="title-wrapper">
+        <h1 class="h2 section-title">{{ 'templates.list_collections.title' | t | default: 'Collections' }}</h1>
       </div>
 
       {% assign has_custom_collections = false %}
@@ -47,9 +48,9 @@
                       {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
                     {% endif %}
                   </a>
-                  <div class="card-content" style="padding-top: 15px;">
-                    <h3 class="h3" style="font-size: 1.5rem; margin-bottom: 5px;">
-                      <a href="{{ collection.url }}" class="card-title" style="color: inherit; text-decoration: none;">{{ collection.title }}</a>
+                  <div class="card-content">
+                    <h3 class="h3">
+                      <a href="{{ collection.url }}" class="card-title">{{ collection.title }}</a>
                     </h3>
                     <p style="color: var(--granite-gray, #666);">{{ collection.all_products_count }} {{ 'sections.collection_list.products' | t | default: 'products' }}</p>
                   </div>
@@ -91,9 +92,9 @@
                     {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
                   {% endif %}
                 </a>
-                <div class="card-content" style="padding-top: 15px;">
-                  <h3 class="h3" style="font-size: 1.5rem; margin-bottom: 5px;">
-                    <a href="{{ collection.url }}" class="card-title" style="color: inherit; text-decoration: none;">{{ collection.title }}</a>
+                <div class="card-content">
+                  <h3 class="h3">
+                    <a href="{{ collection.url }}" class="card-title">{{ collection.title }}</a>
                   </h3>
                   <p style="color: var(--granite-gray, #666);">{{ collection.all_products_count }} {{ 'sections.collection_list.products' | t | default: 'products' }}</p>
                 </div>
@@ -111,6 +112,32 @@
       {% endif %}
     </div>
   </section>
+
+<style>
+  .shop-body .title-wrapper {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .shop-body .section-title {
+    font-size: 3rem;
+  }
+
+  .shop-body .card-content {
+    padding-top: 15px;
+  }
+
+  .shop-body .card-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    font-family: var(--ff-roboto);
+  }
+
+  .shop-body .card-title {
+    color: inherit;
+    text-decoration: none;
+  }
+</style>
    
 
   

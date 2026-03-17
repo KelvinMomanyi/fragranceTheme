@@ -6,24 +6,9 @@
 
     <div class="title-wrapper">
       <h2 class="h2 section-title">{{ section.settings.title | default: 'Popular Products' }}</h2>
-
-      <ul class="filter-btn-list">
-        <li class="filter-btn-item">
-          <button class="filter-btn" data-filter-btn="accessory">Men's</button>
-        </li>
-
-        <li class="filter-btn-item">
-          <button class="filter-btn" data-filter-btn="decoration">Women's</button>
-        </li>
-
-        <li class="filter-btn-item">
-          <button class="filter-btn" data-filter-btn="furniture">Unisex</button>
-        </li>
-
-      </ul>
     </div>
 
-    <ul class="product-slider" data-filter="all">
+    <ul class="product-slider">
           {% assign featured_collection = section.settings.collection %}
           {% if featured_collection == blank or featured_collection.products_count == 0 %}
             {% assign featured_collection = collections['all'] %}
@@ -245,7 +230,3 @@
   ]
 }
 {% endschema %}
-
-
-
-
