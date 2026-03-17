@@ -1,17 +1,19 @@
-<!-- Preload static hero images -->
-{% comment %} <link rel="preload" as="image" href="{{ 'ShoesNike6.jpg' | asset_url }}">
-<link rel="preload" as="image" href="{{ 'ShoesAsics3.jpg' | asset_url }}">
-<link rel="preload" as="image" href="{{ 'ShoesAdd2.jpg' | asset_url }}">
-<link rel="preload" as="image" href="{{ 'shoes32.png' | asset_url }}">
-<link rel="preload" as="image" href="{{ 'ShoesPuma2.jpg' | asset_url }}">
-<link rel="preload" as="image" href="{{ 'ShoesConverse2.jpg' | asset_url }}"> {% endcomment %}
+{% unless request.visual_preview_mode %}
+  <!-- Preload static hero images -->
+  {% comment %} <link rel="preload" as="image" href="{{ 'ShoesNike6.jpg' | asset_url }}">
+  <link rel="preload" as="image" href="{{ 'ShoesAsics3.jpg' | asset_url }}">
+  <link rel="preload" as="image" href="{{ 'ShoesAdd2.jpg' | asset_url }}">
+  <link rel="preload" as="image" href="{{ 'shoes32.png' | asset_url }}">
+  <link rel="preload" as="image" href="{{ 'ShoesPuma2.jpg' | asset_url }}">
+  <link rel="preload" as="image" href="{{ 'ShoesConverse2.jpg' | asset_url }}"> {% endcomment %}
 
-<!-- Preload images dynamically if section blocks are used -->
-{% for block in section.blocks %}
-  {% if block.settings.hero_image %}
-    <link rel="preload" as="image" href="{{ block.settings.hero_image | image_url }}">
-  {% endif %}
-{% endfor %}
+  <!-- Preload images dynamically if section blocks are used -->
+  {% for block in section.blocks %}
+    {% if block.settings.hero_image %}
+      <link rel="preload" as="image" href="{{ block.settings.hero_image | image_url }}">
+    {% endif %}
+  {% endfor %}
+{% endunless %}
 
 
 <section class="section hero1 text-center color-scheme-{{ section.settings.color_scheme }}" style="min-height: 50vh; {% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" aria-label="home" id="home">
@@ -118,7 +120,7 @@
         </li>
       {% else %}
       {% for block in section.blocks %}
-          <li class="slider-item{% if forloop.first %} active{% endif %}" data-hero-slider-item style="padding-block-start: 70px;">
+          <li class="slider-item{% if forloop.first %} active{% endif %}" data-hero-slider-item style="padding-block-start: 70px;" {{ block.shopify_attributes }}>
 
             <div class="slider-bg hero1-card has-bg-image">
               {% if block.settings.hero_image != blank %}
@@ -366,6 +368,7 @@
 }
 </style> 
 
+{% unless request.visual_preview_mode %}
 <script>
 (function() {
   const addEventOnElements = function(elements, eventType, callback){
@@ -455,6 +458,7 @@
   })
 })();
 </script>
+{% endunless %}
 
   {% schema %}
 {
@@ -509,7 +513,6 @@
     {
       "name": "Hero Carousel",
       "category": "Banners",
-      "image": "hero-carousel-preview.png",
       "blocks": [
         {
           "type": "hero_section",
