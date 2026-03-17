@@ -3,7 +3,7 @@
   <div class="container">
 
       <div class="title-wrapper">
-        <h1 class="h2 section-title">{{ 'templates.list_collections.title' | t | default: 'Collections' }}</h1>
+        <h1 class="h2 section-title">{{ 'sections.shop_body.title' | t | default: 'Collections' }}</h1>
       </div>
 
       {% assign has_custom_collections = false %}
@@ -52,7 +52,7 @@
                     <h3 class="h3">
                       <a href="{{ collection.url }}" class="card-title">{{ collection.title }}</a>
                     </h3>
-                    <p style="color: var(--granite-gray, #666);">{{ collection.all_products_count }} {{ 'sections.collection_list.products' | t | default: 'products' }}</p>
+                    <p style="color: var(--granite-gray, #666);">{{ 'sections.shop_body.product_count' | t: count: collection.all_products_count }}</p>
                   </div>
                 </div>
               </li>
@@ -96,7 +96,7 @@
                   <h3 class="h3">
                     <a href="{{ collection.url }}" class="card-title">{{ collection.title }}</a>
                   </h3>
-                  <p style="color: var(--granite-gray, #666);">{{ collection.all_products_count }} {{ 'sections.collection_list.products' | t | default: 'products' }}</p>
+                  <p style="color: var(--granite-gray, #666);">{{ 'sections.shop_body.product_count' | t: count: collection.all_products_count }}</p>
                 </div>
               </div>
             </li>

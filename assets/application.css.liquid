@@ -708,17 +708,19 @@ h6,
   color: var(--tan-crayola);
 }
 
-.header-action-btn .btn-badge {
-  background-color: #D62828;
-  /* Strong red for visibility */
-  color: #ffffff;
-  font-size: var(--fs-6);
-  font-weight: var(--fw-500);
+.header-action-btn--cart .btn-badge {
   position: absolute;
-  bottom: -10px;
-  right: -10px;
-  padding-inline: 6px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  background: transparent;
+  color: currentColor;
+  font-size: 1.1rem;
+  font-weight: var(--fw-600);
+  line-height: 1;
+  padding: 0;
   border-radius: 0;
+  pointer-events: none;
 }
 
 

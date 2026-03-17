@@ -457,6 +457,13 @@
     },
     "aside": {
       "name": "Aside"
+    },
+    "shop_body": {
+      "title": "Collections",
+      "product_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      }
     }
   },
   "names": {

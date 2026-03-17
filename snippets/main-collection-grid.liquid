@@ -1,0 +1,155 @@
+{% comment %}
+  Renders the main collection grid
+  Accepts:
+  - current_collection: {Object} The collection object to render
+  - section: {Object} The section object
+  - paginate: {Object} The paginate object
+{% endcomment %}
+
+<div class="{% if section.settings.filter_type == 'vertical' %}facets-vertical{% endif %}">
+  {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+    <aside
+      aria-labelledby="verticalTitle"
+      class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}"
+      id="main-collection-filters"
+      data-id="{{ section.id }}"
+    >
+      {% render 'facets',
+        results: current_collection,
+        enable_filtering: section.settings.enable_filtering,
+        enable_sorting: section.settings.enable_sorting,
+        filter_type: section.settings.filter_type,
+        paginate: paginate,
+        section_id: section.id
+      %}
+    </aside>
+  {%- endif -%}
+
+  <div class="product-grid-container" id="ProductGridContainer">
+    {%- if current_collection.products.size == 0 -%}
+      <div class="collection collection--empty" id="product-grid" data-id="{{ section.id }}">
+        <div class="loading-overlay gradient"></div>
+        <div class="title-wrapper center">
+          <h2 class="title title--primary">
+            {{ 'sections.collection_template.empty' | t -}}
+            <br>
+            {{
+              'sections.collection_template.use_fewer_filters_html'
+              | t: link: current_collection.url, class: 'underlined-link link'
+            }}
+          </h2>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="collection">
+        <div class="loading-overlay gradient"></div>
+        
+        <!-- Strategic product count location (shows once) -->
+        <div class="product-count strategic-product-count" role="status">
+          <h2 class="product-count__text text-body">
+            <span>
+              {%- if current_collection.results_count -%}
+                {{
+                  'templates.search.results_with_count'
+                  | t: terms: current_collection.terms, count: current_collection.results_count
+                }}
+              {%- elsif current_collection.products_count == current_collection.all_products_count -%}
+                {{ 'products.facets.product_count_simple' | t: count: current_collection.products_count }}
+              {%- else -%}
+                {{
+                  'products.facets.product_count'
+                  | t: product_count: current_collection.products_count, count: current_collection.all_products_count
+                }}
+              {%- endif -%}
+            </span>
+          </h2>
+        </div>
+
+        <ul
+          id="product-grid"
+          data-id="{{ section.id }}"
+          class="collection-grid"
+          style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; list-style: none; padding: 0;"
+        >
+          {%- for product in current_collection.products -%}
+            <li class="grid__item decoration">
+               <div class="product-card">
+                <a
+                  href="{{ product.url }}"
+                  class="card-banner img-holder has-before"
+                  style="--width: 300; --height: 300;"
+                >
+                  {% if product.featured_image %}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 600 }}"
+                      srcset="{{ product.featured_image | image_url: width: 300 }} 300w,
+                              {{ product.featured_image | image_url: width: 450 }} 450w,
+                              {{ product.featured_image | image_url: width: 600 }} 600w"
+                      sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
+                      alt="{{ product.featured_image.alt | escape }}"
+                      class="img-cover"
+                      width="300"
+                      height="300"
+                      loading="lazy"
+                    >
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
+                  {% endif %}
+                  <ul class="card-action-list">
+                    <li>
+                      <button class="card-action-btn" aria-label="add to cart" title="add to cart">
+                        {% render 'icon-velour', icon: 'add' %}
+                      </button>
+                    </li>
+                    <li>
+                       <form action="/cart/add" method="post" enctype="multipart/form-data" class="add-to-cart-form">
+                          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                          <button type="submit" class="card-action-btn" aria-label="add to cart">
+                            {% render 'icon-velour', icon: 'bag-handle' %}
+                          </button>
+                        </form>
+                    </li>
+                  </ul>
+                  {% if product.compare_at_price > product.price %}
+                    <ul class="badge-list">
+                      <li>
+                        <div class="badge orange">Sale</div>
+                      </li>
+                      <li>
+                        <div class="badge cyan">{%- assign savings = product.compare_at_price | minus: product.price -%}{%- assign savings_percent = savings | times: 100 | divided_by: product.compare_at_price -%}{{ savings_percent }}%</div>
+                      </li>
+                    </ul>
+                  {% endif %}
+                </a>
+                <div class="card-content">
+                  <h3 class="h3">
+                    <a href="{{ product.url }}" class="card-title">{{ product.title }}</a>
+                  </h3>
+                  <div class="card-price">
+                    {% if product.compare_at_price > product.price %}
+                      <del class="del">{{ product.compare_at_price | money }}</del>
+                    {% endif %}
+                    {% if product.price_varies %}
+                      <span class="price-from">From </span>
+                    {% endif %}
+                    <data class="price" value="{{ product.price }}">{{ product.price | money }}</data>
+                  </div>
+                   {% assign first_variant = product.selected_or_first_available_variant %}
+                     {% if first_variant.unit_price_measurement %}
+                        <div class="unit-price">
+                          {{ first_variant.unit_price | money }}/{{ first_variant.unit_price_measurement.reference_value }}{{ first_variant.unit_price_measurement.reference_unit }}
+                        </div>
+                     {% endif %}
+                </div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- if paginate.pages > 1 -%}
+           {% render 'pagination', paginate: paginate, anchor: '' %}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>

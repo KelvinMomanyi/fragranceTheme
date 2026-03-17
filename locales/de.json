@@ -22,6 +22,13 @@
     },
     "aside": {
       "name": "Beiseite"
+    },
+    "shop_body": {
+      "title": "Kollektionen",
+      "product_count": {
+        "one": "{{ count }} Produkt",
+        "other": "{{ count }} Produkte"
+      }
     }
   }
 }
