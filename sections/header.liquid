@@ -58,7 +58,8 @@
         {% endif %}
         <button class="header-action-btn header-action-btn--cart" aria-label="Cart" onclick="openCart()">
           {% render 'icon-velour', icon: 'bag-handle' %}
-          <span class="btn-badge">0</span>
+          {% assign cart_count = cart.item_count | default: 0 %}
+          <span class="btn-badge{% if cart_count == 0 %} is-hidden{% endif %}" data-cart-count aria-hidden="{% if cart_count == 0 %}true{% else %}false{% endif %}">{{ cart_count }}</span>
         </button>
 
       </div>
@@ -358,7 +359,12 @@
       fetch('/cart.js')
         .then(response => response.json())
         .then(cart => {
-          document.querySelectorAll('.btn-badge').forEach(el => el.textContent = cart.item_count);
+          var itemCount = Number(cart.item_count) || 0;
+          document.querySelectorAll('.btn-badge').forEach(function(el) {
+            el.textContent = itemCount;
+            el.classList.toggle('is-hidden', itemCount === 0);
+            el.setAttribute('aria-hidden', itemCount === 0 ? 'true' : 'false');
+          });
         })
         .catch(error => console.error('Error fetching cart data:', error));
     };
