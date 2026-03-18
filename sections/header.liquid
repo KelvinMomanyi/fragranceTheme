@@ -369,8 +369,15 @@
         .catch(error => console.error('Error fetching cart data:', error));
     };
 
-    document.addEventListener('DOMContentLoaded', updateCartCount);
-    document.addEventListener('cart:updated', updateCartCount);
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.updateCartCount) window.updateCartCount();
+    });
+    document.addEventListener('cart:updated', function() {
+      if (window.updateCartCount) window.updateCartCount();
+    });
+    if (document.readyState !== 'loading') {
+      window.updateCartCount();
+    }
 
     /* Cart Modal Actions - uses the existing myModal2 */
     window.openCart = function() {
