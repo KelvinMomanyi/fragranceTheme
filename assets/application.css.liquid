@@ -710,17 +710,25 @@ h6,
 
 .header-action-btn--cart .btn-badge {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -55%);
-  background: transparent;
-  color: currentColor;
-  font-size: 1.1rem;
-  font-weight: var(--fw-600);
+  top: -4px;
+  right: -6px;
+  min-width: 1.8rem;
+  height: 1.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 0.4rem;
+  border-radius: 999px;
+  background-color: var(--color-text);
+  color: var(--color-background);
+  border: 2px solid var(--color-background);
+  box-shadow: 0 3px 10px rgb(0 0 0 / 18%);
+  font-size: 1rem;
+  font-weight: var(--fw-700);
+  font-variant-numeric: tabular-nums;
   line-height: 1;
-  padding: 0;
-  border-radius: 0;
   pointer-events: none;
+  z-index: 1;
 }
 
 
