@@ -8,7 +8,7 @@
       <h2 class="h2 section-title">{{ section.settings.title | default: 'Popular Products' }}</h2>
     </div>
 
-    <ul class="product-slider">
+    <ul class="product-slider" data-filter="all">
           {% assign featured_collection = section.settings.collection %}
           {% if featured_collection == blank or featured_collection.products_count == 0 %}
             {% assign featured_collection = collections['all'] %}
