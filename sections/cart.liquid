@@ -13,7 +13,7 @@
       </thead>
       <tbody>
         {% for item in cart.items %}
-          <tr class="cart-item">
+          <tr class="cart-item" data-line="{{ forloop.index }}">
             <td class="cart-item__image">
               <a href="{{ item.url | within: collections.all }}">
                 <img src="{{ item | image_url: width: 240 }}" alt="{{ item.title | escape }}" loading="lazy">
@@ -75,7 +75,7 @@
               {% if item.original_price > item.final_price %}
                 <del class="cart-item__original-price">{{ item.original_price | money }}</del>
               {% endif %}
-              {{ item.final_price | money }}
+              <span class="cart-item__final-price">{{ item.final_price | money }}</span>
               
               {%- comment -%} Show line-level discounts {%- endcomment -%}
               {% if item.line_level_discount_allocations.size > 0 %}
@@ -95,7 +95,7 @@
               {% if item.original_line_price != item.final_line_price %}
                 <del class="cart-item__original-total">{{ item.original_line_price | money }}</del>
               {% endif %}
-              <strong>{{ item.final_line_price | money }}</strong>
+              <strong class="cart-item__final-total">{{ item.final_line_price | money }}</strong>
             </td>
           </tr>
         {% endfor %}
@@ -129,7 +129,7 @@
       <div class="cart-totals">
         <div class="cart-subtotal">
           <span>Subtotal:</span>
-          <strong>{{ cart.total_price | money }}</strong>
+          <strong class="cart-subtotal__value">{{ cart.total_price | money }}</strong>
         </div>
         
         {%- comment -%} Tax-inclusive pricing message (Required) {%- endcomment -%}
@@ -461,6 +461,175 @@
 
 <script>
   (function () {
+    var moneyFormat = {{ shop.money_format | json }};
+
+    function formatMoney(cents) {
+      var value = Number(cents) || 0;
+      if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
+        return window.Shopify.formatMoney(value, moneyFormat);
+      }
+      return (value / 100).toFixed(2);
+    }
+
+    function updateHeaderCartCount(itemCount) {
+      var safeCount = Number(itemCount) || 0;
+      document.querySelectorAll('[data-cart-count]').forEach(function (el) {
+        el.textContent = safeCount;
+        el.classList.toggle('is-hidden', safeCount === 0);
+        el.setAttribute('aria-hidden', safeCount === 0 ? 'true' : 'false');
+      });
+    }
+
+    function updateCartTotals(cart) {
+      var subtotalValue = document.querySelector('.cart-subtotal__value');
+      if (subtotalValue) {
+        subtotalValue.innerHTML = formatMoney(cart.total_price);
+      }
+
+      var savingsAmount = document.querySelector('.savings-amount');
+      if (savingsAmount) {
+        var savingsValue = Number(cart.total_discount) || 0;
+        savingsAmount.innerHTML = formatMoney(savingsValue);
+        var savingsRow = savingsAmount.closest('.cart-savings');
+        if (savingsRow) {
+          savingsRow.style.display = savingsValue > 0 ? 'flex' : 'none';
+        }
+      }
+    }
+
+    function syncCartRows(cart) {
+      var rows = document.querySelectorAll('.cart-item');
+      rows.forEach(function (row, idx) {
+        var item = cart.items[idx];
+        if (!item) {
+          row.remove();
+          return;
+        }
+
+        row.dataset.line = String(idx + 1);
+
+        var qtyInput = row.querySelector('.cart-item__quantity input[name="updates[]"]');
+        if (qtyInput) qtyInput.value = item.quantity;
+
+        var finalPrice = row.querySelector('.cart-item__final-price');
+        if (finalPrice) finalPrice.innerHTML = formatMoney(item.final_price);
+
+        var originalPrice = row.querySelector('.cart-item__original-price');
+        if (originalPrice) {
+          if (item.original_price > item.final_price) {
+            originalPrice.style.display = '';
+            originalPrice.innerHTML = formatMoney(item.original_price);
+          } else {
+            originalPrice.style.display = 'none';
+          }
+        }
+
+        var finalTotal = row.querySelector('.cart-item__final-total');
+        if (finalTotal) finalTotal.innerHTML = formatMoney(item.final_line_price);
+
+        var originalTotal = row.querySelector('.cart-item__original-total');
+        if (originalTotal) {
+          if (item.original_line_price > item.final_line_price) {
+            originalTotal.style.display = '';
+            originalTotal.innerHTML = formatMoney(item.original_line_price);
+          } else {
+            originalTotal.style.display = 'none';
+          }
+        }
+      });
+    }
+
+    function initCartQuantityUpdates() {
+      var cartForm = document.querySelector('.cart-container form');
+      if (!cartForm) return;
+      if (cartForm.dataset.liveCartBound === 'true') return;
+      cartForm.dataset.liveCartBound = 'true';
+
+      var inFlight = false;
+      var inputTimers = new WeakMap();
+
+      function setQuantityInputsDisabled(disabled) {
+        cartForm.querySelectorAll('.cart-item__quantity input[name="updates[]"]').forEach(function (input) {
+          input.disabled = disabled;
+        });
+      }
+
+      function updateLineQuantity(input) {
+        if (inFlight) return;
+
+        var row = input.closest('.cart-item');
+        if (!row) return;
+
+        var line = Number(row.dataset.line) || 0;
+        if (!line) return;
+
+        var quantity = Math.max(0, Number(input.value) || 0);
+        input.value = quantity;
+
+        inFlight = true;
+        setQuantityInputsDisabled(true);
+
+        fetch('/cart/change.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: JSON.stringify({
+            line: line,
+            quantity: quantity
+          })
+        })
+          .then(function (response) {
+            if (!response.ok) throw new Error('Cart update failed');
+            return response.json();
+          })
+          .then(function (cart) {
+            if (!cart || !Array.isArray(cart.items)) return;
+
+            if ((Number(cart.item_count) || 0) === 0) {
+              window.location.reload();
+              return;
+            }
+
+            syncCartRows(cart);
+            updateCartTotals(cart);
+            updateHeaderCartCount(cart.item_count);
+          })
+          .catch(function (error) {
+            console.error(error);
+          })
+          .finally(function () {
+            inFlight = false;
+            setQuantityInputsDisabled(false);
+          });
+      }
+
+      cartForm.querySelectorAll('.cart-item__quantity input[name="updates[]"]').forEach(function (input) {
+        input.addEventListener('input', function () {
+          if (inputTimers.has(input)) {
+            clearTimeout(inputTimers.get(input));
+          }
+          var timerId = setTimeout(function () {
+            updateLineQuantity(input);
+          }, 350);
+          inputTimers.set(input, timerId);
+        });
+
+        input.addEventListener('change', function () {
+          updateLineQuantity(input);
+        });
+
+        input.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            updateLineQuantity(input);
+          }
+        });
+      });
+    }
+
     function setCartTopOffset() {
       var cartContainer = document.querySelector('.cart-container');
       if (!cartContainer) return;
@@ -476,14 +645,21 @@
     }
 
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', setCartTopOffset);
+      document.addEventListener('DOMContentLoaded', function () {
+        setCartTopOffset();
+        initCartQuantityUpdates();
+      });
     } else {
       setCartTopOffset();
+      initCartQuantityUpdates();
     }
 
     window.addEventListener('resize', setCartTopOffset);
     window.addEventListener('load', setCartTopOffset);
-    document.addEventListener('shopify:section:load', setCartTopOffset);
+    document.addEventListener('shopify:section:load', function () {
+      setCartTopOffset();
+      initCartQuantityUpdates();
+    });
   })();
 </script>
 
