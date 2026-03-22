@@ -15,9 +15,9 @@
             <p class="complementary-products__description">{{ section.settings.description }}</p>
           {%- endif -%}
 
-          <ul class="complementary-products__grid">
+          <ul class="complementary-products__grid collection-grid">
             {% for complementary_product in recommendations.products %}
-              <li class="decoration">
+              <li class="grid__item decoration">
                 <div class="product-card">
                   <a href="{{ complementary_product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
                     {% if complementary_product.featured_image %}
@@ -152,16 +152,19 @@
 
   .complementary-products__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
     list-style: none;
     padding: 0;
     margin: 0;
   }
 
-  .complementary-products .product-card,
-  .complementary-products .card-content {
+  .complementary-products .product-card {
     padding: 0;
+  }
+
+  .complementary-products .card-content {
+    padding: 20px;
   }
 
   .complementary-products .unit-price {
@@ -170,12 +173,6 @@
     color: var(--spanish-gray);
   }
 
-  @media (min-width: 768px) {
-    .complementary-products__grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 30px;
-    }
-  }
 </style>
 
 {% schema %}
