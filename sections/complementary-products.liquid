@@ -9,15 +9,17 @@
       {% if recommendations.performed and recommendations.products_count > 0 %}
         <div class="container">
           {%- if section.settings.heading != blank -%}
-            <h2 class="h2 section-title complementary-products__heading">{{ section.settings.heading }}</h2>
+            <div class="title-wrapper">
+              <h2 class="h2 section-title complementary-products__heading">{{ section.settings.heading }}</h2>
+            </div>
           {%- endif -%}
           {%- if section.settings.description != blank -%}
             <p class="complementary-products__description">{{ section.settings.description }}</p>
           {%- endif -%}
 
-          <ul class="complementary-products__grid collection-grid">
+          <ul class="complementary-products__grid" data-filter="all">
             {% for complementary_product in recommendations.products %}
-              <li class="grid__item decoration">
+              <li class="decoration">
                 <div class="product-card">
                   <a href="{{ complementary_product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
                     {% if complementary_product.featured_image %}
@@ -44,9 +46,9 @@
                         </button>
                       </li>
                       <li>
-                        <form action="/cart/add" method="post" enctype="multipart/form-data" class="add-to-cart-form">
+                        <form action="/cart/add" method="post" enctype="multipart/form-data" class="add-to-cart-form" onsubmit="submitAddToCartForm(this); return false;">
                           <input type="hidden" name="id" value="{{ complementary_product.selected_or_first_available_variant.id }}">
-                          <button type="submit" class="card-action-btn" aria-label="add to cart">
+                          <button type="submit" class="card-action-btn" aria-label="add to cart" title="add to cart">
                             {% render 'icon-velour', icon: 'bag-handle' %}
                           </button>
                         </form>
@@ -139,7 +141,7 @@
 
   .complementary-products__heading {
     text-align: center;
-    margin-bottom: 12px;
+    margin-bottom: 0;
   }
 
   .complementary-products__description {
@@ -147,24 +149,63 @@
     font-size: var(--fs-4);
     color: var(--granite-gray);
     max-width: 62ch;
-    margin: 0 auto 32px;
+    margin: 0 auto 20px;
+  }
+
+  .complementary-products .title-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
   }
 
   .complementary-products__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 15px;
+    padding-bottom: 10px;
+    scrollbar-width: none;
     list-style: none;
-    padding: 0;
+    padding-left: 0;
     margin: 0;
   }
 
+  .complementary-products__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .complementary-products__grid > li {
+    flex: 0 0 calc(25% - 12px);
+    scroll-snap-align: start;
+  }
+
   .complementary-products .product-card {
-    padding: 0;
+    text-align: center;
+    padding: 10px;
+  }
+
+  @media (max-width: 1024px) {
+    .complementary-products__grid > li {
+      flex: 0 0 calc(33.33% - 10px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .complementary-products__grid > li {
+      flex: 0 0 calc(50% - 8px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .complementary-products__grid > li {
+      flex: 0 0 100%;
+    }
   }
 
   .complementary-products .card-content {
-    padding: 20px;
+    padding: 0;
   }
 
   .complementary-products .unit-price {
