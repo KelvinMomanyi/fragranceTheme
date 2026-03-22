@@ -708,32 +708,54 @@ h6,
   color: var(--tan-crayola);
 }
 
+.header-action-btn--cart {
+  --cart-badge-size: 1.45rem;
+  --cart-badge-font-size: 0.74rem;
+  --cart-badge-border-size: 1.5px;
+  --cart-badge-offset-x: 42%;
+  --cart-badge-offset-y: -38%;
+}
+
 .header-action-btn--cart .btn-badge {
   position: absolute;
-  top: -0.45rem;
+  top: 0;
   right: 0;
-  transform: none;
-  min-width: 1.5rem;
-  height: 1.5rem;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  transform: translate(var(--cart-badge-offset-x), var(--cart-badge-offset-y));
+  min-width: var(--cart-badge-size);
+  height: var(--cart-badge-size);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding-inline: 0.3rem;
+  padding-inline: 0.26rem;
+  box-sizing: border-box;
   border-radius: 999px;
   background-color: var(--cart-count-badge-bg, transparent) !important;
   color: var(--cart-count-badge-text, #111111) !important;
-  border: 2px solid var(--cart-count-badge-border, #111111);
-  box-shadow: 0 3px 10px rgb(0 0 0 / 18%);
-  font-size: 0.85rem;
+  border: var(--cart-badge-border-size) solid var(--cart-count-badge-border, #111111);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+  font-size: var(--cart-badge-font-size);
   font-weight: var(--fw-700);
   font-variant-numeric: tabular-nums;
   line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
   pointer-events: none;
   z-index: 1;
 }
 
 .header-action-btn--cart .btn-badge.is-hidden {
   display: none;
+}
+
+@media (max-width: 374px) {
+  .header-action-btn--cart {
+    --cart-badge-size: 1.3rem;
+    --cart-badge-font-size: 0.68rem;
+    --cart-badge-offset-x: 36%;
+    --cart-badge-offset-y: -33%;
+  }
 }
 
 
@@ -1558,6 +1580,13 @@ a.card-meta-text:is(:hover, :focus) {
 
   }
 
+  .header-action-btn--cart {
+    --cart-badge-size: 1.5rem;
+    --cart-badge-font-size: 0.76rem;
+    --cart-badge-offset-x: 40%;
+    --cart-badge-offset-y: -36%;
+  }
+
   /*.header .container { gap: 35px; }*/
 
   .header-action .input-wrapper {
@@ -1677,6 +1706,13 @@ a.card-meta-text:is(:hover, :focus) {
 
     font-size: 20px;
 
+  }
+
+  .header-action-btn--cart {
+    --cart-badge-size: 1.6rem;
+    --cart-badge-font-size: 0.8rem;
+    --cart-badge-offset-x: 45%;
+    --cart-badge-offset-y: -40%;
   }
 
 
@@ -1923,6 +1959,14 @@ a.card-meta-text:is(:hover, :focus) {
 
   .container {
     max-width: 1200px;
+  }
+
+  .header-action-btn--cart {
+    --cart-badge-size: 1.7rem;
+    --cart-badge-font-size: 0.82rem;
+    --cart-badge-border-size: 1.6px;
+    --cart-badge-offset-x: 48%;
+    --cart-badge-offset-y: -42%;
   }
 
 
