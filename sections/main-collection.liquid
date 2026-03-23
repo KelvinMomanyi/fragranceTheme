@@ -168,7 +168,7 @@
   }
 
 .strategic-product-count {
-  margin: 0 0 20px 0;
+  margin: 0;
   font-size: 1.4rem;
   font-weight: 500;
   color: var(--black);
@@ -187,39 +187,42 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 
+  .collection-grid-topbar {
+    margin: 0 0 20px;
+  }
+
   .collection-grid-controls {
     display: none;
   }
 
   @media screen and (min-width: 750px) {
+    .collection-grid-topbar {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
     .collection-grid-controls {
       display: flex;
       flex-wrap: nowrap;
-      gap: 12px 20px;
-      margin: 0 0 20px;
+      gap: 8px;
+      margin: 0 0 0 auto;
       align-items: center;
     }
 
     .collection-grid-controls__group {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-    }
-
-    .collection-grid-controls__label {
-      font-size: 1.3rem;
-      color: #505050;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+      gap: 4px;
     }
 
     .collection-grid-controls__icon {
-      width: 24px;
-      height: 24px;
-      color: #2d2d2d;
+      width: 20px;
+      height: 20px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      pointer-events: none;
     }
 
     .collection-grid-controls__icon svg {
@@ -228,33 +231,34 @@
       fill: currentColor;
     }
 
-    .collection-grid-controls__button {
-      width: 30px;
-      height: 30px;
-      border: 1px solid #d2d2d2;
+    .collection-grid-controls__option {
+      width: 36px;
+      height: 36px;
+      border: 0;
       border-radius: 6px;
-      background: #fff;
-      color: #222;
-      font-size: 1.6rem;
-      line-height: 1;
+      background: transparent;
+      color: rgba(0, 0, 0, 0.5);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0;
+      transition: color 0.2s ease, background-color 0.2s ease;
     }
 
-    .collection-grid-controls__button:disabled {
-      opacity: 0.4;
+    .collection-grid-controls__option:hover {
+      color: rgba(0, 0, 0, 0.9);
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .collection-grid-controls__option.is-selected {
+      color: rgba(0, 0, 0, 1);
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .collection-grid-controls__option:disabled {
+      opacity: 0.3;
       cursor: not-allowed;
-    }
-
-    .collection-grid-controls__value {
-      min-width: 22px;
-      text-align: center;
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: #222;
+      background-color: transparent;
     }
 
     .collection-grid--adjustable {
@@ -367,20 +371,24 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function updateButtonsState(controlElement, values, min, max) {
-    const decreaseButton = controlElement.querySelector('[data-grid-columns-action="decrease"]');
-    const increaseButton = controlElement.querySelector('[data-grid-columns-action="increase"]');
+    controlElement.querySelectorAll('[data-grid-columns-set]').forEach((button) => {
+      if (!(button instanceof HTMLButtonElement)) return;
 
-    if (decreaseButton instanceof HTMLButtonElement) decreaseButton.disabled = values.columns <= min;
-    if (increaseButton instanceof HTMLButtonElement) increaseButton.disabled = values.columns >= max;
+      const rawValue = Number.parseInt(button.dataset.gridColumnsSet || '', 10);
+      const hasValidValue = !Number.isNaN(rawValue);
+      const optionValue = hasValidValue ? rawValue : values.columns;
+      const isDisabled = !hasValidValue || optionValue < min || optionValue > max;
+      const isSelected = !isDisabled && optionValue === values.columns;
+
+      button.disabled = isDisabled;
+      button.classList.toggle('is-selected', isSelected);
+      button.setAttribute('aria-disabled', isDisabled.toString());
+      button.setAttribute('aria-pressed', isSelected.toString());
+    });
   }
 
   function renderControlState(controlElement, values, min, max) {
     controlElement.dataset.columns = String(values.columns);
-
-    const valueElement = controlElement.querySelector('[data-grid-columns-value]');
-
-    if (valueElement) valueElement.textContent = String(values.columns);
-
     updateButtonsState(controlElement, values, min, max);
   }
 
@@ -412,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const eventTarget = event.target;
     if (!(eventTarget instanceof Element)) return;
 
-    const button = eventTarget.closest('[data-grid-columns-action]');
+    const button = eventTarget.closest('[data-grid-columns-set]');
     if (!(button instanceof HTMLButtonElement)) return;
 
     const controlElement = button.closest('[data-collection-grid-controls]');
@@ -422,14 +430,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!sectionId) return;
 
     const defaults = getDefaults(controlElement);
-    const action = button.dataset.gridColumnsAction;
-    const delta = action === 'increase' ? 1 : -1;
-
     const values = {
-      columns: clamp(controlElement.dataset.columns || defaults.columns, defaults.min, defaults.max),
+      columns: clamp(button.dataset.gridColumnsSet || defaults.columns, defaults.min, defaults.max),
     };
-
-    values.columns = clamp(values.columns + delta, defaults.min, defaults.max);
 
     renderControlState(controlElement, values, defaults.min, defaults.max);
     applyColumnsToGrid(sectionId, values);

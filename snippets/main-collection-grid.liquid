@@ -8,6 +8,7 @@
 
 {%- liquid
   assign products_per_row = section.settings.products_per_row | default: 4 | plus: 0
+  assign grid_density_options = '3,4,5,6' | split: ','
 
   if products_per_row < 3
     assign products_per_row = 3
@@ -54,48 +55,84 @@
       <div class="collection">
         <div class="loading-overlay gradient"></div>
         
-        <!-- Strategic product count location (shows once) -->
-        <div class="product-count strategic-product-count" role="status">
-          <h2 class="product-count__text text-body">
-            <span>
-              {%- if current_collection.results_count -%}
-                {{
-                  'templates.search.results_with_count'
-                  | t: terms: current_collection.terms, count: current_collection.results_count
-                }}
-              {%- elsif current_collection.products_count == current_collection.all_products_count -%}
-                {{ 'products.facets.product_count_simple' | t: count: current_collection.products_count }}
-              {%- else -%}
-                {{
-                  'products.facets.product_count'
-                  | t: product_count: current_collection.products_count, count: current_collection.all_products_count
-                }}
-              {%- endif -%}
-            </span>
-          </h2>
-        </div>
+        <!-- Strategic product count + grid density controls -->
+        <div class="collection-grid-topbar">
+          <div class="product-count strategic-product-count" role="status">
+            <h2 class="product-count__text text-body">
+              <span>
+                {%- if current_collection.results_count -%}
+                  {{
+                    'templates.search.results_with_count'
+                    | t: terms: current_collection.terms, count: current_collection.results_count
+                  }}
+                {%- elsif current_collection.products_count == current_collection.all_products_count -%}
+                  {{ 'products.facets.product_count_simple' | t: count: current_collection.products_count }}
+                {%- else -%}
+                  {{
+                    'products.facets.product_count'
+                    | t: product_count: current_collection.products_count, count: current_collection.all_products_count
+                  }}
+                {%- endif -%}
+              </span>
+            </h2>
+          </div>
 
-        <div
-          class="collection-grid-controls"
-          data-collection-grid-controls
-          data-section-id="{{ section.id }}"
-          data-default-columns="{{ products_per_row }}"
-          data-min-columns="3"
-          data-max-columns="6"
-        >
-          <div class="collection-grid-controls__group">
-            <span class="collection-grid-controls__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" focusable="false">
-                <rect x="3" y="4" width="7" height="7" rx="1"></rect>
-                <rect x="14" y="4" width="7" height="7" rx="1"></rect>
-                <rect x="3" y="13" width="7" height="7" rx="1"></rect>
-                <rect x="14" y="13" width="7" height="7" rx="1"></rect>
-              </svg>
-            </span>
-            <span class="collection-grid-controls__label">Products per row</span>
-            <button type="button" class="collection-grid-controls__button" data-grid-columns-action="decrease" aria-label="Decrease products per row">-</button>
-            <span class="collection-grid-controls__value" data-grid-columns-value>{{ products_per_row }}</span>
-            <button type="button" class="collection-grid-controls__button" data-grid-columns-action="increase" aria-label="Increase products per row">+</button>
+          <div
+            class="collection-grid-controls"
+            data-collection-grid-controls
+            data-section-id="{{ section.id }}"
+            data-default-columns="{{ products_per_row }}"
+            data-min-columns="3"
+            data-max-columns="6"
+          >
+            <div class="collection-grid-controls__group" role="group" aria-label="Grid density selector">
+              {%- for option in grid_density_options -%}
+                {%- assign option_value = option | plus: 0 -%}
+                <button
+                  type="button"
+                  class="collection-grid-controls__option{% if option_value == products_per_row %} is-selected{% endif %}"
+                  data-grid-columns-set="{{ option_value }}"
+                  aria-label="Show {{ option_value }} products per row"
+                  aria-pressed="{% if option_value == products_per_row %}true{% else %}false{% endif %}"
+                  title="{{ option_value }} per row"
+                >
+                  <span class="collection-grid-controls__icon" aria-hidden="true">
+                    {%- case option_value -%}
+                      {%- when 3 -%}
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" focusable="false">
+                          <rect x="2" y="4" width="4" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="8" y="4" width="4" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="14" y="4" width="4" height="12" rx="1" fill="currentColor"></rect>
+                        </svg>
+                      {%- when 4 -%}
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" focusable="false">
+                          <rect x="1" y="4" width="3" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="6" y="4" width="3" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="11" y="4" width="3" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="16" y="4" width="3" height="12" rx="1" fill="currentColor"></rect>
+                        </svg>
+                      {%- when 5 -%}
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" focusable="false">
+                          <rect x="1" y="4" width="2" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="5" y="4" width="2" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="9" y="4" width="2" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="13" y="4" width="2" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="17" y="4" width="2" height="12" rx="1" fill="currentColor"></rect>
+                        </svg>
+                      {%- when 6 -%}
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" focusable="false">
+                          <rect x="1" y="4" width="2" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="4" y="4" width="2" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="7" y="4" width="2" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="10" y="4" width="2" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="13" y="4" width="2" height="12" rx="1" fill="currentColor"></rect>
+                          <rect x="16" y="4" width="2" height="12" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    {%- endcase -%}
+                  </span>
+                </button>
+              {%- endfor -%}
+            </div>
           </div>
         </div>
 
