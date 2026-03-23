@@ -7,19 +7,12 @@
 {% endcomment %}
 
 {%- liquid
-  assign products_per_row_medium = section.settings.products_per_row_medium | default: 3 | plus: 0
-  assign products_per_row_large = section.settings.products_per_row_large | default: 4 | plus: 0
+  assign products_per_row = section.settings.products_per_row | default: 4 | plus: 0
 
-  if products_per_row_medium < 3
-    assign products_per_row_medium = 3
-  elsif products_per_row_medium > 6
-    assign products_per_row_medium = 6
-  endif
-
-  if products_per_row_large < 3
-    assign products_per_row_large = 3
-  elsif products_per_row_large > 6
-    assign products_per_row_large = 6
+  if products_per_row < 3
+    assign products_per_row = 3
+  elsif products_per_row > 6
+    assign products_per_row = 6
   endif
 -%}
 
@@ -86,22 +79,23 @@
           class="collection-grid-controls"
           data-collection-grid-controls
           data-section-id="{{ section.id }}"
-          data-default-medium="{{ products_per_row_medium }}"
-          data-default-large="{{ products_per_row_large }}"
+          data-default-columns="{{ products_per_row }}"
           data-min-columns="3"
           data-max-columns="6"
         >
           <div class="collection-grid-controls__group">
-            <span class="collection-grid-controls__label">Medium columns</span>
-            <button type="button" class="collection-grid-controls__button" data-grid-columns-target="md" data-grid-columns-action="decrease" aria-label="Decrease medium columns">-</button>
-            <span class="collection-grid-controls__value" data-grid-columns-value="md">{{ products_per_row_medium }}</span>
-            <button type="button" class="collection-grid-controls__button" data-grid-columns-target="md" data-grid-columns-action="increase" aria-label="Increase medium columns">+</button>
-          </div>
-          <div class="collection-grid-controls__group">
-            <span class="collection-grid-controls__label">Large columns</span>
-            <button type="button" class="collection-grid-controls__button" data-grid-columns-target="lg" data-grid-columns-action="decrease" aria-label="Decrease large columns">-</button>
-            <span class="collection-grid-controls__value" data-grid-columns-value="lg">{{ products_per_row_large }}</span>
-            <button type="button" class="collection-grid-controls__button" data-grid-columns-target="lg" data-grid-columns-action="increase" aria-label="Increase large columns">+</button>
+            <span class="collection-grid-controls__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <rect x="3" y="4" width="7" height="7" rx="1"></rect>
+                <rect x="14" y="4" width="7" height="7" rx="1"></rect>
+                <rect x="3" y="13" width="7" height="7" rx="1"></rect>
+                <rect x="14" y="13" width="7" height="7" rx="1"></rect>
+              </svg>
+            </span>
+            <span class="collection-grid-controls__label">Products per row</span>
+            <button type="button" class="collection-grid-controls__button" data-grid-columns-action="decrease" aria-label="Decrease products per row">-</button>
+            <span class="collection-grid-controls__value" data-grid-columns-value>{{ products_per_row }}</span>
+            <button type="button" class="collection-grid-controls__button" data-grid-columns-action="increase" aria-label="Increase products per row">+</button>
           </div>
         </div>
 
@@ -111,11 +105,10 @@
           class="collection-grid collection-grid--adjustable"
           data-collection-grid
           data-section-id="{{ section.id }}"
-          data-default-medium="{{ products_per_row_medium }}"
-          data-default-large="{{ products_per_row_large }}"
+          data-default-columns="{{ products_per_row }}"
           data-min-columns="3"
           data-max-columns="6"
-          style="--products-per-row-md: {{ products_per_row_medium }}; --products-per-row-lg: {{ products_per_row_large }}; display: grid; gap: 20px; list-style: none; padding: 0;"
+          style="--products-per-row: {{ products_per_row }}; display: grid; gap: 20px; list-style: none; padding: 0;"
         >
           {%- for product in current_collection.products -%}
             <li class="grid__item decoration">

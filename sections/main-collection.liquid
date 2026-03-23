@@ -194,7 +194,7 @@
   @media screen and (min-width: 750px) {
     .collection-grid-controls {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 12px 20px;
       margin: 0 0 20px;
       align-items: center;
@@ -211,6 +211,21 @@
       color: #505050;
       text-transform: uppercase;
       letter-spacing: 0.06em;
+    }
+
+    .collection-grid-controls__icon {
+      width: 24px;
+      height: 24px;
+      color: #2d2d2d;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .collection-grid-controls__icon svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
     }
 
     .collection-grid-controls__button {
@@ -243,13 +258,7 @@
     }
 
     .collection-grid--adjustable {
-      grid-template-columns: repeat(var(--products-per-row-md, 3), minmax(0, 1fr));
-    }
-  }
-
-  @media screen and (min-width: 990px) {
-    .collection-grid--adjustable {
-      grid-template-columns: repeat(var(--products-per-row-lg, 4), minmax(0, 1fr));
+      grid-template-columns: repeat(var(--products-per-row, 4), minmax(0, 1fr));
     }
   }
 
@@ -343,8 +352,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const grid = scope.querySelector('[data-collection-grid][data-section-id="' + sectionId + '"]');
     if (!grid) return;
 
-    grid.style.setProperty('--products-per-row-md', String(values.md));
-    grid.style.setProperty('--products-per-row-lg', String(values.lg));
+    grid.style.setProperty('--products-per-row', String(values.columns));
   }
 
   function getDefaults(controlElement) {
@@ -354,39 +362,24 @@ document.addEventListener('DOMContentLoaded', function() {
     return {
       min: min,
       max: max,
-      md: clamp(controlElement.dataset.defaultMedium || min, min, max),
-      lg: clamp(controlElement.dataset.defaultLarge || min, min, max),
+      columns: clamp(controlElement.dataset.defaultColumns || min, min, max),
     };
   }
 
   function updateButtonsState(controlElement, values, min, max) {
-    const selectors = {
-      mdDecrease: '[data-grid-columns-target="md"][data-grid-columns-action="decrease"]',
-      mdIncrease: '[data-grid-columns-target="md"][data-grid-columns-action="increase"]',
-      lgDecrease: '[data-grid-columns-target="lg"][data-grid-columns-action="decrease"]',
-      lgIncrease: '[data-grid-columns-target="lg"][data-grid-columns-action="increase"]',
-    };
+    const decreaseButton = controlElement.querySelector('[data-grid-columns-action="decrease"]');
+    const increaseButton = controlElement.querySelector('[data-grid-columns-action="increase"]');
 
-    const mdDecrease = controlElement.querySelector(selectors.mdDecrease);
-    const mdIncrease = controlElement.querySelector(selectors.mdIncrease);
-    const lgDecrease = controlElement.querySelector(selectors.lgDecrease);
-    const lgIncrease = controlElement.querySelector(selectors.lgIncrease);
-
-    if (mdDecrease instanceof HTMLButtonElement) mdDecrease.disabled = values.md <= min;
-    if (mdIncrease instanceof HTMLButtonElement) mdIncrease.disabled = values.md >= max;
-    if (lgDecrease instanceof HTMLButtonElement) lgDecrease.disabled = values.lg <= min;
-    if (lgIncrease instanceof HTMLButtonElement) lgIncrease.disabled = values.lg >= max;
+    if (decreaseButton instanceof HTMLButtonElement) decreaseButton.disabled = values.columns <= min;
+    if (increaseButton instanceof HTMLButtonElement) increaseButton.disabled = values.columns >= max;
   }
 
   function renderControlState(controlElement, values, min, max) {
-    controlElement.dataset.columnsMd = String(values.md);
-    controlElement.dataset.columnsLg = String(values.lg);
+    controlElement.dataset.columns = String(values.columns);
 
-    const mediumValue = controlElement.querySelector('[data-grid-columns-value="md"]');
-    const largeValue = controlElement.querySelector('[data-grid-columns-value="lg"]');
+    const valueElement = controlElement.querySelector('[data-grid-columns-value]');
 
-    if (mediumValue) mediumValue.textContent = String(values.md);
-    if (largeValue) largeValue.textContent = String(values.lg);
+    if (valueElement) valueElement.textContent = String(values.columns);
 
     updateButtonsState(controlElement, values, min, max);
   }
@@ -397,9 +390,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const defaults = getDefaults(controlElement);
     const storedSectionState = state[sectionId] || {};
+    const storedColumns = storedSectionState.columns ?? storedSectionState.lg ?? storedSectionState.md;
     const values = {
-      md: clamp(storedSectionState.md ?? defaults.md, defaults.min, defaults.max),
-      lg: clamp(storedSectionState.lg ?? defaults.lg, defaults.min, defaults.max),
+      columns: clamp(storedColumns ?? defaults.columns, defaults.min, defaults.max),
     };
 
     renderControlState(controlElement, values, defaults.min, defaults.max);
@@ -419,7 +412,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const eventTarget = event.target;
     if (!(eventTarget instanceof Element)) return;
 
-    const button = eventTarget.closest('[data-grid-columns-target][data-grid-columns-action]');
+    const button = eventTarget.closest('[data-grid-columns-action]');
     if (!(button instanceof HTMLButtonElement)) return;
 
     const controlElement = button.closest('[data-collection-grid-controls]');
@@ -429,22 +422,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!sectionId) return;
 
     const defaults = getDefaults(controlElement);
-    const target = button.dataset.gridColumnsTarget;
     const action = button.dataset.gridColumnsAction;
     const delta = action === 'increase' ? 1 : -1;
 
     const values = {
-      md: clamp(controlElement.dataset.columnsMd || defaults.md, defaults.min, defaults.max),
-      lg: clamp(controlElement.dataset.columnsLg || defaults.lg, defaults.min, defaults.max),
+      columns: clamp(controlElement.dataset.columns || defaults.columns, defaults.min, defaults.max),
     };
 
-    if (target === 'md') {
-      values.md = clamp(values.md + delta, defaults.min, defaults.max);
-    } else if (target === 'lg') {
-      values.lg = clamp(values.lg + delta, defaults.min, defaults.max);
-    } else {
-      return;
-    }
+    values.columns = clamp(values.columns + delta, defaults.min, defaults.max);
 
     renderControlState(controlElement, values, defaults.min, defaults.max);
     applyColumnsToGrid(sectionId, values);
@@ -517,17 +502,8 @@ document.addEventListener('DOMContentLoaded', function() {
            },
             {
               "type": "range",
-              "id": "products_per_row_medium",
-              "label": "Products per row (medium screens)",
-              "min": 3,
-              "max": 6,
-              "step": 1,
-              "default": 3
-            },
-            {
-              "type": "range",
-              "id": "products_per_row_large",
-              "label": "Products per row (large screens)",
+              "id": "products_per_row",
+              "label": "Products per row (medium and large screens)",
               "min": 3,
               "max": 6,
               "step": 1,
