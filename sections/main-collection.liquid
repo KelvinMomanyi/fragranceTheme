@@ -188,7 +188,9 @@
   }
 
   .collection-grid-topbar {
-    margin: 0 0 20px;
+    margin: 0 0 24px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--black_25);
   }
 
   .collection-grid-controls {
@@ -209,6 +211,33 @@
       gap: 8px;
       margin: 0 0 0 auto;
       align-items: center;
+      padding: 7px 12px;
+      border: 1px solid var(--black_25);
+      border-color: color-mix(in srgb, var(--black) 32%, transparent);
+      background-color: var(--white);
+      background-color: color-mix(in srgb, var(--white) 90%, var(--black) 10%);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 24px color-mix(in srgb, var(--black) 20%, transparent);
+      outline: 1px solid color-mix(in srgb, var(--black) 12%, transparent);
+      outline-offset: -1px;
+    }
+
+    .collection-grid-controls::before {
+      content: 'View';
+      display: inline-flex;
+      align-items: center;
+      padding-right: 10px;
+      margin-right: 2px;
+      border-right: 1px solid var(--black_25);
+      border-right-color: color-mix(in srgb, var(--black) 32%, transparent);
+      color: var(--black);
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1;
+      opacity: 0.78;
+      white-space: nowrap;
     }
 
     .collection-grid-controls__group {
@@ -239,27 +268,33 @@
     }
 
     .collection-grid-controls__option {
-      width: 36px;
-      height: 36px;
-      border: 0;
-      border-radius: 6px;
+      width: 34px;
+      height: 34px;
+      border: 1px solid transparent;
       background: transparent;
-      color: rgba(0, 0, 0, 0.5);
+      color: var(--black);
+      opacity: 0.68;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: color 0.2s ease, background-color 0.2s ease;
+      transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
     }
 
     .collection-grid-controls__option:hover {
-      color: rgba(0, 0, 0, 0.9);
+      color: var(--black);
+      opacity: 0.95;
+      border-color: color-mix(in srgb, var(--black) 30%, transparent);
       background-color: rgba(0, 0, 0, 0.05);
+      background-color: color-mix(in srgb, var(--black) 12%, transparent);
     }
 
     .collection-grid-controls__option.is-selected {
-      color: rgba(0, 0, 0, 1);
+      color: var(--black);
+      opacity: 1;
+      border-color: color-mix(in srgb, var(--black) 40%, transparent);
       background-color: rgba(0, 0, 0, 0.1);
+      background-color: color-mix(in srgb, var(--black) 20%, transparent);
     }
 
     .collection-grid-controls__option:disabled {
