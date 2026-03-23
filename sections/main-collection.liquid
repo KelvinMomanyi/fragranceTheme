@@ -183,6 +183,76 @@
   margin: 0;
 }
 
+  .collection-grid--adjustable {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  .collection-grid-controls {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .collection-grid-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+      margin: 0 0 20px;
+      align-items: center;
+    }
+
+    .collection-grid-controls__group {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .collection-grid-controls__label {
+      font-size: 1.3rem;
+      color: #505050;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .collection-grid-controls__button {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #d2d2d2;
+      border-radius: 6px;
+      background: #fff;
+      color: #222;
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .collection-grid-controls__button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .collection-grid-controls__value {
+      min-width: 22px;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .collection-grid--adjustable {
+      grid-template-columns: repeat(var(--products-per-row-md, 3), minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .collection-grid--adjustable {
+      grid-template-columns: repeat(var(--products-per-row-lg, 4), minmax(0, 1fr));
+    }
+  }
+
   @media screen and (min-width: 750px) {
     .facets-vertical {
       display: flex;
@@ -237,6 +307,202 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<script>
+(function () {
+  const STORAGE_KEY = 'collection-grid-columns-v1';
+  const DEFAULT_MIN = 3;
+  const DEFAULT_MAX = 6;
+
+  function clamp(value, min, max) {
+    const parsedValue = Number.parseInt(value, 10);
+    if (Number.isNaN(parsedValue)) return min;
+    return Math.min(Math.max(parsedValue, min), max);
+  }
+
+  function readStoredState() {
+    try {
+      const stored = window.localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function writeStoredState(state) {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (error) {}
+  }
+
+  function getSectionScope(sectionId) {
+    return document.getElementById('shopify-section-' + sectionId) || document;
+  }
+
+  function applyColumnsToGrid(sectionId, values) {
+    const scope = getSectionScope(sectionId);
+    const grid = scope.querySelector('[data-collection-grid][data-section-id="' + sectionId + '"]');
+    if (!grid) return;
+
+    grid.style.setProperty('--products-per-row-md', String(values.md));
+    grid.style.setProperty('--products-per-row-lg', String(values.lg));
+  }
+
+  function getDefaults(controlElement) {
+    const min = clamp(controlElement.dataset.minColumns || DEFAULT_MIN, DEFAULT_MIN, DEFAULT_MAX);
+    const max = clamp(controlElement.dataset.maxColumns || DEFAULT_MAX, min, DEFAULT_MAX);
+
+    return {
+      min: min,
+      max: max,
+      md: clamp(controlElement.dataset.defaultMedium || min, min, max),
+      lg: clamp(controlElement.dataset.defaultLarge || min, min, max),
+    };
+  }
+
+  function updateButtonsState(controlElement, values, min, max) {
+    const selectors = {
+      mdDecrease: '[data-grid-columns-target="md"][data-grid-columns-action="decrease"]',
+      mdIncrease: '[data-grid-columns-target="md"][data-grid-columns-action="increase"]',
+      lgDecrease: '[data-grid-columns-target="lg"][data-grid-columns-action="decrease"]',
+      lgIncrease: '[data-grid-columns-target="lg"][data-grid-columns-action="increase"]',
+    };
+
+    const mdDecrease = controlElement.querySelector(selectors.mdDecrease);
+    const mdIncrease = controlElement.querySelector(selectors.mdIncrease);
+    const lgDecrease = controlElement.querySelector(selectors.lgDecrease);
+    const lgIncrease = controlElement.querySelector(selectors.lgIncrease);
+
+    if (mdDecrease instanceof HTMLButtonElement) mdDecrease.disabled = values.md <= min;
+    if (mdIncrease instanceof HTMLButtonElement) mdIncrease.disabled = values.md >= max;
+    if (lgDecrease instanceof HTMLButtonElement) lgDecrease.disabled = values.lg <= min;
+    if (lgIncrease instanceof HTMLButtonElement) lgIncrease.disabled = values.lg >= max;
+  }
+
+  function renderControlState(controlElement, values, min, max) {
+    controlElement.dataset.columnsMd = String(values.md);
+    controlElement.dataset.columnsLg = String(values.lg);
+
+    const mediumValue = controlElement.querySelector('[data-grid-columns-value="md"]');
+    const largeValue = controlElement.querySelector('[data-grid-columns-value="lg"]');
+
+    if (mediumValue) mediumValue.textContent = String(values.md);
+    if (largeValue) largeValue.textContent = String(values.lg);
+
+    updateButtonsState(controlElement, values, min, max);
+  }
+
+  function restoreControlState(controlElement, state) {
+    const sectionId = controlElement.dataset.sectionId;
+    if (!sectionId) return;
+
+    const defaults = getDefaults(controlElement);
+    const storedSectionState = state[sectionId] || {};
+    const values = {
+      md: clamp(storedSectionState.md ?? defaults.md, defaults.min, defaults.max),
+      lg: clamp(storedSectionState.lg ?? defaults.lg, defaults.min, defaults.max),
+    };
+
+    renderControlState(controlElement, values, defaults.min, defaults.max);
+    applyColumnsToGrid(sectionId, values);
+  }
+
+  function refreshControls() {
+    const state = readStoredState();
+
+    document.querySelectorAll('[data-collection-grid-controls]').forEach((controlElement) => {
+      if (!(controlElement instanceof HTMLElement)) return;
+      restoreControlState(controlElement, state);
+    });
+  }
+
+  function handleControlClick(event) {
+    const eventTarget = event.target;
+    if (!(eventTarget instanceof Element)) return;
+
+    const button = eventTarget.closest('[data-grid-columns-target][data-grid-columns-action]');
+    if (!(button instanceof HTMLButtonElement)) return;
+
+    const controlElement = button.closest('[data-collection-grid-controls]');
+    if (!(controlElement instanceof HTMLElement)) return;
+
+    const sectionId = controlElement.dataset.sectionId;
+    if (!sectionId) return;
+
+    const defaults = getDefaults(controlElement);
+    const target = button.dataset.gridColumnsTarget;
+    const action = button.dataset.gridColumnsAction;
+    const delta = action === 'increase' ? 1 : -1;
+
+    const values = {
+      md: clamp(controlElement.dataset.columnsMd || defaults.md, defaults.min, defaults.max),
+      lg: clamp(controlElement.dataset.columnsLg || defaults.lg, defaults.min, defaults.max),
+    };
+
+    if (target === 'md') {
+      values.md = clamp(values.md + delta, defaults.min, defaults.max);
+    } else if (target === 'lg') {
+      values.lg = clamp(values.lg + delta, defaults.min, defaults.max);
+    } else {
+      return;
+    }
+
+    renderControlState(controlElement, values, defaults.min, defaults.max);
+    applyColumnsToGrid(sectionId, values);
+
+    const state = readStoredState();
+    state[sectionId] = values;
+    writeStoredState(state);
+  }
+
+  function observeSectionUpdates() {
+    if (window.collectionGridColumnsObserver) return;
+
+    const observer = new MutationObserver((mutations) => {
+      let shouldRefresh = false;
+
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (!(node instanceof Element)) continue;
+
+          if (
+            node.matches('[data-collection-grid-controls], [data-collection-grid]') ||
+            node.querySelector('[data-collection-grid-controls], [data-collection-grid]')
+          ) {
+            shouldRefresh = true;
+            break;
+          }
+        }
+
+        if (shouldRefresh) break;
+      }
+
+      if (shouldRefresh) {
+        refreshControls();
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+    window.collectionGridColumnsObserver = observer;
+  }
+
+  function initCollectionGridColumns() {
+    if (!window.collectionGridColumnsInitialized) {
+      window.collectionGridColumnsInitialized = true;
+      document.addEventListener('click', handleControlClick);
+      observeSectionUpdates();
+    }
+
+    refreshControls();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCollectionGridColumns, { once: true });
+  } else {
+    initCollectionGridColumns();
+  }
+})();
+</script>
+
  {% schema %}
       {
         "name": "Main collection",
@@ -249,6 +515,24 @@ document.addEventListener('DOMContentLoaded', function() {
              "id": "selected_collection",
              "label": "Select Collection"
            },
+            {
+              "type": "range",
+              "id": "products_per_row_medium",
+              "label": "Products per row (medium screens)",
+              "min": 3,
+              "max": 6,
+              "step": 1,
+              "default": 3
+            },
+            {
+              "type": "range",
+              "id": "products_per_row_large",
+              "label": "Products per row (large screens)",
+              "min": 3,
+              "max": 6,
+              "step": 1,
+              "default": 4
+            },
             {
               "type": "checkbox",
               "id": "enable_filtering",

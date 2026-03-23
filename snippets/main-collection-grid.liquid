@@ -6,6 +6,23 @@
   - paginate: {Object} The paginate object
 {% endcomment %}
 
+{%- liquid
+  assign products_per_row_medium = section.settings.products_per_row_medium | default: 3 | plus: 0
+  assign products_per_row_large = section.settings.products_per_row_large | default: 4 | plus: 0
+
+  if products_per_row_medium < 3
+    assign products_per_row_medium = 3
+  elsif products_per_row_medium > 6
+    assign products_per_row_medium = 6
+  endif
+
+  if products_per_row_large < 3
+    assign products_per_row_large = 3
+  elsif products_per_row_large > 6
+    assign products_per_row_large = 6
+  endif
+-%}
+
 <div class="{% if section.settings.filter_type == 'vertical' %}facets-vertical{% endif %}">
   {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
     <aside
@@ -65,11 +82,40 @@
           </h2>
         </div>
 
+        <div
+          class="collection-grid-controls"
+          data-collection-grid-controls
+          data-section-id="{{ section.id }}"
+          data-default-medium="{{ products_per_row_medium }}"
+          data-default-large="{{ products_per_row_large }}"
+          data-min-columns="3"
+          data-max-columns="6"
+        >
+          <div class="collection-grid-controls__group">
+            <span class="collection-grid-controls__label">Medium columns</span>
+            <button type="button" class="collection-grid-controls__button" data-grid-columns-target="md" data-grid-columns-action="decrease" aria-label="Decrease medium columns">-</button>
+            <span class="collection-grid-controls__value" data-grid-columns-value="md">{{ products_per_row_medium }}</span>
+            <button type="button" class="collection-grid-controls__button" data-grid-columns-target="md" data-grid-columns-action="increase" aria-label="Increase medium columns">+</button>
+          </div>
+          <div class="collection-grid-controls__group">
+            <span class="collection-grid-controls__label">Large columns</span>
+            <button type="button" class="collection-grid-controls__button" data-grid-columns-target="lg" data-grid-columns-action="decrease" aria-label="Decrease large columns">-</button>
+            <span class="collection-grid-controls__value" data-grid-columns-value="lg">{{ products_per_row_large }}</span>
+            <button type="button" class="collection-grid-controls__button" data-grid-columns-target="lg" data-grid-columns-action="increase" aria-label="Increase large columns">+</button>
+          </div>
+        </div>
+
         <ul
           id="product-grid"
           data-id="{{ section.id }}"
-          class="collection-grid"
-          style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; list-style: none; padding: 0;"
+          class="collection-grid collection-grid--adjustable"
+          data-collection-grid
+          data-section-id="{{ section.id }}"
+          data-default-medium="{{ products_per_row_medium }}"
+          data-default-large="{{ products_per_row_large }}"
+          data-min-columns="3"
+          data-max-columns="6"
+          style="--products-per-row-md: {{ products_per_row_medium }}; --products-per-row-lg: {{ products_per_row_large }}; display: grid; gap: 20px; list-style: none; padding: 0;"
         >
           {%- for product in current_collection.products -%}
             <li class="grid__item decoration">
