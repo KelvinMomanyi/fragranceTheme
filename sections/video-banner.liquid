@@ -83,17 +83,23 @@
           Your browser does not support the video tag.
         </video>
       {% elsif embed_url != blank and is_youtube or is_vimeo %}
-        <iframe
-          class="img-cover"
-          width="1170"
-          height="550"
-          src="{{ embed_url }}"
-          title="{{ section.settings.title | escape }}"
-          loading="lazy"
-          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-          allowfullscreen
-          referrerpolicy="strict-origin-when-cross-origin"
-        ></iframe>
+        {%- comment -%} Performance: YouTube/Vimeo facade — loads iframe only on click instead of eagerly {%- endcomment -%}
+        <div class="video-facade img-cover" data-video-facade data-embed-url="{{ embed_url }}" role="button" aria-label="Play video" tabindex="0" style="cursor:pointer;position:relative;width:100%;height:100%;background:#000;">
+          {% if is_youtube and youtube_id != blank %}
+            <img
+              src="https://i.ytimg.com/vi/{{ youtube_id }}/hqdefault.jpg"
+              alt="{{ section.settings.title | default: 'Video' | escape }}"
+              class="img-cover"
+              loading="lazy"
+              width="1170"
+              height="550"
+              style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">
+          {% endif %}
+          <svg class="video-facade__play" viewBox="0 0 68 48" width="68" height="48" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;opacity:0.85;transition:opacity 0.2s;" aria-hidden="true">
+            <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
+            <path d="M45 24 27 14v20" fill="#fff"/>
+          </svg>
+        </div>
       {% else %}
         <video
           data-promo-video="{{ section.id }}"
@@ -182,10 +188,9 @@
     position: relative;
   }
 
+  /* Performance: removed will-change:transform and translate3d(0,0,0) — unnecessary GPU layer promotion */
   .about-card {
     position: relative;
-    transform: translate3d(0, 0, 0); /* Anchors position: fixed children specifically to the video container */
-    will-change: transform;
   }
 
   .box {
@@ -212,6 +217,9 @@
     color: inherit;
     display: inline-block;
   }
+
+  /* Video facade styles */
+  .video-facade:hover .video-facade__play { opacity: 1 !important; }
 
   /* Responsive for larger than 575px screen */
   @media screen and (max-width: 575px) {
@@ -353,8 +361,16 @@ function initSlowMotionEffect() {
   
   boxObserver.observe(boxElement);
   
+  // Performance: only update scroll effect when section is visible
+  let isBoxVisible = false;
+  const visibilityObserver = new IntersectionObserver((entries) => {
+    isBoxVisible = entries[0].isIntersecting;
+  }, { threshold: 0 });
+  visibilityObserver.observe(boxElement);
+
   // Fine-tuned scroll-based animation
   function updateInViewEffect() {
+    if (!isBoxVisible) return; // Performance: skip when off-screen
     const rect = boxElement.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     
@@ -389,16 +405,17 @@ function initSlowMotionEffect() {
     }
   }
   
-  // Throttled scroll listener
-  let scrollTimeout;
+  // Throttled scroll listener using rAF instead of setTimeout
+  let scrollTicking = false;
   window.addEventListener('scroll', () => {
-    if (scrollTimeout) return;
-    
-    scrollTimeout = setTimeout(() => {
-      updateInViewEffect();
-      scrollTimeout = null;
-    }, 16);
-  });
+    if (!scrollTicking) {
+      requestAnimationFrame(() => {
+        updateInViewEffect();
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
+  }, { passive: true });
   updateInViewEffect();
 }
 
@@ -418,15 +435,42 @@ function initVideoVisibility() {
   observer.observe(video);
 }
 
+/* Performance: YouTube/Vimeo facade — load iframe only on click */
+function initVideoFacade() {
+  const facades = document.querySelectorAll('[data-video-facade]');
+  facades.forEach(function(facade) {
+    function loadIframe() {
+      const embedUrl = facade.getAttribute('data-embed-url');
+      if (!embedUrl) return;
+      const iframe = document.createElement('iframe');
+      iframe.src = embedUrl;
+      iframe.className = 'img-cover';
+      iframe.width = '1170';
+      iframe.height = '550';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:0;';
+      facade.replaceWith(iframe);
+    }
+    facade.addEventListener('click', loadIframe, { once: true });
+    facade.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadIframe(); }
+    }, { once: true });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   initVideoVisibility();
   initSlowMotionEffect();
+  initVideoFacade();
 });
 
 document.addEventListener("shopify:section:load", function(event) {
   if (event.detail.sectionId === '{{ section.id }}') {
     initVideoVisibility();
     initSlowMotionEffect();
+    initVideoFacade();
   }
 });
 })();
@@ -612,7 +656,3 @@ document.addEventListener("shopify:section:load", function(event) {
   ]
 }
 {% endschema %}
-
-
-
-

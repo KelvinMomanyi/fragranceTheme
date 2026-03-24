@@ -90,10 +90,14 @@
     isScrolling = false;
   };
 
+  var scrollTicking = false;
   window.addEventListener('scroll', function () {
-    if (!isScrolling) {
-      window.requestAnimationFrame(handleScroll);
-      isScrolling = true;
+    if (!scrollTicking) {
+      window.requestAnimationFrame(function() {
+        handleScroll();
+        scrollTicking = false;
+      });
+      scrollTicking = true;
     }
   }, { passive: true });
 

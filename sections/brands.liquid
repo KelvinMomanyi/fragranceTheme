@@ -93,7 +93,7 @@
     align-items: center;
     list-style: none;
     transition: transform {{ section.settings.transition_speed }}s linear;
-    will-change: transform;
+    /* Performance: removed will-change:transform — unnecessary GPU layer */
     padding: 0;
     margin: 0;
   }
@@ -183,10 +183,11 @@
     
     let scrollPosition = 0;
     let isPaused = false;
+    let isVisible = false; /* Performance: track visibility */
     let animationFrame;
 
     function moveCarousel() {
-      if (!isPaused && enableAutoScroll) {
+      if (!isPaused && enableAutoScroll && isVisible) {
         scrollPosition -= scrollSpeed;
         carousel.style.transform = `translateX(${scrollPosition}px)`;
 
@@ -214,6 +215,18 @@
         isPaused = false;
       });
     }
+
+    /* Performance: only animate when section is visible using IntersectionObserver */
+    const visibilityObserver = new IntersectionObserver((entries) => {
+      isVisible = entries[0].isIntersecting;
+      if (isVisible && !animationFrame && enableAutoScroll) {
+        moveCarousel();
+      } else if (!isVisible && animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+      }
+    }, { threshold: 0 });
+    visibilityObserver.observe(carousel.closest('.clients') || carousel);
 
     // Start animation
     if (enableAutoScroll) {

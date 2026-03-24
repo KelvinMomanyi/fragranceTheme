@@ -280,6 +280,9 @@
   
   .gallery-card { animation: changeCard 10s linear infinite; }
   
+  /* Performance: pause animation when section is off-screen */
+  .gallery-paused .gallery-card { animation-play-state: paused; }
+  
   .gallery-item .gallery-card:last-child {
     position: absolute;
     top: 0;
@@ -415,12 +418,25 @@
    .gallery-card .card-title { font-weight: var(--fw-300); }
 }
 
-
-
 @media (min-width: 1400px){
   :is(.gallery)  { max-width: 1580px; }
 }
-  </style>  
+  </style>
+
+  <script>
+  /* Performance: pause gallery card animations when section is off-screen */
+  (function() {
+    var gallery = document.querySelector('#gallery');
+    if (!gallery) return;
+    gallery.classList.add('gallery-paused');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        entry.target.classList.toggle('gallery-paused', !entry.isIntersecting);
+      });
+    }, { threshold: 0 });
+    observer.observe(gallery);
+  })();
+  </script>
 
   {% schema %}
 {

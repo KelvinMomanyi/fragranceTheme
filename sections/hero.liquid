@@ -22,7 +22,8 @@
                                 {{ section.settings.image1 | image_url: width: 570 }} 570w,
                                 {{ section.settings.image1 | image_url: width: 600 }} 600w"
                         sizes="(max-width: 575px) 100vw, 285px"
-                        width="285" height="396" alt="Art Deco Home" class="img-cover">
+                        width="285" height="396" alt="Art Deco Home" class="img-cover"
+                        fetchpriority="high">
                  {% else %}
                    {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
                   {% endif %} 
