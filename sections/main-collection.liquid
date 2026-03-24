@@ -187,10 +187,27 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 
+  .collection-layout--horizontal.collection-layout--has-facets {
+    position: relative;
+  }
+
+  .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar {
+    border-bottom: 0;
+    margin: 0 0 18px;
+    padding: 10px 12px;
+    border: 1px solid var(--black_25);
+    border-color: color-mix(in srgb, var(--black) 30%, transparent);
+    background-color: color-mix(in srgb, var(--black) 4%, transparent);
+  }
+
   .collection-grid-topbar {
     margin: 0 0 24px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--black_25);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
   }
 
   .collection-grid-controls {
@@ -207,10 +224,12 @@
       z-index: 3;
     }
 
+    .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar .strategic-product-count {
+      font-size: 1.2rem;
+    }
+
     .collection-grid-topbar {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
+      gap: 1rem 1.2rem;
     }
 
     .collection-grid-controls {
@@ -309,6 +328,35 @@
 
     .collection-grid--adjustable {
       grid-template-columns: repeat(var(--products-per-row, 4), minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .collection-layout--horizontal.collection-layout--has-facets {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      column-gap: 1.6rem;
+      row-gap: 1rem;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets > .facets-wrapper {
+      grid-column: 1;
+      min-width: 0;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .facets-block-wrapper {
+      margin-bottom: 0;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar {
+      grid-column: 2;
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets > .product-grid-container {
+      grid-column: 1 / -1;
     }
   }
 
