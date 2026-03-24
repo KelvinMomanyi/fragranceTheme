@@ -199,6 +199,7 @@
   .collection-layout--horizontal.collection-layout--has-facets > .facets-wrapper {
     grid-column: 1;
     min-width: 0;
+    overflow: visible;
   }
 
   .collection-layout--horizontal.collection-layout--has-facets > .product-grid-container {
@@ -228,16 +229,9 @@
     flex-flow: row nowrap;
     align-items: center;
     gap: 0 10px;
-    width: 100%;
-    min-width: max-content;
-    overflow-x: auto;
-    overflow-y: visible;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .facets--horizontal .facets__form::-webkit-scrollbar {
-    display: none;
+    width: max-content;
+    min-width: 100%;
+    overflow: visible;
   }
 
   .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .facets--horizontal .facets__filters-wrapper {
@@ -269,6 +263,24 @@
     white-space: nowrap;
   }
 
+  .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .facets--horizontal .facets__panel-content {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: max-content;
+    min-width: min(var(--facets-panel-min, 300px), 92vw);
+    max-width: min(var(--facets-panel-max, 420px), 92vw);
+    padding: 16px;
+    border: 1px solid color-mix(in srgb, var(--black) 22%, transparent);
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+    z-index: 120;
+  }
+
+  .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .facets--horizontal .facets__item details[open] {
+    z-index: 130;
+  }
+
   .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .sorting-filter__container {
     padding: 0;
     margin-inline-end: 0;
@@ -283,6 +295,17 @@
     padding: 8px 10px;
   }
 
+  .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .sorting-filter .facets__panel {
+    position: relative;
+  }
+
+  .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .sorting-filter__options {
+    left: 0;
+    right: auto;
+    top: calc(100% + 8px);
+    z-index: 140;
+  }
+
   .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar {
     grid-column: 2;
     border-bottom: 0;
@@ -293,13 +316,6 @@
     background-color: color-mix(in srgb, var(--black) 4%, transparent);
     white-space: nowrap;
     flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar::-webkit-scrollbar {
-    display: none;
   }
 
   .collection-grid-topbar {
@@ -381,6 +397,108 @@
     opacity: 1;
     border-color: color-mix(in srgb, var(--black) 35%, transparent);
     background-color: color-mix(in srgb, var(--black) 15%, transparent);
+  }
+
+  @media screen and (max-width: 749px) {
+    .collection-layout--horizontal.collection-layout--has-facets {
+      column-gap: 8px;
+      row-gap: 10px;
+      align-items: start;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .facets--horizontal {
+      gap: 8px;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .facets--horizontal .facets__form {
+      gap: 0 8px;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .facets--horizontal .facets__filters-wrapper {
+      gap: 8px;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .facets--horizontal summary.facets__summary {
+      padding: 7px 10px;
+      min-height: 34px;
+      font-size: 1.2rem;
+      gap: 6px;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .sorting-filter .facets__status {
+      display: none;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .sorting-filter .facets__label {
+      font-size: 1.2rem;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .facets--horizontal .facets__panel-content {
+      min-width: min(280px, calc(100vw - 20px));
+      max-width: min(340px, calc(100vw - 20px));
+      padding: 14px;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .sorting-filter__options {
+      min-width: min(180px, calc(100vw - 20px));
+      max-width: min(300px, calc(100vw - 20px));
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar {
+      padding: 6px 8px;
+      gap: 6px;
+      max-width: 44vw;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar .strategic-product-count {
+      max-width: 84px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar .collection-grid-controls {
+      padding: 3px 4px;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar .collection-grid-controls__group {
+      gap: 2px;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar .collection-grid-controls__option {
+      width: 26px;
+      height: 26px;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar .collection-grid-controls__icon {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  @media screen and (max-width: 479px) {
+    .collection-layout--horizontal.collection-layout--has-facets {
+      column-gap: 6px;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets #main-collection-filters .facets--horizontal summary.facets__summary {
+      padding: 6px 8px;
+      font-size: 1.1rem;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar {
+      max-width: 40vw;
+      padding: 5px 6px;
+    }
+
+    .collection-layout--horizontal.collection-layout--has-facets > .collection-grid-topbar--toolbar .strategic-product-count {
+      max-width: 68px;
+      font-size: 0.95rem;
+    }
   }
 
   @media screen and (min-width: 750px) {
