@@ -124,8 +124,62 @@
   {% sections 'backToTop-group' %}
   {% sections 'footer-group' %}
 
-  <!-- Deferred JavaScript - Loads after page render -->
-  <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+  <!-- Load global component runtime only when matching components are present -->
+  <script>
+    (function () {
+      var globalScriptSrc = '{{ "global.js" | asset_url }}';
+      var globalScriptLoading = false;
+      var globalScriptLoaded = false;
+      var globalRuntimeSelector = [
+        'slideshow-component',
+        'slider-component',
+        'product-recommendations',
+        'variant-selects',
+        'deferred-media',
+        'quantity-input',
+        'menu-drawer',
+        'header-drawer',
+        'modal-dialog',
+        'bulk-modal',
+        'modal-opener',
+        'account-icon',
+        'bulk-add',
+        '[id^="Details-"] summary'
+      ].join(',');
+
+      function loadGlobalScript() {
+        if (globalScriptLoaded || globalScriptLoading) return;
+        if (document.querySelector('script[src="' + globalScriptSrc + '"]')) {
+          globalScriptLoaded = true;
+          return;
+        }
+
+        globalScriptLoading = true;
+        var script = document.createElement('script');
+        script.src = globalScriptSrc;
+        script.defer = true;
+        script.addEventListener('load', function () {
+          globalScriptLoaded = true;
+          globalScriptLoading = false;
+        }, { once: true });
+        script.addEventListener('error', function () {
+          globalScriptLoading = false;
+        }, { once: true });
+        document.head.appendChild(script);
+      }
+
+      function ensureGlobalRuntimeIfNeeded() {
+        if (document.querySelector(globalRuntimeSelector)) {
+          loadGlobalScript();
+        }
+      }
+
+      ensureGlobalRuntimeIfNeeded();
+      document.addEventListener('shopify:section:load', ensureGlobalRuntimeIfNeeded);
+      document.addEventListener('click', ensureGlobalRuntimeIfNeeded, { passive: true });
+      document.addEventListener('focusin', ensureGlobalRuntimeIfNeeded);
+    })();
+  </script>
   <script src="{{ 'application.js' | asset_url }}" defer></script>
 
 </body>

@@ -9,7 +9,6 @@
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 {{ 'component-facets.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'facets.js' | asset_url }}" type="module"></script>
-<script src="{{ 'menu-drawer.js' | asset_url }}" defer="defer"></script>
 
 <div class="container color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %} padding-top:25px;">
   {%- comment -%} Collection Hero with Image {%- endcomment -%}

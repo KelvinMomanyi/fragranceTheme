@@ -70,8 +70,7 @@
     {% render 'modal-search' %}
     {% render 'modal-login', enable_shop_login_button: section.settings.enable_shop_login_button %}
 
-    <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- comment -%} Predictive search scripts are lazy-loaded on first search interaction. {%- endcomment -%}
     {{ 'component-predictive-search.css' | asset_url | stylesheet_tag }}
   </header>
 
@@ -276,12 +275,84 @@
       document.body.classList.toggle('modal-open', openModal);
     }
 
+    var predictiveSearchAssetsPromise = null;
+
+    function loadScriptOnce(src) {
+      return new Promise(function(resolve, reject) {
+        var existingScript = document.querySelector('script[src="' + src + '"]');
+
+        if (existingScript) {
+          if (existingScript.dataset && existingScript.dataset.loaded === 'true') {
+            resolve();
+            return;
+          }
+
+          existingScript.addEventListener('load', resolve, { once: true });
+          existingScript.addEventListener('error', function() {
+            reject(new Error('Failed to load script: ' + src));
+          }, { once: true });
+          return;
+        }
+
+        var script = document.createElement('script');
+        script.src = src;
+        script.defer = true;
+
+        script.addEventListener('load', function() {
+          script.dataset.loaded = 'true';
+          resolve();
+        }, { once: true });
+
+        script.addEventListener('error', function() {
+          reject(new Error('Failed to load script: ' + src));
+        }, { once: true });
+
+        document.head.appendChild(script);
+      });
+    }
+
+    function loadPredictiveSearchAssets() {
+      if (window.__velourPredictiveSearchReady) return Promise.resolve();
+      if (!document.querySelector('predictive-search')) {
+        window.__velourPredictiveSearchReady = true;
+        return Promise.resolve();
+      }
+      if (predictiveSearchAssetsPromise) return predictiveSearchAssetsPromise;
+
+      predictiveSearchAssetsPromise = Promise.all([
+        loadScriptOnce('{{ "search-form.js" | asset_url }}'),
+        loadScriptOnce('{{ "predictive-search.js" | asset_url }}')
+      ]).then(function() {
+        window.__velourPredictiveSearchReady = true;
+      }).catch(function(error) {
+        predictiveSearchAssetsPromise = null;
+        throw error;
+      });
+
+      return predictiveSearchAssetsPromise;
+    }
+
+    function primePredictiveSearchAssets() {
+      loadPredictiveSearchAssets().catch(function(error) {
+        console.warn(error);
+      });
+    }
+
+    function setupSearchAssetPriming() {
+      document.querySelectorAll('[onclick="openSearchModal()"]').forEach(function(button) {
+        button.addEventListener('mouseenter', primePredictiveSearchAssets, { once: true });
+        button.addEventListener('focus', primePredictiveSearchAssets, { once: true });
+        button.addEventListener('touchstart', primePredictiveSearchAssets, { once: true, passive: true });
+      });
+    }
+
     /* Modal Actions */
     window.openSearchModal = function() {
       var searchModal = ensureModalInBody('search-modal');
       if (!searchModal) return;
       searchModal.style.display = 'block';
       syncModalBodyState();
+      primePredictiveSearchAssets();
       setTimeout(() => {
         document.getElementById('Search-In-Modal').focus();
       }, 100);
@@ -421,7 +492,12 @@
       ensureModalInBody('search-modal');
       ensureModalInBody('login-modal');
       syncModalBodyState();
+      setupSearchAssetPriming();
     });
+
+    if (document.readyState !== 'loading') {
+      setupSearchAssetPriming();
+    }
 
   })();
   </script> 
