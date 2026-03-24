@@ -70,8 +70,7 @@
     {% render 'modal-search' %}
     {% render 'modal-login', enable_shop_login_button: section.settings.enable_shop_login_button %}
 
-    {%- comment -%} Predictive search scripts are lazy-loaded on first search interaction. {%- endcomment -%}
-    {{ 'component-predictive-search.css' | asset_url | stylesheet_tag }}
+    {%- comment -%} Predictive search assets (JS + CSS) are lazy-loaded on first search interaction. {%- endcomment -%}
   </header>
 
 
@@ -276,6 +275,7 @@
     }
 
     var predictiveSearchAssetsPromise = null;
+    var predictiveSearchStylesheetHref = '{{ "component-predictive-search.css" | asset_url }}';
 
     function loadScriptOnce(src) {
       return new Promise(function(resolve, reject) {
@@ -311,6 +311,26 @@
       });
     }
 
+    function loadStylesheetOnce(href) {
+      return new Promise(function(resolve, reject) {
+        var existingLink = document.querySelector('link[href="' + href + '"]');
+
+        if (existingLink) {
+          resolve();
+          return;
+        }
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        link.addEventListener('load', resolve, { once: true });
+        link.addEventListener('error', function() {
+          reject(new Error('Failed to load stylesheet: ' + href));
+        }, { once: true });
+        document.head.appendChild(link);
+      });
+    }
+
     function loadPredictiveSearchAssets() {
       if (window.__velourPredictiveSearchReady) return Promise.resolve();
       if (!document.querySelector('predictive-search')) {
@@ -320,6 +340,7 @@
       if (predictiveSearchAssetsPromise) return predictiveSearchAssetsPromise;
 
       predictiveSearchAssetsPromise = Promise.all([
+        loadStylesheetOnce(predictiveSearchStylesheetHref),
         loadScriptOnce('{{ "search-form.js" | asset_url }}'),
         loadScriptOnce('{{ "predictive-search.js" | asset_url }}')
       ]).then(function() {
