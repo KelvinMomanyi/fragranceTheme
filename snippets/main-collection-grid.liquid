@@ -175,7 +175,12 @@
                       class="img-cover"
                       width="300"
                       height="300"
-                      loading="lazy"
+                      {% if forloop.index <= 6 %}
+                        loading="eager"
+                        fetchpriority="high"
+                      {% else %}
+                        loading="lazy"
+                      {% endif %}
                     >
                   {% else %}
                     {{ 'product-1' | placeholder_svg_tag: 'img-cover' }}
