@@ -23,7 +23,11 @@ class SectionRenderer {
   #pendingPromises = new Map();
 
   constructor() {
-    window.addEventListener('load', this.#cachePageSections.bind(this));
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(() => this.#cachePageSections());
+    } else {
+      window.addEventListener('load', () => setTimeout(() => this.#cachePageSections(), 200));
+    }
   }
 
   /**

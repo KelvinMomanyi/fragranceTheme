@@ -126,13 +126,21 @@ class FacetInputsComponent extends Component {
     if (inputElement.checked) url.searchParams.delete(inputElement.name, inputElement.value);
 
     sectionRenderer.getSectionHTML(this.sectionId, true, url);
-  }, 200);
+  }, 400);
 
   cancelPrefetchPage = () => this.prefetchPage.cancel();
 
   #updateSelectedFacetSummary() {
     if (!this.refs.facetInputs) return;
 
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(() => this.#doUpdateSelectedFacetSummary());
+    } else {
+      this.#doUpdateSelectedFacetSummary();
+    }
+  }
+
+  #doUpdateSelectedFacetSummary() {
     const checkedInputElements = this.refs.facetInputs.filter((input) => input.checked);
     const details = this.closest('details');
     const statusComponent = details?.querySelector('facet-status-component');
