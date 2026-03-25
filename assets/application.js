@@ -144,9 +144,15 @@
     }
   };
 
-  // Initial load
-  initAOS();
-
+  window.addEventListener('load', () => {
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(() => {
+        initAOS();
+      });
+    } else {
+      setTimeout(initAOS, 100);
+    }
+  });
   /* --------------------------------
    * Shopify Theme Editor Events
    * -------------------------------- */

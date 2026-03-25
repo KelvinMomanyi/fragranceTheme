@@ -637,13 +637,15 @@ class Scheduler {
       // Wait for any in-progress view transitions to finish
       if (viewTransition.current) await viewTransition.current;
 
-      requestAnimationFrame(this.flush);
+      requestAnimationFrame(() => {
+        requestIdleCallback(this.flush);
+      });
     }
   };
 
   flush = () => {
     for (const task of this.#queue) {
-      setTimeout(task, 0);
+      task();
     }
 
     this.#queue.clear();
@@ -725,12 +727,12 @@ export function calculateHeaderGroupHeight(
   for (let i = 0; i < children.length; i++) {
     const element = children[i];
     if (element === header || !(element instanceof HTMLElement)) continue;
-    totalHeight += element.offsetHeight;
+    totalHeight += element.getBoundingClientRect().height;
   }
 
   // If the header is transparent and has a sibling section, add the height of the header to the total height
   if (header instanceof HTMLElement && header.hasAttribute('transparent') && header.parentElement?.nextElementSibling) {
-    return totalHeight + header.offsetHeight;
+    return totalHeight + header.getBoundingClientRect().height;
   }
 
   return totalHeight;
@@ -764,19 +766,21 @@ function updateHeaderHeights() {
   // Early exit if no header - nothing to do
   if (!(header instanceof HTMLElement)) return;
 
-  // Calculate initial heights
-  const headerHeight = header.offsetHeight;
+  // Calculate initial heights (Reads)
+  const headerHeight = header.getBoundingClientRect().height;
   const headerGroupHeight = calculateHeaderGroupHeight(header);
   const headerMenuRow = /** @type {HTMLElement} | null */ (header.querySelector('.header__row:has(.header-menu)'));
+  const menuRowHeight = headerMenuRow ? headerMenuRow.getBoundingClientRect().height : 0;
 
-  document.body.style.setProperty('--header-height', `${headerHeight}px`);
-  document.body.style.setProperty('--header-group-height', `${headerGroupHeight}px`);
+  // Batch updates (Writes) in requestAnimationFrame
+  requestAnimationFrame(() => {
+    document.body.style.setProperty('--header-height', `${headerHeight}px`);
+    document.body.style.setProperty('--header-group-height', `${headerGroupHeight}px`);
 
-  if (headerMenuRow) {
-    window.requestAnimationFrame(function () {
-      header.style.setProperty('--menu-row-height', `${headerMenuRow.offsetHeight}px`);
-    });
-  }
+    if (headerMenuRow) {
+      header.style.setProperty('--menu-row-height', `${menuRowHeight}px`);
+    }
+  });
 }
 
 export function updateAllHeaderCustomProperties() {

@@ -200,10 +200,15 @@
         }
       }
 
-      ensureGlobalRuntimeIfNeeded();
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(ensureGlobalRuntimeIfNeeded);
+      } else {
+        setTimeout(ensureGlobalRuntimeIfNeeded, 200);
+      }
+
       document.addEventListener('shopify:section:load', ensureGlobalRuntimeIfNeeded);
       document.addEventListener('click', ensureGlobalRuntimeIfNeeded, { passive: true });
-      document.addEventListener('focusin', ensureGlobalRuntimeIfNeeded);
+      document.addEventListener('focusin', ensureGlobalRuntimeIfNeeded, { passive: true });
     })();
   </script>
   <script src="{{ 'application.js' | asset_url }}" defer></script>
