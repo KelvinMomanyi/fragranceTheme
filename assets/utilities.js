@@ -796,3 +796,85 @@ if (typeof Theme !== 'undefined') {
     scheduler: scheduler,
   };
 }
+/**
+ * Converts a money string to its minor units (e.g., cents).
+ * @param {string|number} value - The money string or number.
+ * @param {string} currency - The currency code (e.g., 'USD').
+ * @returns {number|null} The value in minor units or null.
+ */
+export function convertMoneyToMinorUnits(value, currency) {
+  if (!value || value === '') return null;
+
+  const cleanValue = String(value).replace(/[^\d.,']/g, '');
+  if (!cleanValue) return null;
+
+  const decimalPlaces = getDecimalPlaces(currency);
+
+  let parsed;
+  if (cleanValue.includes('.') && cleanValue.includes(',')) {
+    const lastDot = cleanValue.lastIndexOf('.');
+    const lastComma = cleanValue.lastIndexOf(',');
+
+    if (lastComma > lastDot) {
+      parsed = parseFloat(cleanValue.replace(/\./g, '').replace(',', '.'));
+    } else {
+      parsed = parseFloat(cleanValue.replace(/,/g, ''));
+    }
+  } else if (cleanValue.includes(',')) {
+    parsed = parseFloat(cleanValue.replace(',', '.'));
+  } else {
+    parsed = parseFloat(cleanValue);
+  }
+
+  if (isNaN(parsed)) return null;
+
+  return Math.round(parsed * Math.pow(10, decimalPlaces));
+}
+
+/**
+ * Gets the number of decimal places for a given currency.
+ * @param {string} currency - The currency code.
+ * @returns {number} The number of decimal places.
+ */
+export function getDecimalPlaces(currency) {
+  const zeroDecimalCurrencies = ['JPY', 'KRW', 'VND', 'KHR', 'LAK', 'IDR'];
+  const threeDecimalCurrencies = ['BHD', 'JOD', 'KWD', 'OMR', 'TND'];
+
+  if (zeroDecimalCurrencies.includes(currency)) return 0;
+  if (threeDecimalCurrencies.includes(currency)) return 3;
+  return 2;
+}
+
+/**
+ * Formats a money value in minor units into a string.
+ * @param {number|string} cents - The value in minor units.
+ * @param {string} format - The liquid money format (e.g., '{{amount}}').
+ * @param {string} currency - The currency code.
+ * @returns {string} The formatted money string.
+ */
+export function formatMoney(cents, format, currency) {
+  if (typeof cents === 'string') {
+    cents = parseInt(cents.replace(/[^\d]/g, ''), 10);
+  }
+
+  if (isNaN(cents)) return '';
+
+  const decimalPlaces = getDecimalPlaces(currency);
+  const amount = cents / Math.pow(10, decimalPlaces);
+
+  let formatted;
+  if (decimalPlaces === 0) {
+    formatted = amount.toLocaleString();
+  } else {
+    formatted = amount.toLocaleString(undefined, {
+      minimumFractionDigits: decimalPlaces,
+      maximumFractionDigits: decimalPlaces,
+    });
+  }
+
+  if (format) {
+    return format.replace(/{{\s*amount\s*}}/i, formatted);
+  }
+
+  return formatted;
+}
