@@ -294,6 +294,31 @@
     vector-effect: non-scaling-stroke;
   }
 
+  .collection .product-card .card-price {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.55rem;
+    margin-top: 0.2rem;
+    color: var(--smokey-black);
+  }
+
+  .collection .product-card .card-price .price--current {
+    font-size: 1.5rem;
+    font-weight: var(--fw-600);
+    letter-spacing: 0.01em;
+    line-height: 1;
+    color: var(--smokey-black);
+  }
+
+  .collection .product-card .card-price .price--compare {
+    font-size: 1.2rem;
+    line-height: 1;
+    color: var(--spanish-gray);
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: color-mix(in srgb, var(--spanish-gray) 75%, transparent);
+  }
+
   .collection-layout--horizontal.collection-layout--has-facets {
     --collection-toolbar-border: transparent;
     --collection-toolbar-border-strong: transparent;
