@@ -77,16 +77,18 @@ export class DialogComponent extends Component {
     this.removeEventListener('click', this.#handleClick);
     this.removeEventListener('keydown', this.#handleKeyDown);
 
-    // Force browser to restart animation by resetting it
-    // Temporarily remove any existing animation state
+    // Restart the closing animation without forcing synchronous layout.
+    dialog.classList.remove('dialog-closing');
     dialog.style.animation = 'none';
 
-    // Force a reflow
-    void dialog.offsetWidth;
+    await new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(resolve);
+      });
+    });
 
-    // Now add the closing class and restore animation
-    dialog.classList.add('dialog-closing');
     dialog.style.animation = '';
+    dialog.classList.add('dialog-closing');
 
     await onAnimationEnd(dialog, undefined, {
       subtree: false,
