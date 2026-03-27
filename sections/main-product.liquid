@@ -10,6 +10,8 @@
 {%- endcomment -%}
 
 {%- liquid
+  assign product_form_id = 'product-form-' | append: section.id
+
   if product == blank and section.settings.product != blank
     assign product = section.settings.product
   endif
@@ -276,8 +278,13 @@
                     type="number" 
                     id="Quantity-{{ section.id }}"
                     name="quantity" 
-                    min="1" 
-                    value="1" 
+                    form="{{ product_form_id }}"
+                    min="{{ current_variant.quantity_rule.min | default: 1 }}"
+                    value="{{ current_variant.quantity_rule.min | default: 1 }}"
+                    step="{{ current_variant.quantity_rule.increment | default: 1 }}"
+                    {% if current_variant.quantity_rule.max %}
+                      max="{{ current_variant.quantity_rule.max }}"
+                    {% endif %}
                     class="qty-input"
                     aria-label="Quantity"
                   >
@@ -289,7 +296,7 @@
             {% when 'buy_buttons' %}
               <div class="product-block product-block--buy-buttons" {{ block.shopify_attributes }}>
                 <product-form class="product-form">
-                  {%- form 'product', product, id: 'product-form', class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                  {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
                     <input type="hidden" name="id" value="{{ current_variant.id }}" id="product-variant-id">
                     
                     {%- if product.gift_card? -%}
@@ -392,6 +399,7 @@
                               type="radio" 
                               name="selling_plan" 
                               value="" 
+                              form="{{ product_form_id }}"
                               checked
                               class="selling-plan-radio"
                             >
@@ -404,6 +412,7 @@
                                 type="radio" 
                                 name="selling_plan" 
                                 value="{{ selling_plan.id }}"
+                                form="{{ product_form_id }}"
                                 class="selling-plan-radio"
                               >
                               <span>{{ selling_plan.name }}</span>
@@ -1239,14 +1248,18 @@ document.addEventListener('DOMContentLoaded', function() {
     if (minus) {
       minus.addEventListener('click', () => {
         const value = parseInt(input.value) || 1;
-        if (value > 1) input.value = value - 1;
+        const min = parseInt(input.min) || 1;
+        const step = parseInt(input.step) || 1;
+        input.value = Math.max(min, value - step);
       });
     }
     
     if (plus) {
       plus.addEventListener('click', () => {
         const value = parseInt(input.value) || 1;
-        input.value = value + 1;
+        const step = parseInt(input.step) || 1;
+        const max = parseInt(input.max);
+        input.value = Number.isNaN(max) ? value + step : Math.min(max, value + step);
       });
     }
   });
@@ -1274,6 +1287,38 @@ document.addEventListener('DOMContentLoaded', function() {
       if (variant) {
         const variantIdInput = sectionEl.querySelector('#product-variant-id');
         if (variantIdInput) variantIdInput.value = variant.id;
+
+        const quantityInput = sectionEl.querySelector('#Quantity-{{ section.id }}');
+        if (quantityInput) {
+          const min = variant.quantity_rule?.min || 1;
+          const step = variant.quantity_rule?.increment || 1;
+          const max = variant.quantity_rule?.max;
+          let value = parseInt(quantityInput.value) || min;
+
+          quantityInput.min = min;
+          quantityInput.step = step;
+
+          if (max) {
+            quantityInput.max = max;
+            value = Math.min(max, value);
+          } else {
+            quantityInput.removeAttribute('max');
+          }
+
+          if (value < min || (value - min) % step !== 0) {
+            value = min;
+          }
+
+          quantityInput.value = value;
+        }
+
+        const pickupAvailability = sectionEl.querySelector('pickup-availability');
+        if (pickupAvailability) {
+          pickupAvailability.dataset.variantId = variant.id;
+          if (typeof pickupAvailability.update === 'function') {
+            pickupAvailability.update(variant);
+          }
+        }
         
         // Update price
         const priceWrapper = sectionEl.querySelector('#product-price');
