@@ -269,9 +269,6 @@
             {%- comment -%} Quantity Selector Block {%- endcomment -%}
             {% when 'quantity_selector' %}
               <div class="product-block product-block--quantity" {{ block.shopify_attributes }}>
-                <label class="product-option-label" for="Quantity-{{ section.id }}">
-                  {{ 'products.product.quantity.label' | t | default: 'Quantity' }}
-                </label>
                 <div class="quantity-selector">
                   <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">{% render 'icon-velour', icon: 'minus', size: 'small' %}</button>
                   <input 
@@ -944,6 +941,10 @@
     padding: 0;
   }
 
+  #product-{{ product.id }} .product-block--quantity {
+    margin: 0;
+  }
+
   #product-{{ product.id }} .product-title {
     font-size: clamp(2.2rem, 3vw, 3.2rem);
     font-weight: var(--fw-500);
@@ -1059,6 +1060,36 @@
     min-height: 48px !important;
     border-radius: 0 !important;
     border-color: var(--light-gray) !important;
+  }
+
+  @media (min-width: 750px) {
+    #product-{{ product.id }} .product-info {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      column-gap: 14px;
+      row-gap: 1.35rem;
+    }
+
+    #product-{{ product.id }} .product-block {
+      width: 100%;
+      flex: 0 0 100%;
+    }
+
+    #product-{{ product.id }} .product-block--quantity {
+      width: auto;
+      flex: 0 0 auto;
+    }
+
+    #product-{{ product.id }} .product-block--buy-buttons {
+      width: auto;
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    #product-{{ product.id }} .product-block--buy-buttons .product-form-buttons {
+      margin-top: 0;
+    }
   }
 
   #product-{{ product.id }} .accordion-item {
