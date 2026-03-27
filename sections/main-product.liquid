@@ -749,7 +749,9 @@
   .add-to-cart-btn,
   .product-form-buttons .btn.btn-primary {
     background: #111 !important;
+    background-color: #111 !important;
     color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
     border: none !important;
     padding: 1.3em 2em !important;
     font-size: 1.4rem !important;
@@ -762,6 +764,13 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+  }
+
+  .add-to-cart-btn .btn-text,
+  .product-form-buttons .btn.btn-primary .btn-text,
+  .add-to-cart-btn * {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
   }
 
   .add-to-cart-btn:hover,
