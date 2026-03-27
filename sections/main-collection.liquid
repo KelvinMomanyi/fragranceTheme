@@ -1,8 +1,18 @@
 {%- liquid
+  assign collection_context = 'none'
+
   if section.settings.selected_collection != blank
     assign current_collection = collections[section.settings.selected_collection]
-  else
+    assign collection_context = 'selected'
+  elsif collection != blank
     assign current_collection = collection
+    assign collection_context = 'page'
+  else
+    assign current_collection = collections['all']
+
+    if current_collection != blank
+      assign collection_context = 'all'
+    endif
   endif
 -%}
 
@@ -49,14 +59,22 @@
     {% endif %}
 
     <div class="section-{{ section.id }}-padding">
-      {% if section.settings.selected_collection != blank %}
+      {% if collection_context == 'selected' %}
         {% paginate collections[section.settings.selected_collection].products by 24 %}
           {% render 'main-collection-grid', current_collection: current_collection, section: section, paginate: paginate %}
         {% endpaginate %}
-      {% else %}
+      {% elsif collection_context == 'page' %}
         {% paginate collection.products by 24 %}
           {% render 'main-collection-grid', current_collection: current_collection, section: section, paginate: paginate %}
         {% endpaginate %}
+      {% elsif collection_context == 'all' %}
+        {% paginate collections['all'].products by 24 %}
+          {% render 'main-collection-grid', current_collection: current_collection, section: section, paginate: paginate %}
+        {% endpaginate %}
+      {% else %}
+        <div class="collection-empty">
+          <p>No collection is available to display here yet.</p>
+        </div>
       {% endif %}
     </div>
   </section>
