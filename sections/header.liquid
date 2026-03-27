@@ -81,7 +81,7 @@
     - #SIDEBAR
   -->
 
-  <div class="sidebar color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" data-navbar>
+  <div class="sidebar color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" data-navbar hidden aria-hidden="true">
     <div class="navClose">
        <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
         {% render 'icon-velour', icon: 'close' %}
@@ -245,7 +245,7 @@
 
   </div>
 
-<div class="overlay" data-overlay data-nav-toggler></div>
+<div class="overlay" data-overlay data-nav-toggler hidden aria-hidden="true"></div>
 
 
 <!--

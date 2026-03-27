@@ -12,11 +12,66 @@
     return modal;
   }
 
+  function setModalOpenState(modal, isOpen) {
+    if (!modal) return;
+    modal.dataset.modalOpen = isOpen ? 'true' : 'false';
+    modal.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    modal.style.display = isOpen ? 'block' : 'none';
+  }
+
+  function initializeModalState(id) {
+    var modal = ensureModalInBody(id);
+    if (!modal) return null;
+
+    if (modal.dataset.modalOpen !== 'true') {
+      setModalOpenState(modal, false);
+    } else {
+      modal.setAttribute('aria-hidden', 'false');
+      modal.style.display = 'block';
+    }
+
+    return modal;
+  }
+
   function syncModalBodyState() {
-    var openModal = Array.from(document.querySelectorAll('.modal')).some(function(modal) {
-      return window.getComputedStyle(modal).display !== 'none';
-    });
+    var openModal = document.querySelector('.modal[data-modal-open="true"]') !== null;
     document.body.classList.toggle('modal-open', openModal);
+  }
+
+  var sidebarHideTimer = null;
+
+  function setSidebarState(isOpen) {
+    var navbar = document.querySelector('[data-navbar]');
+    var overlay = document.querySelector('[data-overlay]');
+    if (!navbar || !overlay) return;
+
+    if (sidebarHideTimer) {
+      clearTimeout(sidebarHideTimer);
+      sidebarHideTimer = null;
+    }
+
+    if (isOpen) {
+      navbar.hidden = false;
+      overlay.hidden = false;
+      navbar.setAttribute('aria-hidden', 'false');
+      overlay.setAttribute('aria-hidden', 'false');
+
+      requestAnimationFrame(function() {
+        navbar.classList.add('active');
+        overlay.classList.add('active');
+      });
+      return;
+    }
+
+    navbar.classList.remove('active');
+    overlay.classList.remove('active');
+    navbar.setAttribute('aria-hidden', 'true');
+    overlay.setAttribute('aria-hidden', 'true');
+
+    sidebarHideTimer = window.setTimeout(function() {
+      navbar.hidden = true;
+      overlay.hidden = true;
+    }, 550);
   }
 
   var predictiveSearchAssetsPromise = null;
@@ -116,7 +171,7 @@
   window.openSearchModal = function() {
     var searchModal = ensureModalInBody('search-modal');
     if (!searchModal) return;
-    searchModal.style.display = 'block';
+    setModalOpenState(searchModal, true);
     syncModalBodyState();
     primePredictiveSearchAssets();
     setTimeout(() => {
@@ -127,21 +182,21 @@
   window.closeSearchModal = function() {
     var searchModal = document.getElementById('search-modal');
     if (!searchModal) return;
-    searchModal.style.display = 'none';
+    setModalOpenState(searchModal, false);
     syncModalBodyState();
   };
 
   window.openLoginModal = function() {
     var loginModal = ensureModalInBody('login-modal');
     if (!loginModal) return;
-    loginModal.style.display = 'block';
+    setModalOpenState(loginModal, true);
     syncModalBodyState();
   };
 
   window.closeLoginModal = function() {
     var loginModal = document.getElementById('login-modal');
     if (!loginModal) return;
-    loginModal.style.display = 'none';
+    setModalOpenState(loginModal, false);
     syncModalBodyState();
   };
 
@@ -169,18 +224,13 @@
     var navToggler = target.closest('[data-nav-toggler]');
     if (navToggler) {
       var navbar = document.querySelector('[data-navbar]');
-      var overlay = document.querySelector('[data-overlay]');
-      if (navbar) navbar.classList.toggle('active');
-      if (overlay) overlay.classList.toggle('active');
+      setSidebarState(!(navbar && navbar.classList.contains('active')));
       return;
     }
 
     // Close Sidebar on link click or overlay click
     if (target.closest('[data-nav-link]') || target.closest('[data-overlay]')) {
-      var navbar = document.querySelector('[data-navbar]');
-      var overlay = document.querySelector('[data-overlay]');
-      if (navbar) navbar.classList.remove('active');
-      if (overlay) overlay.classList.remove('active');
+      setSidebarState(false);
     }
   });
 
@@ -255,8 +305,9 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    ensureModalInBody('search-modal');
-    ensureModalInBody('login-modal');
+    initializeModalState('search-modal');
+    initializeModalState('login-modal');
+    setSidebarState(false);
     syncModalBodyState();
     setupSearchAssetPriming();
   });
