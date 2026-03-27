@@ -1,186 +1,665 @@
-<section class="section product shop-body color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="product" aria-label="product">
+{%- liquid
+  assign heading_tag = 'h2'
+  if template.name == 'list-collections'
+    assign heading_tag = 'h1'
+  endif
 
+  assign image_ratio = '1 / 1'
+  case section.settings.image_ratio
+    when 'portrait'
+      assign image_ratio = '4 / 5'
+    when 'landscape'
+      assign image_ratio = '5 / 4'
+  endcase
+
+  assign has_curated_cards = false
+  for block in section.blocks
+    if block.settings.collection != blank or block.settings.title != blank or block.settings.image != blank
+      assign has_curated_cards = true
+      break
+    endif
+  endfor
+
+  assign use_curated_collections = false
+  if section.settings.collection_source == 'curated'
+    assign use_curated_collections = true
+  elsif section.settings.collection_source == 'auto' and has_curated_cards
+    assign use_curated_collections = true
+  endif
+-%}
+
+<section
+  class="section collection-showcase color-scheme-{{ section.settings.color_scheme }}"
+  style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}; --collection-showcase-columns: {{ section.settings.columns_desktop }}; --collection-showcase-image-ratio: {{ image_ratio }};"
+  id="collection-showcase-{{ section.id }}"
+  aria-label="{{ section.settings.heading | default: 'Collection showcase' | escape }}"
+>
   <div class="container">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.subheading != blank -%}
+      <div class="collection-showcase__header collection-showcase__header--{{ section.settings.text_alignment }}">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="collection-showcase__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
 
-      <div class="title-wrapper">
-        <h1 class="h2 section-title">{{ 'sections.shop_body.title' | t | default: 'Collections' }}</h1>
+        {%- if section.settings.heading != blank -%}
+          <{{ heading_tag }} class="collection-showcase__title">{{ section.settings.heading }}</{{ heading_tag }}>
+        {%- endif -%}
+
+        {%- if section.settings.subheading != blank -%}
+          <p class="collection-showcase__subtitle">{{ section.settings.subheading }}</p>
+        {%- endif -%}
       </div>
+    {%- endif -%}
 
-      {% assign has_custom_collections = false %}
-      {% for block in section.blocks %}
-        {% if block.settings.specific_collection != blank %}
-          {% assign has_custom_collections = true %}
-          {% break %}
-        {% endif %}
-      {% endfor %}
+    {%- if use_curated_collections -%}
+      <div class="collection-showcase__grid">
+        {%- if has_curated_cards -%}
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign collection = block.settings.collection
+              assign card_title = block.settings.title
+              if card_title == blank and collection != blank
+                assign card_title = collection.title
+              endif
 
-      {% if has_custom_collections %}
-        <ul class="grid-list collection-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
-          {% for block in section.blocks %}
-            {% assign collection = block.settings.specific_collection %}
-            {% if collection != blank %}
-              <li class="decoration" style="list-style: none;" {{ block.shopify_attributes }}>
-                <div class="collection-card" style="text-align: center;">
-                  <a href="{{ collection.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300; border-radius: 8px; overflow: hidden; display: block; position: relative;">
-                    {% if collection.image %}
-                      <img src="{{ collection.image | image_url: width: 600 }}"
-                        srcset="{{ collection.image | image_url: width: 300 }} 300w,
-                                {{ collection.image | image_url: width: 600 }} 600w"
-                        sizes="(max-width: 480px) 100vw, 300px"
-                        alt="{{ collection.title | escape }}"
-                        class="img-cover"
-                        width="300"
-                        height="300"
-                        style="width: 100%; height: 100%; object-fit: cover;"
-                        loading="lazy">
-                    {% elsif collection.products.first and collection.products.first.featured_image %}
-                      <img src="{{ collection.products.first.featured_image | image_url: width: 600 }}"
-                        srcset="{{ collection.products.first.featured_image | image_url: width: 300 }} 300w,
-                                {{ collection.products.first.featured_image | image_url: width: 600 }} 600w"
-                        sizes="(max-width: 480px) 100vw, 300px"
-                        alt="{{ collection.title | escape }}"
-                        class="img-cover"
-                        width="300"
-                        height="300"
-                        style="width: 100%; height: 100%; object-fit: cover;"
-                        loading="lazy">
-                    {% else %}
+              assign card_description = block.settings.description
+              if card_description == blank and collection != blank
+                assign card_description = collection.description | strip_html
+              endif
+
+              assign card_image = block.settings.image
+              assign fallback_product = blank
+              if collection != blank
+                assign fallback_product = collection.products.first
+              endif
+
+              if card_image == blank and collection != blank and collection.image != blank
+                assign card_image = collection.image
+              elsif card_image == blank and fallback_product != blank and fallback_product.featured_image != blank
+                assign card_image = fallback_product.featured_image
+              endif
+
+              assign card_link = block.settings.link
+              if card_link == blank and collection != blank
+                assign card_link = collection.url
+              endif
+
+              assign card_cta = block.settings.cta_label | default: section.settings.cta_label
+            -%}
+
+            {%- if collection != blank or card_title != blank or card_image != blank -%}
+              <article class="collection-showcase__card" {{ block.shopify_attributes }}>
+                <a href="{{ card_link | default: '#' }}" class="collection-showcase__card-link">
+                  <div class="collection-showcase__media">
+                    {%- if block.settings.badge != blank -%}
+                      <span class="collection-showcase__badge">{{ block.settings.badge }}</span>
+                    {%- endif -%}
+
+                    {%- if card_image != blank -%}
+                      <img
+                        src="{{ card_image | image_url: width: 900 }}"
+                        srcset="{{ card_image | image_url: width: 400 }} 400w, {{ card_image | image_url: width: 700 }} 700w, {{ card_image | image_url: width: 900 }} 900w"
+                        sizes="(max-width: 640px) 100vw, (max-width: 990px) 50vw, 33vw"
+                        alt="{{ card_title | default: collection.title | escape }}"
+                        width="900"
+                        height="900"
+                        loading="lazy"
+                      >
+                    {%- else -%}
                       {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                    {% endif %}
-                  </a>
-                  <div class="card-content">
-                    <h3 class="h3">
-                      <a href="{{ collection.url }}" class="card-title">{{ collection.title }}</a>
-                    </h3>
-                    <p style="color: var(--granite-gray, #666);">{{ 'sections.shop_body.product_count' | t: count: collection.all_products_count }}</p>
+                    {%- endif -%}
                   </div>
-                </div>
-              </li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-      {% else %}
-        {% paginate collections by 12 %}
-        <ul class="grid-list collection-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
-          {% for collection in collections %}
-            <li class="decoration" style="list-style: none;">
-              <div class="collection-card" style="text-align: center;">
-                <a href="{{ collection.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300; border-radius: 8px; overflow: hidden; display: block; position: relative;">
-                  {% if collection.image %}
-                    <img src="{{ collection.image | image_url: width: 600 }}"
-                      srcset="{{ collection.image | image_url: width: 300 }} 300w,
-                              {{ collection.image | image_url: width: 600 }} 600w"
-                      sizes="(max-width: 480px) 100vw, 300px"
-                      alt="{{ collection.title | escape }}"
-                      class="img-cover"
-                      width="300"
-                      height="300"
-                      style="width: 100%; height: 100%; object-fit: cover;"
-                      loading="lazy">
-                  {% elsif collection.products.first and collection.products.first.featured_image %}
-                    <img src="{{ collection.products.first.featured_image | image_url: width: 600 }}"
-                      srcset="{{ collection.products.first.featured_image | image_url: width: 300 }} 300w,
-                              {{ collection.products.first.featured_image | image_url: width: 600 }} 600w"
-                      sizes="(max-width: 480px) 100vw, 300px"
-                      alt="{{ collection.title | escape }}"
-                      class="img-cover"
-                      width="300"
-                      height="300"
-                      style="width: 100%; height: 100%; object-fit: cover;"
-                      loading="lazy">
-                  {% else %}
-                    {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                  {% endif %}
+
+                  <div class="collection-showcase__content">
+                    <div class="collection-showcase__meta">
+                      {%- if collection != blank and section.settings.show_product_count -%}
+                        <span class="collection-showcase__count">
+                          {{ collection.all_products_count }}
+                          {{ collection.all_products_count | pluralize: 'product', 'products' }}
+                        </span>
+                      {%- endif -%}
+                    </div>
+
+                    {%- if card_title != blank -%}
+                      <h3 class="collection-showcase__card-title">{{ card_title }}</h3>
+                    {%- endif -%}
+
+                    {%- if section.settings.show_description and card_description != blank -%}
+                      <p class="collection-showcase__description">
+                        {{ card_description | strip_html | truncate: section.settings.description_length }}
+                      </p>
+                    {%- endif -%}
+
+                    {%- if section.settings.show_cta and card_cta != blank -%}
+                      <span class="collection-showcase__cta">
+                        {{ card_cta }}
+                      </span>
+                    {%- endif -%}
+                  </div>
                 </a>
-                <div class="card-content">
-                  <h3 class="h3">
-                    <a href="{{ collection.url }}" class="card-title">{{ collection.title }}</a>
-                  </h3>
-                  <p style="color: var(--granite-gray, #666);">{{ 'sections.shop_body.product_count' | t: count: collection.all_products_count }}</p>
+              </article>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- elsif request.design_mode -%}
+          {%- for i in (1..3) -%}
+            <article class="collection-showcase__card collection-showcase__card--placeholder">
+              <div class="collection-showcase__card-link">
+                <div class="collection-showcase__media">
+                  {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+                <div class="collection-showcase__content">
+                  <span class="collection-showcase__count">Collection</span>
+                  <h3 class="collection-showcase__card-title">Add a collection block</h3>
+                  <p class="collection-showcase__description">Select collections and optionally override each card image, text, and CTA.</p>
                 </div>
               </div>
-            </li>
-          {% endfor %}
-        </ul>
-        
-        {% if paginate.pages > 1 %}
-          <div style="margin-top: 40px; display: flex; justify-content: center;">
+            </article>
+          {%- endfor -%}
+        {%- else -%}
+          <article class="collection-showcase__empty-state">
+            <h3 class="collection-showcase__card-title">No curated collections selected</h3>
+            <p class="collection-showcase__description">Add collection card blocks or switch the section source to all store collections.</p>
+          </article>
+        {%- endif -%}
+      </div>
+    {%- else -%}
+      {% paginate collections by section.settings.collections_per_page %}
+        <div class="collection-showcase__grid">
+          {%- for collection in collections -%}
+            {%- liquid
+              assign card_image = collection.image
+              assign fallback_product = collection.products.first
+              if card_image == blank and fallback_product != blank and fallback_product.featured_image != blank
+                assign card_image = fallback_product.featured_image
+              endif
+            -%}
+
+            <article class="collection-showcase__card">
+              <a href="{{ collection.url }}" class="collection-showcase__card-link">
+                <div class="collection-showcase__media">
+                  {%- if card_image != blank -%}
+                    <img
+                      src="{{ card_image | image_url: width: 900 }}"
+                      srcset="{{ card_image | image_url: width: 400 }} 400w, {{ card_image | image_url: width: 700 }} 700w, {{ card_image | image_url: width: 900 }} 900w"
+                      sizes="(max-width: 640px) 100vw, (max-width: 990px) 50vw, 33vw"
+                      alt="{{ collection.title | escape }}"
+                      width="900"
+                      height="900"
+                      loading="lazy"
+                    >
+                  {%- else -%}
+                    {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+
+                <div class="collection-showcase__content">
+                  <div class="collection-showcase__meta">
+                    {%- if section.settings.show_product_count -%}
+                      <span class="collection-showcase__count">
+                        {{ collection.all_products_count }}
+                        {{ collection.all_products_count | pluralize: 'product', 'products' }}
+                      </span>
+                    {%- endif -%}
+                  </div>
+
+                  <h3 class="collection-showcase__card-title">{{ collection.title }}</h3>
+
+                  {%- if section.settings.show_description and collection.description != blank -%}
+                    <p class="collection-showcase__description">
+                      {{ collection.description | strip_html | truncate: section.settings.description_length }}
+                    </p>
+                  {%- endif -%}
+
+                  {%- if section.settings.show_cta and section.settings.cta_label != blank -%}
+                    <span class="collection-showcase__cta">
+                      {{ section.settings.cta_label }}
+                    </span>
+                  {%- endif -%}
+                </div>
+              </a>
+            </article>
+          {%- else -%}
+            <article class="collection-showcase__empty-state">
+              <h3 class="collection-showcase__card-title">No collections found</h3>
+              <p class="collection-showcase__description">Add collections to your store or switch this section to curated mode in the theme editor.</p>
+            </article>
+          {%- endfor -%}
+        </div>
+
+        {%- if section.settings.show_pagination and paginate.pages > 1 -%}
+          <div class="collection-showcase__pagination">
             {% render 'pagination', paginate: paginate %}
           </div>
-        {% endif %}
-        {% endpaginate %}
-      {% endif %}
-    </div>
-  </section>
+        {%- endif -%}
+      {% endpaginate %}
+    {%- endif -%}
+  </div>
+</section>
 
 <style>
-  .shop-body .title-wrapper {
+  #collection-showcase-{{ section.id }} {
+    color: var(--color-text);
+    background:
+      radial-gradient(circle at top right, rgba(212, 175, 55, 0.08), transparent 28%),
+      var(--color-background);
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__header {
+    max-width: 760px;
+    margin: 0 auto 3.2rem;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__header--left {
+    margin-left: 0;
+    text-align: left;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__header--center {
     text-align: center;
-    margin-bottom: 40px;
-  }
-  
-  .shop-body .section-title {
-    font-size: 3rem;
   }
 
-  .shop-body .card-content {
-    padding-top: 15px;
+  #collection-showcase-{{ section.id }} .collection-showcase__header--right {
+    margin-right: 0;
+    text-align: right;
   }
 
-  .shop-body .card-content h3 {
-    font-size: 1.5rem;
-    margin-bottom: 5px;
-    font-family: var(--ff-roboto);
+  #collection-showcase-{{ section.id }} .collection-showcase__eyebrow {
+    margin: 0 0 1rem;
+    color: var(--color-button);
+    font-size: 1.2rem;
+    font-weight: var(--fw-600);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
   }
 
-  .shop-body .card-title {
+  #collection-showcase-{{ section.id }} .collection-showcase__title {
+    margin: 0;
+    font-size: clamp(3rem, 4.5vw, 4.8rem);
+    line-height: 1.05;
+    font-weight: var(--fw-500);
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__subtitle {
+    margin: 1.2rem 0 0;
+    max-width: 62ch;
+    font-size: 1.6rem;
+    line-height: 1.7;
+    opacity: 0.82;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__header--center .collection-showcase__subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__header--right .collection-showcase__subtitle {
+    margin-left: auto;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--collection-showcase-columns), minmax(0, 1fr));
+    gap: 2.4rem;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__card,
+  #collection-showcase-{{ section.id }} .collection-showcase__empty-state {
+    min-width: 0;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     color: inherit;
-    text-decoration: none;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.48), transparent), var(--color-background);
+    border: 1px solid rgba(127, 127, 127, 0.22);
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    transition: transform var(--transition-1), box-shadow var(--transition-1), border-color var(--transition-1);
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__card-link:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.08);
+    border-color: var(--color-button);
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__media {
+    position: relative;
+    aspect-ratio: var(--collection-showcase-image-ratio);
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.03), transparent), var(--color-background);
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__media img,
+  #collection-showcase-{{ section.id }} .collection-showcase__media .placeholder-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__card-link:hover .collection-showcase__media img {
+    transform: scale(1.04);
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__badge {
+    position: absolute;
+    top: 1.4rem;
+    left: 1.4rem;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    padding: 0.4rem 1rem;
+    background: var(--color-button);
+    color: var(--color-button-label);
+    font-size: 1.1rem;
+    font-weight: var(--fw-600);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__content {
+    display: grid;
+    gap: 1.2rem;
+    padding: 2rem;
+    flex: 1;
+    align-content: start;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__count {
+    display: inline-flex;
+    align-items: center;
+    width: max-content;
+    padding: 0.5rem 0.9rem;
+    background: rgba(127, 127, 127, 0.14);
+    background: color-mix(in srgb, currentColor 8%, transparent);
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__card-title {
+    margin: 0;
+    font-family: var(--ff-roboto);
+    font-size: clamp(2rem, 2.4vw, 2.5rem);
+    line-height: 1.08;
+    font-weight: var(--fw-500);
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__description {
+    margin: 0;
+    font-size: 1.45rem;
+    line-height: 1.7;
+    opacity: 0.78;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    min-height: 4.2rem;
+    margin-top: 0.4rem;
+    padding: 0.9rem 1.4rem;
+    background: var(--color-button);
+    color: var(--color-button-label);
+    font-size: 1.1rem;
+    font-weight: var(--fw-600);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__empty-state {
+    grid-column: 1 / -1;
+    padding: 2.4rem;
+    text-align: center;
+    border: 1px solid rgba(127, 127, 127, 0.22);
+    border-color: color-mix(in srgb, currentColor 14%, transparent);
+    background: var(--color-background);
+  }
+
+  #collection-showcase-{{ section.id }} .collection-showcase__pagination {
+    margin-top: 3.2rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (max-width: 989px) {
+    #collection-showcase-{{ section.id }} .collection-showcase__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    #collection-showcase-{{ section.id }} .collection-showcase__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    #collection-showcase-{{ section.id }} .collection-showcase__content {
+      padding: 1.6rem;
+    }
   }
 </style>
-   
 
-  
 {% schema %}
+{
+  "name": "Collection showcase",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 12,
+  "settings": [
     {
-    "name": "Shop body",
-    "settings": [
-      {
-        "type": "color_scheme","id": "color_scheme","label": "Color scheme","default": "scheme-1"
-      }
-    ],
-    "blocks": [
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Shop by collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Discover our signature collections"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Curate the collections you want to spotlight or let the section pull every collection in your store automatically."
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Header alignment",
+      "default": "center",
+      "options": [
         {
-        "type": "collection_section",
-        "name": "Collection section",
-        "settings": [
-            {
-            "type": "collection",
-            "id": "specific_collection",
-            "label": "Select Collection"
-            }
-        ]
-        }
-    ],
-    "presets": [
+          "value": "left",
+          "label": "Left"
+        },
         {
-        "name": "Shop body",
-        "category": "Collections",
-        "blocks": [
-          {
-            "type": "collection_section"
-          },
-          {
-            "type": "collection_section"
-          },
-          {
-            "type": "collection_section"
-          }
-        ]
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
         }
-    ]
+      ]
+    },
+    {
+      "type": "select",
+      "id": "collection_source",
+      "label": "Collection source",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Use blocks when available"
+        },
+        {
+          "value": "curated",
+          "label": "Only curated blocks"
+        },
+        {
+          "value": "all",
+          "label": "All store collections"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "collections_per_page",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "label": "Collections per page",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Desktop columns",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "default": "square",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show description",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "description_length",
+      "min": 60,
+      "max": 180,
+      "step": 10,
+      "label": "Description length",
+      "default": 110
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show card CTA",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Default CTA label",
+      "default": "Shop collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination in all collections mode",
+      "default": true
     }
+  ],
+  "blocks": [
+    {
+      "type": "collection_card",
+      "name": "Collection card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image override"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge label"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title override"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description override"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom link"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "CTA label override"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection showcase",
+      "category": "Collections",
+      "blocks": [
+        {
+          "type": "collection_card"
+        },
+        {
+          "type": "collection_card"
+        },
+        {
+          "type": "collection_card"
+        }
+      ]
+    }
+  ]
+}
 {% endschema %}
-
-
-
