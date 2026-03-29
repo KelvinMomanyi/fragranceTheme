@@ -13,16 +13,16 @@
 
 <section class="section hero1 text-center color-scheme-{{ section.settings.color_scheme }}" style="min-height: 50vh; {% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" aria-label="home" id="home">
   {% comment %} <div class="container"> {% endcomment %}
-    <ul class="hero-slideshow" data-hero-slideshow>
+    <ul class="hero1-slider" data-hero-slider>
       {% if section.blocks.size == 0 %}
-        <li class="slideshow-item active" data-hero-slideshow-item style="padding-block-start: 70px;">
+        <li class="slider-item active" data-hero-slider-item style="padding-block-start: 70px;">
     
-            <div class="slideshow-bg hero-card has-bg-image">
+            <div class="slider-bg hero1-card has-bg-image">
               {{ 'product-1' | placeholder_svg_tag: 'hero1-placeholder' }}
             </div>
       
             <div class="card-content">
-            <h1 class="h1 hero-title slideshow-reveal">
+            <h1 class="h1 hero-title slider-reveal">
               Product
             </h1>
             <p class="price slider-reveal"> Starting at $17.99</p>
@@ -32,14 +32,14 @@
             </div>
     
         </li>
-        <li class="slideshow-item" data-hero-slideshow-item style="padding-block-start:70px;">
+        <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
     
           <div class="slider-bg hero1-card has-bg-image">
             {{ 'product-2' | placeholder_svg_tag: 'hero1-placeholder' }}
           </div>
     
           <div class="card-content">
-            <h1 class="h1 hero-title slideshow-reveal">
+            <h1 class="h1 hero-title slider-reveal">
               Product 
               </h1>
               <p class="price slider-reveal"> Starting at $17.99</p>
@@ -55,7 +55,7 @@
           </div>
     
           <div class="card-content">
-            <h1 class="h1 hero-title slideshow-reveal">
+            <h1 class="h1 hero-title slider-reveal">
               Product
             </h1>
             <p class="price slider-reveal"> Starting at $17.99</p>
@@ -66,14 +66,14 @@
     
         </li>
         
-        <li class="slideshow-item" data-hero-slideshow-item style="padding-block-start:70px;">
+        <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
     
           <div class="slider-bg hero1-card has-bg-image">
             {{ 'product-4' | placeholder_svg_tag: 'hero1-placeholder' }}
           </div>
     
           <div class="card-content">
-            <h1 class="h1 hero-title slideshow-reveal">
+            <h1 class="h1 hero-title slider-reveal">
               Product
               </h1>
               <p class="price slider-reveal"> Starting at $17.99</p>
@@ -82,42 +82,42 @@
               </div>
             </div>
         </li>
-        <li class="slideshow-item" data-hero-slideshow-item style="padding-block-start:70px;">
+        <li class="slider-item" data-hero-slider-item style="padding-block-start:70px;">
           <div class="slider-bg hero1-card has-bg-image">
             {{ 'product-5' | placeholder_svg_tag: 'hero1-placeholder' }}
           </div>
     
           <div class="card-content">
-            <h1 class="h1 hero-title slideshow-reveal">
+            <h1 class="h1 hero-title slider-reveal">
               Product
               </h1>
-              <p class="price slideshow-reveal"> Starting at $17.99</p>
+              <p class="price slider-reveal"> Starting at $17.99</p>
               <div style="display: flex; justify-content: flex-start;">
-                <a href="#" class="btn btn-primary slideshow-reveal">Shop Now</a>
+                <a href="#" class="btn btn-primary slider-reveal">Shop Now</a>
               </div>
             </div>
         </li>
-        <li class="slideshow-item" data-hero-slideshow-item style="padding-block-start:70px;">
+        <li class="slider-item" data-hero-slider-item  style="padding-block-start:70px;">
     
-          <div class="slideshow-bg hero1-card has-bg-image">
+          <div class="slider-bg hero1-card has-bg-image">
             {{ 'product-6' | placeholder_svg_tag: 'hero1-placeholder' }}
           </div>
     
           <div class="card-content">
-            <h1 class="h1 hero-title slideshow-reveal">
+            <h1 class="h1 hero-title slider-reveal">
               Valentino
               </h1>
-              <p class="price slideshow-reveal"> Starting at $17.99</p>
+              <p class="price slider-reveal"> Starting at $17.99</p>
               <div style="display: flex; justify-content: flex-start;">
-                <a href="#" class="btn btn-primary slideshow-reveal">Shop Now</a>
+                <a href="#" class="btn btn-primary slider-reveal">Shop Now</a>
               </div>
             </div>
         </li>
       {% else %}
       {% for block in section.blocks %}
-          <li class="slideshow-item{% if forloop.first %} active{% endif %}" data-hero-slideshow-item style="padding-block-start: 70px;" {{ block.shopify_attributes }}>
+          <li class="slider-item{% if forloop.first %} active{% endif %}" data-hero-slider-item style="padding-block-start: 70px;" {{ block.shopify_attributes }}>
 
-            <div class="slideshow-bg hero1-card has-bg-image">
+            <div class="slider-bg hero1-card has-bg-image">
               {% if block.settings.hero_image != blank %}
                 {% liquid
                   assign loading = 'lazy'
@@ -138,12 +138,12 @@
             </div>
           
             <div class="card-content">
-              <h1 class="h1 hero-title slideshow-reveal">
+              <h1 class="h1 hero-title slider-reveal">
                 {{ block.settings.brand_name }}
               </h1>
-              <p class="price slideshow-reveal"> Starting at {{ block.settings.starting_price }}</p>
+              <p class="price slider-reveal"> Starting at {{ block.settings.starting_price }}</p>
               <div style="display: flex; justify-content: flex-start;">
-                <a href="{{ block.settings.shop_now_link }}" class="btn btn-primary slideshow-reveal">{{ block.settings.shop_now_text }}</a>
+                <a href="{{ block.settings.shop_now_link }}" class="btn btn-primary slider-reveal">{{ block.settings.shop_now_text }}</a>
               </div>
             </div>
           
@@ -152,11 +152,11 @@
       {%  endif %}
     </ul>
   
-    <button class="slideshow-btn prev" aria-label="slide to previous" data-prev-btn>
+    <button class="slider-btn prev" aria-label="slide to previous" data-prev-btn>
     {% render 'icon-velour', icon: 'chevron-back' %}
     </button>
   
-    <button class="slideshow-btn next" aria-label="slide to next" data-next-btn>
+    <button class="slider-btn next" aria-label="slide to next" data-next-btn>
      {% render 'icon-velour', icon: 'chevron-forward' %}
     </button>
   {% comment %} </div> {% endcomment %}
@@ -166,7 +166,7 @@
   #HERO
 \*-----------------------------------*/
 
-.hero1 .slideshow-btn { display: none; }
+.hero1 .slider-btn { display: none; }
 
 .hero1 {
   position: relative;
@@ -176,7 +176,23 @@
   z-index: 1;
 }
 
-.hero1 .slideshow-item {
+/* .hero1 .slider-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%; 
+  height: 100%;
+  display: grid;
+  place-content:center;
+  padding-inline-start:50px;
+  padding-block-end:130px;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition-3);
+  z-index: 1;
+} */
+.hero1 .slider-item {
   position: absolute;
   top: 50%; /* Position the content halfway vertically */
   left: 0%; /* Align content to the left */
@@ -195,12 +211,12 @@
 }
 
 
-.hero1 .slideshow-item.active {
+.hero1 .slider-item.active {
   opacity: 1;
   visibility: visible;
 }
 
-.hero1 .slideshow-bg {
+.hero1 .slider-bg {
   position: absolute;
   top: 0;
   left: 0;
@@ -216,7 +232,7 @@
   z-index: -1;
 }
 
-.hero1 .slideshow-bg::before {
+.hero1 .slider-bg::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -224,8 +240,8 @@
   z-index: 1;
 }
 
-.hero1 .slideshow-bg .hero1-bg-img,
-.hero1 .slideshow-bg .hero1-placeholder {
+.hero1 .slider-bg .hero1-bg-img,
+.hero1 .slider-bg .hero1-placeholder {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -235,7 +251,7 @@
   z-index: 0;
 }
 
-.hero1 .slideshow-item.active .slideshow-bg {
+.hero1 .slider-item.active .slider-bg {
   animation: smoothScale 7s linear forwards;
 }
 
@@ -281,22 +297,22 @@
   animation: rotate360 15s linear infinite;
 }
 
-.slideshow-reveal {
+.slider-reveal {
   transform: translateY(30px);
   opacity: 0;
 }
 
-.hero1 .slideshow-item.active .slideshow-reveal {
-  animation: slideshowReveal 1s ease forwards;
+.hero1 .slider-item.active .slider-reveal {
+  animation: sliderReveal 1s ease forwards;
 }
 
 
-.hero1 .slideshow-item .card-content{
+.hero1 .slider-item .card-content{
   color: var(--color-text);
 }
 
 
-@keyframes slideshowReveal {
+@keyframes sliderReveal {
   0% {
     transform: translateY(30px);
     opacity: 0;
@@ -308,21 +324,21 @@
   }
 }
 
-.hero1  .slideshow-item.active .section-subtitle { animation-delay: 100ms; }
+.hero1  .slider-item.active .section-subtitle { animation-delay: 100ms; }
 
-.hero1 .slideshow-item.active .hero-title { animation-delay: 300ms; }
+.hero1 .slider-item.active .hero-title { animation-delay: 300ms; }
 
-.hero1 .slideshow-item.active .hero-text { animation-delay: 700ms; }
+.hero1 .slider-item.active .hero-text { animation-delay: 700ms; }
 
-.hero1 .slideshow-item.active .price { animation-delay: 1s; }
+.hero1 .slider-item.active .price { animation-delay: 1s; }
 
-.hero1 .slideshow-item.active .btn { animation-delay: 1.5s;}
+.hero1 .slider-item.active .btn { animation-delay: 1.5s;}
 
 /**
  * responsive for larger than 1200px screen
  */
  @media screen and (max-width: 575px){
-  .hero1 .slideshow-item {
+  .hero1 .slider-item {
     padding-inline-start: 35px;
   }
   
@@ -331,6 +347,8 @@
  @media screen and (max-width: 992px){
  
 }
+ @media (min-width: 1200px) {
+
   /**
    * HERO
    */
@@ -353,62 +371,69 @@
         elements[i].addEventListener(eventType, callback)
     }
   }  
-    /*HERO SLIDESHOW*/
-  const heroSlideshow = document.querySelector('[data-hero-slideshow]')
-  const heroSlideshowItems = document.querySelectorAll("[data-hero-slideshow-item]")
-  const heroSlideshowPrevBtn = document.querySelector("[data-prev-btn]")
-  const heroSlideshowNextBtn = document.querySelector("[data-next-btn]")
+    /*HERO SLIDER*/
+  const heroSlider = document.querySelector('[data-hero-slider]')
+  const heroSliderItems = document.querySelectorAll("[data-hero-slider-item]")
+  const heroSliderPrevBtn = document.querySelector("[data-prev-btn]")
+  const heroSliderNextBtn = document.querySelector("[data-next-btn]")
   
-  if (!heroSlideshow || heroSlideshowItems.length === 0 || !heroSlideshowPrevBtn || !heroSlideshowNextBtn) {
+  if (!heroSlider || heroSliderItems.length === 0 || !heroSliderPrevBtn || !heroSliderNextBtn) {
     return
   }
 
   let currentSlidePos = 0;
-  let lastActiveSlideshowItem = heroSlideshowItems[0];
+  let lastActiveSliderItem = heroSliderItems[0];
   
-  const updateSlideshowPos = function(){
-    lastActiveSlideshowItem.classList.remove('active');
-    heroSlideshowItems[currentSlidePos].classList.add('active');
-    lastActiveSlideshowItem = heroSlideshowItems[currentSlidePos]
+  const updateSliderPos = function(){
+    lastActiveSliderItem.classList.remove('active');
+    heroSliderItems[currentSlidePos].classList.add('active');
+    lastActiveSliderItem = heroSliderItems[currentSlidePos]
   }
   
   const slideNext = function(){
-    if(currentSlidePos >= heroSlideshowItems.length -1){
+    if(currentSlidePos >= heroSliderItems.length -1){
       currentSlidePos =0
     } else {
       currentSlidePos++
     }
-    updateSlideshowPos()
+    updateSliderPos()
   }
   
   const slidePrev = function(){
     if(currentSlidePos < 1){
-      currentSlidePos = heroSlideshowItems.length -1
+      currentSlidePos = heroSliderItems.length -1
     }else{
       currentSlidePos--
     }
-    updateSlideshowPos()
+    updateSliderPos()
   }
   
-  heroSlideshowPrevBtn.addEventListener("click", slidePrev)
-  heroSlideshowNextBtn.addEventListener("click", slideNext)
+  heroSliderPrevBtn.addEventListener("click", slidePrev)
+  heroSliderNextBtn.addEventListener("click", slideNext)
   let autoSlideInterval;
   
-  const autoSlideshow = function(){
+  const autoSlide = function(){
     autoSlideInterval = setInterval(function(){
       slideNext()
     }, 7000)
   }
   
-  addEventOnElements([heroSlideshowNextBtn, heroSlideshowPrevBtn], 'mouseover', function(){
+  addEventOnElements([heroSliderNextBtn, heroSliderPrevBtn], 'mouseover', function(){
     clearInterval(autoSlideInterval)
   })
   
-  addEventOnElements([heroSlideshowNextBtn, heroSlideshowPrevBtn], 'mouseout', autoSlideshow)
+  addEventOnElements([heroSliderNextBtn, heroSliderPrevBtn], 'mouseout', autoSlide)
   
   if (document.readyState === "complete") {
-    autoSlideshow()
+    autoSlide()
   } else {
+    window.addEventListener("load", autoSlide)
+  }
+  
+  const parallaxItems = document.querySelectorAll("[data-parallax-item]")
+  
+  let x,y;
+  
   window.addEventListener('mousemove', function(event){
    
      x = (event.clientX / window.innerWidth * 10)-5;
@@ -432,7 +457,7 @@
 
   {% schema %}
 {
-  "name": "Hero slideshow",
+  "name": "Hero Carousel",
   "settings": [
     {
       "type": "color_scheme",
@@ -481,7 +506,7 @@
   ],
   "presets": [
     {
-      "name": "Hero slideshow",
+      "name": "Hero Carousel",
       "category": "Banners",
       "blocks": [
         {
