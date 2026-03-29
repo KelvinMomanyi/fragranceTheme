@@ -7,12 +7,7 @@
   <link rel="preload" as="image" href="{{ 'ShoesPuma2.jpg' | asset_url }}">
   <link rel="preload" as="image" href="{{ 'ShoesConverse2.jpg' | asset_url }}"> {% endcomment %}
 
-  <!-- Preload images dynamically if section blocks are used -->
-  {% for block in section.blocks %}
-    {% if block.settings.hero_image %}
-      <link rel="preload" as="image" href="{{ block.settings.hero_image | image_url }}">
-    {% endif %}
-  {% endfor %}
+  {% comment %} Preload handled natively by image_tag below {% endcomment %}
 {% endunless %}
 
 

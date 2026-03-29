@@ -1,7 +1,7 @@
 <div id="cookieConsent" class="cookie-popup">
   <p class="cookie-message">
     We use cookies to ensure you get the best experience on our website. 
-    <a href="/privacy-policy" class="cookie-link">Learn more</a>
+    <a href="{{ shop.privacy_policy.url | default: '/policies/privacy-policy' }}" class="cookie-link">Learn more</a>
   </p>
   <button id="acceptCookie" class="cookie-btn">Got it!</button>
 </div>

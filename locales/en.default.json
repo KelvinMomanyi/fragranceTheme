@@ -571,6 +571,14 @@
       "use_fewer_filters_html": "Use fewer filters or <a class=\"{{ class }}\" href=\"{{ link }}\">clear all</a>"
     }
   },
+  "customer_accounts": {
+    "shop_ads": {
+      "subtitle": "Available for a limited time",
+      "button": "Discover the shop",
+      "previous_button": "Previous",
+      "next_button": "Next"
+    }
+  },
   "names": {
     "details": "Product details",
     "product_buy_buttons": "Buy buttons",

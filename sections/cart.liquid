@@ -16,7 +16,7 @@
           <tr class="cart-item" data-line="{{ forloop.index }}">
             <td class="cart-item__image">
               <a href="{{ item.url | within: collections.all }}">
-                <img src="{{ item | image_url: width: 240 }}" alt="{{ item.title | escape }}" loading="lazy">
+                <img src="{{ item | image_url: width: 240 }}" width="104" height="104" alt="{{ item.title | escape }}" loading="lazy">
               </a>
             </td>
             <td class="cart-item__details">

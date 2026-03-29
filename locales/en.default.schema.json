@@ -16,5 +16,28 @@
         "padding_bottom": "Bottom padding"
       }
     }
+  },
+  "names": {
+    "accelerated_checkout": "Accelerated Checkout",
+    "accordion": "Accordion",
+    "accordion_row": "Accordion Row",
+    "add_to_cart": "Add to Cart",
+    "button": "Button",
+    "details": "Details",
+    "divider": "Divider",
+    "group": "Group",
+    "product_media": "Product Media",
+    "icon": "Icon",
+    "image": "Image",
+    "product_buy_buttons": "Product Buy Buttons",
+    "product_custom_property": "Product Custom Property",
+    "product_inventory": "Product Inventory",
+    "product_review_stars": "Product Review Stars",
+    "product_title": "Product Title",
+    "product_variant_picker": "Product Variant Picker",
+    "quantity": "Quantity",
+    "spacer": "Spacer",
+    "text": "Text",
+    "video": "Video"
   }
 }

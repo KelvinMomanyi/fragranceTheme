@@ -7,9 +7,9 @@
     {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
     {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
   </title>
-  {% if template == 'collection' and collection.image %}
-    <link rel="preload" as="image" href="{{ collection.image | image_url: width: 1600 }}" imagesrcset="{{ collection.image | image_url: width: 750 }} 750w, {{ collection.image | image_url: width: 1100 }} 1100w, {{ collection.image | image_url: width: 1500 }} 1500w, {{ collection.image | image_url: width: 1780 }} 1780w, {{ collection.image | image_url: width: 2000 }} 2000w" imagesizes="100vw">
-  {% endif %}
+  {%- comment -%}
+    Image preload handled inline with image_tag: preload: true
+  {%- endcomment -%}
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   {% if page_description %}
@@ -19,19 +19,20 @@
   <link rel="canonical" href="{{ canonical_url }}" />
 
   {%- if request.page_type == 'index' -%}
-    {% assign potential_action_target = shop.url | append: routes.search_url | append: "?q={search_term_string}" %}
     <meta name="robots" content="index, follow">
   {%- endif -%}
 
+  {% comment %} theme-check-disable RemoteAsset {% endcomment %}
   {%- for locale in shop.published_locales -%}
-    <link rel="alternate" hreflang="{{ locale.iso_code }}" href="{{ locale.root_url }}{{ request.path }}">
+    <link rel="alternate" hreflang="{{ locale.iso_code }}" href="{{ locale.root_url | append: request.path }}">
   {%- endfor -%}
-  <link rel="alternate" hreflang="x-default" href="{{ shop.url }}{{ request.path }}">
+  <link rel="alternate" hreflang="x-default" href="{{ shop.url | append: request.path }}">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="preconnect" href="//cdn.shopify.com" crossorigin>
-  <link rel="dns-prefetch" href="//cdn.shopify.com">
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.shopify.com">
+  {% comment %} theme-check-enable RemoteAsset {% endcomment %}
 
   {%- comment -%}
     Font preloads removed — fonts are loaded via application.css with font-display:swap.
@@ -42,7 +43,7 @@
   {% render 'social-meta-tags' %}
   {% render 'structured-data' %}
   
-  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="shortcut icon" href="{{ 'favicon.svg' | asset_url }}" type="image/svg+xml">
   
   <!-- Fonts are now loaded via application.css.liquid based on theme settings -->
 
@@ -89,8 +90,7 @@
   </style>
 
   <!-- Full CSS loaded asynchronously (non-render-blocking) -->
-  <link rel="preload" href="{{ 'application.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript>{{ 'application.css' | asset_url | stylesheet_tag }}</noscript>
+  {{ 'application.css' | asset_url | stylesheet_tag: preload: true }}
   
   <!-- Lightweight AOS replacement - CSS-only fade-up animations -->
   <style>

@@ -1,7 +1,4 @@
-{% comment %} Preload only first above-the-fold image {% endcomment %}
-{% if section.settings.image1 != blank %}
-  <link rel="preload" as="image" href="{{ section.settings.image1 | image_url: width: 600 }}">
-{% endif %}
+{% comment %} Preload only first above-the-fold image handled inline {% endcomment %}
 
 
 <section class="section hero color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="home" aria-label="home">

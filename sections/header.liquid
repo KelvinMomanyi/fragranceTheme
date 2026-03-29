@@ -13,7 +13,7 @@
       </div>
       
       <div class="header-center">
-      <a href="/" class="logo"  >
+      <a href="{{ routes.root_url }}" class="logo"  >
         {% assign default_width = 69 %}
         {% assign default_height = 26 %}
         {% assign scaled_width = default_width | times: section.settings.logo_scale %}
@@ -29,7 +29,7 @@
               loading="eager"
             />
            {% else %}
-            <a href="/" class="logo">Velour</a>
+            <a href="{{ routes.root_url }}" class="logo">Velour</a>
           {% endif %} 
         </a>
       </div>

@@ -37,11 +37,13 @@
                     srcset="{{ block.settings.logo_image | image_url: width: 150 }} 150w,
                             {{ block.settings.logo_image | image_url: width: 300 }} 300w"
                     sizes="{{ section.settings.logo_width }}px"
+                    width="{{ section.settings.logo_width }}"
+                    height="auto"
                     alt="{{ block.settings.logo_alt }}" 
                     style="width: {{ section.settings.logo_width }}px;" />
                 </a>
               {% else %}
-                <img src="{{ block.settings.logo_image | image_url }}" alt="{{ block.settings.logo_alt }}" style="width: {{ section.settings.logo_width }}px;" />
+                <img src="{{ block.settings.logo_image | image_url }}" width="{{ section.settings.logo_width }}" height="auto" alt="{{ block.settings.logo_alt }}" style="width: {{ section.settings.logo_width }}px;" />
               {% endif %}
             </li>
           {% endif %}
@@ -56,11 +58,13 @@
                     srcset="{{ block.settings.logo_image | image_url: width: 150 }} 150w,
                             {{ block.settings.logo_image | image_url: width: 300 }} 300w"
                     sizes="{{ section.settings.logo_width }}px"
+                    width="{{ section.settings.logo_width }}"
+                    height="auto"
                     alt="{{ block.settings.logo_alt }}" 
                     style="width: {{ section.settings.logo_width }}px;" />
                 </a>
               {% else %}
-                <img src="{{ block.settings.logo_image | image_url }}" alt="{{ block.settings.logo_alt }}" style="width: {{ section.settings.logo_width }}px;" />
+                <img src="{{ block.settings.logo_image | image_url }}" width="{{ section.settings.logo_width }}" height="auto" alt="{{ block.settings.logo_alt }}" style="width: {{ section.settings.logo_width }}px;" />
               {% endif %}
             </li>
           {% endif %}

@@ -156,24 +156,24 @@
             </h3>
             <span class="card-tag">Sweet, Cozy</span>
           </div>
-
-          <a href="#" class="btn-icon">
+          <a href="#" class="btn-icon">
             <img src="{{'arrow-forward.svg' | asset_url}}" width="43" height="20" loading="lazy" alt="arrow-forward icon">
           </a>
         </div>
       </li>
 
     </ul> {% endcomment %}
+    
       <ul class="gallery-list">
-        {% assign items = 8 %}
-        {% for i in (1..items) %}
-          {% if forloop.index == 1 or forloop.index == 3 or forloop.index == 5 or forloop.index == 7 %}
-            <li class="gallery-item" data-reveal>
-          {% endif %}
-
+        {% for block_idx in (1..4) %}
+          <li class="gallery-item" data-reveal>
+            {% assign idx1 = block_idx | times: 2 | minus: 1 %}
+            {% assign idx2 = block_idx | times: 2 %}
+            
+            {% for forloop_index in (idx1..idx2) %}
               <div class="gallery-card">
                 <figure class="card-banner img-holder has-before" style="--width: 450; --height: 625;">
-                  {% assign image_key = 'image_' | append: forloop.index %}
+                  {% assign image_key = 'image_' | append: forloop_index %}
                   {% assign image = section.settings[image_key] %}
                   
                   {% if image != blank %}
@@ -184,7 +184,7 @@
                         width="450" 
                         height="625" 
                         loading="lazy" 
-                        alt="{{ image.alt | default: section.settings[title_key] }}"
+                        alt="{{ image.alt | default: 'Gallery visual' }}"
                         class="img-cover">
                   {% else %}
                     {{ 'product-5' | placeholder_svg_tag: 'img-cover' }}
@@ -193,13 +193,13 @@
 
                 <div class="card-content">
                   <h3 class="h6">
-                    {% assign title_key = 'title_' | append: forloop.index %}
-                    {% assign link_key = 'link_' | append: forloop.index %}
+                    {% assign title_key = 'title_' | append: forloop_index %}
+                    {% assign link_key = 'link_' | append: forloop_index %}
                     <a href="{{ section.settings[link_key] }}" class="card-title">
                       {{ section.settings[title_key] }}
                     </a>
                   </h3>
-                  {% assign tag_key = 'tag_' | append: forloop.index %}
+                  {% assign tag_key = 'tag_' | append: forloop_index %}
                   <span class="card-tag">{{ section.settings[tag_key] }}</span>
                 </div>
 
@@ -211,17 +211,14 @@
                       alt="arrow-forward icon">
                 </a>
               </div>
-
-          {% if forloop.index == 2 or forloop.index == 4 or forloop.index == 6 or forloop.index == 8 %}
-            </li>
-          {% endif %}
+            {% endfor %}
+          </li>
         {% endfor %}
       </ul>
   </div>
 </section>
 
-
-  <style>
+<style>
     /*-----------------------------------*\
   #GALLERY
 \*-----------------------------------*/
