@@ -464,6 +464,7 @@
       "related_products": "You may also like",
       "one_time_purchase": "One-time purchase",
       "price": {
+        "from_price_html": "Ab {{ price }}",
         "regular_price": "Regular price",
         "sale_price": "Sale price",
         "unit_price": "Unit price"
