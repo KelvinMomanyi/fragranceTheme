@@ -173,6 +173,7 @@
                       sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
                       alt="{{ product.featured_image.alt | escape }}"
                       class="img-cover"
+                      style="{% render 'focal-point-style', image: product.featured_image %}"
                       width="300"
                       height="300"
                       {% if forloop.index <= 6 %}

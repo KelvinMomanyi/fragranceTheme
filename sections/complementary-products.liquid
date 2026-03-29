@@ -1,8 +1,8 @@
-<div class="complementary-products section-{{ section.id }} color-scheme-{{ section.settings.color_scheme }}">
+<div class="complementary-products section-{{ section.id }} color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}">
   {% if product.id %}
     <product-recommendations
       class="complementary-products__recommendations"
-      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.product_limit }}&intent=related"
+      data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.product_limit }}&intent=complementary"
       data-product-id="{{ product.id }}"
       data-section-id="{{ section.id }}"
     >
@@ -31,6 +31,7 @@
                         sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
                         alt="{{ complementary_product.featured_image.alt | escape }}"
                         class="img-cover"
+                        style="{% render 'focal-point-style', image: complementary_product.featured_image %}"
                         width="300"
                         height="300"
                         loading="lazy"
@@ -100,39 +101,6 @@
     </product-recommendations>
   {% endif %}
 </div>
-
-<script>
-(function() {
-  if (!customElements.get('product-recommendations')) {
-    class ProductRecommendations extends HTMLElement {
-      constructor() {
-        super();
-        this.fetchRecommendations();
-      }
-
-      fetchRecommendations() {
-        const url = this.dataset.url;
-        fetch(url)
-          .then(response => response.text())
-          .then(text => {
-            const html = new DOMParser().parseFromString(text, 'text/html');
-            const recommendations = html.querySelector('product-recommendations');
-            if (recommendations && recommendations.innerHTML.trim().length) {
-              this.innerHTML = recommendations.innerHTML;
-            }
-          })
-          .catch(error => {
-            console.error('Error loading complementary products:', error);
-          });
-      }
-    }
-
-    if (!customElements.get('product-recommendations')) {
-      customElements.define('product-recommendations', ProductRecommendations);
-    }
-  }
-})();
-</script>
 
 <style>
   .complementary-products {
@@ -250,6 +218,12 @@
       "step": 1,
       "label": "Maximum products to show",
       "default": 4
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "presets": [

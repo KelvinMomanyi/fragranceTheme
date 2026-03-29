@@ -15,13 +15,30 @@
               </p>
             </div>
 
-            <form action="" class="card-form">
-              <input type="email" name="email_address" placeholder="Your email address" required class="email-field" aria-label="Email address">
+            {%- form 'customer', class: 'card-form' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <input
+                type="email"
+                name="contact[email]"
+                placeholder="Your email address"
+                required
+                class="email-field"
+                aria-label="Email address"
+                value="{{ form.email }}"
+              >
 
               <button type="submit" class="newsletter-btn" aria-label="subscribe">
                 {% render 'icon-velour', icon: 'arrow-forward' %}
               </button>
-            </form>
+
+              {%- if form.posted_successfully? -%}
+                <p class="newsletter-status" role="status">Thanks for subscribing.</p>
+              {%- elsif form.errors -%}
+                <div class="newsletter-status newsletter-status--error">
+                  {{ form.errors | default_errors }}
+                </div>
+              {%- endif -%}
+            {%- endform -%}
 
           </div>
 

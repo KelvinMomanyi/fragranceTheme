@@ -38,6 +38,16 @@
     document.body.classList.toggle('modal-open', openModal);
   }
 
+  function resetSidebarSubmenus() {
+    document.querySelectorAll('[data-submenu-toggle]').forEach(function(toggle) {
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+
+    document.querySelectorAll('.dropdown-list, .dropdown-sublist').forEach(function(menu) {
+      menu.hidden = true;
+    });
+  }
+
   var sidebarHideTimer = null;
 
   function setSidebarState(isOpen) {
@@ -71,6 +81,7 @@
     sidebarHideTimer = window.setTimeout(function() {
       navbar.hidden = true;
       overlay.hidden = true;
+      resetSidebarSubmenus();
     }, 550);
   }
 
@@ -219,6 +230,17 @@
   /* UI Toggles (Sidebar) */
   document.addEventListener('click', function(event) {
     var target = event.target;
+
+    var submenuToggle = target.closest('[data-submenu-toggle]');
+    if (submenuToggle) {
+      var controlledMenu = document.getElementById(submenuToggle.getAttribute('aria-controls'));
+      if (controlledMenu) {
+        var isExpanded = submenuToggle.getAttribute('aria-expanded') === 'true';
+        submenuToggle.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+        controlledMenu.hidden = isExpanded;
+      }
+      return;
+    }
     
     // Sidebar Toggle (Nav Toggler)
     var navToggler = target.closest('[data-nav-toggler]');

@@ -783,10 +783,7 @@
     background: #000 !important;
   }
 
-  .product-form__buttons-dynamic .shopify-payment-button__button {
-    background: transparent !important;
-    color: #111 !important;
-    border: 1px solid #111 !important;
+  .product-form__buttons-dynamic .shopify-payment-button__button--unbranded {
     border-radius: 4px !important;
     padding: 1.3em 2em !important;
     font-size: 1.4rem !important;
@@ -797,9 +794,8 @@
     transition: 0.3s !important;
   }
 
-  .product-form__buttons-dynamic .shopify-payment-button__button:hover {
-    background: #111 !important;
-    color: #fff !important;
+  .product-form__buttons-dynamic .shopify-payment-button__button--unbranded:hover {
+    opacity: 0.9;
   }
 
   /* Accordion */
@@ -1051,10 +1047,9 @@
     letter-spacing: 0.05em !important;
   }
 
-  #product-{{ product.id }} .product-form__buttons-dynamic .shopify-payment-button__button {
+  #product-{{ product.id }} .product-form__buttons-dynamic .shopify-payment-button__button--unbranded {
     min-height: 48px !important;
     border-radius: 0 !important;
-    border-color: var(--light-gray) !important;
   }
 
   #product-{{ product.id }} .accordion-item {
@@ -1560,8 +1555,8 @@ document.addEventListener('DOMContentLoaded', function() {
   ],
   "presets": [
     {
-      "name": "Main product",
-      "category": "Pages",
+      "name": "Featured product",
+      "category": "Products",
       "blocks": [
         { "type": "title" },
         { "type": "vendor" },

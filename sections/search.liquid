@@ -63,6 +63,7 @@
                                       {{ item.image | image_url: width: 400 }} 400w"
                               sizes="(max-width: 480px) 100vw, 400px"
                               alt="{{ item.image.alt | escape }}" loading="lazy"
+                              style="{% render 'focal-point-style', image: item.image %}"
                               width="400" height="400">
                           {%- elsif item.object_type == 'article' and item.image -%}
                              <img src="{{ item.image | image_url: width: 400 }}" 
@@ -70,6 +71,7 @@
                                        {{ item.image | image_url: width: 400 }} 400w"
                                sizes="(max-width: 480px) 100vw, 400px"
                                alt="{{ item.image.alt | escape }}" loading="lazy"
+                               style="{% render 'focal-point-style', image: item.image %}"
                                 width="400" height="400">
                           {%- else -%}
                             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}

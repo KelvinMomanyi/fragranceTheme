@@ -83,12 +83,16 @@
         "padding-block-end": 32
       }
     },
+    "related-products": {
+      "type": "related-products"
+    },
     "complementary-products": {
       "type": "complementary-products"
     }
   },
   "order": [
     "main-product",
+    "related-products",
     "complementary-products"
   ]
 }

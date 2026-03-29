@@ -34,6 +34,7 @@
         sizes="100vw"
         alt="{{ current_collection.image.alt | escape | default: current_collection.title }}"
         class="collection-hero-image"
+        style="{% render 'focal-point-style', image: current_collection.image %}"
         loading="eager"
         width="1600"
         height="400"
@@ -94,6 +95,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: var(--focal-point, center center);
   }
 
   .collection-hero-overlay {

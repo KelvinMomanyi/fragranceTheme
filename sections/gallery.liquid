@@ -185,7 +185,8 @@
                         height="625" 
                         loading="lazy" 
                         alt="{{ image.alt | default: 'Gallery visual' }}"
-                        class="img-cover">
+                        class="img-cover"
+                        style="{% render 'focal-point-style', image: image %}">
                   {% else %}
                     {{ 'product-5' | placeholder_svg_tag: 'img-cover' }}
                   {% endif %}

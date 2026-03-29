@@ -1,0 +1,5 @@
+{%- liquid
+  if image != blank and image.presentation.focal_point != blank
+    echo '--focal-point: ' | append: image.presentation.focal_point | append: ';'
+  endif
+-%}

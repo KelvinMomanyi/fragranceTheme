@@ -11,7 +11,8 @@
                        {{ block.settings.image | image_url: width: 1200 }} 1200w"
                sizes="(max-width: 575px) 100vw, {% if block.settings.is_large %}568px{% else %}285px{% endif %}"
                width="{{ block.settings.width | default: 285 }}" height="{{ block.settings.height | default: 396 }}" 
-               alt="{{ block.settings.image.alt | escape }}" class="img-cover"
+                alt="{{ block.settings.image.alt | escape }}" class="img-cover"
+               style="{% render 'focal-point-style', image: block.settings.image %}"
                loading="lazy">
         {% else %}
           {{ block.settings.svg_placeholder | default: 'product-1' | placeholder_svg_tag: 'img-cover' }}

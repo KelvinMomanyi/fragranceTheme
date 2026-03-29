@@ -40,7 +40,7 @@
                               {{ article.image | image_url: width: 1000 }} 1000w"
                       sizes="(max-width: 768px) 100vw, 500px"
                       width="500" height="600" loading="lazy"
-                      alt="{{ article.image.alt | escape }}" class="img-cover"/>
+                      alt="{{ article.image.alt | escape }}" class="img-cover" style="{% render 'focal-point-style', image: article.image %}"/>
                   {%- else -%}
                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                   {%- endif -%}
@@ -93,7 +93,7 @@
                             {{ article.image | image_url: width: 1000 }} 1000w"
                     sizes="(max-width: 768px) 100vw, 500px"
                     width="500" height="600" loading="lazy"
-                    alt="{{ article.image.alt | escape }}" class="img-cover"/>
+                    alt="{{ article.image.alt | escape }}" class="img-cover" style="{% render 'focal-point-style', image: article.image %}"/>
                 {%- else -%}
                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                 {%- endif -%}
@@ -146,7 +146,7 @@
                               {{ article.image | image_url: width: 1000 }} 1000w"
                       sizes="(max-width: 768px) 100vw, 500px"
                       width="500" height="600" loading="lazy"
-                      alt="{{ article.image.alt | escape }}" class="img-cover"/>
+                      alt="{{ article.image.alt | escape }}" class="img-cover" style="{% render 'focal-point-style', image: article.image %}"/>
                   {%- else -%}
                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                   {%- endif -%}

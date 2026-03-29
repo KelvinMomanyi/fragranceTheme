@@ -93,21 +93,53 @@
         {% for link in nav_links %}
           <li class="navbar-item {% if link.links != blank %}has-dropdown{% endif %}">
             {% if link.links != blank %}
-              <a
-                href="{{ link.url }}"
-                class="navbar-link"
-                data-nav-link
-                aria-expanded="false"
-                aria-controls="NavDropdown-{{ forloop.index }}"
-                aria-current="{% if link.active %}page{% else %}false{% endif %}"
-              >
-                {{ link.title }}
-                {% render 'icon-velour', icon: 'chevron-down', size: 'small' %}
-              </a>
-              <ul class="dropdown-list" id="NavDropdown-{{ forloop.index }}" role="list">
+              <div class="navbar-link-row">
+                <a
+                  href="{{ link.url }}"
+                  class="navbar-link"
+                  data-nav-link
+                  aria-current="{% if link.active %}page{% else %}false{% endif %}"
+                >
+                  {{ link.title }}
+                </a>
+                <button
+                  type="button"
+                  class="navbar-submenu-toggle"
+                  data-submenu-toggle
+                  aria-expanded="false"
+                  aria-controls="NavDropdown-{{ forloop.index }}"
+                  aria-label="Toggle {{ link.title | escape }} submenu"
+                >
+                  {% render 'icon-velour', icon: 'chevron-down', size: 'small' %}
+                </button>
+              </div>
+              <ul class="dropdown-list" id="NavDropdown-{{ forloop.index }}" role="list" hidden>
                 {% for child_link in link.links %}
-                  <li class="dropdown-item">
-                    <a href="{{ child_link.url }}" class="dropdown-link" aria-current="{% if child_link.active %}page{% else %}false{% endif %}">{{ child_link.title }}</a>
+                  <li class="dropdown-item{% if child_link.links != blank %} has-dropdown{% endif %}">
+                    {% if child_link.links != blank %}
+                      <div class="dropdown-link-row">
+                        <a href="{{ child_link.url }}" class="dropdown-link" data-nav-link aria-current="{% if child_link.active %}page{% else %}false{% endif %}">{{ child_link.title }}</a>
+                        <button
+                          type="button"
+                          class="dropdown-submenu-toggle"
+                          data-submenu-toggle
+                          aria-expanded="false"
+                          aria-controls="NavDropdown-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+                          aria-label="Toggle {{ child_link.title | escape }} submenu"
+                        >
+                          {% render 'icon-velour', icon: 'chevron-down', size: 'small' %}
+                        </button>
+                      </div>
+                      <ul class="dropdown-sublist" id="NavDropdown-{{ forloop.parentloop.index }}-{{ forloop.index }}" role="list" hidden>
+                        {% for grandchild_link in child_link.links %}
+                          <li class="dropdown-subitem">
+                            <a href="{{ grandchild_link.url }}" class="dropdown-sublink" data-nav-link aria-current="{% if grandchild_link.active %}page{% else %}false{% endif %}">{{ grandchild_link.title }}</a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    {% else %}
+                      <a href="{{ child_link.url }}" class="dropdown-link" data-nav-link aria-current="{% if child_link.active %}page{% else %}false{% endif %}">{{ child_link.title }}</a>
+                    {% endif %}
                   </li>
                 {% endfor %}
               </ul>
@@ -438,16 +470,47 @@
         background: var(--color-background);
     }
 
-    .dropdown-list {
-      display: none;
+    .dropdown-list,
+    .dropdown-sublist {
+      display: block;
       padding-left: 15px;
       list-style: none;
       margin-top: 5px;
     }
-    
-    .navbar-item.has-dropdown:hover .dropdown-list,
-    .navbar-item.has-dropdown:focus-within .dropdown-list {
-      display: block;
+
+    .dropdown-list[hidden],
+    .dropdown-sublist[hidden] {
+      display: none !important;
+    }
+
+    .dropdown-sublist {
+      margin-left: 6px;
+      padding-left: 12px;
+      border-left: 1px solid rgba(var(--color-foreground-rgb), 0.15);
+    }
+
+    .navbar-link-row,
+    .dropdown-link-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar-link-row > .navbar-link,
+    .dropdown-link-row > .dropdown-link {
+      flex: 1;
+    }
+
+    .navbar-submenu-toggle,
+    .dropdown-submenu-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 0;
+      color: inherit;
+      padding: 5px;
+      cursor: pointer;
     }
 
     .dropdown-link {
@@ -522,10 +585,23 @@
     gap: 8px;
   }
   
-  .dropdown-item:hover {
-    background-color: rgba(var(--color-foreground-rgb), 0.05);
-    color: var(--color-button);
-  }
+    .dropdown-item:hover {
+      background-color: rgba(var(--color-foreground-rgb), 0.05);
+      color: var(--color-button);
+    }
+
+    .dropdown-sublink {
+      display: block;
+      padding: 4px 0;
+      font-size: 0.88em;
+      color: inherit;
+      opacity: 0.8;
+    }
+
+    .dropdown-sublink:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
 
 
   .flag-icon {
