@@ -17,9 +17,9 @@
             <p class="complementary-products__description">{{ section.settings.description }}</p>
           {%- endif -%}
 
-          <ul class="complementary-products__grid" data-filter="all">
+          <ul class="complementary-products__grid">
             {% for complementary_product in recommendations.products %}
-              <li class="decoration">
+              <li class="grid__item decoration">
                 <div class="product-card">
                   <a href="{{ complementary_product.url }}" class="card-banner img-holder has-before" style="--width: 300; --height: 300;">
                     {% if complementary_product.featured_image %}
@@ -27,8 +27,9 @@
                         src="{{ complementary_product.featured_image | image_url: width: 600 }}"
                         srcset="{{ complementary_product.featured_image | image_url: width: 300 }} 300w,
                                 {{ complementary_product.featured_image | image_url: width: 450 }} 450w,
-                                {{ complementary_product.featured_image | image_url: width: 600 }} 600w"
-                        sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
+                                {{ complementary_product.featured_image | image_url: width: 600 }} 600w,
+                                {{ complementary_product.featured_image | image_url: width: 900 }} 900w"
+                        sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 300px"
                         alt="{{ complementary_product.featured_image.alt | escape }}"
                         class="img-cover"
                         style="{% render 'focal-point-style', image: complementary_product.featured_image %}"
@@ -47,9 +48,9 @@
                         </button>
                       </li>
                       <li>
-                        <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="add-to-cart-form" onsubmit="submitAddToCartForm(this); return false;">
+                        <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="add-to-cart-form">
                           <input type="hidden" name="id" value="{{ complementary_product.selected_or_first_available_variant.id }}">
-                          <button type="submit" class="card-action-btn" aria-label="add to cart" title="add to cart">
+                          <button type="submit" class="card-action-btn" aria-label="add to cart">
                             {% render 'icon-velour', icon: 'bag-handle' %}
                           </button>
                         </form>
@@ -103,9 +104,6 @@
 </div>
 
 <style>
-  .complementary-products {
-    padding: var(--section-padding) 0;
-  }
 
   .complementary-products__heading {
     text-align: center;

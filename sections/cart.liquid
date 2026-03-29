@@ -144,7 +144,27 @@
           </div>
         {% endif %}
         
-        <p class="cart-shipping-message">Shipping calculated at checkout</p>
+        {%- if cart.taxes_included -%}
+          <p class="cart-tax-message">{{ 'sections.cart.taxes_included' | t | default: 'Tax included.' }}</p>
+        {%- endif -%}
+        
+        <p class="cart-shipping-message">
+          {%- if shop.shipping_policy.body != blank -%}
+            {{ 'sections.cart.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url | default: 'Shipping and <a href="' | append: shop.shipping_policy.url | append: '">shipping policy</a> calculated at checkout.' }}
+          {%- else -%}
+            {{ 'sections.cart.shipping_at_checkout' | t | default: 'Shipping calculated at checkout.' }}
+          {%- endif -%}
+        </p>
+      </div>
+
+      <div class="cart-note-wrapper field">
+        <label for="Cart-note" class="cart-note__label">{{ 'sections.cart.note' | t | default: 'Order note' }}</label>
+        <textarea
+          name="note"
+          id="Cart-note"
+          class="cart-note__input field__input"
+          placeholder="{{ 'sections.cart.note_placeholder' | t | default: 'Special instructions for your order' }}"
+        >{{ cart.note }}</textarea>
       </div>
 
       <div class="cart-actions">
@@ -186,6 +206,26 @@
     font-size: clamp(3.2rem, 4vw, 4.8rem);
     font-weight: var(--fw-500);
     line-height: 1;
+  }
+
+  .cart-note-wrapper {
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cart-note__label {
+    font-weight: 600;
+    font-size: 1.4rem;
+  }
+
+  .cart-note__input {
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid rgb(0 0 0 / 15%);
+    border-radius: 4px;
+    resize: vertical;
   }
 
   .cart-table {

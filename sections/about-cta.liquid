@@ -12,7 +12,14 @@
   <div class="about-cta__media" style="--about-cta-overlay: {{ overlay_opacity }};">
     {%- if section.settings.background_image != blank -%}
       <img
-        src="{{ section.settings.background_image | image_url: width: 2400 }}"
+        src="{{ section.settings.background_image | image_url: width: 1400 }}"
+        srcset="{{ section.settings.background_image | image_url: width: 375 }} 375w,
+                {{ section.settings.background_image | image_url: width: 550 }} 550w,
+                {{ section.settings.background_image | image_url: width: 750 }} 750w,
+                {{ section.settings.background_image | image_url: width: 1100 }} 1100w,
+                {{ section.settings.background_image | image_url: width: 1500 }} 1500w,
+                {{ section.settings.background_image | image_url: width: 2000 }} 2000w"
+        sizes="100vw"
         alt="{{ section.settings.background_image.alt | escape }}"
         loading="lazy"
         width="{{ section.settings.background_image.width }}"

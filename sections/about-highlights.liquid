@@ -12,11 +12,14 @@
         <div class="about-highlights__card" {{ block.shopify_attributes }}>
           {%- if block.settings.icon != blank -%}
             <img
-              src="{{ block.settings.icon | image_url: width: 160 }}"
+              src="{{ block.settings.icon | image_url: width: 48 }}"
+              srcset="{{ block.settings.icon | image_url: width: 48 }} 1x,
+                      {{ block.settings.icon | image_url: width: 96 }} 2x,
+                      {{ block.settings.icon | image_url: width: 144 }} 3x"
               alt="{{ block.settings.icon.alt | escape }}"
               loading="lazy"
-              width="{{ block.settings.icon.width }}"
-              height="{{ block.settings.icon.height }}"
+              width="48"
+              height="48"
             >
           {%- endif -%}
           <h3>{{ block.settings.title }}</h3>

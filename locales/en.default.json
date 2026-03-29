@@ -569,6 +569,13 @@
     "collection_template": {
       "empty": "No products found",
       "use_fewer_filters_html": "Use fewer filters or <a class=\"{{ class }}\" href=\"{{ link }}\">clear all</a>"
+    },
+    "cart": {
+      "taxes_included": "Taxes included",
+      "taxes_and_shipping_policy_at_checkout_html": "Shipping and <a href=\"{{ link }}\">shipping policy</a> calculated at checkout.",
+      "shipping_at_checkout": "Shipping calculated at checkout.",
+      "note": "Order note",
+      "note_placeholder": "Special instructions for your order"
     }
   },
   "customer_accounts": {

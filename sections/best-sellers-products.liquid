@@ -34,8 +34,9 @@
                       src="{{ product.featured_image | image_url: width: 600 }}"
                       srcset="{{ product.featured_image | image_url: width: 300 }} 300w,
                               {{ product.featured_image | image_url: width: 450 }} 450w,
-                              {{ product.featured_image | image_url: width: 600 }} 600w"
-                      sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
+                              {{ product.featured_image | image_url: width: 600 }} 600w,
+                              {{ product.featured_image | image_url: width: 900 }} 900w"
+                      sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 300px"
                       alt="{{ product.featured_image.alt | escape }}"
                       class="img-cover"
                       style="{% render 'focal-point-style', image: product.featured_image %}"

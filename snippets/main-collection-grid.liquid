@@ -217,7 +217,13 @@
                     <a href="{{ product.url }}" class="card-title">{{ product.title }}</a>
                   </h3>
                   <div class="card-price{% if product.compare_at_price > product.price %} card-price--sale{% endif %}">
-                    <data class="price price--current" value="{{ product.price }}">{{ product.price | money }}</data>
+                    <data class="price price--current" value="{{ product.price }}">
+                      {%- if product.price_varies -%}
+                        <span class="price-from">{{ 'products.product.price.from_price_html' | t: price: (product.price_min | money) | default: 'From ' | append: (product.price_min | money) }}</span>
+                      {%- else -%}
+                        {{ product.price | money }}
+                      {%- endif -%}
+                    </data>
                     {% if product.compare_at_price > product.price %}
                       <del class="price price--compare">{{ product.compare_at_price | money }}</del>
                     {% endif %}

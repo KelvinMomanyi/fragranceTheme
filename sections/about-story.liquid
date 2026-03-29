@@ -4,6 +4,12 @@
       {%- if section.settings.image != blank -%}
         <img
           src="{{ section.settings.image | image_url: width: 1400 }}"
+          srcset="{{ section.settings.image | image_url: width: 375 }} 375w,
+                  {{ section.settings.image | image_url: width: 550 }} 550w,
+                  {{ section.settings.image | image_url: width: 750 }} 750w,
+                  {{ section.settings.image | image_url: width: 1100 }} 1100w,
+                  {{ section.settings.image | image_url: width: 1400 }} 1400w"
+          sizes="(min-width: 900px) 50vw, (min-width: 768px) 100vw, 100vw"
           alt="{{ section.settings.image.alt | escape }}"
           loading="lazy"
           width="{{ section.settings.image.width }}"
