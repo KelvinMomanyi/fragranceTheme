@@ -217,17 +217,17 @@
                     <a href="{{ product.url }}" class="card-title">{{ product.title }}</a>
                   </h3>
                   <div class="card-price{% if product.compare_at_price > product.price %} card-price--sale{% endif %}">
+                    {% if product.compare_at_price > product.price %}
+                      <del class="price price--compare">{{ product.compare_at_price | money }}</del>
+                    {% endif %}
                     <data class="price price--current" value="{{ product.price }}">
                       {%- if product.price_varies -%}
                         {%- assign price_min = product.price_min | money -%}
-                        <span class="price-from">{{ 'products.product.price.from_price_html' | t: price: price_min | default: 'From ' | append: price_min }}</span>
+                        <span class="price-from">{{ 'products.product.price.from_price_html' | t: price: price_min }}</span>
                       {%- else -%}
                         {{ product.price | money }}
                       {%- endif -%}
                     </data>
-                    {% if product.compare_at_price > product.price %}
-                      <del class="price price--compare">{{ product.compare_at_price | money }}</del>
-                    {% endif %}
                   </div>
                    {% assign first_variant = product.selected_or_first_available_variant %}
                      {% if first_variant.unit_price_measurement %}

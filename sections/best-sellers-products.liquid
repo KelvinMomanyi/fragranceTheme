@@ -91,7 +91,14 @@
                     {% if product.compare_at_price > product.price %}
                       <del class="del">{{ product.compare_at_price | money }}</del>
                     {% endif %}
-                    <data class="price" value="{{ product.price }}">{{ product.price | money }}</data>
+                    <data class="price" value="{{ product.price }}">
+                      {% if product.price_varies %}
+                        {%- assign price_min = product.price_min | money -%}
+                        <span class="price-from">{{ 'products.product.price.from_price_html' | t: price: price_min }}</span>
+                      {% else %}
+                        {{ product.price | money }}
+                      {% endif %}
+                    </data>
                   </div>
                 </div>
               </div>

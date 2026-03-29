@@ -80,10 +80,14 @@
                       {% if related_product.compare_at_price > related_product.price %}
                         <del class="del">{{ related_product.compare_at_price | money }}</del>
                       {% endif %}
-                      {% if related_product.price_varies %}
-                        <span class="price-from">From </span>
-                      {% endif %}
-                      <data class="price" value="{{ related_product.price }}">{{ related_product.price | money }}</data>
+                      <data class="price" value="{{ related_product.price }}">
+                        {% if related_product.price_varies %}
+                          {%- assign price_min = related_product.price_min | money -%}
+                          <span class="price-from">{{ 'products.product.price.from_price_html' | t: price: price_min }}</span>
+                        {% else %}
+                          {{ related_product.price | money }}
+                        {% endif %}
+                      </data>
                     </div>
                     {% assign first_variant = related_product.selected_or_first_available_variant %}
                     {% if first_variant.unit_price_measurement %}
