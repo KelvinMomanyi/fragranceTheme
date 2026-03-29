@@ -1,3 +1,7 @@
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-facets.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'facets.js' | asset_url }}" type="module"></script>
+
 <section class="section search-section color-scheme-{{ section.settings.color_scheme }}" style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}" id="search" aria-labelledby="search-label">
 
   <div class="container">
@@ -46,12 +50,11 @@
             <div class="facets-vertical page-width">
               {%- if search.results_count > 0 -%}
                 <aside aria-labelledby="verticalTitle" class="facets-wrapper" id="main-search-filters" data-id="{{ section.id }}">
-                  {% render 'facets', results: search, enable_filtering: true, enable_sorting: true, filter_type: 'vertical', paginate: paginate %}
+                  {% render 'facets', results: search, enable_filtering: section.settings.enable_filtering, enable_sorting: section.settings.enable_sorting, filter_type: section.settings.filter_type, paginate: paginate %}
                 </aside>
               {%- endif -%}
 
               <div class="product-grid-container" id="ProductGridContainer">
-                <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
                 <div class="search-results-grid" id="product-grid" data-id="{{ section.id }}">
                   {%- for item in search.results -%}
                     <div class="search-grid-item">
@@ -722,6 +725,43 @@
       "label": "Popular searches (comma-separated)",
       "default": "Luxury Collections, Evening Elegance, Exclusive Collections, Men's Velour, Women's Velour",
       "info": "Enter popular search terms separated by commas"
+    },
+    {
+      "type": "header",
+      "content": "Filtering and sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "Enable filtering",
+      "info": "Allow customers to filter search results by product availability, price, type, vendor, and variant options."
+    },
+    {
+      "type": "select",
+      "id": "filter_type",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "Horizontal"
+        },
+        {
+          "value": "vertical",
+          "label": "Vertical"
+        },
+        {
+          "value": "drawer",
+          "label": "Drawer"
+        }
+      ],
+      "default": "vertical",
+      "label": "Filter type"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "Enable sorting"
     }
   ],
   "blocks": [],
