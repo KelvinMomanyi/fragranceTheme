@@ -78,7 +78,9 @@
           playsinline
         >
           {% for source in uploaded_video.sources %}
+            {%- # theme-check-disable RemoteAsset -%}
             <source src="{{ source.url }}" type="{{ source.mime_type }}">
+            {%- # theme-check-enable RemoteAsset -%}
           {% endfor %}
           Your browser does not support the video tag.
         </video>
@@ -106,7 +108,9 @@
           playsinline
         >
           {% if is_direct_video and raw_video_url != blank %}
+            {%- # theme-check-disable RemoteAsset -%}
             <source src="{{ raw_video_url }}" type="video/mp4">
+            {%- # theme-check-enable RemoteAsset -%}
           {% elsif fallback_video_file != blank %}
             <source src="{{ fallback_video_file | default: 'Ink.mp4' | asset_url }}" type="video/mp4">
           {% endif %}

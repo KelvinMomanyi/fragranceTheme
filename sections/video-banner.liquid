@@ -78,7 +78,9 @@
           playsinline
         >
           {% for source in uploaded_video.sources %}
+            {%- # theme-check-disable RemoteAsset -%}
             <source src="{{ source.url }}" type="{{ source.mime_type }}">
+            {%- # theme-check-enable RemoteAsset -%}
           {% endfor %}
           Your browser does not support the video tag.
         </video>
@@ -86,6 +88,7 @@
         {%- comment -%} Performance: YouTube/Vimeo facade — loads iframe only on click instead of eagerly {%- endcomment -%}
         <div class="video-facade img-cover" data-video-facade data-embed-url="{{ embed_url }}" role="button" aria-label="Play video" tabindex="0" style="cursor:pointer;position:relative;width:100%;height:100%;background:#000;">
           {% if is_youtube and youtube_id != blank %}
+            {%- # theme-check-disable RemoteAsset -%}
             <img
               src="https://i.ytimg.com/vi/{{ youtube_id }}/hqdefault.jpg"
               alt="{{ section.settings.title | default: 'Video' | escape }}"
@@ -94,6 +97,7 @@
               width="1170"
               height="550"
               style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">
+            {%- # theme-check-enable RemoteAsset -%}
           {% endif %}
           <svg class="video-facade__play" viewBox="0 0 68 48" width="68" height="48" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;opacity:0.85;transition:opacity 0.2s;" aria-hidden="true">
             <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
@@ -112,7 +116,9 @@
           playsinline
         >
           {% if is_direct_video and raw_video_url != blank %}
+            {%- # theme-check-disable RemoteAsset -%}
             <source src="{{ raw_video_url }}" type="video/mp4">
+            {%- # theme-check-enable RemoteAsset -%}
           {% elsif fallback_video_file != blank %}
             <source src="{{ fallback_video_file | default: 'Ink.mp4' | asset_url }}" type="video/mp4">
           {% endif %}

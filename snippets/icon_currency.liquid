@@ -322,5 +322,7 @@
     
     {% endcase %}
     <span class="img-icon">
-        <img src="//cdn.shopify.com/shopifycloud/web/assets/v1/{{currency_flag}}" alt="{{ currency_iso }}" width="24" height="24" />
-      </span>
+      {%- # theme-check-disable RemoteAsset -%}
+      <img src="//cdn.shopify.com/shopifycloud/web/assets/v1/{{currency_flag}}" alt="{{ currency_iso }}" width="24" height="24" />
+      {%- # theme-check-enable RemoteAsset -%}
+    </span>
