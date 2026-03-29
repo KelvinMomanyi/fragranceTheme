@@ -8,7 +8,7 @@
     "country_results_count": "{{ count }} results",
     "decrease_quantity": "Decrease quantity",
     "discount": "Apply a discount code",
-    "discount_menu": "Discount Codes",
+    "discount_menu": "Discount codes",
     "discount_applied": "Applied discount code: {{ code }}",
     "filters": "Filters",
     "filter_count": {
@@ -109,7 +109,7 @@
     "load_video": "Load video: {{ description }}",
     "sold_out": "Sold out",
     "payment_methods": "Payment methods",
-    "slider_label": "Slider"
+    "slideshow_label": "Slideshow"
   },
   "blogs": {
     "article": {
@@ -145,7 +145,7 @@
     "cancel": "Cancel",
     "discount": "Discount",
     "account_title": "Account",
-    "terms_and_policies": "Terms and Policies",
+    "terms_and_policies": "Terms and policies",
     "account_title_personalized": "Hi {{ first_name }}",
     "account_orders": "Orders",
     "account_profile": "Profile",
@@ -306,9 +306,9 @@
   "customer": {
     "log_out": "Log out",
     "account": {
-      "title": "My Account",
+      "title": "My account",
       "return": "Return to Account details",
-      "details": "Account Details",
+      "details": "Account details",
       "view_addresses": "View addresses"
     },
     "order": {
@@ -326,20 +326,20 @@
       "shipping": "Shipping",
       "tax": "Tax",
       "total_duties": "Duties",
-      "billing_address": "Billing Address",
-      "payment_status": "Payment Status",
-      "shipping_address": "Shipping Address",
-      "fulfillment_status": "Fulfillment Status",
+      "billing_address": "Billing address",
+      "payment_status": "Payment status",
+      "shipping_address": "Shipping address",
+      "fulfillment_status": "Fulfillment status",
       "fulfilled_at_html": "Fulfilled {{ date }}",
       "track_shipment": "Track shipment"
     },
     "orders": {
-      "title": "Order History",
+      "title": "Order history",
       "order_number": "Order",
       "order_number_link": "Order {{ number }}",
       "date": "Date",
-      "payment_status": "Payment Status",
-      "fulfillment_status": "Fulfillment Status",
+      "payment_status": "Payment status",
+      "fulfillment_status": "Fulfillment status",
       "total": "Total",
       "none": "You haven't placed any orders yet."
     },

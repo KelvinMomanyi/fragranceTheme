@@ -1,22 +1,22 @@
 <section
-  class="section hero-sliders hero1 color-scheme-{{ section.settings.color_scheme }}"
+  class="section hero-slideshow hero1 color-scheme-{{ section.settings.color_scheme }}"
   style="{% render 'color-scheme-styles', scheme: section.settings.color_scheme %}"
-  aria-label="Hero sliders"
-  data-hero-sliders
+  aria-label="Hero slideshow"
+  data-hero-slideshow
 >
-  <ul class="hero1-slider" data-hero-slider>
+  <ul class="hero1-slideshow" data-hero-slideshow-list>
     {% if section.blocks.size == 0 %}
       {% for i in (1..3) %}
-        <li class="slider-item {% if forloop.first %}active{% endif %}" data-hero-slider-item>
-          <div class="slider-bg hero1-card has-bg-image" style="background-color: #f4f4f4;">
+        <li class="slideshow-item {% if forloop.first %}active{% endif %}" data-hero-slideshow-item>
+          <div class="slideshow-bg hero1-card has-bg-image" style="background-color: #f4f4f4;">
             {{ 'lifestyle-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
           <div class="container">
             <div class="card-content">
-              <h1 class="h1 hero1-title slider-reveal">Velour Scent {{ i }}</h1>
-              <p class="price slider-reveal">Starting at $17.99</p>
+              <h1 class="h1 hero1-title slideshow-reveal">Velour Scent {{ i }}</h1>
+              <p class="price slideshow-reveal">Starting at $17.99</p>
               <div class="hero1-actions">
-                <a href="#" class="btn btn-primary slider-reveal">Shop now</a>
+                <a href="#" class="btn btn-primary slideshow-reveal">Shop now</a>
               </div>
             </div>
           </div>
@@ -25,21 +25,21 @@
     {% else %}
       {% for block in section.blocks %}
         {% if block.type == 'slide' %}
-          <li class="slider-item {% if forloop.first %}active{% endif %}" data-hero-slider-item {{ block.shopify_attributes }}>
-            <div class="slider-bg hero1-card has-bg-image" style="{% if block.settings.hero_image != blank %}background-image: url('{{ block.settings.hero_image | image_url }}');{% else %}background-color: #f4f4f4;{% endif %} background-size: cover; background-repeat: no-repeat; background-position: center;">
+          <li class="slideshow-item {% if forloop.first %}active{% endif %}" data-hero-slideshow-item {{ block.shopify_attributes }}>
+            <div class="slideshow-bg hero1-card has-bg-image" style="{% if block.settings.hero_image != blank %}background-image: url('{{ block.settings.hero_image | image_url }}');{% else %}background-color: #f4f4f4;{% endif %} background-size: cover; background-repeat: no-repeat; background-position: center;">
               {% if block.settings.hero_image == blank %}
                 {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
               {% endif %}
             </div>
             <div class="container">
               <div class="card-content">
-                <h1 class="h1 hero1-title slider-reveal">{{ block.settings.brand_name }}</h1>
+                <h1 class="h1 hero1-title slideshow-reveal">{{ block.settings.brand_name }}</h1>
                 {% if block.settings.starting_price != blank %}
-                  <p class="price slider-reveal">Starting at {{ block.settings.starting_price }}</p>
+                  <p class="price slideshow-reveal">Starting at {{ block.settings.starting_price }}</p>
                 {% endif %}
                 {% if block.settings.button_label != blank %}
                   <div class="hero1-actions">
-                    <a href="{{ block.settings.button_link }}" class="btn btn-primary slider-reveal">{{ block.settings.button_label }}</a>
+                    <a href="{{ block.settings.button_link }}" class="btn btn-primary slideshow-reveal">{{ block.settings.button_label }}</a>
                   </div>
                 {% endif %}
               </div>
@@ -50,17 +50,17 @@
     {% endif %}
   </ul>
 
-  <button class="slider-btn prev" aria-label="slide to previous" data-prev-btn>
+  <button class="slideshow-btn prev" aria-label="slide to previous" data-prev-btn>
     {% render 'icon-velour', icon: 'chevron-back' %}
   </button>
 
-  <button class="slider-btn next" aria-label="slide to next" data-next-btn>
+  <button class="slideshow-btn next" aria-label="slide to next" data-next-btn>
     {% render 'icon-velour', icon: 'chevron-forward' %}
   </button>
 </section>
 
 <style>
-  .hero-sliders {
+  .hero-slideshow {
     position: relative;
     min-height: clamp(360px, 70vh, 640px);
     padding-block: clamp(70px, 10vw, 140px);
@@ -68,13 +68,13 @@
     color: var(--color-text);
   }
 
-  .hero-sliders .hero1-slider {
+  .hero-slideshow .hero1-slideshow {
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  .hero-sliders .slider-item {
+  .hero-slideshow .slideshow-item {
     position: absolute;
     inset: 0;
     display: flex;
@@ -84,30 +84,30 @@
     transition: var(--transition-2);
   }
 
-  .hero-sliders .slider-item.active {
+  .hero-slideshow .slideshow-item.active {
     opacity: 1;
     visibility: visible;
   }
 
-  .hero-sliders .slider-bg {
+  .hero-slideshow .slideshow-bg {
     position: absolute;
     inset: 0;
     z-index: 0;
     transform: scale(1.05);
   }
 
-  .hero-sliders .slider-bg::after {
+  .hero-slideshow .slideshow-bg::after {
     content: "";
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.45);
   }
 
-  .hero-sliders .slider-item.active .slider-bg {
-    animation: heroSlidersScale 7s linear forwards;
+  .hero-slideshow .slideshow-item.active .slideshow-bg {
+    animation: heroSlideshowScale 7s linear forwards;
   }
 
-  @keyframes heroSlidersScale {
+  @keyframes heroSlideshowScale {
     0% {
       transform: scale(1);
     }
@@ -116,48 +116,48 @@
     }
   }
 
-  .hero-sliders .container {
+  .hero-slideshow .container {
     position: relative;
     z-index: 1;
     width: 100%;
   }
 
-  .hero-sliders .card-content {
+  .hero-slideshow .card-content {
     max-width: 520px;
     display: grid;
     gap: 14px;
   }
 
-  .hero-sliders .hero1-title {
+  .hero-slideshow .hero1-title {
     font-size: clamp(3.2rem, 6vw, 6.6rem);
     line-height: 1.05;
     font-weight: var(--fw-500);
     color: #fff !important;
   }
 
-  .hero-sliders .price {
+  .hero-slideshow .price {
     color: #fff !important;
     text-transform: uppercase;
     letter-spacing: 0.16em;
     font-size: var(--fs-6);
   }
 
-  .hero-sliders .hero1-actions {
+  .hero-slideshow .hero1-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
   }
 
-  .hero-sliders .slider-reveal {
+  .hero-slideshow .slideshow-reveal {
     transform: translateY(24px);
     opacity: 0;
   }
 
-  .hero-sliders .slider-item.active .slider-reveal {
-    animation: heroSlidersReveal 0.9s ease forwards;
+  .hero-slideshow .slideshow-item.active .slideshow-reveal {
+    animation: heroSlideshowReveal 0.9s ease forwards;
   }
 
-  @keyframes heroSlidersReveal {
+  @keyframes heroSlideshowReveal {
     0% {
       transform: translateY(24px);
       opacity: 0;
@@ -168,19 +168,19 @@
     }
   }
 
-  .hero-sliders .slider-item.active .hero1-title {
+  .hero-slideshow .slideshow-item.active .hero1-title {
     animation-delay: 200ms;
   }
 
-  .hero-sliders .slider-item.active .price {
+  .hero-slideshow .slideshow-item.active .price {
     animation-delay: 400ms;
   }
 
-  .hero-sliders .slider-item.active .btn {
+  .hero-slideshow .slideshow-item.active .btn {
     animation-delay: 600ms;
   }
 
-  .hero-sliders .slider-btn {
+  .hero-slideshow .slideshow-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -196,25 +196,25 @@
     transition: var(--transition-1);
   }
 
-  .hero-sliders .slider-btn:hover {
+  .hero-slideshow .slideshow-btn:hover {
     background: #fff;
     color: #000;
   }
 
-  .hero-sliders .slider-btn.prev {
+  .hero-slideshow .slideshow-btn.prev {
     left: 20px;
   }
 
-  .hero-sliders .slider-btn.next {
+  .hero-slideshow .slideshow-btn.next {
     right: 20px;
   }
 
   @media (max-width: 749px) {
-    .hero-sliders .slider-btn {
+    .hero-slideshow .slideshow-btn {
       display: none;
     }
 
-    .hero-sliders {
+    .hero-slideshow {
       padding-block: calc(var(--section-padding) * 2);
     }
   }
@@ -224,40 +224,40 @@
 (function() {
   'use strict';
 
-  document.querySelectorAll('[data-hero-sliders]').forEach((root) => {
-    const heroSliderItems = root.querySelectorAll('[data-hero-slider-item]');
-    if (!heroSliderItems.length) {
+  document.querySelectorAll('[data-hero-slideshow]').forEach((root) => {
+    const heroSlideshowItems = root.querySelectorAll('[data-hero-slideshow-item]');
+    if (!heroSlideshowItems.length) {
       return;
     }
 
-    const heroSliderPrevBtn = root.querySelector('[data-prev-btn]');
-    const heroSliderNextBtn = root.querySelector('[data-next-btn]');
+    const heroSlideshowPrevBtn = root.querySelector('[data-prev-btn]');
+    const heroSlideshowNextBtn = root.querySelector('[data-next-btn]');
 
     let currentSlidePos = 0;
-    let lastActiveSliderItem = heroSliderItems[0];
+    let lastActiveSlideshowItem = heroSlideshowItems[0];
 
-    const updateSliderPos = function() {
-      lastActiveSliderItem.classList.remove('active');
-      heroSliderItems[currentSlidePos].classList.add('active');
-      lastActiveSliderItem = heroSliderItems[currentSlidePos];
+    const updateSlideshowPos = function() {
+      lastActiveSlideshowItem.classList.remove('active');
+      heroSlideshowItems[currentSlidePos].classList.add('active');
+      lastActiveSlideshowItem = heroSlideshowItems[currentSlidePos];
     };
 
     const slideNext = function() {
-      currentSlidePos = (currentSlidePos >= heroSliderItems.length - 1) ? 0 : currentSlidePos + 1;
-      updateSliderPos();
+      currentSlidePos = (currentSlidePos >= heroSlideshowItems.length - 1) ? 0 : currentSlidePos + 1;
+      updateSlideshowPos();
     };
 
     const slidePrev = function() {
-      currentSlidePos = (currentSlidePos < 1) ? heroSliderItems.length - 1 : currentSlidePos - 1;
-      updateSliderPos();
+      currentSlidePos = (currentSlidePos < 1) ? heroSlideshowItems.length - 1 : currentSlidePos - 1;
+      updateSlideshowPos();
     };
 
-    if (heroSliderPrevBtn) {
-      heroSliderPrevBtn.addEventListener('click', slidePrev);
+    if (heroSlideshowPrevBtn) {
+      heroSlideshowPrevBtn.addEventListener('click', slidePrev);
     }
 
-    if (heroSliderNextBtn) {
-      heroSliderNextBtn.addEventListener('click', slideNext);
+    if (heroSlideshowNextBtn) {
+      heroSlideshowNextBtn.addEventListener('click', slideNext);
     }
 
     let autoSlideInterval;
@@ -272,7 +272,7 @@
     root.addEventListener('mouseenter', stopAutoSlide);
     root.addEventListener('mouseleave', autoSlide);
 
-    [heroSliderNextBtn, heroSliderPrevBtn].forEach((btn) => {
+    [heroSlideshowNextBtn, heroSlideshowPrevBtn].forEach((btn) => {
       if (!btn) {
         return;
       }
@@ -287,9 +287,7 @@
 
 {% schema %}
 {
-  "name": "Hero sliders",
-  "tag": "section",
-  "class": "section",
+  "name": "Hero slideshow",
   "settings": [
     {
       "type": "color_scheme",
@@ -300,57 +298,71 @@
   ],
   "blocks": [
     {
-      "type": "slide",
+      "type": "hero_section",
       "name": "Slide",
       "settings": [
         {
           "type": "image_picker",
           "id": "hero_image",
-          "label": "Hero image"
+          "label": "Hero image",
+          "info": "1920 x 1080px recommended"
         },
         {
           "type": "text",
           "id": "brand_name",
           "label": "Heading",
-          "default": "Luxury Essence"
+          "default": "Nike"
         },
         {
           "type": "text",
           "id": "starting_price",
           "label": "Starting price",
-          "default": "$29.99"
-        },
-        {
-          "type": "text",
-          "id": "button_label",
-          "label": "Button label",
-          "default": "Shop now"
+          "default": "$17.99"
         },
         {
           "type": "url",
-          "id": "button_link",
-          "label": "Button link"
+          "id": "shop_now_link",
+          "label": "Button link",
+          "default": "/"
+        },
+        {
+          "type": "text",
+          "id": "shop_now_text",
+          "label": "Button label",
+          "default": "Shop now"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Hero sliders",
-      "category": "Banners",
+      "name": "Hero slideshow",
       "blocks": [
         {
-          "type": "slide",
+          "type": "hero_section",
           "settings": {
-            "brand_name": "Luxury Essence",
-            "starting_price": "$29.99"
+            "brand_name": "Signature Scents",
+            "starting_price": "$17.99",
+            "shop_now_link": "/collections/all",
+            "shop_now_text": "Shop now"
           }
         },
         {
-          "type": "slide",
+          "type": "hero_section",
           "settings": {
-            "brand_name": "Velour Midnight",
-            "starting_price": "$34.99"
+            "brand_name": "Fresh Arrivals",
+            "starting_price": "$21.99",
+            "shop_now_link": "/collections/all",
+            "shop_now_text": "Shop now"
+          }
+        },
+        {
+          "type": "hero_section",
+          "settings": {
+            "brand_name": "Best Sellers",
+            "starting_price": "$19.99",
+            "shop_now_link": "/collections/all",
+            "shop_now_text": "Shop now"
           }
         }
       ]
