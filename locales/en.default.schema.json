@@ -6,6 +6,9 @@
     "main-reset-password": {
       "name": "Reset Password"
     },
+    "main-activate-account": {
+      "name": "Activate Account"
+    },
     "all": {
       "padding": {
         "section_padding_heading": "Padding",
