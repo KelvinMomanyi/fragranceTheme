@@ -192,7 +192,7 @@
                       </button>
                     </li>
                     <li>
-                       <form action="/cart/add" method="post" enctype="multipart/form-data" class="add-to-cart-form">
+                       <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="add-to-cart-form">
                           <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                           <button type="submit" class="card-action-btn" aria-label="add to cart">
                             {% render 'icon-velour', icon: 'bag-handle' %}

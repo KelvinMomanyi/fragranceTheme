@@ -1,0 +1,8 @@
+{%- comment -%}
+  Outputs a --gap CSS custom property from a value parameter.
+  Accepts:
+    value: {string} - Gap value (e.g. "10px", "1rem")
+{%- endcomment -%}
+{%- if value != blank -%}
+--gap: {{ value }};
+{%- endif -%}

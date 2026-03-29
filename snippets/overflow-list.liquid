@@ -1,0 +1,15 @@
+{%- comment -%}
+  Overflow list component.
+  Renders children items with overflow handling.
+
+  Accepts:
+    children: {array} - Items to render
+    tag: {string} - HTML tag to use for the list
+{%- endcomment -%}
+{%- if children.size > 0 -%}
+  <div class="overflow-list" data-overflow-list>
+    {%- for child in children -%}
+      {{ child }}
+    {%- endfor -%}
+  </div>
+{%- endif -%}

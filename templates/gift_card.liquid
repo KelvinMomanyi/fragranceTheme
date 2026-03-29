@@ -8,7 +8,7 @@
   <meta name="format-detection" content="telephone=no">
   <title>{{ 'gift_cards.issued.title' | t: value: gift_card.initial_value, shop: shop.name }}</title>
   
-  {{ 'vendor/qrcode.js' | shopify_asset_url | script_tag }}
+  <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
   
   <style>
     * {
@@ -277,7 +277,7 @@
   <div class="gift-card-container">
     <div class="gift-card-header">
       {% if settings.logo %}
-        <img src="{{ settings.logo | image_url: width: 300 }}" alt="{{ shop.name }}" class="shop-logo">
+        <img src="{{ settings.logo | image_url: width: 300 }}" alt="{{ shop.name }}" class="shop-logo" width="300" height="300">
       {% else %}
         <div class="shop-name">{{ shop.name }}</div>
       {% endif %}

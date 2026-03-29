@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main-page": {
+      "name": "Page"
+    },
+    "main-reset-password": {
+      "name": "Reset Password"
+    },
+    "all": {
+      "padding": {
+        "section_padding_heading": "Padding",
+        "padding_top": "Top padding",
+        "padding_bottom": "Bottom padding"
+      }
+    }
+  }
+}

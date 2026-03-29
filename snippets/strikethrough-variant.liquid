@@ -1,0 +1,11 @@
+{%- comment -%}
+  Strikethrough variant display.
+  Renders a strikethrough style for unavailable variant options.
+  
+  Accepts:
+    product: {object} - Product object
+    product_option_value: {object} - Product option value
+{%- endcomment -%}
+{%- if product_option_value.available == false -%}
+  <span class="strikethrough">{{ product_option_value.value }}</span>
+{%- endif -%}

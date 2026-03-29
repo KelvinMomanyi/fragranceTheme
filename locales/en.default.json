@@ -44,6 +44,7 @@
     "slideshow_play": "Play slideshow",
     "slideshow_previous": "Previous slide",
     "unit_price": "Unit price",
+    "unit_price_separator": "per",
     "find_country": "Find country",
     "view_pricing_info": "View pricing information",
     "close": "Close",
@@ -292,6 +293,34 @@
   "fields": {
     "separator": "to"
   },
+  "customer": {
+    "account": {
+      "title": "My Account",
+      "return": "Return to Account details"
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "date_html": "Placed on {{ date }}",
+      "cancelled_html": "Order Cancelled on {{ date }}",
+      "cancelled_reason": "Reason: {{ reason }}",
+      "product": "Product",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "discount": "Discount",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "total_duties": "Duties",
+      "billing_address": "Billing Address",
+      "payment_status": "Payment Status",
+      "shipping_address": "Shipping Address",
+      "fulfillment_status": "Fulfillment Status",
+      "fulfilled_at_html": "Fulfilled {{ date }}",
+      "track_shipment": "Track shipment"
+    }
+  },
   "gift_cards": {
     "issued": {
       "how_to_use_gift_card": "Use the gift card code online or QR code in-store",
@@ -303,7 +332,14 @@
       "copy_code": "Copy gift card code",
       "expiration_date": "Expires {{ expires_on }}",
       "copy_code_success": "Code copied successfully",
-      "expired": "Expired"
+      "expired": "Expired",
+      "initial_value": "Initial value",
+      "remaining_html": "Remaining balance",
+      "gift_card_code": "Gift card code",
+      "scan_code": "Scan to redeem",
+      "how_to_use": "How to use this gift card",
+      "how_to_use_description": "Enter the code above at checkout or scan the QR code with your mobile device to redeem your gift card.",
+      "print": "Print Gift Card"
     }
   },
   "placeholders": {
@@ -345,6 +381,12 @@
       "sku": "SKU",
       "share": "Share",
       "related_products": "You may also like",
+      "one_time_purchase": "One-time purchase",
+      "price": {
+        "regular_price": "Regular price",
+        "sale_price": "Sale price",
+        "unit_price": "Unit price"
+      },
       "pickup_availability": {
         "view_store_info": "View store information",
         "check_other_stores": "Check availability at other stores",
@@ -411,7 +453,9 @@
     "search": {
       "search": "Search",
       "placeholder": "Search",
-      "reset": "Clear search term"
+      "reset": "Clear search term",
+      "no_results": "No results found for \"{{ terms }}\". Check the spelling or use a different word or phrase.",
+      "results_count": "{{ count }} results found for \"{{ terms }}\""
     },
     "pagination": {
       "label": "Pagination",
@@ -451,6 +495,15 @@
       "pages": "Pages"
     }
   },
+  "recipient": {
+    "form": {
+      "checkbox": "I want to send this as a gift",
+      "email": "Recipient email",
+      "name": "Recipient name (optional)",
+      "message": "Message (optional)",
+      "send_on": "Send on (optional)"
+    }
+  },
   "sections": {
     "header": {
       "name": "header"
@@ -464,6 +517,10 @@
         "one": "{{ count }} product",
         "other": "{{ count }} products"
       }
+    },
+    "collection_template": {
+      "empty": "No products found",
+      "use_fewer_filters_html": "Use fewer filters or <a class=\"{{ class }}\" href=\"{{ link }}\">clear all</a>"
     }
   },
   "names": {
