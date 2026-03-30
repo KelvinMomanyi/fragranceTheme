@@ -109,7 +109,7 @@
     "load_video": "Load video: {{ description }}",
     "sold_out": "Sold out",
     "payment_methods": "Payment methods",
-    "slider_label": "Slider"
+    "slider_label": "Slideshow"
   },
   "blogs": {
     "article": {

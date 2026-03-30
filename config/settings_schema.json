@@ -134,7 +134,7 @@
     "settings": [
       {
         "type": "header",
-        "content": "Social media accounts"
+        "content": "Social media"
       },
       {
         "type": "text",
@@ -218,7 +218,7 @@
       {
         "type": "checkbox",
         "id": "cart_notes_enable",
-        "label": "Enable cart notes",
+        "label": "Show cart notes",
         "default": true
       }
     ]
@@ -245,7 +245,7 @@
       {
         "type": "checkbox",
         "id": "product_show_share_buttons",
-        "label": "Show social sharing buttons",
+        "label": "Show social media icons",
         "default": true
       }
     ]
