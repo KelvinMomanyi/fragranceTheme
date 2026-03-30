@@ -323,27 +323,22 @@ function initSlowMotionEffect() {
       const isComingFromTop = rect.top > 0;
       const isLeavingToTop = rect.bottom < window.innerHeight && !isIntersecting;
       
-      spans.forEach((span, index) => {
-        const delay = index * 50;
-        
-        setTimeout(() => {
-          if (isIntersecting) {
-            // No hard reset here, let updateInViewEffect handle the state
-          } else {
-            const translateX = start + stepSize * index;
-            let finalTranslateX;
-            
-            if (isComingFromTop) {
-              finalTranslateX = translateX;
-            } else {
-              finalTranslateX = -translateX;
+      // Batch writes in requestAnimationFrame instead of multiple setTimeouts
+      requestAnimationFrame(() => {
+        spans.forEach((span, index) => {
+          const delay = index * 50;
+          
+          setTimeout(() => {
+            if (!isIntersecting) {
+              const translateX = start + stepSize * index;
+              let finalTranslateX = isComingFromTop ? translateX : -translateX;
+              
+              span.style.transform = `translateX(${finalTranslateX}%) scale(${maxScale})`;
+              span.style.filter = `blur(${maxBlur}px)`;
+              span.style.opacity = '0';
             }
-            
-            span.style.transform = `translateX(${finalTranslateX}%) scale(${maxScale})`;
-            span.style.filter = `blur(${maxBlur}px)`;
-            span.style.opacity = '0';
-          }
-        }, delay);
+          }, delay);
+        });
       });
     });
   }, {
@@ -353,8 +348,18 @@ function initSlowMotionEffect() {
   
   boxObserver.observe(boxElement);
   
+  // Performance: only update scroll effect when section is visible
+  let isBoxVisible = false;
+  const visibilityObserver = new IntersectionObserver((entries) => {
+    isBoxVisible = entries[0].isIntersecting;
+  }, { threshold: 0 });
+  visibilityObserver.observe(boxElement);
+
   // Fine-tuned scroll-based animation
   function updateInViewEffect() {
+    if (!isBoxVisible) return; // Performance: skip when off-screen
+
+    // Read phase
     const rect = boxElement.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     
@@ -364,8 +369,8 @@ function initSlowMotionEffect() {
       const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
       const maxDistance = windowHeight / 2;
       const centerRatio = 1 - Math.min(distanceFromCenter / maxDistance, 1);
-      const effectStrength = 1 - centerRatio;
       
+      // Write phase
       spans.forEach((span, index) => {
         if (centerRatio > 0.8) {
           span.style.transform = 'translateX(0%) scale(1)';
@@ -389,16 +394,18 @@ function initSlowMotionEffect() {
     }
   }
   
-  // Throttled scroll listener
-  let scrollTimeout;
+  // Throttled scroll listener using rAF
+  let scrollTicking = false;
   window.addEventListener('scroll', () => {
-    if (scrollTimeout) return;
-    
-    scrollTimeout = setTimeout(() => {
-      updateInViewEffect();
-      scrollTimeout = null;
-    }, 16);
-  });
+    if (!scrollTicking) {
+      requestAnimationFrame(() => {
+        updateInViewEffect();
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
+  }, { passive: true });
+
   updateInViewEffect();
 }
 
@@ -434,7 +441,7 @@ document.addEventListener("shopify:section:load", function(event) {
 
 {% schema %}
 {
-  "name": "Video banner",
+  "name": "Featured Product",
   "settings": [
     {
       "type": "color_scheme",
@@ -583,7 +590,7 @@ document.addEventListener("shopify:section:load", function(event) {
   ],
   "presets": [
     {
-      "name": "Video banner",
+      "name": "Featured Product",
       "category": "Products",
       "blocks": [
         {
@@ -612,7 +619,3 @@ document.addEventListener("shopify:section:load", function(event) {
   ]
 }
 {% endschema %}
-
-
-
-

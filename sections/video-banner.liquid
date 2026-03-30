@@ -337,27 +337,22 @@ function initSlowMotionEffect() {
       const isComingFromTop = rect.top > 0;
       const isLeavingToTop = rect.bottom < window.innerHeight && !isIntersecting;
       
-      spans.forEach((span, index) => {
-        const delay = index * 50;
-        
-        setTimeout(() => {
-          if (isIntersecting) {
-            // No hard reset here, let updateInViewEffect handle the state
-          } else {
-            const translateX = start + stepSize * index;
-            let finalTranslateX;
-            
-            if (isComingFromTop) {
-              finalTranslateX = translateX;
-            } else {
-              finalTranslateX = -translateX;
+      // Batch writes in requestAnimationFrame instead of multiple setTimeouts
+      requestAnimationFrame(() => {
+        spans.forEach((span, index) => {
+          const delay = index * 50;
+          
+          setTimeout(() => {
+            if (!isIntersecting) {
+              const translateX = start + stepSize * index;
+              let finalTranslateX = isComingFromTop ? translateX : -translateX;
+              
+              span.style.transform = `translateX(${finalTranslateX}%) scale(${maxScale})`;
+              span.style.filter = `blur(${maxBlur}px)`;
+              span.style.opacity = '0';
             }
-            
-            span.style.transform = `translateX(${finalTranslateX}%) scale(${maxScale})`;
-            span.style.filter = `blur(${maxBlur}px)`;
-            span.style.opacity = '0';
-          }
-        }, delay);
+          }, delay);
+        });
       });
     });
   }, {
@@ -377,6 +372,8 @@ function initSlowMotionEffect() {
   // Fine-tuned scroll-based animation
   function updateInViewEffect() {
     if (!isBoxVisible) return; // Performance: skip when off-screen
+    
+    // Read phase
     const rect = boxElement.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     
@@ -386,8 +383,8 @@ function initSlowMotionEffect() {
       const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
       const maxDistance = windowHeight / 2;
       const centerRatio = 1 - Math.min(distanceFromCenter / maxDistance, 1);
-      const effectStrength = 1 - centerRatio;
       
+      // Write phase
       spans.forEach((span, index) => {
         if (centerRatio > 0.8) {
           span.style.transform = 'translateX(0%) scale(1)';
