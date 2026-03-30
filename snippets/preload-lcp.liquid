@@ -3,33 +3,36 @@
   This snippet should be included in the <head> of theme.liquid.
 {%- endcomment -%}
 
-{%- if request.page_type == 'index' -%}
-  {%- comment -%}
-    Homepage LCP is usually handled by the Video Banner or hero section.
-  {%- endcomment -%}
-{%- elsif request.page_type == 'product' -%}
-  {%- if product.featured_media -%}
-    {%- assign lcp_media = product.featured_media -%}
-    <link 
-      rel="preload" 
-      as="image" 
-      href="{{ lcp_media | image_url: width: 1100 }}" 
-      imagesrcset="{%- for width in '240,352,832,1200,1600,1920,2560,3840' | split: ',' -%}{{ lcp_media | image_url: width: width }} {{ width }}w{%- unless forloop.last -%}, {%- endunless -%}{%- endfor -%}" 
-      imagesizes="(min-width: 1200px) 50vw, 100vw"
-      fetchpriority="high"
-    >
-  {%- endif -%}
-{%- elsif request.page_type == 'collection' or request.page_type == 'search' -%}
-  {%- assign first_product = collection.products.first | default: search.results.first -%}
-  {%- if first_product and first_product.featured_image -%}
-    {%- assign lcp_image = first_product.featured_image -%}
-    <link 
-      rel="preload" 
-      as="image" 
-      href="{{ lcp_image | image_url: width: 600 }}" 
-      imagesrcset="{{ lcp_image | image_url: width: 300 }} 300w, {{ lcp_image | image_url: width: 450 }} 450w, {{ lcp_image | image_url: width: 600 }} 600w" 
-      imagesizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px"
-      fetchpriority="high"
-    >
-  {%- endif -%}
+{%- liquid
+  assign lcp_image = null
+  assign lcp_sizes = null
+  assign lcp_srcset_widths = '240,352,832,1200,1600,1920,2560,3840' | split: ','
+
+  if request.page_type == 'product'
+    if product.featured_media.preview_image
+      assign lcp_image = product.featured_media.preview_image
+      assign lcp_sizes = '(min-width: 1200px) 50vw, 100vw'
+    endif
+  elsif request.page_type == 'collection' or request.page_type == 'search'
+    assign first_product = collection.products.first | default: search.results.first
+    if first_product.featured_image
+      assign lcp_image = first_product.featured_image
+      assign lcp_srcset_widths = '300,450,600' | split: ','
+      assign lcp_sizes = '(max-width: 480px) 100vw, (max-width: 768px) 50vw, 300px'
+    endif
+  endif
+-%}
+
+{%- if lcp_image -%}
+  <link 
+    rel="preload" 
+    as="image" 
+    href="{{ lcp_image | image_url: width: 1100 }}" 
+    imagesrcset="{%- for width_str in lcp_srcset_widths -%}
+      {%- assign w = width_str | plus: 0 -%}
+      {{ lcp_image | image_url: width: w }} {{ w }}w{%- unless forloop.last -%}, {%- endunless -%}
+    {%- endfor -%}" 
+    imagesizes="{{ lcp_sizes }}"
+    fetchpriority="high"
+  >
 {%- endif -%}

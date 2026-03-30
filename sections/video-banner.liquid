@@ -93,7 +93,8 @@
               src="https://i.ytimg.com/vi/{{ youtube_id }}/hqdefault.jpg"
               alt="{{ section.settings.title | default: 'Video' | escape }}"
               class="img-cover"
-              loading="lazy"
+              loading="eager"
+              fetchpriority="high"
               width="1170"
               height="550"
               style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">
