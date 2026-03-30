@@ -13,7 +13,7 @@
                width="{{ block.settings.width | default: 285 }}" height="{{ block.settings.height | default: 396 }}" 
                 alt="{{ block.settings.image.alt | escape }}" class="img-cover"
                style="{% render 'focal-point-style', image: block.settings.image %}"
-               loading="lazy">
+               fetchpriority="high">
         {% else %}
           {{ block.settings.svg_placeholder | default: 'product-1' | placeholder_svg_tag: 'img-cover' }}
         {% endif %}

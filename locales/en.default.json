@@ -577,6 +577,13 @@
       "shipping_at_checkout": "Shipping calculated at checkout.",
       "note": "Order note",
       "note_placeholder": "Special instructions for your order"
+    },
+    "collection_list": {
+      "title": "Collections",
+      "product_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      }
     }
   },
   "customer_accounts": {

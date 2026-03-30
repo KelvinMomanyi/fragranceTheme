@@ -1,0 +1,56 @@
+<div class="container container--narrow">
+  <h1 class="h2 section-title">{{ 'sections.collection_list.title' | t | default: 'Collections' }}</h1>
+
+  {% paginate collections by 12 %}
+    <div class="grid-list collection-list">
+      {% for collection in collections %}
+        <li class="collection-list__item">
+          <div class="collection-card">
+            <a href="{{ collection.url }}" class="card-banner img-holder has-before" style="--width: 400; --height: 400;">
+              {% if collection.featured_image %}
+                <img
+                  src="{{ collection.featured_image | image_url: width: 800 }}"
+                  srcset="{{ collection.featured_image | image_url: width: 400 }} 400w,
+                          {{ collection.featured_image | image_url: width: 800 }} 800w"
+                  sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 400px"
+                  alt="{{ collection.featured_image.alt | escape | default: collection.title }}"
+                  class="img-cover"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                >
+              {% else %}
+                {{ 'collection-1' | placeholder_svg_tag: 'img-cover' }}
+              {% endif %}
+            </a>
+            <div class="card-content">
+              <h3 class="h3">
+                <a href="{{ collection.url }}" class="card-title">{{ collection.title }}</a>
+              </h3>
+              <p class="collection-count">
+                {{ 'sections.collection_list.product_count' | t: count: collection.all_products_count | default: collection.all_products_count | append: ' products' }}
+              </p>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </div>
+
+    {% if paginate.pages > 1 %}
+      {% render 'pagination', paginate: paginate %}
+    {% endif %}
+  {% endpaginate %}
+</div>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Collection list",
+      "category": "Collections"
+    }
+  ]
+}
+{% endschema %}

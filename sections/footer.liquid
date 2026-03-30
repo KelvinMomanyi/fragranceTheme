@@ -169,7 +169,7 @@ FOOTER
         <a href="#" class="copyright-link">{{ section.settings.copyright_text | default: 'Velour' }}</a>.
         <span id="year"></span>
         {%- if section.settings.show_powered_by -%}
-        {{ powered_by_link }}
+        {{ powered_by_link | replace: 'href=', 'rel="nofollow" href=' }}
         {%- endif -%}
 
       </p>
