@@ -1,7 +1,7 @@
 import { Component } from './component.js';
 import { VariantSelectedEvent, VariantUpdateEvent } from './events.js';
 import { morph, MORPH_OPTIONS } from './morph.js';
-import { yieldToMainThread, getViewParameterValue, ResizeNotifier } from './utilities.js';
+import { yieldToMainThread, getViewParameterValue, ResizeNotifier, scheduler } from './utilities.js';
 
 /**
  * @typedef {object} VariantPickerRefs
@@ -387,7 +387,7 @@ export default class VariantPicker extends Component {
         return key;
       },
     });
-    this.updateVariantPickerCss();
+    scheduler.schedule(() => this.updateVariantPickerCss());
 
     return newProduct;
   }

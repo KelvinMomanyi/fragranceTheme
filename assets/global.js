@@ -564,10 +564,13 @@ class HeaderDrawer extends MenuDrawer {
     this.header = this.header || document.querySelector('.section-header');
     this.borderOffset =
       this.borderOffset || this.closest('.header-wrapper').classList.contains('header-wrapper--border-bottom') ? 1 : 0;
-    document.documentElement.style.setProperty(
-      '--header-bottom-position',
-      `${parseInt(this.header.getBoundingClientRect().bottom - this.borderOffset)}px`
-    );
+    const headerBottom = this.header.getBoundingClientRect().bottom;
+    requestAnimationFrame(() => {
+      document.documentElement.style.setProperty(
+        '--header-bottom-position',
+        `${parseInt(headerBottom - this.borderOffset)}px`
+      );
+    });
     this.header.classList.add('menu-open');
 
     setTimeout(() => {
@@ -589,11 +592,15 @@ class HeaderDrawer extends MenuDrawer {
   }
 
   onResize = () => {
-    this.header &&
-      document.documentElement.style.setProperty(
-        '--header-bottom-position',
-        `${parseInt(this.header.getBoundingClientRect().bottom - this.borderOffset)}px`
-      );
+    if (this.header) {
+      const headerBottom = this.header.getBoundingClientRect().bottom;
+      requestAnimationFrame(() => {
+        document.documentElement.style.setProperty(
+          '--header-bottom-position',
+          `${parseInt(headerBottom - this.borderOffset)}px`
+        );
+      });
+    }
     document.documentElement.style.setProperty('--viewport-height', `${window.innerHeight}px`);
   };
 }
@@ -748,17 +755,29 @@ class SliderComponent extends HTMLElement {
     this.nextButton.addEventListener('click', this.onButtonClick.bind(this));
   }
 
+  // Pre-calculate layout values before they are needed for scrolling
+  #getCachedGeometry() {
+    const sliderWidth = this.slider.clientWidth;
+    const item0Offset = this.sliderItemsToShow[0].offsetLeft;
+    const item1Offset = this.sliderItemsToShow[1].offsetLeft;
+    return {
+      sliderWidth,
+      item0Offset,
+      item1Offset,
+      sliderItemOffset: item1Offset - item0Offset
+    };
+  }
+
   initPages() {
     this.sliderItemsToShow = Array.from(this.sliderItems).filter((element) => element.clientWidth > 0);
     if (this.sliderItemsToShow.length < 2) return;
     
-    // Cache the geometric properties once per init
-    const sliderWidth = this.slider.clientWidth;
-    const item0Offset = this.sliderItemsToShow[0].offsetLeft;
-    this.sliderItemOffset = this.sliderItemsToShow[1].offsetLeft - item0Offset;
+    // Read phase
+    const geometry = this.#getCachedGeometry();
+    this.sliderItemOffset = geometry.sliderItemOffset;
     
     this.slidesPerPage = Math.floor(
-      (sliderWidth - item0Offset) / this.sliderItemOffset
+      (geometry.sliderWidth - geometry.item0Offset) / this.sliderItemOffset
     );
     this.totalPages = this.sliderItemsToShow.length - this.slidesPerPage + 1;
     this.update();

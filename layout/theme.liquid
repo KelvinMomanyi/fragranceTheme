@@ -192,9 +192,11 @@
       }
 
       function ensureGlobalRuntimeIfNeeded() {
-        if (document.querySelector(globalRuntimeSelector)) {
-          loadGlobalScript();
-        }
+        requestAnimationFrame(() => {
+          if (document.querySelector(globalRuntimeSelector)) {
+            loadGlobalScript();
+          }
+        });
       }
 
       if (typeof window.requestIdleCallback === 'function') {
@@ -203,7 +205,9 @@
         setTimeout(ensureGlobalRuntimeIfNeeded, 200);
       }
 
-      document.addEventListener('shopify:section:load', ensureGlobalRuntimeIfNeeded);
+      document.addEventListener('shopify:section:load', () => {
+        requestAnimationFrame(ensureGlobalRuntimeIfNeeded);
+      });
       document.addEventListener('click', ensureGlobalRuntimeIfNeeded, { passive: true });
       document.addEventListener('focusin', ensureGlobalRuntimeIfNeeded, { passive: true });
     })();

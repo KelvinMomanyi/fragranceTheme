@@ -1,7 +1,7 @@
 import { Component } from './component.js';
 import { morph } from './morph.js';
 import { ThemeEvents, VariantUpdateEvent } from './events.js';
-import { isMobileBreakpoint, mediaQueryLarge } from './utilities.js';
+import { isMobileBreakpoint, mediaQueryLarge, scheduler } from './utilities.js';
 
 /**
  * @typedef {Object} LayeredSlideshowRefs
@@ -493,15 +493,19 @@ export class LayeredSlideshowComponent extends Component {
   }
 
   #syncHeight() {
-    const { container } = this.refs;
-    const contentHeight = this.#getMaxContentHeight();
-    const isAuto = container.getAttribute('size') === 'auto';
+    scheduler.schedule(() => {
+      const { container } = this.refs;
+      if (!container) return;
+      
+      const contentHeight = this.#getMaxContentHeight();
+      const isAuto = container.getAttribute('size') === 'auto';
 
-    if (this.#isMobile) {
-      this.#syncMobileHeight(contentHeight, isAuto);
-    } else {
-      this.#syncDesktopHeight(contentHeight, isAuto);
-    }
+      if (this.#isMobile) {
+        this.#syncMobileHeight(contentHeight, isAuto);
+      } else {
+        this.#syncDesktopHeight(contentHeight, isAuto);
+      }
+    });
   }
 
   /**
@@ -573,28 +577,40 @@ export class LayeredSlideshowComponent extends Component {
 
   #getMaxContentHeight() {
     const { panels } = this.refs;
-    let max = 0;
+    if (!panels?.length) return 0;
 
-    for (const panel of panels ?? []) {
+    const measurements = [];
+
+    // Phase 1: Prepare elements and batch "height: auto" writes
+    for (const panel of panels) {
       const content = panel.querySelector('.layered-slideshow__content');
       if (!content) continue;
 
       const inner = /** @type {HTMLElement} */ (content.querySelector('.group-block-content') ?? content);
+      measurements.push({
+        content,
+        inner,
+        savedHeight: inner.style.height,
+      });
 
-      // Temporarily set height to auto for accurate measurement
-      // This is needed because height: 100% collapses when parent has no height
-      const savedHeight = inner.style.height;
-      inner.style.height = 'auto';
+      inner.style.height = 'auto'; // WRITE
+    }
 
-      const styles = getComputedStyle(content);
+    let max = 0;
+
+    // Phase 2: Batch reads/reflows
+    for (const m of measurements) {
+      const styles = getComputedStyle(m.content); // READ
       const paddingTop = parseFloat(styles.paddingBlockStart || styles.paddingTop) || 0;
       const paddingBottom = parseFloat(styles.paddingBlockEnd || styles.paddingBottom) || 0;
 
-      const height = (inner.scrollHeight || 0) + paddingTop + paddingBottom;
+      const height = (m.inner.scrollHeight || 0) + paddingTop + paddingBottom; // READ
       if (height > max) max = height;
+    }
 
-      // Restore original height
-      inner.style.height = savedHeight;
+    // Phase 3: Batch restore writes
+    for (const m of measurements) {
+      m.inner.style.height = m.savedHeight; // WRITE
     }
 
     return max;
