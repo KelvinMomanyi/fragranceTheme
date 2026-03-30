@@ -843,7 +843,13 @@ export class Slideshow extends Component {
 
     if (!(slideshowControls instanceof HTMLElement)) return;
 
-    slideshowControls.hidden = scroller.scrollWidth <= scroller.offsetWidth;
+    // Read geometric properties first
+    const isOverflowing = scroller.scrollWidth > scroller.offsetWidth;
+
+    // Then batch the write
+    scheduler.schedule(() => {
+      slideshowControls.hidden = !isOverflowing;
+    });
   }
 
   /**

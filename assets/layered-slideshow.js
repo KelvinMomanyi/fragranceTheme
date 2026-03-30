@@ -45,6 +45,8 @@ export class LayeredSlideshowComponent extends Component {
   #contentObserver = null;
   /** @type {ResizeObserver | null} */
   #containerObserver = null;
+  /** @type {number | null} */
+  #lastSize = null;
 
   /** @returns {number} The inactive tab size in pixels based on current viewport */
   get #inactiveSize() {
@@ -78,6 +80,7 @@ export class LayeredSlideshowComponent extends Component {
             size = isMobile ? entry.contentRect.height : entry.contentRect.width;
           }
 
+          this.#lastSize = size;
           this.#updateGridSizes(size);
         }
       }
@@ -324,7 +327,10 @@ export class LayeredSlideshowComponent extends Component {
     const inactiveSize = this.#inactiveSize;
     const size =
       containerSize ??
+      this.#lastSize ??
       (this.#isMobile ? container.getBoundingClientRect().height : container.getBoundingClientRect().width);
+
+    if (this.#lastSize === null) this.#lastSize = size;
     const activeSize = size - inactiveSize * (tabs.length - 1);
     const sizes = tabs.map((_, i) => (i === this.#active ? `${activeSize}px` : `${inactiveSize}px`));
     container.style.setProperty('--active-tab', sizes.join(' '));

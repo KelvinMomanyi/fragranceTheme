@@ -247,10 +247,12 @@ class PredictiveSearch extends SearchForm {
     }
 
     open() {
-        this.predictiveSearchResults.style.maxHeight = this.resultsMaxHeight || `${this.getResultsMaxHeight()}px`;
-        this.setAttribute('open', true);
-        this.input.setAttribute('aria-expanded', true);
-        this.isOpen = true;
+        requestAnimationFrame(() => {
+            this.predictiveSearchResults.style.maxHeight = this.resultsMaxHeight || `${this.getResultsMaxHeight()}px`;
+            this.setAttribute('open', true);
+            this.input.setAttribute('aria-expanded', true);
+            this.isOpen = true;
+        });
     }
 
     close(clearSearchTerm = false) {
