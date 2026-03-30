@@ -404,3 +404,21 @@
   padding: 0;
   margin: 0;
 }
+
+/* Layout Stability Fixes (CLS) */
+.facets__summary {
+  min-height: 34px;
+  display: flex !important;
+  align-items: center;
+}
+
+.facets__status {
+  min-width: 20px;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-count {
+  min-height: 24px;
+}
