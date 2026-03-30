@@ -1,7 +1,7 @@
 {
   "sections": {
     "hero-sliders": {
-      "type": "hero-sliders",
+      "type": "hero-slideshow",
       "settings": {
         "color_scheme": "scheme-1"
       },
