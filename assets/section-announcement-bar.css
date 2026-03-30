@@ -39,12 +39,8 @@
 }
 
 /* Show the first announcement immediately so LCP doesn't wait for JS */
-.slider-wrapper .alert-text:first-child {
+.slider-wrapper:not(.js-ready) .alert-text:first-child {
   opacity: 1;
-}
-/* Once JS has initialised, it manages visibility via .visible/.exit classes */
-.slider-wrapper.js-ready .alert-text:first-child {
-  opacity: 0;
 }
 .alert-text {
   width:100%; /* Adjust the width according to your needs */
