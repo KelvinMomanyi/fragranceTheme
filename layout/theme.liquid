@@ -32,12 +32,23 @@
 
   <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdn.shopify.com">
+  <link rel="preconnect" href="https://monorail-edge.shopifysvc.com">
   {% comment %} theme-check-enable RemoteAsset {% endcomment %}
 
   {%- comment -%}
-    Font preloads removed — fonts are loaded via application.css with font-display:swap.
-    Preloading them separately competes with critical resources and provides minimal benefit.
+    Critical Request Chain Optimization: Preload core ES modules to flatten the dependency tree.
   {%- endcomment -%}
+  <link rel="modulepreload" href="{{ 'utilities.js' | asset_url }}">
+  <link rel="modulepreload" href="{{ 'component.js' | asset_url }}">
+  <link rel="modulepreload" href="{{ 'events.js' | asset_url }}">
+  <link rel="modulepreload" href="{{ 'section-renderer.js' | asset_url }}">
+  <link rel="modulepreload" href="{{ 'morph.js' | asset_url }}">
+
+  {%- comment -%}
+    Largest Contentful Paint (LCP) Optimization: Preload the main image for collection and product pages.
+  {%- endcomment -%}
+  {% render 'preload-lcp' %}
+
 
   <!-- Open Graph & Twitter Card Tags -->
   {% render 'social-meta-tags' %}
