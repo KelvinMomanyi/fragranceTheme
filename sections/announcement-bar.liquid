@@ -131,6 +131,15 @@
    flex: 1;
    overflow: hidden;
   }
+
+  /* Show the first announcement immediately so LCP doesn't wait for JS */
+  .slider-wrapper .alert-text:first-child {
+    opacity: 1;
+  }
+  /* Once JS has initialised, it manages visibility via .visible/.exit classes */
+  .slider-wrapper.js-ready .alert-text:first-child {
+    opacity: 0;
+  }
   .alert-text {
     width:100%; /* Adjust the width according to your needs */
     height:auto; /* Adjust the height according to your needs */
@@ -508,6 +517,11 @@
       slideToMiddle(texts[currentIndex]);
     }
 
+    /* Mark the wrapper so the CSS :first-child fallback is removed,
+       then let JS manage .visible classes from here on. */
+    var wrapper = sectionRoot.querySelector('.slider-wrapper');
+    if (wrapper) wrapper.classList.add('js-ready');
+
     slideToMiddle(texts[currentIndex]);
     if (texts.length > 1) {
       announcementInterval = setInterval(slideText, 3000);
@@ -546,10 +560,9 @@
     }
   }
 
-  /* Init on first page load */
-  document.addEventListener('DOMContentLoaded', function() {
-    initAnnouncementBar();
-  });
+  /* Init immediately – no DOMContentLoaded gate – the <script> is after the
+     section HTML so the elements already exist in the DOM at this point. */
+  initAnnouncementBar();
 
   /* Re-init when Shopify editor re-renders this section (e.g. color scheme change) */
   document.addEventListener('shopify:section:load', function(event) {
