@@ -61,7 +61,10 @@
   <!-- Critical Images Preload -->
   <!-- Images are loaded from hero section settings or placeholders -->
 
-  {{ content_for_header }} <!-- Header hook for plugins -->
+  {%- capture content_for_header_captured -%}
+    {{ content_for_header }}
+  {%- endcapture -%}
+  {{- content_for_header_captured | replace: ' src=', ' defer="defer" src=' | replace: ' defer="defer" defer="defer" src=', ' defer="defer" src=' | replace: ' async="async" defer="defer" src=', ' defer="defer" src=' -}} <!-- Header hook for plugins (Deferred) -->
   
   <!-- Module import map - must come before any ES module scripts -->
   <script type="importmap">
